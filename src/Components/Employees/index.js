@@ -44,6 +44,9 @@ const Employees = () => {
         deleteEmployee={deleteEmployee}
         employee={selectedEmployee}
       />
+      <a href="/employees/form" className={styles.button}>
+        Add new employee +
+      </a>
       <table className={styles.table}>
         <thead>
           <tr>

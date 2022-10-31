@@ -6,6 +6,8 @@ const Modal = (props) => {
   const confirmDelete = () => {
     deleteEmployee(employee.id);
     closeModal();
+    window.location.reload();
+    alert('Employee deleted');
   };
 
   if (!show) {
