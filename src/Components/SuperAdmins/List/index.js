@@ -4,7 +4,7 @@ import styles from './list.module.css';
 const ListSuperAdmin = ({ superAdmin, state, changeState, setId }) => {
   return (
     <div className={styles.container}>
-      <a href={'/addNewSuperAdmin'} rel="noreferrer">
+      <a href={'/super-admins/form'} rel="noreferrer">
         <img
           className={styles.btnAdd}
           target={'_blank'}
