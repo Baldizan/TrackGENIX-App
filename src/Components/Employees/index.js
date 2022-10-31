@@ -47,7 +47,7 @@ const Employees = () => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Employees</th>
+            <th>ID</th>
             <th>name</th>
             <th>lastName</th>
             <th>phone</th>
@@ -64,9 +64,11 @@ const Employees = () => {
               <td>{employee.phone}</td>
               <td>{employee.email}</td>
               <td>{employee.project}</td>
-              <td className={styles.center}>&hellip;</td>
               <td className={styles.center}>
-                <button onClick={() => handleDelete(employee._id)}>&times;</button>
+                <button onClick={() => handleDelete(employee)}>Edit</button>
+              </td>
+              <td className={styles.center}>
+                <button onClick={() => handleDelete(employee)}>Delete</button>
               </td>
             </tr>
           ))}

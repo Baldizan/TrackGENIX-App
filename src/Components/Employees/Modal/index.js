@@ -4,7 +4,7 @@ const Modal = (props) => {
   const { show, handleModal, deleteEmployee, employee } = props;
   const closeModal = () => handleModal(false);
   const confirmDelete = () => {
-    deleteEmployee(employee);
+    deleteEmployee(employee.id);
     closeModal();
   };
 
@@ -18,6 +18,7 @@ const Modal = (props) => {
           &times;
         </button>
         <h3>Message from Trackgenix</h3>
+        <small>Once deleted, the changes cannot be undone.</small>
         <p>Are you sure you want to remove this employee: {employee.name}?</p>
         <button onClick={() => confirmDelete()} className={styles.confirm}>
           Confirm
