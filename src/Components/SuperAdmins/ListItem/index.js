@@ -1,9 +1,7 @@
 import styles from './listItem.module.css';
 
-const ListItem = ({ listItem, onDeleteClick, id }) => {
-  const handleDeleteClick = () => {
-    onDeleteClick();
-  };
+const ListItem = ({ listItem, id, state, changeState, setId }) => {
+  console.log('desde listItem', id);
   return (
     <tr key={id}>
       <td>{listItem.name}</td>
@@ -17,7 +15,8 @@ const ListItem = ({ listItem, onDeleteClick, id }) => {
         </a>
         <button
           onClick={() => {
-            handleDeleteClick(listItem.id);
+            setId(id);
+            changeState(!state);
           }}
         >
           <img

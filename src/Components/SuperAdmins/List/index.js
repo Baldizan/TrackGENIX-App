@@ -1,7 +1,7 @@
 import ListItem from '../ListItem';
 import styles from './list.module.css';
 
-const ListSuperAdmin = ({ superAdmin, onDeleteClick }) => {
+const ListSuperAdmin = ({ superAdmin, state, changeState, setId }) => {
   return (
     <div className={styles.container}>
       <a href={'/addNewSuperAdmin'} rel="noreferrer">
@@ -21,7 +21,14 @@ const ListSuperAdmin = ({ superAdmin, onDeleteClick }) => {
         </thead>
         <tbody>
           {superAdmin.map((item) => (
-            <ListItem id={item._id} key={item._id} listItem={item} onDeleteClick={onDeleteClick} />
+            <ListItem
+              id={item._id}
+              key={item._id}
+              listItem={item}
+              state={state}
+              changeState={changeState}
+              setId={setId}
+            />
           ))}
         </tbody>
       </table>
