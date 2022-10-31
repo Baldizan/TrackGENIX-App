@@ -3,7 +3,6 @@ import List from './List/List';
 import AddItem from './AddItem/AddItem';
 
 import styles from './time-sheets.module.css';
-import Modal from './Modal/Modal';
 
 const TimeSheets = () => {
   const [list, setList] = useState([]);
@@ -56,9 +55,6 @@ const TimeSheets = () => {
     <section className={styles.container}>
       <List list={list} setList={setList} deleteItem={deleteItem} />
       <AddItem addItem={addItem} />
-      <Modal>
-        <div>Ventana</div>
-      </Modal>
     </section>
   );
 };
