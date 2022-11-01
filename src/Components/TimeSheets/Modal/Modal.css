@@ -18,3 +18,10 @@
    border-radius: 5px;
    padding: 20px;
 }
+
+.btn-close{
+   cursor: pointer;
+   position: relative;
+   border: none;
+   background: none;
+}

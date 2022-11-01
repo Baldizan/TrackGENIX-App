@@ -10,9 +10,7 @@ const List = ({ list, deleteItem }) => {
       <table>
         <thead className="thead">
           <tr className="space-between">
-            <th className="th" id="projectName">
-              Project Name
-            </th>
+            <th id="projectName">Project Name</th>
             <th id="task">Task</th>
             <th id="employee">employee</th>
             <th id="description">Description</th>
@@ -20,10 +18,13 @@ const List = ({ list, deleteItem }) => {
             <th id="hours">Hours</th>
           </tr>
         </thead>
-        {list.map((item) => (
-          <ListItem key={item._id} listItem={item} deleteItem={deleteItem} />
-        ))}
+        <tbody>
+          {list.map((item) => (
+            <ListItem key={item._id} listItem={item} deleteItem={deleteItem} />
+          ))}
+        </tbody>
       </table>
+      <a href="/time-sheets/form">add</a>
     </section>
   );
 };

@@ -4,3 +4,15 @@
   justify-content: space-evenly;
   width: 100%;
 }
+
+.tr {
+  padding: 10px 10px;
+  border: solid 0.5px rgb(204, 204, 204);
+  border-collapse: collapse;
+  text-align: start;
+}
+
+.btn-delete {
+  border: none;
+  background: none;
+}

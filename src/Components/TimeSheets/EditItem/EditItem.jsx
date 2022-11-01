@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import './AddItem.css';
 
-const AddItem = ({ addItem }) => {
+const EditItem = ({ editItem }) => {
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [employees, setSEmployees] = useState([]);
@@ -53,7 +52,7 @@ const AddItem = ({ addItem }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addItem(timeSheetInput);
+    editItem(timeSheetInput);
     setTimeSheetInput({
       project: '',
       task: '',
@@ -121,4 +120,5 @@ const AddItem = ({ addItem }) => {
     </form>
   );
 };
-export default AddItem;
+
+export default EditItem;

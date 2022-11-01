@@ -1,19 +1,22 @@
 import React from 'react';
 import './Modal.css';
 
-const Modal = ({ text, confirm }) => {
-  //const [modal, setModal] = useState(false);
-
+const Modal = ({ text, confirm, close }) => {
   const handleConfirm = () => {
-    //setModal(!modal);
     confirm();
+  };
+
+  const handleClose = () => {
+    close();
   };
 
   return (
     <>
       <div className="overlay">
         <div className="modal">
-          <button>X</button>
+          <button className="btn-close" onClick={handleClose}>
+            X
+          </button>
           <span>{text}</span>
           <button onClick={handleConfirm}>Confirm</button>
         </div>

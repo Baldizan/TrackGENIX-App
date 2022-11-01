@@ -9,26 +9,31 @@ const ListItem = ({ listItem, deleteItem }) => {
     setModal(!modal);
   };
 
-  const handleConfirm = () => {
+  const handleConfirmDelete = () => {
     deleteItem(listItem._id);
+    setModal(!modal);
+  };
+
+  const handleClose = () => {
     setModal(!modal);
   };
 
   return (
     <>
-      <tr className="space-between">
-        <td>{listItem.project.name}</td>
-        <td>{listItem.task.description}</td>
+      <tr className="space-between tr">
+        <td>{listItem.project?.name}</td>
+        <td>{listItem.task?.description}</td>
+        <td>{listItem.employee?.name}</td>
         <td>{listItem.description}</td>
-        <td>{listItem.employee}</td>
         <td>{new Date(listItem.date).toLocaleDateString()}</td>
         <td>{listItem.hours}</td>
         <div>
-          <button onClick={handleDelete}>X</button>
+          <button className="btn-delete" onClick={handleDelete}>
+            X
+          </button>
         </div>
       </tr>
-
-      {modal && <Modal text="Are you sure?" confirm={handleConfirm} />}
+      {modal && <Modal text="Are you sure?" confirm={handleConfirmDelete} close={handleClose} />}
     </>
   );
 };

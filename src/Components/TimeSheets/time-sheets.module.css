@@ -18,3 +18,17 @@
   display: flex;
   flex-direction: row;
 }
+
+form{
+  width: 100%;
+  justify-self: stretch;
+}
+
+input, select{
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+input:focus {
+  background-color: lightblue;
+}
