@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './form.module.css';
 import ModalWarning from '../Modal';
 
 const FormSuperAdmin = () => {
+  const paramsURL = new URLSearchParams(window.location.search);
+  const userId = paramsURL.get('id');
   const [modal, setModal] = useState(false);
   const [message, setMessage] = useState('');
   const [titleModal, setTitleModal] = useState('');
@@ -22,6 +24,45 @@ const FormSuperAdmin = () => {
     });
   };
 
+  useEffect(async () => {
+    if (userId) {
+      try {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${userId}`);
+        const data = await res.json();
+        setUserInput({
+          name: data.data.name,
+          lastName: data.data.lastName,
+          email: data.data.email,
+          password: data.data.password
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, []);
+
+  const editSuperAdmin = async (userId) => {
+    console.log('userId de Form', userId);
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: userInput.name,
+          lastName: userInput.lastName,
+          email: userInput.email,
+          password: userInput.password
+        })
+      });
+      const data = await res.json();
+      alert(data.message);
+    } catch (error) {
+      setMessage(error);
+    }
+  };
+
   const addSuperAdmin = async () => {
     try {
       await fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
@@ -36,7 +77,11 @@ const FormSuperAdmin = () => {
       setMessage(error.message);
       setTitleModal('Edit Super Admins');
     }
-    alert('Super Admins successfully');
+    if (userInput.length > 0) {
+      alert('Super Admins successfully');
+    } else {
+      alert('Super Admins cannot be empty');
+    }
   };
   return (
     <section className={styles.container}>
@@ -107,7 +152,10 @@ const FormSuperAdmin = () => {
               required
             />
           </div>
-          <button type="submit" onClick={addSuperAdmin()}>
+          <button
+            type="submit"
+            onClick={userId ? () => editSuperAdmin(userId) : () => addSuperAdmin()}
+          >
             Save
           </button>
         </form>
