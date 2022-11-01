@@ -11,12 +11,12 @@ table {
 }
 th {
   padding: 10px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #000;
 }
 
 td {
   padding: 10px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #000;
 }
 
 p {

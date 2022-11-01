@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './super-admins.module.css';
-import ListSuperAdmin from './List';
+import ListSuperAdmins from './List';
 import ModalWarning from './Modal';
 
 function SuperAdmins() {
@@ -18,7 +18,7 @@ function SuperAdmins() {
       .then((json) => setSuperAdmins(json.data));
   }, []);
 
-  const deleteSA = async () => {
+  const deleteSuperAdmin = async () => {
     await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`, {
       method: 'DELETE'
     });
@@ -28,17 +28,17 @@ function SuperAdmins() {
   return (
     <section className={styles.container}>
       <h2>SuperAdmins</h2>
-      <ListSuperAdmin
-        superAdmin={superAdmins}
+      <ListSuperAdmins
+        superAdmins={superAdmins}
         setSuperAdmins={setSuperAdmins}
-        deleteSA={deleteSA}
+        deleteSuperAdmin={deleteSuperAdmin}
         onDeleteClick={handleDeleteClick}
-        state={modal}
-        changeState={setModal}
+        modal={modal}
+        setModal={setModal}
         id={id}
         setId={setId}
       />
-      <ModalWarning state={modal} changeState={setModal} deleteSA={deleteSA} />
+      <ModalWarning modal={modal} setModal={setModal} deleteSuperAdmin={deleteSuperAdmin} />
     </section>
   );
 }

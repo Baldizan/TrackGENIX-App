@@ -1,9 +1,9 @@
 import styles from './modal.module.css';
 
-const ModalWarning = ({ state, changeState, deleteSA }) => {
+const ModalWarning = ({ modal, setModal, deleteSuperAdmin }) => {
   return (
     <>
-      {state && (
+      {modal && (
         <div className={styles.overlay}>
           <div className={styles.modalContainer}>
             <div className={styles.modalHeader}>
@@ -11,7 +11,7 @@ const ModalWarning = ({ state, changeState, deleteSA }) => {
             </div>
             <button
               onClick={() => {
-                changeState(false);
+                setModal(false);
               }}
               className={styles.btnClose}
             >
@@ -22,7 +22,7 @@ const ModalWarning = ({ state, changeState, deleteSA }) => {
               <p>This process cannot be undone</p>
               <button
                 onClick={() => {
-                  deleteSA();
+                  deleteSuperAdmin();
                 }}
               >
                 DELETE

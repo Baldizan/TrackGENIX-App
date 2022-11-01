@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from './form.module.css';
-const FormSA = () => {
+
+const FormSuperAdmins = () => {
   const [userInput, setUserInput] = useState({
     name: '',
     lastName: '',
@@ -87,4 +88,4 @@ const FormSA = () => {
   );
 };
 
-export default FormSA;
+export default FormSuperAdmins;
