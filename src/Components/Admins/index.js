@@ -1,8 +1,11 @@
 import styles from './admins.module.css';
 import React, { useState, useEffect } from 'react';
+import Modal from './modal';
 
 function Admins() {
   const [admins, saveAdmins] = useState([]);
+  const [modalDisplay, setModalDisplay] = useState(false);
+  const [rowId, setRowId] = useState('');
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/admins`)
@@ -23,7 +26,9 @@ function Admins() {
   return (
     <section className={styles.container}>
       <h2>Admin list</h2>
+      <button>Add new admin +</button>
       <table className={styles.table}>
+        <col span="5" className={styles.columns} />
         <thead className={styles.table__head}>
           <tr>
             <th id="name">Name</th>
@@ -50,7 +55,8 @@ function Admins() {
                   <button
                     className={styles.button}
                     onClick={() => {
-                      deleteAdmin(admin._id);
+                      setModalDisplay(true);
+                      setRowId(admin._id);
                     }}
                   >
                     <img
@@ -72,6 +78,19 @@ function Admins() {
           })}
         </tbody>
       </table>
+      {modalDisplay ? (
+        <Modal
+          heading="Are you sure?"
+          contentMessage="Do you really want to delete this admin? This process cannot be undone"
+          setModalDisplay={setModalDisplay}
+          cancelButton="Cancel"
+          confirmButton="Delete"
+          reqFunction={() => {
+            deleteAdmin(rowId);
+            setModalDisplay(false);
+          }}
+        />
+      ) : null}
     </section>
   );
 }
