@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './super-admins.module.css';
 import ListSuperAdmins from './List';
-import ModalWarning from './Modal';
+import ModalDelete from './Modal';
 
 const SuperAdmins = () => {
   const [superAdmin, setSuperAdmin] = useState([]);
@@ -45,7 +45,7 @@ const SuperAdmins = () => {
         id={id}
         setId={setId}
       />
-      <ModalWarning
+      <ModalDelete
         modal={modal}
         setModal={setModal}
         deleteSuperAdmin={deleteSuperAdmin}

@@ -52,7 +52,7 @@
   color: #000000;
 }
 .btnClose:hover {
-  background-color: blue;
+  background-color: #0000ff;
 }
 .modalBody {
   display: flex;
@@ -61,10 +61,11 @@
   padding-bottom: 20px;
 }
 .modalBody button {
-  padding: 15px;
+  padding: 15px 20px;
   border: none;
+  margin: 10px 0;
   border-radius: 5px;
-  background-color: red;
+  background-color: #ab0000;
   color: white;
   font-weight: 500;
 }

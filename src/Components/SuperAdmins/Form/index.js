@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import styles from './form.module.css';
-import ModalWarning from '../Modal';
+import ModalAlert from '../ModalAlert';
 
-const FormSuperAdmin = () => {
+const FormSuperAdmins = () => {
   const paramsURL = new URLSearchParams(window.location.search);
   const userId = paramsURL.get('id');
-  const [modal, setModal] = useState(false);
+  const [modalAlert, setModalAlert] = useState(false);
   const [message, setMessage] = useState('');
   const [titleModal, setTitleModal] = useState('');
   const [userInput, setUserInput] = useState({
@@ -42,9 +42,8 @@ const FormSuperAdmin = () => {
   }, []);
 
   const editSuperAdmin = async (userId) => {
-    console.log('userId de Form', userId);
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${userId}`, {
+      await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -56,10 +55,17 @@ const FormSuperAdmin = () => {
           password: userInput.password
         })
       });
-      const data = await res.json();
-      alert(data.message);
     } catch (error) {
-      setMessage(error);
+      console.log(error);
+    }
+    if (!userInput.name || !userInput.lastName || !userInput.email || !userInput.password) {
+      setTitleModal('Edit Super Admin');
+      setMessage('Super Admin Error');
+      setModalAlert(true);
+    } else {
+      setTitleModal('Edit Super Admin');
+      setMessage('Super Admin successfully edited');
+      setModalAlert(true);
     }
   };
 
@@ -74,13 +80,15 @@ const FormSuperAdmin = () => {
       });
     } catch (error) {
       console.log(error);
-      setMessage(error.message);
-      setTitleModal('Edit Super Admins');
     }
-    if (userInput.length > 0) {
-      alert('Super Admins successfully');
+    if (!userInput.name || !userInput.lastName || !userInput.email || !userInput.password) {
+      setTitleModal('Add Super Admin');
+      setMessage('Super Admin Error');
+      setModalAlert(true);
     } else {
-      alert('Super Admins cannot be empty');
+      setTitleModal('Add Super Admin');
+      setMessage('Super Admin successfully created');
+      setModalAlert(true);
     }
   };
   return (
@@ -163,9 +171,14 @@ const FormSuperAdmin = () => {
           <button type="text">Cancel</button>
         </a>
       </div>
-      <ModalWarning modal={modal} setModal={setModal} message={message} titleModal={titleModal} />
+      <ModalAlert
+        modalAlert={modalAlert}
+        setModalAlert={setModalAlert}
+        message={message}
+        titleModal={titleModal}
+      />
     </section>
   );
 };
 
-export default FormSuperAdmin;
+export default FormSuperAdmins;

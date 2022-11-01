@@ -1,31 +1,30 @@
-import styles from './modal.module.css';
+import styles from './modalAlert.module.css';
 
-const ModalDelete = ({ modal, setModal, deleteSuperAdmin }) => {
+const ModalAlert = ({ modalAlert, setModalAlert, message, titleModal }) => {
   return (
     <>
-      {modal && (
+      {modalAlert && (
         <div className={styles.overlay}>
           <div className={styles.modalContainer}>
             <div className={styles.modalHeader}>
-              <h1>Are you sure?</h1>
+              <h1>{titleModal}</h1>
             </div>
             <button
               onClick={() => {
-                setModal(false);
+                setModalAlert(false);
               }}
               className={styles.btnClose}
             >
               <img src={`${process.env.PUBLIC_URL}/assets/images/icon-close.svg`} />
             </button>
             <div className={styles.modalBody}>
-              <h2>Do you really want to delete Super Admin.</h2>
-              <h3>This process cannot be undone.</h3>
+              <h2>{message}</h2>
               <button
                 onClick={() => {
-                  deleteSuperAdmin();
+                  location.replace('http://localhost:3000/super-admins');
                 }}
               >
-                DELETE
+                OK
               </button>
             </div>
           </div>
@@ -34,5 +33,4 @@ const ModalDelete = ({ modal, setModal, deleteSuperAdmin }) => {
     </>
   );
 };
-
-export default ModalDelete;
+export default ModalAlert;
