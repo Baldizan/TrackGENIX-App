@@ -12,56 +12,24 @@ function Projects() {
       .then((response) => saveProjects(response.data));
   }, []);
 
-  const newProject = () => {
-    // abrir modal
-    // lleno el modal
-    // leo datos del modal
-    // hago elemento pepito
-    // POST pepito
-    // GET ALL
-    // saveProjects(respuesta GET ALL)
-  };
-
-  // const deleteModal = (idToDelete, nameToDelete) => {
-  //   <div className={styles.deleteModal}>
-  //     <p>Do you want to delete project ${nameToDelete}?</p>
-  //     <button
-  //       className={styles.button}
-  //       onClick={() => {
-  //         deleteProject(idToDelete, nameToDelete);
-  //       }}
-  //     >
-  //       Delete
-  //     </button>
-  //     <button
-  //       className={styles.button}
-  //       onClick={() => {
-  //         alert('hola');
-  //       }}
-  //     >
-  //       Cancel
-  //     </button>
-  //   </div>;
-  // };
-
-  const deleteProject = (projectToDeleteId) => {
-    if (confirm('Delete project')) {
-      fetch(`${process.env.REACT_APP_API_URL}/projects/${projectToDeleteId}`, {
-        method: 'DELETE'
-      });
-      const projectsDeleted = projects.filter((project) => project._id !== projectToDeleteId);
-      saveProjects(projectsDeleted);
-    }
-  };
-
-  function handleDelete(project) {
-    setSelection({ id: project._id });
-    setShowModal(true);
+  function newEditProject(id) {
+    sessionStorage.setItem('editId', id);
+    location.pathname = '/projects/form';
   }
 
-  const editProject = (projectToEdit) => {
-    alert(`Aca se tiene que editar el proyecto ${projectToEdit}`);
-  };
+  function deleteProject(projectToDelete) {
+    fetch(`${process.env.REACT_APP_API_URL}/projects/${projectToDelete.id}`, {
+      method: 'DELETE'
+    });
+    const projectsDeleted = projects.filter((project) => project._id !== projectToDelete.id);
+    saveProjects(projectsDeleted);
+    alert(`Project deleted successfully! ${projectToDelete.name}`);
+  }
+
+  function handleDelete(project) {
+    setShowModal(true);
+    setSelection({ id: project._id, name: project.name });
+  }
 
   const closeModal = () => {
     setShowModal(false);
@@ -72,14 +40,14 @@ function Projects() {
       <Modal
         show={showModal}
         closeModal={closeModal}
-        deleteProject={deleteProject}
-        project={selectedProject}
+        deleteFunction={deleteProject}
+        projectToBeDeleted={selectedProject}
       />
       <h2 className={styles.title}>Projects</h2>
       <button
         className={styles.button}
         onClick={() => {
-          newProject();
+          newEditProject();
         }}
       >
         Add New Project
@@ -87,13 +55,13 @@ function Projects() {
       <table className={styles.table}>
         <thead className={styles.tableHead}>
           <tr>
-            <th className={styles.tableCell}>Name</th>
+            <th className={styles.tableCell}>Project name</th>
+            <th className={styles.tableDescription}>Project description</th>
             <th className={styles.tableCell}>Employees</th>
             <th className={styles.tableCell}>Start Date</th>
             <th className={styles.tableCell}>End Date</th>
             <th className={styles.tableCell}>Status</th>
             <th className={styles.tableCell}>Client</th>
-            <th className={styles.emptyTableCell}></th>
             <th className={styles.emptyTableCell}></th>
           </tr>
         </thead>
@@ -102,6 +70,7 @@ function Projects() {
             return (
               <tr className={styles.row} key={project._id}>
                 <td className={styles.tableCell}>{project.name}</td>
+                <td className={styles.tableDescription}>{project.description}</td>
                 <td className={styles.tableCell}>
                   <button className={styles.button}>See employees</button>
                 </td>
@@ -113,8 +82,7 @@ function Projects() {
                   <button
                     className={styles.deleteEditButton}
                     onClick={() => {
-                      // deleteProject(project._id, project.name);
-                      handleDelete(project._id);
+                      handleDelete(project);
                     }}
                   >
                     <img
@@ -122,12 +90,10 @@ function Projects() {
                       src={`${process.env.PUBLIC_URL}/assets/images/delete.svg`}
                     />
                   </button>
-                </td>
-                <td className={styles.tableCell}>
                   <button
                     className={styles.deleteEditButton}
                     onClick={() => {
-                      editProject(project._id);
+                      newEditProject(project._id);
                     }}
                   >
                     <img
