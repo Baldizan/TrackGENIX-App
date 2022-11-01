@@ -1,10 +1,12 @@
 import styles from './admins.module.css';
 import React, { useState, useEffect } from 'react';
 import Modal from './modal';
+import AdminsFormModal from './form';
 
 function Admins() {
   const [admins, saveAdmins] = useState([]);
   const [modalDisplay, setModalDisplay] = useState(false);
+  const [formModalDisplay, setFormModalDisplay] = useState(false);
   const [rowId, setRowId] = useState('');
 
   useEffect(() => {
@@ -26,7 +28,7 @@ function Admins() {
   return (
     <section className={styles.container}>
       <h2>Admin list</h2>
-      <button>Add new admin +</button>
+      <button onClick={() => setFormModalDisplay(true)}>Add new admin +</button>
       <table className={styles.table}>
         <col span="5" className={styles.columns} />
         <thead className={styles.table__head}>
@@ -66,7 +68,13 @@ function Admins() {
                   </button>
                 </td>
                 <td className={styles.table__cell}>
-                  <button className={styles.button}>
+                  <button
+                    className={styles.button}
+                    onClick={() => {
+                      setFormModalDisplay(true);
+                      setRowId(admin._id);
+                    }}
+                  >
                     <img
                       className={styles.actionIcon}
                       src={`${process.env.PUBLIC_URL}/assets/images/edit.png`}
@@ -78,6 +86,14 @@ function Admins() {
           })}
         </tbody>
       </table>
+      {formModalDisplay ? (
+        <AdminsFormModal
+          reqFunction={() => {
+            setFormModalDisplay(false);
+            rowId(rowId);
+          }}
+        />
+      ) : null}
       {modalDisplay ? (
         <Modal
           heading="Are you sure?"
