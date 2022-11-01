@@ -1,28 +1,27 @@
 import styles from './modal.module.css';
 
-const ModalWarning = ({ state, changeState, deleteSA }) => {
+const ModalWarning = ({ modal, setModal, deleteSuperAdmin, message, titleModal }) => {
   return (
     <>
-      {state && (
+      {modal && (
         <div className={styles.overlay}>
           <div className={styles.modalContainer}>
             <div className={styles.modalHeader}>
-              <h3>Titulo</h3>
+              <h3>{titleModal}</h3>
             </div>
             <button
               onClick={() => {
-                changeState(false);
+                setModal(false);
               }}
               className={styles.btnClose}
             >
               <img src={`${process.env.PUBLIC_URL}/assets/images/icon-close.svg`} />
             </button>
             <div className={styles.modalBody}>
-              <h3>Do you really want to delete super admin</h3>
-              <p>This process cannot be undone</p>
+              <p>{message}</p>
               <button
                 onClick={() => {
-                  deleteSA();
+                  deleteSuperAdmin();
                 }}
               >
                 DELETE

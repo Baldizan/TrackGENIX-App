@@ -1,6 +1,6 @@
 import styles from './listItem.module.css';
 
-const ListItem = ({ listItem, id, state, changeState, setId }) => {
+const ListItem = ({ listItem, id, setModal, setId }) => {
   return (
     <tr key={id}>
       <td>{listItem.name}</td>
@@ -17,7 +17,7 @@ const ListItem = ({ listItem, id, state, changeState, setId }) => {
         <button
           onClick={() => {
             setId(id);
-            changeState(!state);
+            setModal(true);
           }}
         >
           <img
