@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Modal from './modal';
 import AdminForm from './form';
 
-function Admins() {
+const Admins = () => {
   const [admins, saveAdmins] = useState([]);
   const [modalDisplay, setModalDisplay] = useState(false);
   const [rowId, setRowId] = useState('');
@@ -124,6 +124,6 @@ function Admins() {
       ) : null}
     </section>
   );
-}
+};
 
 export default Admins;

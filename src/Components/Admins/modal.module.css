@@ -16,9 +16,9 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.153);
   }
 
-  .heading {
-      color: #373867;
-  }
+.heading {
+    color: #373867;
+}
 
 .top__close__button {
     background-color: transparent;
@@ -40,7 +40,7 @@
     padding: 0.50rem 0.80rem;
     font-weight: 500;
     color: #fff;
-    background-color: #F13312;;
+    background-color: #F13312;
     border: 1px solid #F13312;
     border-radius: 5px;
 }

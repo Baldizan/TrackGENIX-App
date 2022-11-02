@@ -30,7 +30,6 @@
 
 .table__row:hover,
 .table__row:focus {
-  cursor: pointer;
   background-color: #AACE9B50;
 }
 
