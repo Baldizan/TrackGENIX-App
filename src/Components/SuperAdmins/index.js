@@ -3,7 +3,7 @@ import styles from './super-admins.module.css';
 import ListSuperAdmins from './List';
 import ModalWarning from './Modal';
 
-function SuperAdmins() {
+const SuperAdmins = () => {
   const [superAdmins, setSuperAdmins] = useState([]);
   const [modal, setModal] = useState(false);
   const [id, setId] = useState(null);
@@ -41,6 +41,6 @@ function SuperAdmins() {
       <ModalWarning modal={modal} setModal={setModal} deleteSuperAdmin={deleteSuperAdmin} />
     </section>
   );
-}
+};
 
 export default SuperAdmins;
