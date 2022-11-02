@@ -16,16 +16,14 @@ const Modal = ({ content, contentMessage, heading, setModalDisplay, reqFunction 
         <button className={styles.bottom__close__button} onClick={() => setModalDisplay()}>
           Cancel
         </button>
-        {reqFunction ? (
-          <button
-            className={styles.confirm__button}
-            onClick={() => {
-              reqFunction;
-            }}
-          >
-            Confirm
-          </button>
-        ) : null}
+        <button
+          className={styles.confirm__button}
+          onClick={() => {
+            reqFunction;
+          }}
+        >
+          Confirm
+        </button>
       </div>
     </div>
   );

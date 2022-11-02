@@ -23,26 +23,7 @@ function AdminForm({ rowId }) {
       password: ''
     });
   };
-  console.log(contactInfo);
 
-  //   const addEditAdmin = () => {
-  //     fetch(
-  //       rowId.length > 0
-  //         ? `${process.env.REACT_APP_API_URL}/admins/${rowId}`
-  //         : `${process.env.REACT_APP_API_URL}/admins`,
-  //       {
-  //         method: rowId.length > 0 ? 'PUT' : 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json'
-  //         },
-  //         body: JSON.stringify({
-  //           name: contactInfo.name,
-  //           lastName: contactInfo.lastName,
-  //           email: contactInfo.email,
-  //           password: contactInfo.password
-  //         })
-  //       }
-  //     );
   const addEditAdmin = async () => {
     try {
       await fetch(
@@ -109,7 +90,7 @@ function AdminForm({ rowId }) {
           onChange={handleChange}
         />
       </label>
-      <button>a</button>
+      <button>Submit</button>
     </form>
   );
 }
