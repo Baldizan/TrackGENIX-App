@@ -4,7 +4,7 @@ import ListSuperAdmins from './List';
 import ModalDelete from './Modal';
 
 const SuperAdmins = () => {
-  const [superAdmin, setSuperAdmin] = useState([]);
+  const [superAdmins, setSuperAdmins] = useState([]);
   const [modal, setModal] = useState(false);
   const [message, setMessage] = useState('');
   const [titleModal, setTitleModal] = useState('');
@@ -17,7 +17,7 @@ const SuperAdmins = () => {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/super-admins`)
       .then((res) => res.json())
-      .then((json) => setSuperAdmin(json.data));
+      .then((json) => setSuperAdmins(json.data));
   }, []);
 
   const deleteSuperAdmin = async () => {
@@ -25,7 +25,7 @@ const SuperAdmins = () => {
       await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`, {
         method: 'DELETE'
       });
-      setSuperAdmin([...superAdmin.filter((listItem) => listItem._id !== id)]);
+      setSuperAdmins([...superAdmins.filter((listItem) => listItem._id !== id)]);
       setModal(false);
     } catch (error) {
       console.log(error);
@@ -37,8 +37,8 @@ const SuperAdmins = () => {
     <section className={styles.container}>
       <h2>SuperAdmins</h2>
       <ListSuperAdmins
-        superAdmin={superAdmin}
-        setSuperAdmin={setSuperAdmin}
+        superAdmins={superAdmins}
+        setSuperAdmins={setSuperAdmins}
         onDeleteClick={handleDeleteClick}
         modal={modal}
         setModal={setModal}

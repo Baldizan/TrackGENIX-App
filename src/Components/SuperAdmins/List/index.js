@@ -1,15 +1,11 @@
 import ListItem from '../ListItem';
 import styles from './list.module.css';
 
-const ListSuperAdmins = ({ superAdmin, setModal, setId }) => {
+const ListSuperAdmins = ({ superAdmins, setModal, setId }) => {
   return (
     <div className={styles.container}>
       <a href={'/super-admins/form'} rel="noreferrer">
-        <img
-          className={styles.btnAdd}
-          target={'_blank'}
-          src={`${process.env.PUBLIC_URL}/assets/images/btn-add.svg`}
-        />
+        <button className={styles.btnAdd}>Add Super Admin</button>
       </a>
       <table>
         <thead>
@@ -20,7 +16,7 @@ const ListSuperAdmins = ({ superAdmin, setModal, setId }) => {
           </tr>
         </thead>
         <tbody>
-          {superAdmin.map((item) => (
+          {superAdmins.map((item) => (
             <ListItem
               id={item._id}
               key={item._id}
