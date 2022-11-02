@@ -22,7 +22,21 @@ td {
 p {
   margin: 0;
 }
+.btnAdd{
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #131c0c;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition-duration: .5s;
+}
 .btnAdd:hover {
   background-color: #373867;
   border-radius: 5px;
+  color: #fff;
 }
