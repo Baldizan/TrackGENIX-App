@@ -30,10 +30,13 @@ const Employees = () => {
     saveSelection(employees.filter((employee) => employee._id !== id));
   };
 
-  // eslint-disable-next-line no-unused-vars
   const handleDelete = (employee) => {
     saveSelection({ id: employee._id, name: employee.name });
     saveShowModal(true);
+  };
+
+  const editEmployee = (id) => {
+    window.location.assign(`/employees/form?id=${id}`);
   };
 
   return (
@@ -51,11 +54,11 @@ const Employees = () => {
         <thead>
           <tr>
             <th>ID</th>
-            <th>name</th>
-            <th>lastName</th>
-            <th>phone</th>
-            <th>email</th>
-            <th>projects</th>
+            <th>Name</th>
+            <th>Last name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Project</th>
           </tr>
         </thead>
         <tbody>
@@ -68,7 +71,7 @@ const Employees = () => {
               <td>{employee.email}</td>
               <td>{employee.project}</td>
               <td className={styles.center}>
-                <button onClick={() => handleDelete(employee)}>Edit</button>
+                <button onClick={() => editEmployee(employee._id)}>Edit</button>
               </td>
               <td className={styles.center}>
                 <button onClick={() => handleDelete(employee)}>Delete</button>
