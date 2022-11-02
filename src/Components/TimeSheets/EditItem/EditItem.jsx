@@ -44,9 +44,6 @@ const EditItem = ({ editItem }) => {
   }, []);
 
   const onChange = (e) => {
-    console.log('evento', e);
-    console.log('e.target.name', e.target.name);
-    console.log('e.target.value ', e.target.value);
     setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
   };
 

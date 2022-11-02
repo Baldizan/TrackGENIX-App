@@ -17,6 +17,8 @@ const Form = () => {
     hours: ''
   });
 
+  const editId = sessionStorage.getItem('editId');
+
   useEffect(() => {
     fetch('http://localhost:5000/projects')
       .then((res) => res.json())
@@ -43,6 +45,31 @@ const Form = () => {
         setEmployees(json.data);
       });
   }, []);
+  // setTimeSheetInput({
+  //   project: '',
+  //   task: '',
+  //   employee: '',
+  //   description: '',
+  //   date: '',
+  //   hours: ''
+  // });
+
+  useEffect(() => {
+    if (sessionStorage.getItem('action') === 'edit') {
+      fetch(`http://localhost:5000/timesheets/${editId}`)
+        .then((res) => res.json())
+        .then((json) => {
+          setTimeSheetInput({
+            project: json.data.project._id,
+            task: json.data.task.description,
+            employee: json.data.employee._id,
+            description: json.data.description,
+            date: json.data.date,
+            hours: json.data.hours
+          });
+        });
+    }
+  }, []);
 
   const onChange = (e) => {
     setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
@@ -50,7 +77,11 @@ const Form = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addItem(timeSheetInput);
+    if (sessionStorage.getItem('action') == 'edit') {
+      editItem(timeSheetInput);
+    } else {
+      addItem(timeSheetInput);
+    }
   };
 
   const addItem = ({ project, task, employee, description, date, hours }) => {
@@ -70,6 +101,28 @@ const Form = () => {
       method: 'post',
       headers: myHeaders,
       body: JSON.stringify(newItem)
+    }).then(() => {
+      window.location.href = '/time-sheets';
+    });
+  };
+
+  const editItem = ({ project, task, employee, description, date, hours }) => {
+    const editItem = {
+      project,
+      task,
+      employee,
+      description,
+      date,
+      hours
+    };
+
+    var myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+
+    fetch(`http://localhost:5000/timeSheets/${editId}`, {
+      method: 'put',
+      headers: myHeaders,
+      body: JSON.stringify(editItem)
     }).then(() => {
       window.location.href = '/time-sheets';
     });

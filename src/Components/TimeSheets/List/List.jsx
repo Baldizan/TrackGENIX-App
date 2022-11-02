@@ -5,6 +5,11 @@ import './List.css';
 const List = ({ list, deleteItem }) => {
   console.log('lista componente list', list);
 
+  const handleAdd = () => {
+    sessionStorage.setItem('action', 'add');
+    window.location.href = '/time-sheets/form';
+  };
+
   return (
     <section className="flex-container">
       <table>
@@ -24,7 +29,9 @@ const List = ({ list, deleteItem }) => {
           ))}
         </tbody>
       </table>
-      <a href="/time-sheets/form">add</a>
+      <a href="/time-sheets/form" onClick={handleAdd}>
+        add
+      </a>
     </section>
   );
 };

@@ -18,6 +18,12 @@ const ListItem = ({ listItem, deleteItem }) => {
     setModal(!modal);
   };
 
+  const handleEdit = () => {
+    sessionStorage.setItem('editId', listItem._id);
+    sessionStorage.setItem('action', 'edit');
+    window.location.href = '/time-sheets/form';
+  };
+
   return (
     <>
       <tr className="space-between tr">
@@ -31,6 +37,7 @@ const ListItem = ({ listItem, deleteItem }) => {
           <button className="btn-delete" onClick={handleDelete}>
             X
           </button>
+          <button onClick={handleEdit}>Edit</button>
         </div>
       </tr>
       {modal && <Modal text="Are you sure?" confirm={handleConfirmDelete} close={handleClose} />}
