@@ -3,11 +3,10 @@ import ListItem from '../ListItem/ListItem';
 import './List.css';
 
 const List = ({ list, deleteItem }) => {
-  console.log('lista componente list', list);
 
   const handleAdd = () => {
     sessionStorage.setItem('action', 'add');
-    window.location.href = '/time-sheets/form';
+    window.location.href = '/timesheetsForm';
   };
 
   return (
@@ -29,9 +28,9 @@ const List = ({ list, deleteItem }) => {
           ))}
         </tbody>
       </table>
-      <a href="/time-sheets/form" onClick={handleAdd}>
-        add
-      </a>
+      <button className="btn-add" href="/time-sheets/form" onClick={handleAdd}>
+        Add
+      </button>
     </section>
   );
 };

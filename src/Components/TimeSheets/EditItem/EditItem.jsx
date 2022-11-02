@@ -20,7 +20,6 @@ const EditItem = ({ editItem }) => {
     fetch('http://localhost:5000/projects')
       .then((res) => res.json())
       .then((json) => {
-        console.log('data', json);
         setProjects(json.data);
       });
   }, []);
@@ -29,7 +28,6 @@ const EditItem = ({ editItem }) => {
     fetch('http://localhost:5000/tasks')
       .then((res) => res.json())
       .then((json) => {
-        console.log('data', json);
         setTasks(json.data);
       });
   }, []);
@@ -38,7 +36,6 @@ const EditItem = ({ editItem }) => {
     fetch('http://localhost:5000/employees')
       .then((res) => res.json())
       .then((json) => {
-        console.log('data', json);
         setSEmployees(json.data);
       });
   }, []);
@@ -61,19 +58,16 @@ const EditItem = ({ editItem }) => {
   };
 
   const handleChangeProject = (e) => {
-    console.log(e.target.value);
     setSelectedProject(e.target.value);
     setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
   };
 
   const handleChangeTask = (e) => {
-    console.log(e.target.value);
     setSelectedTask(e.target.value);
     setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
   };
 
   const handleChangeEmployee = (e) => {
-    console.log(e.target.value);
     setSelectedEmployee(e.target.value);
     setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
   };

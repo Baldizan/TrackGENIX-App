@@ -23,7 +23,6 @@ const Form = () => {
     fetch('http://localhost:5000/projects')
       .then((res) => res.json())
       .then((json) => {
-        console.log('data', json);
         setProjects(json.data);
       });
   }, []);
@@ -32,7 +31,6 @@ const Form = () => {
     fetch('http://localhost:5000/tasks')
       .then((res) => res.json())
       .then((json) => {
-        console.log('data', json);
         setTasks(json.data);
       });
   }, []);
@@ -41,18 +39,9 @@ const Form = () => {
     fetch('http://localhost:5000/employees')
       .then((res) => res.json())
       .then((json) => {
-        console.log('data', json);
         setEmployees(json.data);
       });
   }, []);
-  // setTimeSheetInput({
-  //   project: '',
-  //   task: '',
-  //   employee: '',
-  //   description: '',
-  //   date: '',
-  //   hours: ''
-  // });
 
   useEffect(() => {
     if (sessionStorage.getItem('action') === 'edit') {

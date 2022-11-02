@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import List from './List/List';
-// import AddItem from './AddItem/AddItem';
-// import EditItem from './EditItem/EditItem';
 
 import styles from './time-sheets.module.css';
 
@@ -12,7 +10,6 @@ const TimeSheets = () => {
     fetch('http://localhost:5000/timesheets')
       .then((res) => res.json())
       .then((json) => {
-        console.log('data', json);
         setList(json.data);
       });
   }, []);
