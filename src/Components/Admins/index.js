@@ -1,13 +1,17 @@
 import styles from './admins.module.css';
 import React, { useState, useEffect } from 'react';
 import Modal from './modal';
-import AdminsFormModal from './form';
+import AdminForm from './form';
 
 function Admins() {
   const [admins, saveAdmins] = useState([]);
   const [modalDisplay, setModalDisplay] = useState(false);
-  const [formModalDisplay, setFormModalDisplay] = useState(false);
   const [rowId, setRowId] = useState('');
+  const [requestType, setRequestType] = useState({
+    isEditing: false,
+    isCreating: false,
+    isDeleting: false
+  });
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/admins`)
@@ -28,9 +32,16 @@ function Admins() {
   return (
     <section className={styles.container}>
       <h2>Admin list</h2>
-      <button onClick={() => setFormModalDisplay(true)}>Add new admin +</button>
+      <button
+        onClick={() => {
+          setRowId('');
+          setModalDisplay(true);
+          setRequestType({ isEditing: false, isCreating: true, isDeleting: false });
+        }}
+      >
+        Add new admin +
+      </button>
       <table className={styles.table}>
-        <col span="5" className={styles.columns} />
         <thead className={styles.table__head}>
           <tr>
             <th id="name">Name</th>
@@ -57,6 +68,7 @@ function Admins() {
                   <button
                     className={styles.button}
                     onClick={() => {
+                      setRequestType({ isEditing: false, isCreating: false, isDeleting: true });
                       setModalDisplay(true);
                       setRowId(admin._id);
                     }}
@@ -71,7 +83,8 @@ function Admins() {
                   <button
                     className={styles.button}
                     onClick={() => {
-                      setFormModalDisplay(true);
+                      setRequestType({ isEditing: true, isCreating: false, isDeleting: false });
+                      setModalDisplay(true);
                       setRowId(admin._id);
                     }}
                   >
@@ -86,25 +99,27 @@ function Admins() {
           })}
         </tbody>
       </table>
-      {formModalDisplay ? (
-        <AdminsFormModal
-          reqFunction={() => {
-            setFormModalDisplay(false);
-            rowId(rowId);
-          }}
-        />
-      ) : null}
       {modalDisplay ? (
         <Modal
-          heading="Are you sure?"
-          contentMessage="Do you really want to delete this admin? This process cannot be undone"
           setModalDisplay={setModalDisplay}
-          cancelButton="Cancel"
-          confirmButton="Delete"
-          reqFunction={() => {
-            deleteAdmin(rowId);
-            setModalDisplay(false);
-          }}
+          heading={requestType.isDeleting ? 'Are you sure?' : null}
+          content={
+            requestType.isEditing || requestType.isCreating ? <AdminForm rowId={rowId} /> : null
+          }
+          contentMessage={
+            requestType.isDeleting
+              ? 'Do you really want to delete this admin? This process cannot be undone'
+              : null
+          }
+          reqFunction={
+            requestType.isDeleting
+              ? () => {
+                  deleteAdmin(rowId);
+                  setRequestType(false);
+                  setModalDisplay(false);
+                }
+              : null
+          }
         />
       ) : null}
     </section>
