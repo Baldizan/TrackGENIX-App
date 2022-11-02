@@ -14,7 +14,7 @@ function AdminForm({ rowId }) {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault(event);
     addEditAdmin();
     setContactInfo({
       name: '',
