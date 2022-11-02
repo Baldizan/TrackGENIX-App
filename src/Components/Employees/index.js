@@ -15,14 +15,6 @@ const Employees = () => {
       });
   }, []);
 
-  // const updateEmployee = () => {
-  //   fetch(`${process.env.REACT_APP_API_URL}/employees`)
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       saveEmployees(response.data);
-  //     });
-  // };
-
   const deleteEmployee = async (id) => {
     fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
       method: 'DELETE'

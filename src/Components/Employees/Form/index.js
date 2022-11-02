@@ -28,17 +28,13 @@ const EmployeesForm = () => {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: body
-      })
-        .then((response) => response.json())
-        .then((response) => console.log(response));
+      }).then((response) => response.json());
     } else {
       fetch(`${process.env.REACT_APP_API_URL}/employees`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: body
-      })
-        .then((response) => response.json())
-        .then((response) => console.log(response));
+      }).then((response) => response.json());
     }
   };
 
@@ -143,7 +139,9 @@ const EmployeesForm = () => {
         />
       </form>
       <button onClick={sendEmployee}>Add</button>
-      <button>Cancel</button>
+      <a href="/employees">
+        <button>Cancel</button>
+      </a>
     </section>
   );
 };
