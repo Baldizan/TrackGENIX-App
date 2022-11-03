@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import styles from './employees.module.css';
+import EmployeesList from './List';
 
 const Employees = () => {
   const [employees, saveEmployees] = useState([]);
@@ -15,14 +16,6 @@ const Employees = () => {
       });
   }, []);
 
-  // const updateEmployee = () => {
-  //   fetch(`${process.env.REACT_APP_API_URL}/employees`)
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       saveEmployees(response.data);
-  //     });
-  // };
-
   const deleteEmployee = async (id) => {
     fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
       method: 'DELETE'
@@ -30,10 +23,13 @@ const Employees = () => {
     saveSelection(employees.filter((employee) => employee._id !== id));
   };
 
-  // eslint-disable-next-line no-unused-vars
   const handleDelete = (employee) => {
     saveSelection({ id: employee._id, name: employee.name });
     saveShowModal(true);
+  };
+
+  const editEmployee = (id) => {
+    window.location.assign(`/employees/form?id=${id}`);
   };
 
   return (
@@ -47,36 +43,7 @@ const Employees = () => {
       <a href="/employees/form" className={styles.button}>
         Add new employee +
       </a>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>name</th>
-            <th>lastName</th>
-            <th>phone</th>
-            <th>email</th>
-            <th>projects</th>
-          </tr>
-        </thead>
-        <tbody>
-          {employees.map((employee) => (
-            <tr key={employee._id}>
-              <td>{employee._id}</td>
-              <td>{employee.name}</td>
-              <td>{employee.lastName}</td>
-              <td>{employee.phone}</td>
-              <td>{employee.email}</td>
-              <td>{employee.project}</td>
-              <td className={styles.center}>
-                <button onClick={() => handleDelete(employee)}>Edit</button>
-              </td>
-              <td className={styles.center}>
-                <button onClick={() => handleDelete(employee)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <EmployeesList list={employees} delete={handleDelete} edit={editEmployee} />
     </section>
   );
 };
