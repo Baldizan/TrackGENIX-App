@@ -16,7 +16,11 @@
 
 .row{
   display: flex;
-  flex-direction: row;
+}
+
+.column{
+  display: flex;
+  flex-direction: column;
 }
 
 form{
@@ -30,5 +34,5 @@ input, select{
 }
 
 input:focus {
-  background-color: lightblue;
+  background-color: #b0d4e0;
 }

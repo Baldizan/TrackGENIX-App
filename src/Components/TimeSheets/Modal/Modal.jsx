@@ -13,12 +13,14 @@ const Modal = ({ text, confirm, close }) => {
   return (
     <>
       <div className="overlay">
-        <div className="modal">
+        <div className="modal column">
           <button className="btn-close" onClick={handleClose}>
             X
           </button>
-          <span>{text}</span>
-          <button onClick={handleConfirm}>Confirm</button>
+          <span className="text-modal">{text}</span>
+          <button className="btn-confirm" onClick={handleConfirm}>
+            Confirm
+          </button>
         </div>
       </div>
     </>

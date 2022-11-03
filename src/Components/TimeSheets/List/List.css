@@ -6,13 +6,6 @@
   color: #24266f;
 }
 
-.ee {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  background-color: #D9D9D9;
-}
-
 .space-between {
   display: flex;
   flex-direction: row;

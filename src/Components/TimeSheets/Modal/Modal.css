@@ -7,21 +7,30 @@
     position: fixed;
     top: 0;
     left: 0;
-    background: rgba(0, 0, 0, .5);
 }
 
 .modal {
-   width:  50%;
+   align-items: center;
+   width: 40%;
    min-height: 100px;
-   background: #fff;
+   background: #f9f9f9;
    position: relative;
    border-radius: 5px;
    padding: 20px;
 }
 
 .btn-close{
+   align-self: flex-end;
    cursor: pointer;
    position: relative;
    border: none;
    background: none;
+}
+
+.text-modal {
+   align-self: center;
+}
+
+.btn-confirm {
+   width: 50%;
 }

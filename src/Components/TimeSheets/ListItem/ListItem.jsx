@@ -40,7 +40,13 @@ const ListItem = ({ listItem, deleteItem }) => {
           <button onClick={handleEdit}>Edit</button>
         </div>
       </tr>
-      {modal && <Modal text="Are you sure?" confirm={handleConfirmDelete} close={handleClose} />}
+      {modal && (
+        <Modal
+          text="That you want to delete this timesheet?"
+          confirm={handleConfirmDelete}
+          close={handleClose}
+        />
+      )}
     </>
   );
 };

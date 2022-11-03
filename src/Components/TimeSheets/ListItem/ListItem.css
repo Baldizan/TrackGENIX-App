@@ -7,7 +7,7 @@
 
 .tr {
   padding: 10px 10px;
-  border: solid 0.5px rgb(204, 204, 204);
+  border: solid 0.5px #eeeeee;
   border-collapse: collapse;
   text-align: start;
 }
