@@ -12,7 +12,6 @@ const Admins = ({ addEditAdmin }) => {
     isCreating: false,
     isDeleting: false
   });
-  const filterById = admins.map((admin) => admin).find((admin) => admin._id === rowId);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/admins`)
@@ -106,7 +105,12 @@ const Admins = ({ addEditAdmin }) => {
           heading={requestType.isDeleting ? 'Are you sure?' : null}
           content={
             requestType.isEditing || requestType.isCreating ? (
-              <AdminForm rowId={rowId} selectedAdmin={filterById} />
+              <AdminForm
+                rowId={rowId}
+                setModalDisplay={setModalDisplay}
+                saveAdmins={saveAdmins}
+                admins={admins}
+              />
             ) : null
           }
           contentMessage={

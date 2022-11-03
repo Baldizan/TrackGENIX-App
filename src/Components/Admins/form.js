@@ -1,8 +1,9 @@
-// import styles from './admins.module.css';
 import React, { useState } from 'react';
 
-function AdminForm({ rowId, setModalDisplay, selectedAdmin }) {
+function AdminForm({ rowId, setModalDisplay, saveAdmins, admins }) {
+  const selectedAdmin = rowId ? admins.find((admin) => admin._id === rowId) : null;
   const [contactInfo, setContactInfo] = useState(selectedAdmin);
+  const index = admins.indexOf(selectedAdmin);
 
   const handleChange = (e) => {
     setContactInfo({ ...contactInfo, [e.target.name]: e.target.value });
@@ -11,15 +12,14 @@ function AdminForm({ rowId, setModalDisplay, selectedAdmin }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     addEditAdmin();
-    setContactInfo({
-      name: '',
-      lastName: '',
-      email: '',
-      password: ''
-    });
+    saveAdmins(admins);
+    setContactInfo({});
+    setModalDisplay();
   };
 
   const addEditAdmin = async () => {
+    const updateList =
+      index !== -1 ? admins.splice(index, 1, contactInfo) : admins.push(contactInfo);
     try {
       await fetch(
         rowId.length > 0
@@ -38,13 +38,14 @@ function AdminForm({ rowId, setModalDisplay, selectedAdmin }) {
           })
         }
       );
+      updateList();
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} id="adminForm">
+    <form onSubmit={handleSubmit}>
       <label>
         First Name:
         <input
@@ -85,13 +86,7 @@ function AdminForm({ rowId, setModalDisplay, selectedAdmin }) {
           onChange={handleChange}
         />
       </label>
-      <button
-        onClick={() => {
-          setModalDisplay;
-        }}
-      >
-        Submit
-      </button>
+      <button onClick={() => {}}>Submit</button>
     </form>
   );
 }
