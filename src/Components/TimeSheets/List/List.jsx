@@ -3,10 +3,9 @@ import ListItem from '../ListItem/ListItem';
 import './List.css';
 
 const List = ({ list, deleteItem }) => {
-
   const handleAdd = () => {
     sessionStorage.setItem('action', 'add');
-    window.location.href = '/timesheetsForm';
+    window.location.href = '/time-sheets/form';
   };
 
   return (

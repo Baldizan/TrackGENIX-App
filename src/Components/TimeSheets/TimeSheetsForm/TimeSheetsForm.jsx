@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './Form.css';
+import './TimeSheetsForm.css';
 
-const Form = () => {
+const TimeSheetsForm = () => {
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [employees, setEmployees] = useState([]);
@@ -20,7 +20,7 @@ const Form = () => {
   const editId = sessionStorage.getItem('editId');
 
   useEffect(() => {
-    fetch('http://localhost:5000/projects')
+    fetch(`${process.env.REACT_APP_API_URL}/projects`)
       .then((res) => res.json())
       .then((json) => {
         setProjects(json.data);
@@ -28,7 +28,7 @@ const Form = () => {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:5000/tasks')
+    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
       .then((res) => res.json())
       .then((json) => {
         setTasks(json.data);
@@ -36,7 +36,7 @@ const Form = () => {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:5000/employees')
+    fetch(`${process.env.REACT_APP_API_URL}/employees`)
       .then((res) => res.json())
       .then((json) => {
         setEmployees(json.data);
@@ -45,7 +45,7 @@ const Form = () => {
 
   useEffect(() => {
     if (sessionStorage.getItem('action') === 'edit') {
-      fetch(`http://localhost:5000/timesheets/${editId}`)
+      fetch(`${process.env.REACT_APP_API_URL}/timesheets/${editId}`)
         .then((res) => res.json())
         .then((json) => {
           setTimeSheetInput({
@@ -83,12 +83,8 @@ const Form = () => {
       hours
     };
 
-    var myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-
-    fetch('http://localhost:5000/timeSheets', {
+    fetch(`${process.env.REACT_APP_API_URL}/timeSheets`, {
       method: 'post',
-      headers: myHeaders,
       body: JSON.stringify(newItem)
     }).then(() => {
       window.location.href = '/time-sheets';
@@ -108,7 +104,7 @@ const Form = () => {
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
 
-    fetch(`http://localhost:5000/timeSheets/${editId}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/timeSheets/${editId}`, {
       method: 'put',
       headers: myHeaders,
       body: JSON.stringify(editItem)
@@ -171,4 +167,4 @@ const Form = () => {
     </form>
   );
 };
-export default Form;
+export default TimeSheetsForm;
