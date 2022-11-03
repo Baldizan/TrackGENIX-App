@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import styles from './form.module.css';
 
 const EmployeesForm = () => {
-  const search = window.location.search;
+  const paramsURL = new URLSearchParams(window.location.search);
+  const id = paramsURL.get('id');
   const [employee, setEmployee] = useState({});
   const [nameValue, setNameValue] = useState('');
   const [lastNameValue, setLastNameValue] = useState('');
@@ -11,51 +12,15 @@ const EmployeesForm = () => {
   const [passwordValue, setPasswordValue] = useState('');
   const [projectsValue, setProjectValues] = useState('');
 
-  const sendEmployee = () => {
-    const body = JSON.stringify({
-      name: nameValue,
-      lastName: lastNameValue,
-      phone: phoneValue,
-      email: emailValue,
-      password: passwordValue,
-      project: projectsValue
-    });
-
-    if (search.match('id=')) {
-      const id = search.substring(search.indexOf('id=') + 3);
-
-      fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: body
-      }).then((response) => response.json());
-    } else {
-      fetch(`${process.env.REACT_APP_API_URL}/employees`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: body
-      }).then((response) => response.json());
+  useEffect(() => {
+    if (id) {
+      fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`)
+        .then((response) => response.json())
+        .then((response) => {
+          setEmployee(response.data);
+        });
     }
-  };
-
-  const nameInput = (event) => {
-    setNameValue(event.target.value);
-  };
-  const lastNameInput = (event) => {
-    setLastNameValue(event.target.value);
-  };
-  const phoneInput = (event) => {
-    setPhoneValue(event.target.value);
-  };
-  const emailInput = (event) => {
-    setEmailValue(event.target.value);
-  };
-  const passwordInput = (event) => {
-    setPasswordValue(event.target.value);
-  };
-  const projectInput = (event) => {
-    setProjectValues(event.target.value);
-  };
+  }, []);
 
   useEffect(() => {
     if (employee._id) {
@@ -67,17 +32,53 @@ const EmployeesForm = () => {
     }
   }, [employee]);
 
-  useEffect(() => {
-    if (search.match('id=')) {
-      const id = search.substring(search.indexOf('id=') + 3);
+  const sendEmployee = () => {
+    const body = JSON.stringify({
+      name: nameValue,
+      lastName: lastNameValue,
+      phone: phoneValue,
+      email: emailValue,
+      password: passwordValue,
+      project: projectsValue
+    });
 
-      fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`)
-        .then((response) => response.json())
-        .then((response) => {
-          setEmployee(response.data);
-        });
+    if (id) {
+      fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
+        method: 'PUT',
+        // headers: { 'Content-Type': 'application/json' },
+        body: body
+      }).then((response) => response.json());
+    } else {
+      fetch(`${process.env.REACT_APP_API_URL}/employees`, {
+        method: 'POST',
+        // headers: { 'Content-Type': 'application/json' },
+        body: body
+      }).then((response) => response.json());
     }
-  }, []);
+  };
+
+  const nameInput = (event) => {
+    setNameValue(event.target.value);
+  };
+
+  const lastNameInput = (event) => {
+    setLastNameValue(event.target.value);
+  };
+
+  const phoneInput = (event) => {
+    setPhoneValue(event.target.value);
+  };
+
+  const emailInput = (event) => {
+    setEmailValue(event.target.value);
+  };
+
+  const passwordInput = (event) => {
+    setPasswordValue(event.target.value);
+  };
+  const projectInput = (event) => {
+    setProjectValues(event.target.value);
+  };
 
   return (
     <section className={styles.container}>

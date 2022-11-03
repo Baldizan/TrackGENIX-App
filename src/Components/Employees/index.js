@@ -19,7 +19,7 @@ const Employees = () => {
     fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
       method: 'DELETE'
     });
-    saveSelection(employees.filter((employee) => employee._id !== id));
+    saveEmployees(employees.filter((employee) => employee._id !== id));
   };
 
   const handleDelete = (employee) => {
