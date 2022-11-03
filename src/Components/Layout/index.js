@@ -6,7 +6,7 @@ import Home from '../Home/index';
 import styles from './layout.module.css';
 import Employees from '../Employees/index';
 import Projects from '../Projects';
-import ProjectsForm from '../Projects/form.js';
+import ProjectsForm from '../Projects/Form/form.js';
 import TimeSheets from '../TimeSheets';
 import Tasks from '../Tasks/index';
 

@@ -1,6 +1,6 @@
 import styles from './modal.module.css';
 
-function Modal(props) {
+const Modal = (props) => {
   const { show, closeModal, deleteFunction, projectToBeDeleted } = props;
   const confirmDelete = () => {
     deleteFunction(projectToBeDeleted);
@@ -23,6 +23,6 @@ function Modal(props) {
       </div>
     </div>
   );
-}
+};
 
 export default Modal;

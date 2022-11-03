@@ -6,30 +6,34 @@ function Projects() {
   const [showModal, setShowModal] = useState(false);
   const [selectedProject, setSelection] = useState({});
   const [projects, saveProjects] = useState([]);
+
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/projects`)
       .then((response) => response.json())
       .then((response) => saveProjects(response.data));
   }, []);
 
-  function newEditProject(id) {
-    sessionStorage.setItem('editId', id);
-    location.pathname = '/projects/form';
-  }
+  const newEditProject = (id) => {
+    if (id) {
+      window.location.assign(`/projects/form?id=${id}`);
+    } else {
+      window.location.assign('/projects/form');
+    }
+  };
 
-  function deleteProject(projectToDelete) {
+  const deleteProject = (projectToDelete) => {
     fetch(`${process.env.REACT_APP_API_URL}/projects/${projectToDelete.id}`, {
       method: 'DELETE'
     });
     const projectsDeleted = projects.filter((project) => project._id !== projectToDelete.id);
     saveProjects(projectsDeleted);
-    alert(`Project deleted successfully! ${projectToDelete.name}`);
-  }
+    alert(`Project ${projectToDelete.name} deleted successfully!`);
+  };
 
-  function handleDelete(project) {
+  const handleDelete = (project) => {
     setShowModal(true);
     setSelection({ id: project._id, name: project.name });
-  }
+  };
 
   const closeModal = () => {
     setShowModal(false);
