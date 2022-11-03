@@ -8,6 +8,7 @@ const TimeSheetsForm = () => {
   const [selectedProject, setSelectedProject] = useState();
   const [selectedTask, setSelectedTask] = useState();
   const [selectedEmployee, setSelectedEmployee] = useState();
+  const [titleForm, setTitleForm] = useState('Add new Timesheet');
   const [timeSheetInput, setTimeSheetInput] = useState({
     project: '',
     task: '',
@@ -57,6 +58,7 @@ const TimeSheetsForm = () => {
             hours: json.data.hours
           });
         });
+      setTitleForm('Edit');
     }
   }, []);
 
@@ -66,7 +68,7 @@ const TimeSheetsForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (sessionStorage.getItem('action') == 'edit') {
+    if (sessionStorage.getItem('action') === 'edit') {
       editItem(timeSheetInput);
     } else {
       addItem(timeSheetInput);
@@ -101,12 +103,8 @@ const TimeSheetsForm = () => {
       hours
     };
 
-    var myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-
     fetch(`${process.env.REACT_APP_API_URL}/timeSheets/${editId}`, {
       method: 'put',
-      headers: myHeaders,
       body: JSON.stringify(editItem)
     }).then(() => {
       window.location.href = '/time-sheets';
@@ -129,42 +127,61 @@ const TimeSheetsForm = () => {
   };
 
   return (
-    <form onSubmit={onSubmit} className="row">
-      <div className="row">
-        <select name="project" value={selectedProject} onChange={handleChangeProject}>
-          {projects.map((project) => (
-            <option key={project._id} value={project._id}>
-              {project.name}
-            </option>
-          ))}
-        </select>
-        <select name="task" value={selectedTask} onChange={handleChangeTask}>
-          {tasks.map((task) => (
-            <option key={task._id} value={task._id}>
-              {task.description}
-            </option>
-          ))}
-        </select>
-        <select name="employee" value={selectedEmployee} onChange={handleChangeEmployee}>
-          {employees.map((employee) => (
-            <option key={employee._id} value={employee._id}>
-              {employee.name}
-            </option>
-          ))}
-        </select>
-        <input
-          type="text"
-          name="description"
-          value={timeSheetInput.description}
-          onChange={onChange}
-        />
-        <input type="date" name="date" value={timeSheetInput.date} onChange={onChange} />
-        <input type="number" name="hours" value={timeSheetInput.hours} onChange={onChange} />
-      </div>
-      <div className="flex-container">
+    <>
+      <form onSubmit={onSubmit} className="column">
+        <h2 className="title-add">{titleForm}</h2>
+        <div className="column">
+          <div className="column">
+            <label>Proyect name</label>
+            <select name="project" value={selectedProject} onChange={handleChangeProject}>
+              {projects.map((project) => (
+                <option key={project._id} value={project._id}>
+                  {project.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="column">
+            <label>Task</label>
+            <select name="task" value={selectedTask} onChange={handleChangeTask}>
+              {tasks.map((task) => (
+                <option key={task._id} value={task._id}>
+                  {task.description}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="column">
+            <label>Employee</label>
+            <select name="employee" value={selectedEmployee} onChange={handleChangeEmployee}>
+              {employees.map((employee) => (
+                <option key={employee._id} value={employee._id}>
+                  {employee.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="column">
+            <label>Description</label>
+            <input
+              type="text"
+              name="description"
+              value={timeSheetInput.description}
+              onChange={onChange}
+            />
+          </div>
+          <div className="column">
+            <label>Date</label>
+            <input type="date" name="date" value={timeSheetInput.date} onChange={onChange} />
+          </div>
+          <div className="column">
+            <label>Hours</label>
+            <input type="number" name="hours" value={timeSheetInput.hours} onChange={onChange} />
+          </div>
+        </div>
         <input className="btn" type="submit" value="Submit" />
-      </div>
-    </form>
+      </form>
+    </>
   );
 };
 export default TimeSheetsForm;
