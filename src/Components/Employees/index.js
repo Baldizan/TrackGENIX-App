@@ -43,7 +43,11 @@ const Employees = () => {
       <a href="/employees/form" className={styles.button}>
         Add new employee +
       </a>
-      <EmployeesList list={employees} delete={handleDelete} edit={editEmployee} />
+      <EmployeesList
+        employees={employees}
+        handleDelete={handleDelete}
+        editEmployee={editEmployee}
+      />
     </section>
   );
 };

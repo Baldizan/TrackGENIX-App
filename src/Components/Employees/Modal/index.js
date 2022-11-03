@@ -17,9 +17,6 @@ const Modal = (props) => {
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
-        <button onClick={() => closeModal()} className={styles.close}>
-          &times;
-        </button>
         <h3>Message from Trackgenix</h3>
         <p>Are you sure you want to remove this employee: {employee.name}?</p>
         <button onClick={() => confirmDelete()} className={styles.confirm}>

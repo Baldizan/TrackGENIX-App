@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../employees.module.css';
 
-const employeeList = (props) => {
+const employeesList = ({ employees, handleDelete, editEmployee }) => {
   return (
     <table className={styles.table}>
       <thead>
@@ -15,7 +15,7 @@ const employeeList = (props) => {
         </tr>
       </thead>
       <tbody>
-        {props.list.map((employee) => (
+        {employees.map((employee) => (
           <tr key={employee._id}>
             <td>{employee._id}</td>
             <td>{employee.name}</td>
@@ -24,10 +24,10 @@ const employeeList = (props) => {
             <td>{employee.email}</td>
             <td>{employee.project}</td>
             <td className={styles.center}>
-              <button onClick={() => props.edit(employee._id)}>Edit</button>
+              <button onClick={() => editEmployee(employee._id)}>Edit</button>
             </td>
             <td className={styles.center}>
-              <button onClick={() => props.delete(employee)}>Delete</button>
+              <button onClick={() => handleDelete(employee)}>Delete</button>
             </td>
           </tr>
         ))}
@@ -36,4 +36,4 @@ const employeeList = (props) => {
   );
 };
 
-export default employeeList;
+export default employeesList;
