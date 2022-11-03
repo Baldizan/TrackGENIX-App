@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Modal from './modal';
 import AdminForm from './form';
 
-const Admins = () => {
+const Admins = ({ addEditAdmin }) => {
   const [admins, saveAdmins] = useState([]);
   const [modalDisplay, setModalDisplay] = useState(false);
   const [rowId, setRowId] = useState('');
@@ -12,6 +12,7 @@ const Admins = () => {
     isCreating: false,
     isDeleting: false
   });
+  const filterById = admins.map((admin) => admin).find((admin) => admin._id === rowId);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/admins`)
@@ -104,22 +105,21 @@ const Admins = () => {
           setModalDisplay={setModalDisplay}
           heading={requestType.isDeleting ? 'Are you sure?' : null}
           content={
-            requestType.isEditing || requestType.isCreating ? <AdminForm rowId={rowId} /> : null
+            requestType.isEditing || requestType.isCreating ? (
+              <AdminForm rowId={rowId} selectedAdmin={filterById} />
+            ) : null
           }
           contentMessage={
             requestType.isDeleting
               ? 'Do you really want to delete this admin? This process cannot be undone'
               : null
           }
-          reqFunction={
-            requestType.isDeleting
-              ? () => {
-                  deleteAdmin(rowId);
-                  setRequestType(false);
-                  setModalDisplay(false);
-                }
-              : null
-          }
+          reqFunction={() => {
+            requestType.isDeleting ? deleteAdmin(rowId) : null;
+            setRequestType({ isEditing: false, isCreating: false, isDeleting: false });
+            setModalDisplay(false);
+            requestType.isCreating || requestType.isEditing ? addEditAdmin() : null;
+          }}
         />
       ) : null}
     </section>

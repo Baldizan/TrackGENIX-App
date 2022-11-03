@@ -1,20 +1,15 @@
 // import styles from './admins.module.css';
 import React, { useState } from 'react';
 
-function AdminForm({ rowId }) {
-  const [contactInfo, setContactInfo] = useState({
-    name: '',
-    lastName: '',
-    email: '',
-    password: ''
-  });
+function AdminForm({ rowId, setModalDisplay, selectedAdmin }) {
+  const [contactInfo, setContactInfo] = useState(selectedAdmin);
 
   const handleChange = (e) => {
     setContactInfo({ ...contactInfo, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault(event);
+    event.preventDefault();
     addEditAdmin();
     setContactInfo({
       name: '',
@@ -49,7 +44,7 @@ function AdminForm({ rowId }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} id="adminForm">
       <label>
         First Name:
         <input
@@ -90,7 +85,13 @@ function AdminForm({ rowId }) {
           onChange={handleChange}
         />
       </label>
-      <button>Submit</button>
+      <button
+        onClick={() => {
+          setModalDisplay;
+        }}
+      >
+        Submit
+      </button>
     </form>
   );
 }
