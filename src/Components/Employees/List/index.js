@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../employees.module.css';
 
-const employeesList = ({ employees, handleDelete, editEmployee }) => {
+const EmployeesList = ({ employees, handleDelete, editEmployee }) => {
   return (
     <table className={styles.table}>
       <thead>
@@ -36,4 +36,4 @@ const employeesList = ({ employees, handleDelete, editEmployee }) => {
   );
 };
 
-export default employeesList;
+export default EmployeesList;
