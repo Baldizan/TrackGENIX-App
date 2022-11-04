@@ -5,6 +5,7 @@ import ModalAlert from '../ModalAlert';
 const FormSuperAdmins = () => {
   const paramsURL = new URLSearchParams(window.location.search);
   const userId = paramsURL.get('id');
+
   const [modalAlert, setModalAlert] = useState(false);
   const [message, setMessage] = useState('');
   const [titleModal, setTitleModal] = useState('');
@@ -14,6 +15,7 @@ const FormSuperAdmins = () => {
     email: '',
     password: ''
   });
+
   const onSubmit = (e) => {
     e.preventDefault();
     setUserInput({
@@ -26,38 +28,30 @@ const FormSuperAdmins = () => {
 
   useEffect(async () => {
     if (userId) {
-      try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${userId}`);
-        const data = await res.json();
-        setUserInput({
-          name: data.data.name,
-          lastName: data.data.lastName,
-          email: data.data.email,
-          password: data.data.password
-        });
-      } catch (error) {
-        console.log(error);
-      }
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${userId}`);
+      const data = await res.json();
+      setUserInput({
+        name: data.data.name,
+        lastName: data.data.lastName,
+        email: data.data.email,
+        password: data.data.password
+      });
     }
   }, []);
 
   const editSuperAdmin = async (userId) => {
-    try {
-      await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${userId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: userInput.name,
-          lastName: userInput.lastName,
-          email: userInput.email,
-          password: userInput.password
-        })
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: userInput.name,
+        lastName: userInput.lastName,
+        email: userInput.email,
+        password: userInput.password
+      })
+    });
     if (!userInput.name || !userInput.lastName || !userInput.email || !userInput.password) {
       setTitleModal('Edit Super Admin');
       setMessage('Super Admin Error');
@@ -91,6 +85,7 @@ const FormSuperAdmins = () => {
       setModalAlert(true);
     }
   };
+
   return (
     <section className={styles.container}>
       <h1>Form</h1>
