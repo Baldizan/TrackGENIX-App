@@ -47,23 +47,15 @@ const Admins = ({ addEditAdmin }) => {
             <th id="name">Name</th>
             <th id="lastName">Last Name</th>
             <th id="email">Email Address</th>
-            <th></th>
-            <th></th>
           </tr>
         </thead>
         <tbody className={styles.table__body}>
           {admins.map((admin) => {
             return (
               <tr className={styles.table__row} key={admin._id}>
-                <td className={styles.table__cell} key={admin.name}>
-                  {admin.name}
-                </td>
-                <td className={styles.table__cell} key={admin.lastName}>
-                  {admin.lastName}
-                </td>
-                <td className={styles.table__cell} key={admin.email}>
-                  {admin.email}
-                </td>
+                <td className={styles.table__cell}>{admin.name}</td>
+                <td className={styles.table__cell}>{admin.lastName}</td>
+                <td className={styles.table__cell}>{admin.email}</td>
                 <td className={styles.table__cell}>
                   <button
                     className={styles.button}
