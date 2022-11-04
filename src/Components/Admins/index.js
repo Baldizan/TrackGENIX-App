@@ -47,6 +47,8 @@ const Admins = ({ addEditAdmin }) => {
             <th id="name">Name</th>
             <th id="lastName">Last Name</th>
             <th id="email">Email Address</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody className={styles.table__body}>
