@@ -19,9 +19,7 @@ const ListItem = ({ listItem, deleteItem }) => {
   };
 
   const handleEdit = () => {
-    sessionStorage.setItem('editId', listItem._id);
-    sessionStorage.setItem('action', 'edit');
-    window.location.href = '/time-sheets/form';
+    window.location.href = `/time-sheets/form?id=${listItem._id}`;
   };
 
   return (

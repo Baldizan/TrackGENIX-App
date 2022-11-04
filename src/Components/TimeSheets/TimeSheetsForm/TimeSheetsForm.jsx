@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './TimeSheetsForm.css';
 
 const TimeSheetsForm = () => {
+  const paramsURL = new URLSearchParams(window.location.search);
+  const editId = paramsURL.get('id');
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [employees, setEmployees] = useState([]);
@@ -17,8 +19,6 @@ const TimeSheetsForm = () => {
     date: '',
     hours: ''
   });
-
-  const editId = sessionStorage.getItem('editId');
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/projects`)
@@ -45,14 +45,14 @@ const TimeSheetsForm = () => {
   }, []);
 
   useEffect(() => {
-    if (sessionStorage.getItem('action') === 'edit') {
+    if (editId) {
       fetch(`${process.env.REACT_APP_API_URL}/timesheets/${editId}`)
         .then((res) => res.json())
         .then((json) => {
           setTimeSheetInput({
-            project: json.data.project._id,
-            task: json.data.task.description,
-            employee: json.data.employee._id,
+            project: json.data.project?._id,
+            task: json.data.task?.description,
+            employee: json.data.employee?._id,
             description: json.data.description,
             date: json.data.date,
             hours: json.data.hours
@@ -68,7 +68,7 @@ const TimeSheetsForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (sessionStorage.getItem('action') === 'edit') {
+    if (editId) {
       editItem(timeSheetInput);
     } else {
       addItem(timeSheetInput);
@@ -87,6 +87,9 @@ const TimeSheetsForm = () => {
 
     fetch(`${process.env.REACT_APP_API_URL}/timeSheets`, {
       method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(newItem)
     }).then(() => {
       window.location.href = '/time-sheets';
@@ -105,6 +108,9 @@ const TimeSheetsForm = () => {
 
     fetch(`${process.env.REACT_APP_API_URL}/timeSheets/${editId}`, {
       method: 'put',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(editItem)
     }).then(() => {
       window.location.href = '/time-sheets';
