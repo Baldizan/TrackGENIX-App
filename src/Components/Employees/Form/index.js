@@ -45,13 +45,13 @@ const EmployeesForm = () => {
     if (id) {
       fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
         method: 'PUT',
-        // headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: body
       }).then((response) => response.json());
     } else {
       fetch(`${process.env.REACT_APP_API_URL}/employees`, {
         method: 'POST',
-        // headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: body
       }).then((response) => response.json());
     }
