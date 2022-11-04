@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 
-function AdminForm({ rowId, setModalDisplay, saveAdmins, admins }) {
-  const selectedAdmin = rowId ? admins.find((admin) => admin._id === rowId) : null;
+const AdminForm = ({ rowId, setModalDisplay, saveAdmins, admins }) => {
+  const selectedAdmin = rowId
+    ? admins.find((admin) => admin._id === rowId)
+    : { name: '', lastName: '', email: '', password: '', active: false };
   const [contactInfo, setContactInfo] = useState(selectedAdmin);
   const index = admins.indexOf(selectedAdmin);
+  const feedback = rowId ? 'Employee Edited' : 'Employee Created';
 
   const handleChange = (e) => {
     setContactInfo({ ...contactInfo, [e.target.name]: e.target.value });
@@ -21,7 +24,7 @@ function AdminForm({ rowId, setModalDisplay, saveAdmins, admins }) {
     const updateList =
       index !== -1 ? admins.splice(index, 1, contactInfo) : admins.push(contactInfo);
     try {
-      await fetch(
+      const result = await fetch(
         rowId.length > 0
           ? `${process.env.REACT_APP_API_URL}/admins/${rowId}`
           : `${process.env.REACT_APP_API_URL}/admins`,
@@ -34,11 +37,16 @@ function AdminForm({ rowId, setModalDisplay, saveAdmins, admins }) {
             name: contactInfo.name,
             lastName: contactInfo.lastName,
             email: contactInfo.email,
-            password: contactInfo.password
+            password: contactInfo.password,
+            active: contactInfo.status
           })
         }
       );
-      updateList();
+      const jsonResult = await result.json();
+      if (jsonResult.error === true) {
+        return updateList();
+      }
+      jsonResult.error ? alert(jsonResult.message) : alert(feedback);
     } catch (error) {
       console.error(error);
     }
@@ -86,9 +94,18 @@ function AdminForm({ rowId, setModalDisplay, saveAdmins, admins }) {
           onChange={handleChange}
         />
       </label>
-      <button onClick={() => {}}>Submit</button>
+      {rowId ? (
+        <label>
+          Active:
+          <select name="active" onChange={handleChange} value={contactInfo.active}>
+            <option value="true">True</option>
+            <option value="false">False</option>
+          </select>
+        </label>
+      ) : null}
+      <button>Submit</button>
     </form>
   );
-}
+};
 
 export default AdminForm;

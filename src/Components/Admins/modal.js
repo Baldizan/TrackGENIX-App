@@ -12,19 +12,18 @@ const Modal = ({ content, contentMessage, heading, setModalDisplay, reqFunction 
       </header>
       <div>
         {content ?? null}
+        {contentMessage && !content ? <p className={styles.content}>{contentMessage}</p> : null}
         {contentMessage && !content ? (
-          <div>
-            <p className={styles.content}>{contentMessage}</p>
-            <button
-              type="submit"
-              className={styles.confirm__button}
-              onClick={() => {
-                reqFunction();
-              }}
-            >
-              Confirm
-            </button>
-          </div>
+          <button
+            type="submit"
+            className={styles.confirm__button}
+            onClick={() => {
+              reqFunction();
+              alert('Employee deleted');
+            }}
+          >
+            Confirm
+          </button>
         ) : null}
         <button className={styles.bottom__close__button} onClick={() => setModalDisplay()}>
           Cancel
