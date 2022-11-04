@@ -14,7 +14,7 @@
   top: 0;
   left: 0;
   padding: 40px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #00000080;
 }
 .modalContainer {
   position: relative;
@@ -23,7 +23,7 @@
   padding: 0 20px;
   background-color: aliceblue;
   border-radius: 5px;
-  box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
+  box-shadow: #64646f33 0px 7px 29px 0px;
 }
 .modalHeader {
   display: flex;
@@ -48,11 +48,11 @@
   border: none;
   border-radius: 5px;
   background-color: none;
-  transition: 0.3s ease all;
   color: #000000;
+  transition: 0.3s ease all;
 }
 .btnClose:hover {
-  background-color: blue;
+  background-color: #0000ff;
 }
 .modalBody {
   display: flex;
@@ -64,7 +64,7 @@
   padding: 15px;
   border: none;
   border-radius: 5px;
-  background-color: red;
-  color: white;
+  background-color: #ff0000;
+  color: #ffffff;
   font-weight: 500;
 }
