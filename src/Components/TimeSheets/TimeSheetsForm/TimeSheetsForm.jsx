@@ -21,6 +21,29 @@ const TimeSheetsForm = () => {
   });
 
   useEffect(() => {
+    if (editId) {
+      fetch(`${process.env.REACT_APP_API_URL}/timesheets/${editId}`)
+        .then((res) => res.json())
+        .then((json) => {
+          setTimeSheetInput({
+            project: json.data.project?._id,
+            task: json.data.task?._id,
+            employee: json.data.employee?._id,
+            description: json.data.description,
+            date: json.data.date,
+            hours: json.data.hours
+          });
+          setSelectedProject(json.data.project?._id);
+          setSelectedEmployee(json.data.employee?._id);
+          setSelectedTask(json.data.task?._id);
+        });
+      setTitleForm('Edit');
+    }
+    setSelectedProject('');
+    console.log('aqui', projects);
+  }, []);
+
+  useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/projects`)
       .then((res) => res.json())
       .then((json) => {
@@ -44,27 +67,6 @@ const TimeSheetsForm = () => {
       });
   }, []);
 
-  useEffect(() => {
-    if (editId) {
-      fetch(`${process.env.REACT_APP_API_URL}/timesheets/${editId}`)
-        .then((res) => res.json())
-        .then((json) => {
-          setTimeSheetInput({
-            project: json.data.project?._id,
-            task: json.data.task?.description,
-            employee: json.data.employee?._id,
-            description: json.data.description,
-            date: json.data.date,
-            hours: json.data.hours
-          });
-          setSelectedProject(json.data.project?._id);
-          setSelectedEmployee(json.data.employee?._id);
-          setSelectedTask(json.data.task?._id);
-        });
-      setTitleForm('Edit');
-    }
-  }, []);
-
   console.log(timeSheetInput.employee);
 
   const onChange = (e) => {
@@ -73,10 +75,14 @@ const TimeSheetsForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (editId) {
-      editItem(timeSheetInput);
+    if (selectedProject && selectedTask && selectedEmployee) {
+      if (editId) {
+        editItem(timeSheetInput);
+      } else {
+        addItem(timeSheetInput);
+      }
     } else {
-      addItem(timeSheetInput);
+      alert('All fields are required');
     }
   };
 
@@ -144,7 +150,8 @@ const TimeSheetsForm = () => {
         <div className="column">
           <div className="column">
             <label>Proyect name</label>
-            <select name="project" value={selectedProject} onChange={handleChangeProject}>
+            <select name="project" value={selectedProject} onChange={handleChangeProject} required>
+              <option value="">Select a project</option>
               {projects.map((project) => (
                 <option key={project._id} value={project._id}>
                   {project.name}
@@ -154,7 +161,8 @@ const TimeSheetsForm = () => {
           </div>
           <div className="column">
             <label>Task</label>
-            <select name="task" value={selectedTask} onChange={handleChangeTask}>
+            <select name="task" value={selectedTask} onChange={handleChangeTask} required>
+              <option value="">Select a task</option>
               {tasks.map((task) => (
                 <option key={task._id} value={task._id}>
                   {task.description}
@@ -164,7 +172,13 @@ const TimeSheetsForm = () => {
           </div>
           <div className="column">
             <label>Employee</label>
-            <select name="employee" value={selectedEmployee} onChange={handleChangeEmployee}>
+            <select
+              name="employee"
+              value={selectedEmployee}
+              onChange={handleChangeEmployee}
+              required
+            >
+              <option value="">Select a employee</option>
               {employees.map((employee) => (
                 <option key={employee._id} value={employee._id}>
                   {employee.name}
@@ -179,15 +193,28 @@ const TimeSheetsForm = () => {
               name="description"
               value={timeSheetInput.description}
               onChange={onChange}
+              required
             />
           </div>
           <div className="column">
             <label>Date</label>
-            <input type="date" name="date" value={timeSheetInput.date} onChange={onChange} />
+            <input
+              type="date"
+              name="date"
+              value={timeSheetInput.date}
+              onChange={onChange}
+              required
+            />
           </div>
           <div className="column">
             <label>Hours</label>
-            <input type="number" name="hours" value={timeSheetInput.hours} onChange={onChange} />
+            <input
+              type="number"
+              name="hours"
+              value={timeSheetInput.hours}
+              onChange={onChange}
+              required
+            />
           </div>
         </div>
         <input className="btn" type="submit" value="Submit" />
