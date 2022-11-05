@@ -30,7 +30,7 @@ const TimeSheetsForm = () => {
             task: json.data.task?._id,
             employee: json.data.employee?._id,
             description: json.data.description,
-            date: json.data.date,
+            date: json.data.date.slice(0, 10),
             hours: json.data.hours
           });
           setSelectedProject(json.data.project?._id);
@@ -40,7 +40,6 @@ const TimeSheetsForm = () => {
       setTitleForm('Edit');
     }
     setSelectedProject('');
-    console.log('aqui', projects);
   }, []);
 
   useEffect(() => {
@@ -66,8 +65,6 @@ const TimeSheetsForm = () => {
         setEmployees(json.data);
       });
   }, []);
-
-  console.log(timeSheetInput.employee);
 
   const onChange = (e) => {
     setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });

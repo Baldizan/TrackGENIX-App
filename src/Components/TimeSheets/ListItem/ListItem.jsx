@@ -29,7 +29,7 @@ const ListItem = ({ listItem, deleteItem }) => {
         <td>{listItem.task?.description}</td>
         <td>{listItem.employee?.name}</td>
         <td>{listItem.description}</td>
-        <td>{new Date(listItem.date).toLocaleDateString()}</td>
+        <td>{new Date(listItem.date).toLocaleDateString('es-AR', { timeZone: 'UTC' })}</td>
         <td>{listItem.hours}</td>
         <div>
           <button className="btn-delete" onClick={handleDelete}>
