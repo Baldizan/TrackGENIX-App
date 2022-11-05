@@ -26,6 +26,7 @@ const SuperAdmins = () => {
     setSuperAdmins([...superAdmins.filter((listItem) => listItem._id !== id)]);
     setModal(false);
   };
+
   return (
     <section className={styles.container}>
       <h2>SuperAdmins</h2>

@@ -9,7 +9,42 @@
   width: fit-content;
   text-align: center;
   padding: 20px;
-  margin: 20px;
   border-radius: 20px;
   box-shadow: 2px 2px 5px 3px #00000033;
+}
+.form input {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  color: #333;
+  background-color: #eee;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 400;
+}
+.form label {
+  display: block;
+  width: fit-content;
+  margin: 0 0 10px 10px;
+  font-size: 16px;
+  color: #333;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 400;
+}
+.form button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #333;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 400;
+  border-radius: 10px;
+  border: 1px solid #6b6b6b;
+  background-color: #eee;
+}
+.form button:hover {
+  color: #fff;
+  background-color: #6b6b6b;
 }
