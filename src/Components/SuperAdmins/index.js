@@ -7,6 +7,7 @@ const SuperAdmins = () => {
   const [superAdmins, setSuperAdmins] = useState([]);
   const [modal, setModal] = useState(false);
   const [id, setId] = useState(null);
+  const selectedSuperAdmin = superAdmins.find((superAdmin) => superAdmin._id === id);
 
   const handleDeleteClick = () => {
     setModal(true);
@@ -38,7 +39,12 @@ const SuperAdmins = () => {
         id={id}
         setId={setId}
       />
-      <ModalWarning modal={modal} setModal={setModal} deleteSuperAdmin={deleteSuperAdmin} />
+      <ModalWarning
+        modal={modal}
+        setModal={setModal}
+        deleteSuperAdmin={deleteSuperAdmin}
+        fedbackTitle={`Do you really want to delete Super Admin "${selectedSuperAdmin?.email}" ?`}
+      />
     </section>
   );
 };
