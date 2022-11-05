@@ -57,10 +57,15 @@ const TimeSheetsForm = () => {
             date: json.data.date,
             hours: json.data.hours
           });
+          setSelectedProject(json.data.project?._id);
+          setSelectedEmployee(json.data.employee?._id);
+          setSelectedTask(json.data.task?._id);
         });
       setTitleForm('Edit');
     }
   }, []);
+
+  console.log(timeSheetInput.employee);
 
   const onChange = (e) => {
     setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
@@ -82,7 +87,7 @@ const TimeSheetsForm = () => {
       employee,
       description,
       date,
-      hours
+      hours: +hours
     };
 
     fetch(`${process.env.REACT_APP_API_URL}/timeSheets`, {
@@ -103,7 +108,7 @@ const TimeSheetsForm = () => {
       employee,
       description,
       date,
-      hours
+      hours: +hours
     };
 
     fetch(`${process.env.REACT_APP_API_URL}/timeSheets/${editId}`, {
