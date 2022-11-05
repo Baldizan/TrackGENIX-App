@@ -5,8 +5,13 @@ const Button = ({ type = 'button', label, onClick, disabled, style, hidden, them
   return (
     <button
       type={type}
-      className={`${theme && styles[theme]} ${style} ${disabled && styles.disabled}
-             ${hidden && styles.hidden} ${icon && styles.icon}`}
+      className={`
+        ${styles.default}
+        ${theme && styles[theme]}
+        ${style}
+        ${disabled && styles.disabled}
+        ${hidden && styles.hidden} ${icon && styles.icon}
+      `}
       onClick={onClick}
       disabled={disabled}
       hidden={hidden}
