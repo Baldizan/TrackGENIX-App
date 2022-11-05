@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import styles from './super-admins.module.css';
 import ListSuperAdmins from './List';
-import ModalDelete from './Modal';
+import ModalWarning from './Modal';
 
 const SuperAdmins = () => {
   const [superAdmins, setSuperAdmins] = useState([]);
   const [modal, setModal] = useState(false);
   const [id, setId] = useState(null);
-
   const selectedSuperAdmin = superAdmins.find((superAdmin) => superAdmin._id === id);
 
   const handleDeleteClick = () => {
@@ -34,13 +33,14 @@ const SuperAdmins = () => {
       <ListSuperAdmins
         superAdmins={superAdmins}
         setSuperAdmins={setSuperAdmins}
+        deleteSuperAdmin={deleteSuperAdmin}
         onDeleteClick={handleDeleteClick}
         modal={modal}
         setModal={setModal}
         id={id}
         setId={setId}
       />
-      <ModalDelete
+      <ModalWarning
         modal={modal}
         setModal={setModal}
         deleteSuperAdmin={deleteSuperAdmin}

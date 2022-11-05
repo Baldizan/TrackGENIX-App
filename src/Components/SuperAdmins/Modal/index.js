@@ -1,6 +1,6 @@
 import styles from './modal.module.css';
 
-const ModalDelete = ({ modal, setModal, deleteSuperAdmin, fedbackTitle }) => {
+const ModalWarning = ({ modal, setModal, deleteSuperAdmin, fedbackTitle }) => {
   return (
     <>
       {modal && (
@@ -18,12 +18,12 @@ const ModalDelete = ({ modal, setModal, deleteSuperAdmin, fedbackTitle }) => {
               <img src={`${process.env.PUBLIC_URL}/assets/images/icon-close.svg`} />
             </button>
             <div className={styles.modalBody}>
-              <h2>{fedbackTitle}</h2>
-              <h3>This process cannot be undone.</h3>
+              <h3>{fedbackTitle}</h3>
+              <p>This process cannot be undone</p>
               <button
                 onClick={() => {
                   deleteSuperAdmin();
-                  alert('Super Admin deleted successfully');
+                  alert('SuperAdmins deleted successfully');
                 }}
               >
                 DELETE
@@ -36,4 +36,4 @@ const ModalDelete = ({ modal, setModal, deleteSuperAdmin, fedbackTitle }) => {
   );
 };
 
-export default ModalDelete;
+export default ModalWarning;

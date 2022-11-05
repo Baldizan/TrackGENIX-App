@@ -1,7 +1,7 @@
 import ListItem from '../ListItem';
 import styles from './list.module.css';
 
-const ListSuperAdmins = ({ superAdmins, setModal, setId }) => {
+const ListSuperAdmins = ({ superAdmins, modal, setModal, setId }) => {
   return (
     <div className={styles.container}>
       <a href={'/super-admins/form'} rel="noreferrer">
@@ -21,6 +21,7 @@ const ListSuperAdmins = ({ superAdmins, setModal, setId }) => {
               id={item._id}
               key={item._id}
               listItem={item}
+              modal={modal}
               setModal={setModal}
               setId={setId}
             />

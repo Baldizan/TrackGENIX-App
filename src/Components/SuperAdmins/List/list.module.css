@@ -28,10 +28,10 @@ p {
   background-color: #131c0c;
   color: #fff;
   border: none;
-  font-size: 16px;
-  font-weight: bold;
   cursor: pointer;
   outline: none;
+  font-size: 16px;
+  font-weight: bold;
   text-transform: uppercase;
   transition-duration: .5s;
 }
