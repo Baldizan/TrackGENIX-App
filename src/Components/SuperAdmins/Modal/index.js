@@ -1,6 +1,6 @@
 import styles from './modal.module.css';
 
-const ModalDelete = ({ modal, setModal, deleteSuperAdmin }) => {
+const ModalDelete = ({ modal, setModal, deleteSuperAdmin, fedbackTitle }) => {
   return (
     <>
       {modal && (
@@ -18,11 +18,12 @@ const ModalDelete = ({ modal, setModal, deleteSuperAdmin }) => {
               <img src={`${process.env.PUBLIC_URL}/assets/images/icon-close.svg`} />
             </button>
             <div className={styles.modalBody}>
-              <h2>Do you really want to delete Super Admin.</h2>
+              <h2>{fedbackTitle}</h2>
               <h3>This process cannot be undone.</h3>
               <button
                 onClick={() => {
                   deleteSuperAdmin();
+                  alert('Super Admin deleted successfully');
                 }}
               >
                 DELETE
