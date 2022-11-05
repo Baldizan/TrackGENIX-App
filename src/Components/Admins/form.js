@@ -38,7 +38,7 @@ const AdminForm = ({ rowId, setModalDisplay, saveAdmins, admins }) => {
             lastName: contactInfo.lastName,
             email: contactInfo.email,
             password: contactInfo.password,
-            active: contactInfo.status
+            active: contactInfo.active
           })
         }
       );
@@ -62,6 +62,7 @@ const AdminForm = ({ rowId, setModalDisplay, saveAdmins, admins }) => {
           placeholder="First Name"
           value={contactInfo?.name}
           onChange={handleChange}
+          required
         />
       </label>
       <label>
@@ -72,6 +73,7 @@ const AdminForm = ({ rowId, setModalDisplay, saveAdmins, admins }) => {
           placeholder="Last Name"
           value={contactInfo?.lastName}
           onChange={handleChange}
+          required
         />
       </label>
       <label>
@@ -82,6 +84,7 @@ const AdminForm = ({ rowId, setModalDisplay, saveAdmins, admins }) => {
           placeholder="Email Address"
           value={contactInfo?.email}
           onChange={handleChange}
+          required
         />
       </label>
       <label>
@@ -92,12 +95,13 @@ const AdminForm = ({ rowId, setModalDisplay, saveAdmins, admins }) => {
           placeholder="Password"
           value={contactInfo?.password}
           onChange={handleChange}
+          required
         />
       </label>
       {rowId ? (
         <label>
           Active:
-          <select name="active" onChange={handleChange} value={contactInfo.active}>
+          <select name="active" onChange={handleChange} value={contactInfo.active} required>
             <option value="true">True</option>
             <option value="false">False</option>
           </select>

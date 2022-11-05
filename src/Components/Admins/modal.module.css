@@ -36,7 +36,7 @@
 }
 
 .confirm__button {
-    margin: 1rem 0 2rem 0.50rem;
+    margin: 5% 1%;
     padding: 0.50rem 0.80rem;
     font-weight: 500;
     color: #fff;
@@ -53,7 +53,7 @@
 }
 
 .bottom__close__button {
-    margin-left: 50%;
+    margin: 5% 1%;
     padding: 0.50rem 0.80rem;
     font-weight: 500;
     background-color: transparent;
@@ -70,10 +70,7 @@
 }
 
 .content {
+    text-align: center;
     color: #373867;
     margin: 3%;
-}
-
-.addButton{
-    background-color: #F13312;
 }

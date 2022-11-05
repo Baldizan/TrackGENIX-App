@@ -10,7 +10,7 @@ const Modal = ({ content, contentMessage, heading, setModalDisplay, reqFunction 
           X
         </button>
       </header>
-      <div>
+      <div className={styles.content}>
         {content ?? null}
         {contentMessage && !content ? <p className={styles.content}>{contentMessage}</p> : null}
         {contentMessage && !content ? (
