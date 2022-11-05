@@ -38,6 +38,7 @@ const EmployeesForm = () => {
       setPhoneValue(employee.phone);
       setEmailValue(employee.email);
       setProjectValues(allProjects.name);
+      setPasswordValue(employee.password);
     }
   }, [employee]);
 
@@ -64,6 +65,8 @@ const EmployeesForm = () => {
         body: body
       }).then((response) => response.json());
     }
+    alert('Employees updated / create successfully');
+    window.location.assign('/employees');
   };
 
   const nameInput = (event) => {
@@ -130,7 +133,6 @@ const EmployeesForm = () => {
         />
         <label htmlFor="password">Password:</label>
         <input
-          type="password"
           id="password"
           name="password"
           placeholder="Password"
