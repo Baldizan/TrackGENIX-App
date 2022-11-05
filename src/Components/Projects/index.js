@@ -1,16 +1,22 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from './Modal/modal.js';
 import styles from './projects.module.css';
 
 function Projects() {
   const [showModal, setShowModal] = useState(false);
-  const [selectedProject, setSelection] = useState({});
   const [projects, saveProjects] = useState([]);
+  const [selectedProject, setSelection] = useState({});
+  // eslint-disable-next-line
+  const [employees, saveEmployees] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/projects`)
+    fetch(`${process.env.REACT_APP_API_URL}projects`)
       .then((response) => response.json())
-      .then((response) => saveProjects(response.data));
+      .then((response) => console.log(response.data))
+      .then((response) => saveProjects(response.data || []));
+    fetch(`${process.env.REACT_APP_API_URL}employees`)
+      .then((response) => response.json())
+      .then((response) => saveEmployees(response.data || []));
   }, []);
 
   const newEditProject = (id) => {
@@ -22,7 +28,7 @@ function Projects() {
   };
 
   const deleteProject = (projectToDelete) => {
-    fetch(`${process.env.REACT_APP_API_URL}/projects/${projectToDelete.id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}projects/${projectToDelete.id}`, {
       method: 'DELETE'
     });
     const projectsDeleted = projects.filter((project) => project._id !== projectToDelete.id);
@@ -64,8 +70,8 @@ function Projects() {
             <th className={styles.tableCell}>Employees</th>
             <th className={styles.tableCell}>Start Date</th>
             <th className={styles.tableCell}>End Date</th>
-            <th className={styles.tableCell}>Status</th>
             <th className={styles.tableCell}>Client</th>
+            <th className={styles.tableCell}>Status</th>
             <th className={styles.emptyTableCell}></th>
           </tr>
         </thead>
@@ -80,8 +86,8 @@ function Projects() {
                 </td>
                 <td className={styles.tableCell}>{project.startDate.slice(0, 10)}</td>
                 <td className={styles.tableCell}>{project.endDate.slice(0, 10)}</td>
-                <td className={styles.tableCell}>{project.status}</td>
                 <td className={styles.tableCell}>{project.clientName}</td>
+                <td className={styles.tableCell}>{project.status}</td>
                 <td className={styles.tableCell}>
                   <button
                     className={styles.deleteEditButton}
