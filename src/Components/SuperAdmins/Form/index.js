@@ -171,8 +171,6 @@ const FormSuperAdmins = () => {
         setModalAlert={setModalAlert}
         message={message}
         titleModal={titleModal}
-        setUserInput={setUserInput}
-        userInput={userInput}
       />
     </section>
   );

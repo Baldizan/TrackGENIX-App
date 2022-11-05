@@ -21,7 +21,11 @@ const ModalAlert = ({ modalAlert, setModalAlert, message, titleModal }) => {
               <h2>{message}</h2>
               <button
                 onClick={() => {
-                  location.replace('http://localhost:3000/super-admins');
+                  if (message === 'Super Admin Error') {
+                    setModalAlert(false);
+                  } else {
+                    location.replace('http://localhost:3000/super-admins');
+                  }
                 }}
               >
                 OK
