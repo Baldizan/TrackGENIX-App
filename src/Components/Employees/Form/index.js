@@ -5,6 +5,7 @@ const EmployeesForm = () => {
   const paramsURL = new URLSearchParams(window.location.search);
   const id = paramsURL.get('id');
   const [employee, setEmployee] = useState({});
+  const [allProjects, setProject] = useState([]);
   const [nameValue, setNameValue] = useState('');
   const [lastNameValue, setLastNameValue] = useState('');
   const [phoneValue, setPhoneValue] = useState('');
@@ -23,12 +24,20 @@ const EmployeesForm = () => {
   }, []);
 
   useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/projects/`)
+      .then((response) => response.json())
+      .then((response) => {
+        setProject(response.data);
+      });
+  }, []);
+
+  useEffect(() => {
     if (employee._id) {
       setNameValue(employee.name);
       setLastNameValue(employee.lastName);
       setPhoneValue(employee.phone);
       setEmailValue(employee.email);
-      setProjectValues(employee.project);
+      setProjectValues(allProjects.name);
     }
   }, [employee]);
 
@@ -130,14 +139,22 @@ const EmployeesForm = () => {
           onChange={passwordInput}
         />
         <label htmlFor="project">Project:</label>
-        <input
-          id="project"
-          name="project"
-          placeholder="Project"
+        <select
+          name="employees"
+          placeholder="Employees"
           required
           value={projectsValue}
           onChange={projectInput}
-        />
+        >
+          <option value="">Project</option>
+          {allProjects.map((project) => {
+            return (
+              <option key={project._id} value={project._id}>
+                {project.name}
+              </option>
+            );
+          })}
+        </select>
       </form>
       <button onClick={sendEmployee}>Add</button>
       <a href="/employees">
