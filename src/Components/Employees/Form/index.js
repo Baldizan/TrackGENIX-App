@@ -58,15 +58,39 @@ const EmployeesForm = () => {
         headers: { 'Content-Type': 'application/json' },
         body: body
       }).then((response) => response.json());
+      if (
+        !nameValue ||
+        !lastNameValue ||
+        !phoneValue ||
+        !emailValue ||
+        !passwordValue ||
+        !projectsValue
+      ) {
+        alert('Please complete all required fields');
+      } else {
+        alert('Employees edited successfully');
+        window.location.assign('/employees');
+      }
     } else {
       fetch(`${process.env.REACT_APP_API_URL}/employees`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: body
       }).then((response) => response.json());
+      if (
+        !nameValue ||
+        !lastNameValue ||
+        !phoneValue ||
+        !emailValue ||
+        !passwordValue ||
+        !projectsValue
+      ) {
+        alert('Please complete all required fields');
+      } else {
+        alert('Employees created successfully');
+        window.location.assign('/employees');
+      }
     }
-    alert('Employees updated / create successfully');
-    window.location.assign('/employees');
   };
 
   const nameInput = (event) => {
@@ -134,6 +158,7 @@ const EmployeesForm = () => {
         <label htmlFor="password">Password:</label>
         <input
           id="password"
+          type="password"
           name="password"
           placeholder="Password"
           required
@@ -158,7 +183,7 @@ const EmployeesForm = () => {
           })}
         </select>
       </form>
-      <button onClick={sendEmployee}>Add</button>
+      <button onClick={sendEmployee}>Confirm</button>
       <a href="/employees">
         <button>Cancel</button>
       </a>
