@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import styles from '../projects.module.css';
 
 const ProjectsForm = () => {
-  const search = window.location.search;
+  const paramsURL = new URLSearchParams(window.location.search);
+  const projectId = paramsURL.get('id');
   const [allEmployees, saveAllEmployees] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState();
   const [selectedRole, setSelectedRole] = useState();
@@ -31,10 +32,8 @@ const ProjectsForm = () => {
   }, []);
 
   useEffect(() => {
-    if (search.match('id=')) {
-      const id = search.substring(search.indexOf('id=') + 3);
-
-      fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`)
+    if (projectId) {
+      fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`)
         .then((response) => response.json())
         .then((response) => {
           setProjectBody({
@@ -51,9 +50,8 @@ const ProjectsForm = () => {
   }, []);
 
   const sendProject = () => {
-    if (search.match('id=')) {
-      const id = search.substring(search.indexOf('id=') + 3);
-      fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`, {
+    if (projectId) {
+      fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
