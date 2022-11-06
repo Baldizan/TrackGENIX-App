@@ -1,6 +1,38 @@
 .container {
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 80%;
+  margin: 10%;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.row{
+  display: flex;
+}
+
+.column{
+  display: flex;
+  flex-direction: column;
+}
+
+form{
+  width: 100%;
+  justify-self: stretch;
+}
+
+input, select{
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+input:focus {
+  background-color: #b0d4e0;
 }
