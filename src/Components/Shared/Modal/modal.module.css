@@ -1,10 +1,22 @@
+.container {
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
 .modal {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: absolute;
-    min-width: 30vw;
-    background-color: rgba(0, 0, 0, 0.153);
+    width: 40vw;
+    background-color: #fff;
     border: solid 1px #373867;
     border-radius: 5px;
 }
@@ -13,14 +25,13 @@
     display: flex;
     justify-content: space-between;
     width: 90%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.153);
   }
 
 .heading {
     color: #373867;
 }
 
-.top__close__button {
+.topCloseButton {
     background-color: transparent;
     border: none;
     font-weight: 500;
@@ -28,49 +39,20 @@
     color: #373867;
 }
 
-.top__close__button:hover,
-.top__close__button:focus {
+.topCloseButton:hover,
+.topCloseButton:focus {
+    font-weight: bold;
     cursor: pointer;
     transform: scale(1.10);
     transition: all .2s ease-in-out;
 }
 
-.confirm__button {
-    margin: 5% 1%;
-    padding: 0.50rem 0.80rem;
-    font-weight: 500;
-    color: #fff;
-    background-color: #F13312;
-    border: 1px solid #F13312;
-    border-radius: 5px;
-}
-
-.confirm__button:hover,
-.confirm__button:focus {
-    cursor: pointer;
-    transform: scale(1.015);
-    transition: all .2s ease-in-out;
-}
-
-.bottom__close__button {
-    margin: 5% 1%;
-    padding: 0.50rem 0.80rem;
-    font-weight: 500;
-    background-color: transparent;
-    color: #373867;
-    border: 1px solid #373867;
-    border-radius: 5px;
-}
-
-.bottom__close__button:hover,
-.bottom__close__button:focus {
-    cursor: pointer;
-    transform: scale(1.015);
-    transition: all .2s ease-in-out;
+.buttons {
+    display: flex;
+    justify-content: end;
 }
 
 .content {
     text-align: center;
     color: #373867;
-    margin: 3%;
 }
