@@ -4,7 +4,7 @@
     align-items: center;
     position: absolute;
     min-width: 30vw;
-    background-color: #fff;
+    background-color: rgba(0, 0, 0, 0.153);
     border: solid 1px #373867;
     border-radius: 5px;
 }
@@ -20,7 +20,7 @@
     color: #373867;
 }
 
-.topclosebutton {
+.top__close__button {
     background-color: transparent;
     border: none;
     font-weight: 500;
@@ -28,14 +28,14 @@
     color: #373867;
 }
 
-.topclosebutton:hover,
-.topclosebutton:focus {
+.top__close__button:hover,
+.top__close__button:focus {
     cursor: pointer;
     transform: scale(1.10);
     transition: all .2s ease-in-out;
 }
 
-.confirmbutton {
+.confirm__button {
     margin: 5% 1%;
     padding: 0.50rem 0.80rem;
     font-weight: 500;
@@ -45,14 +45,14 @@
     border-radius: 5px;
 }
 
-.confirmbutton:hover,
-.confirmbutton:focus {
+.confirm__button:hover,
+.confirm__button:focus {
     cursor: pointer;
     transform: scale(1.015);
     transition: all .2s ease-in-out;
 }
 
-.bottomclosebutton {
+.bottom__close__button {
     margin: 5% 1%;
     padding: 0.50rem 0.80rem;
     font-weight: 500;
@@ -62,8 +62,8 @@
     border-radius: 5px;
 }
 
-.bottomclosebutton:hover,
-.bottomclose__button:focus {
+.bottom__close__button:hover,
+.bottom__close__button:focus {
     cursor: pointer;
     transform: scale(1.015);
     transition: all .2s ease-in-out;

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './modal.modules.css';
+import styles from './modal.module.css';
 
 const Modal = ({ content, contentMessage, heading, setModalDisplay, reqFunction }) => {
   return (
