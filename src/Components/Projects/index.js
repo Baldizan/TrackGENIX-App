@@ -6,17 +6,12 @@ function Projects() {
   const [showModal, setShowModal] = useState(false);
   const [projects, saveProjects] = useState([]);
   const [selectedProject, setSelection] = useState({});
-  // eslint-disable-next-line
-  // const [employees, saveEmployees] = useState([]);
   const [assignedEmployees] = useState([]);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}projects`)
       .then((response) => response.json())
       .then((response) => saveProjects(response.data || []));
-    // fetch(`${process.env.REACT_APP_API_URL}employees`)
-    //   .then((response) => response.json())
-    //   .then((response) => saveEmployees(response.data || []));
   }, []);
 
   const newEditProject = (id) => {
@@ -49,7 +44,7 @@ function Projects() {
     assignedEmployees.splice(0, assignedEmployees.length);
     for (let i = 0; i < employees.length; i++) {
       assignedEmployees.push(
-        `${employees[i].id.name} ${employees[i].id.lastName} ${employees[i].role} ${employees[i].rate}`
+        `Employee: ${employees[i].id.name} ${employees[i].id.lastName} - Role: ${employees[i].role} - Rate: ${employees[i].rate}`
       );
     }
     alert(`Assigned employees to project ${name}:\n` + assignedEmployees.join('\n'));
