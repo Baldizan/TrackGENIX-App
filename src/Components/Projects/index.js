@@ -7,16 +7,16 @@ function Projects() {
   const [projects, saveProjects] = useState([]);
   const [selectedProject, setSelection] = useState({});
   // eslint-disable-next-line
-  const [employees, saveEmployees] = useState([]);
+  // const [employees, saveEmployees] = useState([]);
+  const [assignedEmployees] = useState([]);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}projects`)
       .then((response) => response.json())
-      .then((response) => console.log(response.data))
       .then((response) => saveProjects(response.data || []));
-    fetch(`${process.env.REACT_APP_API_URL}employees`)
-      .then((response) => response.json())
-      .then((response) => saveEmployees(response.data || []));
+    // fetch(`${process.env.REACT_APP_API_URL}employees`)
+    //   .then((response) => response.json())
+    //   .then((response) => saveEmployees(response.data || []));
   }, []);
 
   const newEditProject = (id) => {
@@ -43,6 +43,16 @@ function Projects() {
 
   const closeModal = () => {
     setShowModal(false);
+  };
+
+  const showEmployees = (employees, name) => {
+    assignedEmployees.splice(0, assignedEmployees.length);
+    for (let i = 0; i < employees.length; i++) {
+      assignedEmployees.push(
+        `${employees[i].id.name} ${employees[i].id.lastName} ${employees[i].role} ${employees[i].rate}`
+      );
+    }
+    alert(`Assigned employees to project ${name}:\n` + assignedEmployees.join('\n'));
   };
 
   return (
@@ -82,7 +92,12 @@ function Projects() {
                 <td className={styles.tableCell}>{project.name}</td>
                 <td className={styles.tableDescription}>{project.description}</td>
                 <td className={styles.tableCell}>
-                  <button className={styles.button}>See employees</button>
+                  <button
+                    className={styles.button}
+                    onClick={() => showEmployees(project.employees, project.name)}
+                  >
+                    See employees
+                  </button>
                 </td>
                 <td className={styles.tableCell}>{project.startDate.slice(0, 10)}</td>
                 <td className={styles.tableCell}>{project.endDate.slice(0, 10)}</td>

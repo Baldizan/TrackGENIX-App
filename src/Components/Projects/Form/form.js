@@ -3,23 +3,25 @@ import styles from '../projects.module.css';
 
 const ProjectsForm = () => {
   const search = window.location.search;
-  // const [project, setProject] = useState({});
   const [allEmployees, saveAllEmployees] = useState([]);
-  const [employees, saveEmployees] = useState([
-    {
-      employee: '',
-      role: '',
-      rate: ''
-    }
-  ]);
+  const [selectedEmployee, setSelectedEmployee] = useState();
+  const [selectedRole, setSelectedRole] = useState();
+  const [selectedRate, setSelectedRate] = useState();
+  const [employees] = useState([]);
+  const [employee, saveEmployee] = useState({
+    id: '',
+    role: '',
+    rate: ''
+  });
+  const [activeValue, changeActiveValue] = useState(false);
   const [projectBody, setProjectBody] = useState({
-    neme: '',
+    name: '',
     description: '',
     startDate: '',
     endDate: '',
     clientName: '',
-    active: '',
-    employees: employees
+    active: activeValue,
+    employees: []
   });
 
   useEffect(() => {
@@ -50,50 +52,72 @@ const ProjectsForm = () => {
 
   const sendProject = () => {
     if (search.match('id=')) {
-      // const id = search.substring(search.indexOf('id=') + 3);
-      // fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`, {
-      //   method: 'PUT',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: projectBody
-      // })
-      //   .then((response) => response.json())
-      //   .then((response) => console.log(response));
-      console.log(projectBody);
+      const id = search.substring(search.indexOf('id=') + 3);
+      fetch(`${process.env.REACT_APP_API_URL}projects/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(projectBody)
+      })
+        .then((response) => response.json())
+        .then(function (response) {
+          if (!response.error) {
+            window.location.assign('/projects');
+          }
+        });
     } else {
       fetch(`${process.env.REACT_APP_API_URL}projects`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: projectBody
+        body: JSON.stringify(projectBody)
       })
         .then((response) => response.json())
-        .then((response) => console.log(response.data));
-      window.location.assign('/projects');
+        .then(function (response) {
+          if (!response.error) {
+            window.location.assign('/projects');
+          }
+        });
     }
   };
 
   const onChangeValue = (key, value, keyArray = false) => {
     if (keyArray) {
       setProjectBody({
-        ...projectBody,
-        employees: [{ ...projectBody.employees[0], [key]: value }]
+        ...projectBody
       });
     } else {
       setProjectBody({ ...projectBody, [key]: value });
     }
   };
 
-  const assingEmployee = (id, role, rate) => {
-    useEffect(() => {
-      saveEmployees({
-        employee: id,
-        role: role,
-        rate: rate
-      });
-    }, []);
+  const handleChangeActive = (e) => {
+    changeActiveValue(e.target.value);
+    setProjectBody({ ...projectBody, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeEmployee = (e) => {
+    setSelectedEmployee(e.target.value);
+    saveEmployee({ ...employee, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeRole = (e) => {
+    setSelectedRole(e.target.value);
+    saveEmployee({ ...employee, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeRate = (e) => {
+    setSelectedRate(e.target.value);
+    saveEmployee({ ...employee, [e.target.name]: e.target.value });
+  };
+
+  const assingEmployee = () => {
+    setProjectBody({
+      ...projectBody,
+      employees: [...projectBody.employees, employee]
+    });
   };
 
   return (
@@ -101,10 +125,9 @@ const ProjectsForm = () => {
       <form className={styles.container}>
         <label htmlFor="projectName">Project name:</label>
         <input
-          id="projectName"
-          name="projectName"
+          id="name"
+          name="name"
           placeholder="Project name"
-          required
           value={projectBody.name}
           onChange={(e) => onChangeValue('name', e.target.value)}
         />
@@ -113,7 +136,6 @@ const ProjectsForm = () => {
           id="description"
           name="description"
           placeholder="Last description"
-          required
           value={projectBody.description}
           onChange={(e) => onChangeValue('description', e.target.value)}
         />
@@ -123,7 +145,6 @@ const ProjectsForm = () => {
           id="startDate"
           name="startDate"
           placeholder="Start Date"
-          required
           value={projectBody.startDate}
           onChange={(e) => onChangeValue('startDate', e.target.value)}
         />
@@ -133,41 +154,41 @@ const ProjectsForm = () => {
           id="endDAte"
           name="endDAte"
           placeholder="End Date"
-          required
           value={projectBody.endDate}
           onChange={(e) => onChangeValue('endDate', e.target.value)}
         />
         <label htmlFor="status">Active:</label>
-        <input
-          type="checkbox"
-          id="status"
-          name="status"
-          value={projectBody.active}
-          onChange={(e) => onChangeValue('active', e.target.value)}
-        />
+        <select name="active" value={projectBody.active} onChange={handleChangeActive}>
+          <option value="false">Inactive</option>
+          <option value="true">Active</option>
+        </select>
         <label htmlFor="client">Client:</label>
         <input
           id="client"
           name="client"
           placeholder="Client"
-          required
           value={projectBody.clientName}
           onChange={(e) => onChangeValue('clientName', e.target.value)}
         />
         <div>
           <h3>Employees:</h3>
-          {/* <table>
+          <table>
             <tbody>
               {employees.map((employee) => {
                 <tr>
-                  <td>{employee.employee}</td>
+                  <td>{employee.id}</td>
                   <td>{employee.role}</td>
                   <td>{employee.rate}</td>
                 </tr>;
               })}
             </tbody>
-          </table> */}
-          <select name="employees" placeholder="Employees" required value={employees.employee}>
+          </table>
+          <select
+            name="id"
+            placeholder="Employee"
+            value={selectedEmployee}
+            onChange={handleChangeEmployee}
+          >
             <option value="">Employees</option>
             {allEmployees.map((employee) => {
               return (
@@ -177,18 +198,21 @@ const ProjectsForm = () => {
               );
             })}
           </select>
-          <select name="role" placeholder="Role" required value={employees.role}>
+          <select name="role" placeholder="Role" value={selectedRole} onChange={handleChangeRole}>
             <option value="">Role</option>
             <option value="DEV">DEV</option>
             <option value="TL">TL</option>
             <option value="QA">QA</option>
             <option value="PM">PM</option>
           </select>
-          <input id="rate" name="rate" placeholder="Rate" required value={employees.rate} />
-          <button
-            type="button"
-            onClick={assingEmployee(employees.employee, employees.role, employees.rate)}
-          >
+          <input
+            id="rate"
+            name="rate"
+            placeholder="Rate"
+            value={selectedRate}
+            onChange={handleChangeRate}
+          />
+          <button type="button" onClick={() => assingEmployee()}>
             Assign
           </button>
         </div>
