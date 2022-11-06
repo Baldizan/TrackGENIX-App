@@ -1,0 +1,29 @@
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 100%;
+  color: #24266f;
+}
+
+.space-between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.thead {
+  background-color: #ECEEED;
+}
+
+.btn-add {
+  width: 20%;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  background-color: #AACE9B;
+}
+
+td {
+  width: 200px;
+}
