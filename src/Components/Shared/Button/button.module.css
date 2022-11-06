@@ -1,0 +1,89 @@
+.default {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.primary {
+  margin: 10px;
+  padding: 10px 20px;
+  color: #373867;
+  border: 1px solid #373867;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.primary:hover,
+.primary:focus {
+  cursor: pointer;
+  text-decoration: underline;
+  background-color: #37386720;
+  transition: all 0.05s ease-in-out;
+}
+
+.secondary {
+  margin: 10px;
+  padding: 10px 20px;
+  color: #373867;
+  border: 1px solid #AACE9B ;
+  border-radius: 5px;
+  background-color: #AACE9B;
+}
+
+.secondary:hover,
+.secondary:focus {
+  cursor: pointer;
+  text-decoration: underline;
+  background-color: #AACE9BCC;
+  transition: all 0.05s ease-in-out;
+}
+
+.tertiary {
+  margin: 10px;
+  padding: 10px 20px;
+  color: #fff;
+  border: 1px solid #F13312 ;
+  border-radius: 5px;
+  background-color: #F13312;
+}
+
+.tertiary:hover,
+.tertiary:focus {
+  cursor: pointer;
+  text-decoration: underline;
+  background-color: #F13312F0;
+  transition: all 0.05s ease-in-out;
+}
+
+.disabled {
+  margin: 10px;
+  padding: 10px 20px;
+  border: 1px solid;
+  border-radius: 5px;
+}
+
+.disabled:hover {
+  cursor: not-allowed;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  border: none;
+}
+
+.img {
+  display: block;
+}
+
+.icon:hover,
+.icon:focus {
+  cursor: pointer;
+  transform: scale(1.05);
+  transition: all 0.1s ease-in-out;
+}
+
+.hidden {
+  visibility: hidden;
+}
