@@ -9,7 +9,7 @@ function Projects() {
   const [assignedEmployees] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}projects`)
+    fetch(`${process.env.REACT_APP_API_URL}/projects`)
       .then((response) => response.json())
       .then((response) => saveProjects(response.data || []));
   }, []);
@@ -23,7 +23,7 @@ function Projects() {
   };
 
   const deleteProject = (projectToDelete) => {
-    fetch(`${process.env.REACT_APP_API_URL}projects/${projectToDelete.id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/projects/${projectToDelete.id}`, {
       method: 'DELETE'
     });
     const projectsDeleted = projects.filter((project) => project._id !== projectToDelete.id);

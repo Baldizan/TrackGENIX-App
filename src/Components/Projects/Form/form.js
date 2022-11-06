@@ -25,7 +25,7 @@ const ProjectsForm = () => {
   });
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}employees`)
+    fetch(`${process.env.REACT_APP_API_URL}/employees`)
       .then((response) => response.json())
       .then((response) => saveAllEmployees(response.data));
   }, []);
@@ -34,7 +34,7 @@ const ProjectsForm = () => {
     if (search.match('id=')) {
       const id = search.substring(search.indexOf('id=') + 3);
 
-      fetch(`${process.env.REACT_APP_API_URL}projects/${id}`)
+      fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`)
         .then((response) => response.json())
         .then((response) => {
           setProjectBody({
@@ -53,7 +53,7 @@ const ProjectsForm = () => {
   const sendProject = () => {
     if (search.match('id=')) {
       const id = search.substring(search.indexOf('id=') + 3);
-      fetch(`${process.env.REACT_APP_API_URL}projects/${id}`, {
+      fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -68,7 +68,7 @@ const ProjectsForm = () => {
           }
         });
     } else {
-      fetch(`${process.env.REACT_APP_API_URL}projects`, {
+      fetch(`${process.env.REACT_APP_API_URL}/projects`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
