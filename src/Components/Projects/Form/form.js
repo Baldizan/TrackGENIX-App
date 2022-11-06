@@ -37,13 +37,6 @@ const ProjectsForm = () => {
       fetch(`${process.env.REACT_APP_API_URL}projects/${id}`)
         .then((response) => response.json())
         .then((response) => {
-          employees.splice(0, employees.length);
-          for (let i = 0; i < response.data.employees.length; i++) {
-            employee.id = response.data.employees[i].id._id;
-            employee.role = response.data.employees[i].role;
-            employee.rate = response.data.employees[i].rate;
-            employees.push(employee);
-          }
           setProjectBody({
             name: response.data.name,
             description: response.data.description,
@@ -54,7 +47,6 @@ const ProjectsForm = () => {
             employees: employees
           });
         });
-      console.log(employees);
     }
   }, []);
 
@@ -128,7 +120,6 @@ const ProjectsForm = () => {
       ...projectBody,
       employees: [...projectBody.employees, employee]
     });
-    console.log(projectBody);
   };
 
   return (
@@ -183,18 +174,6 @@ const ProjectsForm = () => {
         />
         <div>
           <h3>Employees:</h3>
-          {/* <table>
-            <tbody>
-              {employees.map((employee) => {
-                <tr>
-                  <td>{employee.id}</td>
-                  <td>{employee.role}</td>
-                  <td>{employee.rate}</td>
-                  <td>Hola</td>
-                </tr>;
-              })}
-            </tbody>
-          </table> */}
           <select
             name="id"
             placeholder="Employee"
