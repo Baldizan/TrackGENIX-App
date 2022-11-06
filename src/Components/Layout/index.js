@@ -5,10 +5,12 @@ import SuperAdmins from '../SuperAdmins/index';
 import Home from '../Home/index';
 import styles from './layout.module.css';
 import Employees from '../Employees/index';
+import EmployeesForm from '../Employees/Form';
 import Projects from '../Projects';
 import TimeSheets from '../TimeSheets';
 import Tasks from '../Tasks/index';
 import TimeSheetsForm from '../TimeSheets/TimeSheetsForm/TimeSheetsForm';
+import FormSuperAdmins from '../SuperAdmins/Form';
 
 function Layout() {
   let currentScreen = <Home />;
@@ -19,8 +21,14 @@ function Layout() {
     case '/super-admins':
       currentScreen = <SuperAdmins />;
       break;
+    case '/super-admins/form':
+      currentScreen = <FormSuperAdmins />;
+      break;
     case '/employees':
       currentScreen = <Employees />;
+      break;
+    case '/employees/form':
+      currentScreen = <EmployeesForm />;
       break;
     case '/projects':
       currentScreen = <Projects />;
