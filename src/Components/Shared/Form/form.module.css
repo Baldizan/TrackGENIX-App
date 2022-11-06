@@ -1,0 +1,38 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-block: 2%;
+  width: clamp(20%, 60% , 90%);
+  border: 1px solid #373867;
+  border-radius: 5px;
+}
+
+.title {
+  color: #373867;
+  letter-spacing: 0.125em;
+  font-size: 35px;
+  line-height: 0.8;
+  font-weight: 500;
+  margin-block: 5%;
+}
+
+.fieldset {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-block: 2%;
+  gap: 10px;
+  border: none;
+}
+
+.legend {
+  color: #373867;
+  margin: 0 auto 2% 12%;
+  font-size: 20px;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+}
