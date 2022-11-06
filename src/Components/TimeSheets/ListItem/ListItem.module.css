@@ -12,7 +12,11 @@
   text-align: start;
 }
 
-.btn-delete {
+.btnDelete {
   border: none;
   background: none;
+}
+
+.td {
+  width: 300px;
 }

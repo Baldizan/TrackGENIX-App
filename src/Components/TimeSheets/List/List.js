@@ -1,6 +1,6 @@
 import React from 'react';
 import ListItem from '../ListItem/ListItem';
-import './List.css';
+import styles from './List.module.css';
 
 const List = ({ list, deleteItem }) => {
   const handleAdd = () => {
@@ -9,17 +9,15 @@ const List = ({ list, deleteItem }) => {
   };
 
   return (
-    <section className="flex-container">
+    <section className={styles.flexContainer}>
       <table>
-        <thead className="thead">
-          <tr className="space-between">
-            <th id="projectName">Project Name</th>
-            <th id="task">Task</th>
-            <th id="employee">employee</th>
-            <th id="description">Description</th>
-            <th id="date">Date</th>
-            <th id="hours">Hours</th>
-          </tr>
+        <thead className={[styles.thead, styles.spaceBetween]}>
+          <th id="projectName">Project Name</th>
+          <th id="task">Task</th>
+          <th id="employee">employee</th>
+          <th id="description">Description</th>
+          <th id="date">Date</th>
+          <th id="hours">Hours</th>
         </thead>
         <tbody>
           {list.map((item) => (
@@ -27,7 +25,7 @@ const List = ({ list, deleteItem }) => {
           ))}
         </tbody>
       </table>
-      <button className="btn-add" href="/time-sheets/form" onClick={handleAdd}>
+      <button className={styles.btnAdd} href="/time-sheets/form" onClick={handleAdd}>
         Add
       </button>
     </section>
