@@ -63,6 +63,7 @@ const ProjectsForm = () => {
         .then((response) => response.json())
         .then(function (response) {
           if (!response.error) {
+            alert(`Project ${projectBody.name} updated successfully!`);
             window.location.assign('/projects');
           }
         });
@@ -77,6 +78,7 @@ const ProjectsForm = () => {
         .then((response) => response.json())
         .then(function (response) {
           if (!response.error) {
+            alert(`Project ${projectBody.name} created successfully!`);
             window.location.assign('/projects');
           }
         });
