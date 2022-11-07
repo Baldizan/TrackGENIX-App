@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 const TimeSheetsForm = () => {
   let history = useHistory();
-  const editId = history.location.state.id;
+  const editId = history.location.state?.id;
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [employees, setEmployees] = useState([]);
@@ -40,7 +40,6 @@ const TimeSheetsForm = () => {
         });
       setTitleForm('Edit');
     }
-    setSelectedProject('');
   }, []);
 
   useEffect(() => {
@@ -68,6 +67,21 @@ const TimeSheetsForm = () => {
   }, []);
 
   const onChange = (e) => {
+    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeProject = (e) => {
+    setSelectedProject(e.target.value);
+    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeTask = (e) => {
+    setSelectedTask(e.target.value);
+    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeEmployee = (e) => {
+    setSelectedEmployee(e.target.value);
     setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
   };
 
@@ -124,21 +138,6 @@ const TimeSheetsForm = () => {
     }).then(() => {
       history.push('/time-sheets');
     });
-  };
-
-  const handleChangeProject = (e) => {
-    setSelectedProject(e.target.value);
-    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
-  };
-
-  const handleChangeTask = (e) => {
-    setSelectedTask(e.target.value);
-    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
-  };
-
-  const handleChangeEmployee = (e) => {
-    setSelectedEmployee(e.target.value);
-    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
   };
 
   return (
