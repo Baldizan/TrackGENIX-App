@@ -20,7 +20,7 @@ const Form = ({
       noValidate={noValidate}
       onSubmit={onSubmit}
     >
-      {title ? (title = <h2 className={styles.title}>{title}</h2>) : null}
+      {title ? <h2 className={styles.title}>{title}</h2> : null}
       <div className={secondColumnIndex ? styles.fieldsetColumns : styles.fieldsetContainer}>
         <fieldset className={styles.fieldset}>
           {legend ? (
