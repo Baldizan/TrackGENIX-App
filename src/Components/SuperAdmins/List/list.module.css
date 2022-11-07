@@ -5,24 +5,8 @@
   border-radius: 20px;
   box-shadow: 2px 2px 5px 3px #00000033;
 }
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-th {
-  padding: 10px;
-  border-bottom: 1px solid #000;
-}
 
-td {
-  padding: 10px;
-  border-bottom: 1px solid #000;
-}
-
-p {
-  margin: 0;
-}
-.btnAdd{
+.btnAdd {
   padding: 10px;
   border-radius: 20px;
   background-color: #131c0c;
@@ -33,7 +17,7 @@ p {
   font-size: 16px;
   font-weight: bold;
   text-transform: uppercase;
-  transition-duration: .5s;
+  transition-duration: 0.5s;
 }
 .btnAdd:hover {
   background-color: #373867;

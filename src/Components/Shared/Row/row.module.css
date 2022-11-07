@@ -1,0 +1,16 @@
+.tr {
+  display: flex;
+  padding: 10px 10px;
+  border: solid 0.5px #eeeeee;
+  border-collapse: collapse;
+  text-align: start;
+}
+
+.td {
+  width: 40%;
+}
+
+.btnContainer {
+  display: flex;
+  gap: 15px;
+}
