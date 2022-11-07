@@ -10,22 +10,22 @@ function Footer() {
         </div>
         <ul className={styles.rutes}>
           <li>
-            <Link to="/admins">admins</Link>
+            <Link to="/Admins">admins</Link>
           </li>
           <li>
-            <Link to="/super-admins">super admins</Link>
+            <Link to="/Super-admins">super admins</Link>
           </li>
           <li>
-            <Link to="/employees">employees</Link>
+            <Link to="/Employees">employees</Link>
           </li>
           <li>
-            <Link to="/projects">projects</Link>
+            <Link to="/Projects">projects</Link>
           </li>
           <li>
-            <Link to="/time-sheets">timesheets</Link>
+            <Link to="/Time-sheets">timesheets</Link>
           </li>
           <li>
-            <Link to="/tasks">tasks</Link>
+            <Link to="/Tasks">tasks</Link>
           </li>
         </ul>
       </div>

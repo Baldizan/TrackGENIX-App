@@ -61,7 +61,7 @@ const Employees = () => {
               <td>{employee.lastName}</td>
               <td>{employee.phone}</td>
               <td>{employee.email}</td>
-              <td>{employee.project?.name}</td>
+              <td>{employee.project.name}</td>
               <td className={styles.center}>
                 <button onClick={() => editEmployee(employee._id)}>Edit</button>
               </td>
