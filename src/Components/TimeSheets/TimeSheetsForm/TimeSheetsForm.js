@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styles from './timeSheetsForm.module.css';
+import { useHistory } from 'react-router-dom';
 
 const TimeSheetsForm = () => {
-  const paramsURL = new URLSearchParams(window.location.search);
-  const editId = paramsURL.get('id');
+  let history = useHistory();
+  const editId = history.location.state.id;
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [employees, setEmployees] = useState([]);
@@ -100,7 +101,7 @@ const TimeSheetsForm = () => {
       },
       body: JSON.stringify(newItem)
     }).then(() => {
-      window.location.href = '/time-sheets';
+      history.push('/time-sheets');
     });
   };
 
@@ -121,7 +122,7 @@ const TimeSheetsForm = () => {
       },
       body: JSON.stringify(editItem)
     }).then(() => {
-      window.location.href = '/time-sheets';
+      history.push('/time-sheets');
     });
   };
 

@@ -1,11 +1,12 @@
 import React from 'react';
 import ListItem from '../ListItem/ListItem';
 import styles from './List.module.css';
+import { useHistory } from 'react-router-dom';
 
 const List = ({ list, deleteItem }) => {
+  let history = useHistory();
   const handleAdd = () => {
-    sessionStorage.setItem('action', 'add');
-    window.location.href = '/time-sheets/form';
+    history.push('/time-sheets/form');
   };
 
   return (

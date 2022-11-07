@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Modal from '../Modal/Modal';
 import styles from './ListItem.module.css';
+import { useHistory } from 'react-router-dom';
 
 const ListItem = ({ listItem, deleteItem }) => {
   const [modal, setModal] = useState(false);
+  let history = useHistory();
 
   const handleDelete = () => {
     setModal(!modal);
@@ -19,7 +21,7 @@ const ListItem = ({ listItem, deleteItem }) => {
   };
 
   const handleEdit = () => {
-    window.location.href = `/time-sheets/form?id=${listItem._id}`;
+    history.push(`/time-sheets/form`, { id: listItem._id });
   };
 
   return (

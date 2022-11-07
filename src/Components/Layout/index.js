@@ -1,60 +1,18 @@
 import Header from '../Header/index';
 import Footer from '../Footer/index';
-import Admins from '../Admins/index';
-import SuperAdmins from '../SuperAdmins/index';
-import Home from '../Home/index';
+import { BrowserRouter as Router } from 'react-router-dom';
+import React from 'react';
+import Routes from './routes';
 import styles from './layout.module.css';
-import Employees from '../Employees/index';
-import EmployeesForm from '../Employees/Form';
-import Projects from '../Projects';
-import ProjectsForm from '../Projects/Form/form.js';
-import TimeSheets from '../TimeSheets';
-import Tasks from '../Tasks/index';
-import TimeSheetsForm from '../TimeSheets/TimeSheetsForm/TimeSheetsForm';
-import FormSuperAdmins from '../SuperAdmins/Form';
 
 function Layout() {
-  let currentScreen = <Home />;
-  switch (window.location.pathname) {
-    case '/admins':
-      currentScreen = <Admins />;
-      break;
-    case '/super-admins':
-      currentScreen = <SuperAdmins />;
-      break;
-    case '/super-admins/form':
-      currentScreen = <FormSuperAdmins />;
-      break;
-    case '/employees':
-      currentScreen = <Employees />;
-      break;
-    case '/employees/form':
-      currentScreen = <EmployeesForm />;
-      break;
-    case '/projects':
-      currentScreen = <Projects />;
-      break;
-    case '/projects/form':
-      currentScreen = <ProjectsForm />;
-      break;
-    case '/time-sheets':
-      currentScreen = <TimeSheets />;
-      break;
-    case '/time-sheets/form':
-      currentScreen = <TimeSheetsForm />;
-      break;
-    case '/tasks':
-      currentScreen = <Tasks />;
-      break;
-    default:
-      break;
-  }
-
   return (
     <div className={styles.container}>
-      <Header />
-      {currentScreen}
-      <Footer />
+      <Router>
+        <Header />
+        <Routes />
+        <Footer />
+      </Router>
     </div>
   );
 }
