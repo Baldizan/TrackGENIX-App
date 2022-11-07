@@ -20,6 +20,7 @@ export const Input = (props) => {
     </label>
   );
 };
+
 export const Select = (props) => {
   const { name, title, id, type, value, onChange, placeholder, arrayToMap, disabled } = props;
   return (
