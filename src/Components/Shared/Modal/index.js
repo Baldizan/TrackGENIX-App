@@ -2,13 +2,13 @@ import React from 'react';
 import styles from './modal.module.css';
 import Button from '../Button';
 
-const Modal = ({ content, contentMessage, heading, setModalDisplay, reqFunction }) => {
+const Modal = ({ content, contentMessage, heading, setModalDisplay, reqFunction, theme }) => {
   return (
     <div className={styles.container}>
-      <div className={styles.modal}>
+      <div className={styles[theme]}>
         <header className={styles.header}>
-          <h2 className={styles.heading}>{heading}</h2>
-          <button className={styles.topCloseButton} onClick={() => setModalDisplay(false)}>
+          <h2>{heading}</h2>
+          <button className={styles.topCloseButton} onClick={() => setModalDisplay()}>
             X
           </button>
         </header>
@@ -26,7 +26,7 @@ const Modal = ({ content, contentMessage, heading, setModalDisplay, reqFunction 
                 }}
               />
               <Button
-                label={'Confirm'}
+                label={'Delete'}
                 theme={'tertiary'}
                 type="submit"
                 onClick={() => {

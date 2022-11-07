@@ -10,33 +10,81 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal {
+.confirm {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     position: absolute;
     width: 40vw;
+    padding: 12px;
     background-color: #fff;
     border: solid 1px #373867;
     border-radius: 5px;
 }
 
+.success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 25vw;
+    padding: 0 24px;
+    background-color: #AACE9B;
+    border-radius: 5px;
+}
+
+.success div {
+    display: none;
+}
+
+.error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 25vw;
+    padding: 0 24px;
+    background-color: #F13312;
+    border-radius: 5px;
+}
+
+.error div {
+    display: none;
+}
+
+
 .header {
     display: flex;
     justify-content: space-between;
-    width: 90%;
+    width: 100%;
   }
 
-.heading {
+.confirm h2 {
     color: #373867;
+}
+
+.success h2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #373867;
+}
+
+.error h2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.error button {
+    color: #fff;
 }
 
 .topCloseButton {
     background-color: transparent;
     border: none;
-    font-weight: 500;
+    font-weight: 700;
     font-size: 16px;
-    color: #373867;
+    /* color: #373867; */
 }
 
 .topCloseButton:hover,
@@ -53,6 +101,7 @@
 }
 
 .content {
-    text-align: center;
+    width: 100%;
+    text-align: left;
     color: #373867;
 }
