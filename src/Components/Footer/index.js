@@ -1,4 +1,5 @@
 import styles from './footer.module.css';
+import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
@@ -9,22 +10,22 @@ function Footer() {
         </div>
         <ul className={styles.rutes}>
           <li>
-            <a href="/admins">admins</a>
+            <Link to="/Admins">admins</Link>
           </li>
           <li>
-            <a href="/super-admins">super admins</a>
+            <Link to="/Super-admins">super admins</Link>
           </li>
           <li>
-            <a href="/employees">employees</a>
+            <Link to="/Employees">employees</Link>
           </li>
           <li>
-            <a href="/projects">projects</a>
+            <Link to="/Projects">projects</Link>
           </li>
           <li>
-            <a href="/time-sheets">timesheets</a>
+            <Link to="/Time-sheets">timesheets</Link>
           </li>
           <li>
-            <a href="/tasks">tasks</a>
+            <Link to="/Tasks">tasks</Link>
           </li>
         </ul>
       </div>

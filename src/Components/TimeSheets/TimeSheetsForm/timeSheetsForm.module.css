@@ -10,7 +10,7 @@
   justify-content: space-evenly;
 }
 
-form{
+.form{
   align-self: center;
   width: 80%;
 }
@@ -19,14 +19,14 @@ form{
   font-size: 20px;
 }
 
-label{
+.label{
  width: 30%;
 }
 
-input, select {
+.input, .select {
   width: 40%;
 }
-.title-add {
+.titleAdd {
   align-self: center;
 }
 

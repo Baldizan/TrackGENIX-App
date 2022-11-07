@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import './TimeSheetsForm.css';
+import styles from './timeSheetsForm.module.css';
+import { useHistory } from 'react-router-dom';
 
 const TimeSheetsForm = () => {
-  const paramsURL = new URLSearchParams(window.location.search);
-  const editId = paramsURL.get('id');
+  let history = useHistory();
+  const editId = history.location.state?.id;
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [employees, setEmployees] = useState([]);
@@ -39,7 +40,6 @@ const TimeSheetsForm = () => {
         });
       setTitleForm('Edit');
     }
-    setSelectedProject('');
   }, []);
 
   useEffect(() => {
@@ -67,6 +67,21 @@ const TimeSheetsForm = () => {
   }, []);
 
   const onChange = (e) => {
+    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeProject = (e) => {
+    setSelectedProject(e.target.value);
+    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeTask = (e) => {
+    setSelectedTask(e.target.value);
+    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeEmployee = (e) => {
+    setSelectedEmployee(e.target.value);
     setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
   };
 
@@ -100,7 +115,7 @@ const TimeSheetsForm = () => {
       },
       body: JSON.stringify(newItem)
     }).then(() => {
-      window.location.href = '/time-sheets';
+      history.push('/time-sheets');
     });
   };
 
@@ -121,33 +136,24 @@ const TimeSheetsForm = () => {
       },
       body: JSON.stringify(editItem)
     }).then(() => {
-      window.location.href = '/time-sheets';
+      history.push('/time-sheets');
     });
-  };
-
-  const handleChangeProject = (e) => {
-    setSelectedProject(e.target.value);
-    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
-  };
-
-  const handleChangeTask = (e) => {
-    setSelectedTask(e.target.value);
-    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
-  };
-
-  const handleChangeEmployee = (e) => {
-    setSelectedEmployee(e.target.value);
-    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
   };
 
   return (
     <>
-      <form onSubmit={onSubmit} className="column">
-        <h2 className="title-add">{titleForm}</h2>
-        <div className="column">
-          <div className="column">
-            <label>Proyect name</label>
-            <select name="project" value={selectedProject} onChange={handleChangeProject} required>
+      <form onSubmit={onSubmit} className={[styles.column, styles.form]}>
+        <h2 className={styles.titleAdd}>{titleForm}</h2>
+        <div className={styles.column}>
+          <div className={styles.column}>
+            <label className={styles.label}>Proyect name</label>
+            <select
+              className={styles.input}
+              name="project"
+              value={selectedProject}
+              onChange={handleChangeProject}
+              required
+            >
               <option value="">Select a project</option>
               {projects.map((project) => (
                 <option key={project._id} value={project._id}>
@@ -156,9 +162,15 @@ const TimeSheetsForm = () => {
               ))}
             </select>
           </div>
-          <div className="column">
-            <label>Task</label>
-            <select name="task" value={selectedTask} onChange={handleChangeTask} required>
+          <div className={styles.column}>
+            <label className={styles.label}>Task</label>
+            <select
+              className={styles.input}
+              name="task"
+              value={selectedTask}
+              onChange={handleChangeTask}
+              required
+            >
               <option value="">Select a task</option>
               {tasks.map((task) => (
                 <option key={task._id} value={task._id}>
@@ -167,9 +179,10 @@ const TimeSheetsForm = () => {
               ))}
             </select>
           </div>
-          <div className="column">
-            <label>Employee</label>
+          <div className={styles.column}>
+            <label className={styles.label}>Employee</label>
             <select
+              className={styles.input}
               name="employee"
               value={selectedEmployee}
               onChange={handleChangeEmployee}
@@ -183,9 +196,10 @@ const TimeSheetsForm = () => {
               ))}
             </select>
           </div>
-          <div className="column">
-            <label>Description</label>
+          <div className={styles.column}>
+            <label className={styles.label}>Description</label>
             <input
+              className={styles.input}
               type="text"
               name="description"
               value={timeSheetInput.description}
@@ -193,9 +207,10 @@ const TimeSheetsForm = () => {
               required
             />
           </div>
-          <div className="column">
-            <label>Date</label>
+          <div className={styles.column}>
+            <label className={styles.label}>Date</label>
             <input
+              className={styles.input}
               type="date"
               name="date"
               value={timeSheetInput.date}
@@ -203,9 +218,10 @@ const TimeSheetsForm = () => {
               required
             />
           </div>
-          <div className="column">
-            <label>Hours</label>
+          <div className={styles.column}>
+            <label className={styles.label}>Hours</label>
             <input
+              className={styles.input}
               type="number"
               name="hours"
               value={timeSheetInput.hours}
@@ -214,7 +230,7 @@ const TimeSheetsForm = () => {
             />
           </div>
         </div>
-        <input className="btn" type="submit" value="Submit" />
+        <input className={styles.btn} type="submit" value="Submit" />
       </form>
     </>
   );
