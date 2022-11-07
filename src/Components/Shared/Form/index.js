@@ -21,7 +21,7 @@ const Form = ({
       onSubmit={onSubmit}
     >
       {title ? (title = <h2 className={styles.title}>{title}</h2>) : null}
-      <div className={secondColumnIndex ? styles.fieldsetColumns : null}>
+      <div className={secondColumnIndex ? styles.fieldsetColumns : styles.fieldsetContainer}>
         <fieldset className={styles.fieldset}>
           {legend ? (
             <legend className={styles.legend}>{Array.isArray(legend) ? legend[0] : legend}</legend>
@@ -30,20 +30,21 @@ const Form = ({
         </fieldset>
         {secondColumnIndex ? (
           <fieldset className={styles.fieldset}>
-            {Array.isArray(legend) && legend[1] ? (
-              <legend className={styles.legend}>{legend[1]}</legend>
+            {legend ? (
+              <legend className={styles.legend}>{Array.isArray(legend) ? legend[1] : null}</legend>
             ) : null}
             {children.slice(secondColumnIndex)}
           </fieldset>
         ) : null}
       </div>
-      <Button
-        type="submit"
-        label="Submit"
-        className={styles.submit}
-        disabled={noValidate}
-        theme={noValidate ? 'disabled' : 'primary'}
-      />
+      <div className={styles.btnContainer}>
+        <Button
+          type="submit"
+          label="Submit"
+          disabled={noValidate}
+          theme={noValidate ? 'disabled' : 'primary'}
+        />
+      </div>
     </form>
   );
 };
