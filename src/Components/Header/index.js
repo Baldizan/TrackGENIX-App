@@ -33,25 +33,25 @@ function Header() {
         </div>
         <ul className={styles.rutes}>
           <li>
-            <Link to="/">home</Link>
+            <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/Admins">admins</Link>
+            <Link to="/Admins">Admins</Link>
           </li>
           <li>
-            <Link to="/Super-admins">super admins</Link>
+            <Link to="/Super-admins">Super admins</Link>
           </li>
           <li>
-            <Link to="/Employees">employees</Link>
+            <Link to="/Employees">Employees</Link>
           </li>
           <li>
-            <Link to="/Projects">projects</Link>
+            <Link to="/Projects">Projects</Link>
           </li>
           <li>
-            <Link to="/Time-sheets">timesheets</Link>
+            <Link to="/Time-sheets">Timesheets</Link>
           </li>
           <li>
-            <Link to="/Tasks">tasks</Link>
+            <Link to="/Tasks">Tasks</Link>
           </li>
         </ul>
       </nav>
