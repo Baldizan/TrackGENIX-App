@@ -1,4 +1,5 @@
 import styles from './header.module.css';
+import { Link } from 'react-router-dom';
 
 function Header() {
   return (
@@ -32,22 +33,25 @@ function Header() {
         </div>
         <ul className={styles.rutes}>
           <li>
-            <a href="/admins">admins</a>
+            <Link to="/">Home</Link>
           </li>
           <li>
-            <a href="/super-admins">super admins</a>
+            <Link to="/Admins">Admins</Link>
           </li>
           <li>
-            <a href="/employees">employees</a>
+            <Link to="/Super-admins">Super admins</Link>
           </li>
           <li>
-            <a href="/projects">projects</a>
+            <Link to="/Employees">Employees</Link>
           </li>
           <li>
-            <a href="/time-sheets">timesheets</a>
+            <Link to="/Projects">Projects</Link>
           </li>
           <li>
-            <a href="/tasks">tasks</a>
+            <Link to="/Time-sheets">Timesheets</Link>
+          </li>
+          <li>
+            <Link to="/Tasks">Tasks</Link>
           </li>
         </ul>
       </nav>

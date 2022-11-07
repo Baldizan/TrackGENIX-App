@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Modal from '../Modal/Modal';
-import './ListItem.css';
+import styles from './ListItem.module.css';
+import { useHistory } from 'react-router-dom';
 
 const ListItem = ({ listItem, deleteItem }) => {
   const [modal, setModal] = useState(false);
+  let history = useHistory();
 
   const handleDelete = () => {
     setModal(!modal);
@@ -19,20 +21,22 @@ const ListItem = ({ listItem, deleteItem }) => {
   };
 
   const handleEdit = () => {
-    window.location.href = `/time-sheets/form?id=${listItem._id}`;
+    history.push(`/time-sheets/form`, { id: listItem._id });
   };
 
   return (
     <>
-      <tr className="space-between tr">
-        <td>{listItem.project?.name}</td>
-        <td>{listItem.task?.description}</td>
-        <td>{listItem.employee?.name}</td>
-        <td>{listItem.description}</td>
-        <td>{new Date(listItem.date).toLocaleDateString('es-AR', { timeZone: 'UTC' })}</td>
-        <td>{listItem.hours}</td>
+      <tr>
+        <td className={styles.td}>{listItem.project?.name}</td>
+        <td className={styles.td}>{listItem.task?.description}</td>
+        <td className={styles.td}> {listItem.employee?.name}</td>
+        <td className={styles.td}>{listItem.description}</td>
+        <td className={styles.td}>
+          {new Date(listItem.date).toLocaleDateString('es-AR', { timeZone: 'UTC' })}
+        </td>
+        <td className={styles.td}>{listItem.hours}</td>
         <div>
-          <button className="btn-delete" onClick={handleDelete}>
+          <button className={styles.btnDelete} onClick={handleDelete}>
             X
           </button>
           <button onClick={handleEdit}>Edit</button>
