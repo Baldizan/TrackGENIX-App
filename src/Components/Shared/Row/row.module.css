@@ -11,6 +11,7 @@
 }
 
 .btnContainer {
+  width: 5%;
   display: flex;
   gap: 15px;
 }

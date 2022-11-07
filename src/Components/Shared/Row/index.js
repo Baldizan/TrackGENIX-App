@@ -5,8 +5,8 @@ import styles from './row.module.css';
 const Row = ({ listItems, deleteItem, editItem }) => {
   return (
     <tr className={styles.tr}>
-      {listItems?.map((item) => (
-        <td key={item._id} className={styles.td}>
+      {listItems?.map((item, i) => (
+        <td key={i} className={styles.td}>
           {item}
         </td>
       ))}
