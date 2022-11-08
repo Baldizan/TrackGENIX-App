@@ -10,7 +10,7 @@ const Row = ({ listItems, deleteItem, editItem }) => {
           {item}
         </td>
       ))}
-      <div className={styles.btnContainer}>
+      <td className={styles.btnContainer}>
         {editItem ? (
           <Button
             style={styles.btnEdit}
@@ -24,7 +24,7 @@ const Row = ({ listItems, deleteItem, editItem }) => {
             onClick={deleteItem}
           />
         ) : null}
-      </div>
+      </td>
     </tr>
   );
 };
