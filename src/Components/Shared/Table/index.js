@@ -2,10 +2,7 @@ import React from 'react';
 import styles from './table.module.css';
 import Row from './Row';
 
-const Table = ({ data, headers, listItems, editItem, deleteItem }) => {
-  console.log(data);
-  console.log(listItems);
-
+const Table = ({ data, headers, editItem, deleteItem }) => {
   return (
     <div className={styles.container}>
       <table className={styles.table}>
