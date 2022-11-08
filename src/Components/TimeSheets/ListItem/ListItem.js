@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 
 const ListItem = ({ listItem, deleteItem }) => {
   const [modal, setModal] = useState(false);
-  let history = useHistory();
+  const history = useHistory();
 
   const handleDelete = () => {
     setModal(!modal);
@@ -35,12 +35,12 @@ const ListItem = ({ listItem, deleteItem }) => {
           {new Date(listItem.date).toLocaleDateString('es-AR', { timeZone: 'UTC' })}
         </td>
         <td className={styles.td}>{listItem.hours}</td>
-        <div>
+        <td>
           <button className={styles.btnDelete} onClick={handleDelete}>
             X
           </button>
           <button onClick={handleEdit}>Edit</button>
-        </div>
+        </td>
       </tr>
       {modal && (
         <Modal

@@ -1,8 +1,8 @@
-.flexContainer {
+.container {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  width: 100%;
+  align-items: center;
   color: #24266f;
 }
 
@@ -16,10 +16,8 @@
   background-color: #ECEEED;
 }
 
-.btn-add {
-  width: 20%;
-  height: 30px;
-  border-radius: 5px;
-  border: none;
-  background-color: #AACE9B;
+.nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }

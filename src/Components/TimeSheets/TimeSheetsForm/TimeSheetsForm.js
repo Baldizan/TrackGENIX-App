@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styles from './timeSheetsForm.module.css';
 import { useHistory } from 'react-router-dom';
+import Form from '../../Shared/Form';
+import { Input, Select } from '../../Shared/Input';
 
 const TimeSheetsForm = () => {
-  let history = useHistory();
+  const history = useHistory();
   const editId = history.location.state?.id;
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
@@ -22,6 +24,21 @@ const TimeSheetsForm = () => {
   });
 
   useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
+      .then((res) => res.json())
+      .then((json) => {
+        setTasks(json.data);
+      });
+    fetch(`${process.env.REACT_APP_API_URL}/projects`)
+      .then((res) => res.json())
+      .then((json) => {
+        setProjects(json.data);
+      });
+    fetch(`${process.env.REACT_APP_API_URL}/employees`)
+      .then((res) => res.json())
+      .then((json) => {
+        setEmployees(json.data);
+      });
     if (editId) {
       fetch(`${process.env.REACT_APP_API_URL}/timesheets/${editId}`)
         .then((res) => res.json())
@@ -40,30 +57,6 @@ const TimeSheetsForm = () => {
         });
       setTitleForm('Edit');
     }
-  }, []);
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/projects`)
-      .then((res) => res.json())
-      .then((json) => {
-        setProjects(json.data);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
-      .then((res) => res.json())
-      .then((json) => {
-        setTasks(json.data);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/employees`)
-      .then((res) => res.json())
-      .then((json) => {
-        setEmployees(json.data);
-      });
   }, []);
 
   const onChange = (e) => {
@@ -140,99 +133,63 @@ const TimeSheetsForm = () => {
     });
   };
 
+  const project = () => projects.map((project) => project._id);
+  const task = () => tasks.map((task) => task._id);
+  const employee = () => employees.map((employee) => employee._id);
+
   return (
-    <>
-      <form onSubmit={onSubmit} className={[styles.column, styles.form]}>
-        <h2 className={styles.titleAdd}>{titleForm}</h2>
-        <div className={styles.column}>
-          <div className={styles.column}>
-            <label className={styles.label}>Proyect name</label>
-            <select
-              className={styles.input}
-              name="project"
-              value={selectedProject}
-              onChange={handleChangeProject}
-              required
-            >
-              <option value="">Select a project</option>
-              {projects.map((project) => (
-                <option key={project._id} value={project._id}>
-                  {project.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className={styles.column}>
-            <label className={styles.label}>Task</label>
-            <select
-              className={styles.input}
-              name="task"
-              value={selectedTask}
-              onChange={handleChangeTask}
-              required
-            >
-              <option value="">Select a task</option>
-              {tasks.map((task) => (
-                <option key={task._id} value={task._id}>
-                  {task.description}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className={styles.column}>
-            <label className={styles.label}>Employee</label>
-            <select
-              className={styles.input}
-              name="employee"
-              value={selectedEmployee}
-              onChange={handleChangeEmployee}
-              required
-            >
-              <option value="">Select a employee</option>
-              {employees.map((employee) => (
-                <option key={employee._id} value={employee._id}>
-                  {employee.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className={styles.column}>
-            <label className={styles.label}>Description</label>
-            <input
-              className={styles.input}
-              type="text"
-              name="description"
-              value={timeSheetInput.description}
-              onChange={onChange}
-              required
-            />
-          </div>
-          <div className={styles.column}>
-            <label className={styles.label}>Date</label>
-            <input
-              className={styles.input}
-              type="date"
-              name="date"
-              value={timeSheetInput.date}
-              onChange={onChange}
-              required
-            />
-          </div>
-          <div className={styles.column}>
-            <label className={styles.label}>Hours</label>
-            <input
-              className={styles.input}
-              type="number"
-              name="hours"
-              value={timeSheetInput.hours}
-              onChange={onChange}
-              required
-            />
-          </div>
-        </div>
-        <input className={styles.btn} type="submit" value="Submit" />
-      </form>
-    </>
+    <section className={styles.container}>
+      <Form onSubmit={onSubmit} title={titleForm}>
+        <Select
+          placeholder="test"
+          onChange={handleChangeProject}
+          value={selectedProject}
+          name="project"
+          arrayToMap={project()}
+          title={'Project'}
+          required
+        />
+        <Select
+          onChange={handleChangeTask}
+          value={selectedTask}
+          name="task"
+          arrayToMap={task()}
+          title={'Project'}
+          required
+        />
+        <Select
+          onChange={handleChangeEmployee}
+          value={selectedEmployee}
+          name="employee"
+          arrayToMap={employee()}
+          title={'Employee'}
+          required
+        />
+        <Input
+          onChange={onChange}
+          value={timeSheetInput.description}
+          name="description"
+          title={'Description'}
+          required
+        />
+        <Input
+          onChange={onChange}
+          value={timeSheetInput.date}
+          name="date"
+          type="date"
+          title={'Date'}
+          required
+        />
+        <Input
+          onChange={onChange}
+          value={timeSheetInput.hours}
+          name="hours"
+          type="number"
+          title={'Hours'}
+          required
+        />
+      </Form>
+    </section>
   );
 };
 export default TimeSheetsForm;
