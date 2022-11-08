@@ -1,8 +1,7 @@
-import React from 'react';
 import styles from './modal.module.css';
 import Button from '../Button';
 
-const Modal = ({ contentMessage, heading, setModalDisplay, reqFunction, theme }) => {
+const Modal = ({ heading, children, setModalDisplay, theme }) => {
   let closeTheme;
 
   if (theme === 'error') {
@@ -13,37 +12,15 @@ const Modal = ({ contentMessage, heading, setModalDisplay, reqFunction, theme })
   return (
     <div className={styles.container}>
       <div className={styles[theme]}>
-        <header className={styles.header}>
+        <div className={styles.header}>
           <h2 className={styles.title}>{heading}</h2>
           <Button
             className={styles.topCloseButton}
             onClick={() => setModalDisplay()}
             icon={`${process.env.PUBLIC_URL}/assets/images/close-cross-${closeTheme}.svg`}
           />
-        </header>
-        <div className={styles.content}>
-          {contentMessage ? <p className={styles.content}>{contentMessage}</p> : null}
-          {contentMessage ? (
-            <div className={styles.buttons}>
-              <Button
-                label={'Cancel'}
-                theme={'primary'}
-                type="submit"
-                onClick={() => {
-                  setModalDisplay();
-                }}
-              />
-              <Button
-                label={'Delete'}
-                theme={'tertiary'}
-                type="submit"
-                onClick={() => {
-                  reqFunction();
-                }}
-              />
-            </div>
-          ) : null}
         </div>
+        <div className={styles.content}>{children}</div>
       </div>
     </div>
   );

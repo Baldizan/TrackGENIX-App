@@ -102,12 +102,6 @@
     transition: all .2s ease-in-out;
 }
 
-.buttons {
-    margin-top: 8px;
-    display: flex;
-    justify-content: end;
-}
-
 .content {
     width: 100%;
     margin-top: 4px;
