@@ -19,7 +19,7 @@
    padding: 20px;
 }
 
-.btn-close{
+.btnClose{
    align-self: flex-end;
    cursor: pointer;
    position: relative;
@@ -27,10 +27,10 @@
    background: none;
 }
 
-.text-modal {
+.textModal {
    align-self: center;
 }
 
-.btn-confirm {
+.btnConfirm {
    width: 50%;
 }
