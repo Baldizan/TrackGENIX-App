@@ -5,14 +5,3 @@
   border-collapse: collapse;
   text-align: start;
 }
-
-.td {
-  width: 100%;
-}
-
-.btnContainer {
-  align-self: flex-start;
-  width: 5%;
-  display: flex;
-  gap: 15px;
-}
