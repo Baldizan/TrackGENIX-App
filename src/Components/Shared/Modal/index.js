@@ -5,7 +5,7 @@ import Button from '../Button';
 const Modal = ({ contentMessage, heading, setModalDisplay, reqFunction, theme }) => {
   let closeTheme;
 
-  if (theme == 'error') {
+  if (theme === 'error') {
     closeTheme = 'white';
   } else {
     closeTheme = 'purple';
