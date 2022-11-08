@@ -11,19 +11,19 @@ const Row = ({ listItems, deleteItem, editItem }) => {
         </td>
       ))}
       <td className={styles.btnContainer}>
-        {editItem ? (
+        {editItem && (
           <Button
             style={styles.btnEdit}
             icon={`${process.env.PUBLIC_URL}/assets/images/pen-to-square-solid.svg`}
             onClick={editItem}
           />
-        ) : null}
-        {deleteItem ? (
+        )}
+        {deleteItem && (
           <Button
             icon={`${process.env.PUBLIC_URL}/assets/images/trash-solid.svg`}
             onClick={deleteItem}
           />
-        ) : null}
+        )}
       </td>
     </tr>
   );
