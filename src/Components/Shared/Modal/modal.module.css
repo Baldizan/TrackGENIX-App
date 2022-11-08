@@ -28,9 +28,8 @@
 
 .success {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     position: absolute;
     width: 25vw;
     height: 40px;
@@ -39,15 +38,10 @@
     border-radius: 5px;
 }
 
-.success div {
-    display: none;
-}
-
 .error {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     position: absolute;
     width: 25vw;
     height: 40px;
@@ -55,11 +49,6 @@
     background-color: #F13312;
     border-radius: 5px;
 }
-
-.error div {
-    display: none;
-}
-
 
 .header {
     display: flex;

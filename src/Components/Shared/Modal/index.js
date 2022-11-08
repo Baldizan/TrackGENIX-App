@@ -20,7 +20,7 @@ const Modal = ({ heading, children, setModalDisplay, theme }) => {
             icon={`${process.env.PUBLIC_URL}/assets/images/close-cross-${closeTheme}.svg`}
           />
         </div>
-        <div className={styles.content}>{children}</div>
+        {children ? <div className={styles.content}>{children}</div> : null}
       </div>
     </div>
   );
