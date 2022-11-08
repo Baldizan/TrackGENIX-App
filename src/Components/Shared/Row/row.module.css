@@ -1,9 +1,6 @@
 .tr {
   display: flex;
-  padding: 10px 10px;
-  border: solid 0.5px #eeeeee;
-  border-collapse: collapse;
-  text-align: start;
+  width: 100%;
 }
 
 .td {
@@ -11,8 +8,8 @@
 }
 
 .btnContainer {
-  align-self: flex-start;
-  width: 5%;
   display: flex;
+  align-self: center;
+  width: 5%;
   gap: 15px;
 }
