@@ -1,31 +1,31 @@
 import React from 'react';
 import styles from './table.module.css';
+import Row from './Row';
 
-const Table = ({ data, headers }) => {
+const Table = ({ data, headers, editItem, deleteItem }) => {
+  console.log(data);
+  console.log(data.description);
+
   return (
     <div className={styles.container}>
       <table className={styles.table}>
         <thead>
           <tr>
-            {headers.map((header, index) => {
-              return <th key={index}>{header}</th>;
-            })}
+            {headers.map((header, index) => (
+              <th key={index}>{header.toUpperCase()}</th>
+            ))}
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          {data.map((row) => {
-            return (
-              <tr className={styles.tr} key={row._id}>
-                {headers.map((header, index) => {
-                  return (
-                    <td key={index} className={styles.td}>
-                      {row[header]}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
+          {data.map((item) => (
+            <Row
+              key={item._id}
+              listItems={[item._id, item.description]}
+              editItem={editItem}
+              deleteItem={deleteItem}
+            />
+          ))}
         </tbody>
       </table>
     </div>

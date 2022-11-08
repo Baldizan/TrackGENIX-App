@@ -1,27 +1,18 @@
-.container {
-  flex: 1;
+.tr {
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.table {
-  width: 70vw;
-  margin: 10vh 0;
-  border: 1px solid #888;
-  border-radius: 1%;
+  padding: 10px 10px;
+  border: solid 0.5px #eeeeee;
   border-collapse: collapse;
+  text-align: start;
 }
 
-
-.table tr {
-  border-top: 1px solid #888;
+.td {
+  width: 100%;
 }
 
-.table td {
-  padding: 1% 1%;
-}
-
-.center {
-  text-align: center;
+.btnContainer {
+  align-self: flex-start;
+  width: 5%;
+  display: flex;
+  gap: 15px;
 }
