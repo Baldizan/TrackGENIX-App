@@ -1,0 +1,64 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-block: 2%;
+  width: clamp(300px, 60%, 90vw);
+  border: 1px solid #373867;
+  border-radius: 5px;
+}
+
+.title {
+  color: #373867;
+  letter-spacing: 0.125em;
+  font-size: 35px;
+  line-height: 0.8;
+  font-weight: 500;
+  margin-block: 5%;
+}
+
+.fieldsetColumns {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.fieldsetContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-inline: 2%;
+  margin-block: 2%;
+  gap: 10px;
+  border: none;
+}
+
+.legend {
+  color: #373867;
+  margin: 0 auto 2% 12%;
+  font-size: 20px;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  min-height: 30px;
+}
+
+.btnContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 100%;
+  margin: 0 10% 2% 0;
+}
