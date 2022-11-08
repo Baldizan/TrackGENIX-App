@@ -10,6 +10,10 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 
+.title {
+    margin: 0;
+}
+
 .confirm {
     display: flex;
     flex-direction: column;
@@ -26,8 +30,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     position: absolute;
     width: 25vw;
+    height: 40px;
     padding: 0 24px;
     background-color: #AACE9B;
     border-radius: 5px;
@@ -41,8 +47,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     position: absolute;
     width: 25vw;
+    height: 40px;
     padding: 0 24px;
     background-color: #F13312;
     border-radius: 5px;
@@ -84,7 +92,6 @@
     border: none;
     font-weight: 700;
     font-size: 16px;
-    /* color: #373867; */
 }
 
 .topCloseButton:hover,
@@ -96,12 +103,14 @@
 }
 
 .buttons {
+    margin-top: 8px;
     display: flex;
     justify-content: end;
 }
 
 .content {
     width: 100%;
+    margin-top: 4px;
     text-align: left;
     color: #373867;
 }
