@@ -9,7 +9,7 @@ const Button = ({
   style,
   hidden,
   icon,
-  theme = icon ? 'icon' : 'primary'
+  theme = style || icon ? null : 'primary'
 }) => {
   return (
     <button
@@ -18,7 +18,7 @@ const Button = ({
         ${style}
         ${styles.default}
         ${icon && styles.icon}
-        ${theme && styles[theme]}
+        ${!disabled && theme && styles[theme]}
         ${hidden && styles.hidden}
         ${disabled && styles.disabled}
       `}
