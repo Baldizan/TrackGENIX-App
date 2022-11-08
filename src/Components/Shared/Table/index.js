@@ -9,7 +9,7 @@ const Table = ({ data, headers, editItem, deleteItem }) => {
         <thead>
           <tr>
             {headers.map((header, index) => (
-              <th key={index}>{header.toUpperCase()}</th>
+              <th key={index}>{header}</th>
             ))}
             <th></th>
           </tr>
@@ -18,7 +18,7 @@ const Table = ({ data, headers, editItem, deleteItem }) => {
           {data.map((item) => (
             <Row
               key={item._id}
-              listItems={item}
+              rowItem={item}
               headers={headers}
               editItem={editItem}
               deleteItem={deleteItem}
