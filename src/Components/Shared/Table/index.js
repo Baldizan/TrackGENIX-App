@@ -2,9 +2,9 @@ import React from 'react';
 import styles from './table.module.css';
 import Row from './Row';
 
-const Table = ({ data, headers, editItem, deleteItem }) => {
+const Table = ({ data, headers, listItems, editItem, deleteItem }) => {
   console.log(data);
-  console.log(data.description);
+  console.log(listItems);
 
   return (
     <div className={styles.container}>
@@ -21,7 +21,8 @@ const Table = ({ data, headers, editItem, deleteItem }) => {
           {data.map((item) => (
             <Row
               key={item._id}
-              listItems={[item._id, item.description]}
+              listItems={item}
+              headers={headers}
               editItem={editItem}
               deleteItem={deleteItem}
             />
