@@ -2,12 +2,12 @@ import React from 'react';
 import Button from '../Button';
 import styles from './row.module.css';
 
-const Row = ({ listItems, deleteItem, editItem }) => {
+const Row = ({ headers, rowItem, deleteItem, editItem }) => {
   return (
     <tr className={styles.tr}>
-      {listItems?.map((item, i) => (
+      {headers?.map((prop, i) => (
         <td key={i} className={styles.td}>
-          {item}
+          {rowItem[prop]}
         </td>
       ))}
       <td className={styles.btnContainer}>
