@@ -1,55 +1,94 @@
-import { useEffect, useState } from 'react';
-import Modal from '../Shared/Modal';
-import styles from './super-admins.module.css';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import styles from '../Shared/Table/table.module.css';
+import Button from '../Shared/Button';
 import Table from '../Shared/Table';
+import Modal from '../Shared/Modal';
 
 const SuperAdmins = () => {
-  const [superAdmins, setSuperAdmins] = useState([]);
-  const [selectedSuperAdmin, saveSelection] = useState({});
-  const [showModal, saveShowModal] = useState(false);
+  const [displayRange, setDisplayRange] = useState({ x: 0, y: 5, z: 0 });
+  const [modalDisplay, setModalDisplay] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({});
+
+  const [list, setList] = useState([]);
   const headers = ['name', 'lastName', 'email'];
+  const history = useHistory();
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/Super-admins`)
-      .then((response) => response.json())
-      .then((response) => {
-        setSuperAdmins(response.data);
+    fetch(`${process.env.REACT_APP_API_URL}/super-admins`)
+      .then((res) => res.json())
+      .then((json) => {
+        setList(json.data);
       });
   }, []);
 
-  const deleteSuperAdmin = async (id) => {
-    fetch(`${process.env.REACT_APP_API_URL}/Super-admins/${id}`, {
-      method: 'DELETE'
+  const deleteItem = (item) => {
+    setSelectedItem(item);
+    setModalDisplay(true);
+  };
+
+  const handleDelete = () => {
+    fetch(`${process.env.REACT_APP_API_URL}/timesheets/${selectedItem._id}`, {
+      method: 'delete'
+    }).then(() => {
+      setList([...list.filter((listItem) => listItem._id !== selectedItem._id)]);
     });
-    setSuperAdmins(superAdmins.filter((superAdmins) => superAdmins._id !== id));
   };
 
-  const handleDelete = (superAdmins) => {
-    saveSelection({ id: superAdmins._id, name: superAdmins.name });
-    saveShowModal(true);
-  };
-
-  const editSuperAdmin = (id) => {
-    window.location.assign(`/Super-admins/form?id=${id}`);
+  const handleEdit = (item) => {
+    history.push(`/super-admins/form`, item);
   };
 
   return (
     <section className={styles.container}>
-      <Modal
-        heading={showModal}
-        asdas={editSuperAdmin}
-        setModalDisplay={deleteSuperAdmin}
-        theme={selectedSuperAdmin}
-      />
-      <a href="/employees/form" className={styles.button}>
-        Add new SuperAdmin +
-      </a>
+      <Button label={'Add new SuperAdmin +'} onClick={() => history.push('/super-admins/form')} />
       <Table
-        data={superAdmins.map((row) => ({ ...row, project: row.project?.name }))}
         headers={headers}
-        editItem={editSuperAdmin}
-        deleteItem={handleDelete}
+        data={list.slice(displayRange.x, displayRange.y)}
+        editItem={handleEdit}
+        deleteItem={deleteItem}
       />
+      <div className={styles.nav}>
+        <Button
+          onClick={() =>
+            setDisplayRange({
+              x: displayRange.x - 5,
+              y: displayRange.y - 5,
+              z: displayRange.z - 1
+            })
+          }
+          icon={`${process.env.PUBLIC_URL}/assets/images/angle-left-solid.svg`}
+          hidden={displayRange.x === 0}
+        />
+        <p>{displayRange.z}</p>
+        <Button
+          onClick={() =>
+            setDisplayRange({
+              x: displayRange.x + 5,
+              y: displayRange.y + 5,
+              z: displayRange.z + 1
+            })
+          }
+          icon={`${process.env.PUBLIC_URL}/assets/images/angle-right-solid.svg`}
+          hidden={list.slice(displayRange.x + 5, displayRange.y + 5).length === 0}
+        />
+      </div>
+      {modalDisplay && (
+        <Modal
+          heading={'Are you sure you want to delete this SuperAdmin?'}
+          setModalDisplay={setModalDisplay}
+          theme={'confirm'}
+        >
+          <Button
+            label="Confirm"
+            theme="tertiary"
+            onClick={() => {
+              handleDelete();
+              setModalDisplay(false);
+            }}
+          />
+        </Modal>
+      )}
     </section>
   );
 };
