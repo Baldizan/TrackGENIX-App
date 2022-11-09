@@ -42,7 +42,15 @@ const List = () => {
       employee: item.employee
     });
   };
-  const headers = ['_id', 'project', 'employee', 'task', 'description', 'date', 'hours'];
+  const headers = [
+    '_id',
+    'projectName',
+    'employeeFormat',
+    'taskDescription',
+    'description',
+    'date',
+    'hours'
+  ];
   return (
     <section className={styles.container}>
       <header className={styles.header}>
@@ -59,9 +67,12 @@ const List = () => {
           .map((row) => ({
             ...row,
             date: row.date.slice(0, 10),
-            project: row.project?.name,
-            task: row.task?.description,
-            employee: row.employee ? `${row.employee?.name} ${row.employee?.lastName}` : 'N/A'
+            project: row.project?._id,
+            task: row.task?._id,
+            employee: row.employee?._id,
+            projectName: row.project?.name,
+            taskDescription: row.task?.description,
+            employeeFormat: row.employee ? `${row.employee?.name} ${row.employee?.lastName}` : 'N/A'
           }))
           .slice(displayRange.x, displayRange.y)}
         editItem={handleEdit}
