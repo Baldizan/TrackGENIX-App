@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import styles from './timeSheetsForm.module.css';
 import { useHistory } from 'react-router-dom';
+import styles from './timeSheetsForm.module.css';
 import Form from '../../Shared/Form';
 import { Input, Select } from '../../Shared/Input';
+import Modal from '../../Shared/Modal';
 
 const TimeSheetsForm = () => {
   const history = useHistory();
@@ -19,6 +20,9 @@ const TimeSheetsForm = () => {
     date: '',
     hours: ''
   });
+  const [modalDisplay, setModalDisplay] = useState(false);
+  const [modalContent, setModalContent] = useState({ message: '', error: '' });
+  setModalContent;
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/tasks`)
@@ -82,9 +86,12 @@ const TimeSheetsForm = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(newItem)
-    }).then(() => {
-      history.push('/time-sheets');
-    });
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        setModalDisplay(true);
+        setModalContent({ message: json.message, error: json.error });
+      });
   };
 
   const editItem = ({ project, task, employee, description, date, hours }) => {
@@ -103,9 +110,12 @@ const TimeSheetsForm = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(editItem)
-    }).then(() => {
-      history.push('/time-sheets');
-    });
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        setModalDisplay(true);
+        setModalContent({ message: json.message, error: json.error });
+      });
   };
 
   const project = () => projects.map((project) => project._id);
@@ -164,6 +174,13 @@ const TimeSheetsForm = () => {
           required
         />
       </Form>
+      {modalDisplay && (
+        <Modal
+          heading={modalContent.message}
+          setModalDisplay={setModalDisplay}
+          theme={modalContent.error ? 'error' : 'success'}
+        />
+      )}
     </section>
   );
 };

@@ -3,9 +3,11 @@ import { useHistory } from 'react-router-dom';
 import styles from './List.module.css';
 import Button from '../../Shared/Button';
 import Table from '../../Shared/Table';
+import Modal from '../../Shared/Modal';
 
 const List = () => {
   const [displayRange, setDisplayRange] = useState({ x: 0, y: 5, z: 0 });
+  const [modalDisplay, setModalDisplay] = useState(false);
   const [list, setList] = useState([]);
   const history = useHistory();
 
@@ -18,6 +20,7 @@ const List = () => {
   }, []);
 
   const deleteItem = (_id) => {
+    setModalDisplay(true);
     fetch(`${process.env.REACT_APP_API_URL}/timesheets/${_id}`, {
       method: 'delete'
     }).then(() => {
@@ -77,6 +80,15 @@ const List = () => {
           hidden={list.slice(displayRange.x + 5, displayRange.y + 5).length === 0}
         />
       </div>
+      {modalDisplay && (
+        <Modal
+          heading={'Are you sure you want to delete this timesheet?'}
+          setModalDisplay={setModalDisplay}
+          theme={'confirm'}
+        >
+          <Button label="Confirm" theme="tertiary" onClick={() => {}} />
+        </Modal>
+      )}
     </section>
   );
 };
