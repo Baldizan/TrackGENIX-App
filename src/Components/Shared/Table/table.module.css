@@ -1,7 +1,21 @@
-.tr {
+.container {
   display: flex;
-  padding: 10px 10px;
-  border: solid 0.5px #eeeeee;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.table {
+  display: table;
+  justify-content: flex-start;
+  min-height: 340px;
   border-collapse: collapse;
-  text-align: start;
+  border-spacing: 0;
+}
+
+.nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }

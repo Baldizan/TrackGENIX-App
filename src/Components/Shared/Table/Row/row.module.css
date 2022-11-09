@@ -1,0 +1,14 @@
+ .tr {
+  min-width: 150px;
+}
+
+.td {
+  min-width: 150px;
+}
+
+.btnContainer {
+  display: flex;
+  align-content: center;
+  width: 5%;
+  gap: 15px;
+}

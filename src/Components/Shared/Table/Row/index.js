@@ -1,8 +1,14 @@
 import React from 'react';
-import Button from '../Button';
+import Button from '../../Button';
 import styles from './row.module.css';
 
 const Row = ({ headers, rowItem, deleteItem, editItem }) => {
+  const handleDeleteClick = () => {
+    deleteItem(rowItem);
+  };
+  const handleEditClick = () => {
+    editItem(rowItem);
+  };
   return (
     <tr className={styles.tr}>
       {headers?.map((prop, i) => (
@@ -15,13 +21,13 @@ const Row = ({ headers, rowItem, deleteItem, editItem }) => {
           <Button
             style={styles.btnEdit}
             icon={`${process.env.PUBLIC_URL}/assets/images/pen-to-square-solid.svg`}
-            onClick={editItem}
+            onClick={handleEditClick}
           />
         )}
         {deleteItem && (
           <Button
             icon={`${process.env.PUBLIC_URL}/assets/images/trash-solid.svg`}
-            onClick={deleteItem}
+            onClick={handleDeleteClick}
           />
         )}
       </td>
