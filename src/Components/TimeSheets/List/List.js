@@ -8,6 +8,7 @@ import Modal from '../../Shared/Modal';
 const List = () => {
   const [displayRange, setDisplayRange] = useState({ x: 0, y: 5, z: 0 });
   const [modalDisplay, setModalDisplay] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({});
   const [list, setList] = useState([]);
   const history = useHistory();
 
@@ -19,28 +20,32 @@ const List = () => {
       });
   }, []);
 
-  const deleteItem = (_id) => {
+  const deleteItem = (item) => {
+    setSelectedItem(item);
     setModalDisplay(true);
-    fetch(`${process.env.REACT_APP_API_URL}/timesheets/${_id}`, {
+  };
+
+  const handleDelete = () => {
+    fetch(`${process.env.REACT_APP_API_URL}/timesheets/${selectedItem._id}`, {
       method: 'delete'
     }).then(() => {
-      setList([...list.filter((listItem) => listItem._id !== _id)]);
+      setList([...list.filter((listItem) => listItem._id !== selectedItem._id)]);
     });
   };
-  const handleEdit = () => {
-    list.map((item) =>
-      history.push(`/time-sheets/form`, {
-        ...item,
-        project: item.project,
-        task: item.task,
-        employee: item.employee
-      })
-    );
+
+  const handleEdit = (item) => {
+    setSelectedItem(item);
+    history.push(`/time-sheets/form`, {
+      ...item,
+      project: item.project,
+      task: item.task,
+      employee: item.employee
+    });
   };
   const headers = ['_id', 'project', 'employee', 'task', 'description', 'date', 'hours'];
   return (
     <section className={styles.container}>
-      <Button label={'Add new task +'} onClick={() => history.push('/time-sheets/form')} />
+      <Button label={'Add new timesheet +'} onClick={() => history.push('/time-sheets/form')} />
       <Table
         headers={headers}
         data={list
@@ -86,7 +91,14 @@ const List = () => {
           setModalDisplay={setModalDisplay}
           theme={'confirm'}
         >
-          <Button label="Confirm" theme="tertiary" onClick={() => {}} />
+          <Button
+            label="Confirm"
+            theme="tertiary"
+            onClick={() => {
+              handleDelete();
+              setModalDisplay(false);
+            }}
+          />
         </Modal>
       )}
     </section>

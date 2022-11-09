@@ -8,21 +8,13 @@ import Modal from '../../Shared/Modal';
 const TimeSheetsForm = () => {
   const history = useHistory();
   const [selectedTimesheet] = useState(history.location.state);
+  const [timeSheetInput, setTimeSheetInput] = useState(selectedTimesheet ?? {});
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [titleForm, setTitleForm] = useState('Add new Timesheet');
-  const [timeSheetInput, setTimeSheetInput] = useState({
-    project: '',
-    task: '',
-    employee: '',
-    description: '',
-    date: '',
-    hours: ''
-  });
   const [modalDisplay, setModalDisplay] = useState(false);
   const [modalContent, setModalContent] = useState({ message: '', error: '' });
-  setModalContent;
+  const titleForm = selectedTimesheet ? 'Edit Timesheet' : 'Add Timesheet';
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/tasks`)
@@ -40,21 +32,6 @@ const TimeSheetsForm = () => {
       .then((json) => {
         setEmployees(json.data);
       });
-    if (selectedTimesheet?.project._id) {
-      fetch(`${process.env.REACT_APP_API_URL}/timesheets/${selectedTimesheet._id}`)
-        .then((res) => res.json())
-        .then((json) => {
-          setTimeSheetInput({
-            project: json.data.project?._id,
-            task: json.data.task?._id,
-            employee: json.data.employee?._id,
-            description: json.data.description,
-            date: json.data.date.slice(0, 10),
-            hours: json.data.hours
-          });
-        });
-      setTitleForm('Edit');
-    }
   }, []);
 
   const onChange = (e) => {
