@@ -8,6 +8,7 @@ import Projects from '../Projects';
 import ProjectsForm from '../Projects/Form/form.js';
 import TimeSheets from '../TimeSheets';
 import Tasks from '../Tasks/index';
+import TasksForm from '../Tasks/TasksForm';
 import TimeSheetsForm from '../TimeSheets/TimeSheetsForm/TimeSheetsForm';
 import FormSuperAdmins from '../SuperAdmins/Form';
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -48,8 +49,11 @@ const Routes = () => {
       <Route path="/time-sheets/form">
         <TimeSheetsForm />
       </Route>
-      <Route path="/tasks">
+      <Route exact path="/tasks">
         <Tasks />
+      </Route>
+      <Route path="/tasks/form">
+        <TasksForm />
       </Route>
     </Switch>
   );
