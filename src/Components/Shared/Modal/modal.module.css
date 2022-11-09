@@ -76,13 +76,6 @@
     color: #fff;
 }
 
-.topCloseButton {
-    background-color: transparent;
-    border: none;
-    font-weight: 700;
-    font-size: 16px;
-}
-
 .topCloseButton:hover,
 .topCloseButton:focus {
     font-weight: bold;
