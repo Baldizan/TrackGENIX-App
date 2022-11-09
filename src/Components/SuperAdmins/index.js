@@ -1,50 +1,54 @@
 import { useEffect, useState } from 'react';
+import Modal from '../Shared/Modal';
 import styles from './super-admins.module.css';
-import ListSuperAdmins from './List';
-import ModalWarning from './Modal';
+import Table from '../Shared/Table';
 
 const SuperAdmins = () => {
   const [superAdmins, setSuperAdmins] = useState([]);
-  const [modal, setModal] = useState(false);
-  const [id, setId] = useState(null);
-  const selectedSuperAdmin = superAdmins.find((superAdmin) => superAdmin._id === id);
-
-  const handleDeleteClick = () => {
-    setModal(true);
-  };
+  const [selectedSuperAdmin, saveSelection] = useState({});
+  const [showModal, saveShowModal] = useState(false);
+  const headers = ['name', 'lastName', 'email'];
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/super-admins`)
-      .then((res) => res.json())
-      .then((json) => setSuperAdmins(json.data));
+    fetch(`${process.env.REACT_APP_API_URL}/Super-admins`)
+      .then((response) => response.json())
+      .then((response) => {
+        setSuperAdmins(response.data);
+      });
   }, []);
 
-  const deleteSuperAdmin = async () => {
-    await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`, {
+  const deleteSuperAdmin = async (id) => {
+    fetch(`${process.env.REACT_APP_API_URL}/Super-admins/${id}`, {
       method: 'DELETE'
     });
-    setSuperAdmins([...superAdmins.filter((listItem) => listItem._id !== id)]);
-    setModal(false);
+    setSuperAdmins(superAdmins.filter((superAdmins) => superAdmins._id !== id));
+  };
+
+  const handleDelete = (superAdmins) => {
+    saveSelection({ id: superAdmins._id, name: superAdmins.name });
+    saveShowModal(true);
+  };
+
+  const editSuperAdmin = (id) => {
+    window.location.assign(`/Super-admins/form?id=${id}`);
   };
 
   return (
     <section className={styles.container}>
-      <h2>SuperAdmins</h2>
-      <ListSuperAdmins
-        superAdmins={superAdmins}
-        setSuperAdmins={setSuperAdmins}
-        deleteSuperAdmin={deleteSuperAdmin}
-        onDeleteClick={handleDeleteClick}
-        modal={modal}
-        setModal={setModal}
-        id={id}
-        setId={setId}
+      <Modal
+        heading={showModal}
+        asdas={editSuperAdmin}
+        setModalDisplay={deleteSuperAdmin}
+        theme={selectedSuperAdmin}
       />
-      <ModalWarning
-        modal={modal}
-        setModal={setModal}
-        deleteSuperAdmin={deleteSuperAdmin}
-        fedbackTitle={`Do you really want to delete Super Admin "${selectedSuperAdmin?.email}" ?`}
+      <a href="/employees/form" className={styles.button}>
+        Add new SuperAdmin +
+      </a>
+      <Table
+        data={superAdmins.map((row) => ({ ...row, project: row.project?.name }))}
+        headers={headers}
+        editItem={editSuperAdmin}
+        deleteItem={handleDelete}
       />
     </section>
   );
