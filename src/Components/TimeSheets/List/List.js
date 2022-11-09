@@ -16,7 +16,7 @@ const List = ({ list, deleteItem }) => {
           <tr>
             <th id="projectName">Project Name</th>
             <th id="task">Task</th>
-            <th id="employee">employee</th>
+            <th id="employee">Employee</th>
             <th id="description">Description</th>
             <th id="date">Date</th>
             <th id="hours">Hours</th>

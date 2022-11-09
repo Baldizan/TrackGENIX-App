@@ -24,7 +24,7 @@ const TimeSheets = () => {
 
   return (
     <section className={styles.container}>
-      <List list={list} setList={setList} deleteItem={deleteItem} />
+      <List list={list} deleteItem={deleteItem} />
     </section>
   );
 };

@@ -10,9 +10,6 @@ const TimeSheetsForm = () => {
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [selectedProject, setSelectedProject] = useState();
-  const [selectedTask, setSelectedTask] = useState();
-  const [selectedEmployee, setSelectedEmployee] = useState();
   const [titleForm, setTitleForm] = useState('Add new Timesheet');
   const [timeSheetInput, setTimeSheetInput] = useState({
     project: '',
@@ -51,9 +48,6 @@ const TimeSheetsForm = () => {
             date: json.data.date.slice(0, 10),
             hours: json.data.hours
           });
-          setSelectedProject(json.data.project?._id);
-          setSelectedEmployee(json.data.employee?._id);
-          setSelectedTask(json.data.task?._id);
         });
       setTitleForm('Edit');
     }
@@ -63,31 +57,12 @@ const TimeSheetsForm = () => {
     setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
   };
 
-  const handleChangeProject = (e) => {
-    setSelectedProject(e.target.value);
-    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
-  };
-
-  const handleChangeTask = (e) => {
-    setSelectedTask(e.target.value);
-    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
-  };
-
-  const handleChangeEmployee = (e) => {
-    setSelectedEmployee(e.target.value);
-    setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
-  };
-
   const onSubmit = (e) => {
     e.preventDefault();
-    if (selectedProject && selectedTask && selectedEmployee) {
-      if (editId) {
-        editItem(timeSheetInput);
-      } else {
-        addItem(timeSheetInput);
-      }
+    if (editId) {
+      editItem(timeSheetInput);
     } else {
-      alert('All fields are required');
+      addItem(timeSheetInput);
     }
   };
 
@@ -98,7 +73,7 @@ const TimeSheetsForm = () => {
       employee,
       description,
       date,
-      hours: +hours
+      hours
     };
 
     fetch(`${process.env.REACT_APP_API_URL}/timeSheets`, {
@@ -142,24 +117,24 @@ const TimeSheetsForm = () => {
       <Form onSubmit={onSubmit} title={titleForm}>
         <Select
           placeholder="test"
-          onChange={handleChangeProject}
-          value={selectedProject}
+          onChange={onChange}
+          value={timeSheetInput.project}
           name="project"
           arrayToMap={project()}
           title={'Project'}
           required
         />
         <Select
-          onChange={handleChangeTask}
-          value={selectedTask}
+          onChange={onChange}
+          value={timeSheetInput.task}
           name="task"
           arrayToMap={task()}
-          title={'Project'}
+          title={'Task'}
           required
         />
         <Select
-          onChange={handleChangeEmployee}
-          value={selectedEmployee}
+          onChange={onChange}
+          value={timeSheetInput.employee}
           name="employee"
           arrayToMap={employee()}
           title={'Employee'}
