@@ -1,37 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './List.module.css';
-import ListItem from '../ListItem/ListItem';
 import Button from '../../Shared/Button';
+import Table from '../../Shared/Table';
 
-const List = ({ list, deleteItem }) => {
+const List = () => {
   const [displayRange, setDisplayRange] = useState({ x: 0, y: 5, z: 0 });
+  const [list, setList] = useState([]);
   const history = useHistory();
 
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/timesheets`)
+      .then((res) => res.json())
+      .then((json) => {
+        setList(json.data);
+      });
+  }, []);
+
+  const deleteItem = (_id) => {
+    fetch(`${process.env.REACT_APP_API_URL}/timesheets/${_id}`, {
+      method: 'delete'
+    }).then(() => {
+      setList([...list.filter((listItem) => listItem._id !== _id)]);
+    });
+  };
+  const handleEdit = () => {
+    list.map((item) =>
+      history.push(`/time-sheets/form`, {
+        ...item,
+        project: item.project,
+        task: item.task,
+        employee: item.employee
+      })
+    );
+  };
+  const headers = ['_id', 'project', 'employee', 'task', 'description', 'date', 'hours'];
   return (
     <section className={styles.container}>
       <Button label={'Add new task +'} onClick={() => history.push('/time-sheets/form')} />
-      <table>
-        <thead className={[styles.thead, styles.spaceBetween]}>
-          <tr>
-            <th id="projectName">Project Name</th>
-            <th id="task">Task</th>
-            <th id="employee">Employee</th>
-            <th id="description">Description</th>
-            <th id="date">Date</th>
-            <th id="hours">Hours</th>
-          </tr>
-        </thead>
-        <tbody>
-          {list.slice(displayRange.x, displayRange.y).map((item) => (
-            <ListItem key={item._id} listItem={item} deleteItem={deleteItem} />
-          ))}
-        </tbody>
-      </table>
+      <Table
+        headers={headers}
+        data={list
+          .map((row) => ({
+            ...row,
+            date: row.date.slice(0, 10),
+            project: row.project?.name,
+            task: row.task?.description,
+            employee: row.employee ? `${row.employee?.name} ${row.employee?.lastName}` : 'N/A'
+          }))
+          .slice(displayRange.x, displayRange.y)}
+        editItem={handleEdit}
+        deleteItem={deleteItem}
+      />
       <div className={styles.nav}>
         <Button
           onClick={() =>
-            setDisplayRange({ x: displayRange.x - 5, y: displayRange.y - 5, z: displayRange.z - 1 })
+            setDisplayRange({
+              x: displayRange.x - 5,
+              y: displayRange.y - 5,
+              z: displayRange.z - 1
+            })
           }
           icon={`${process.env.PUBLIC_URL}/assets/images/angle-left-solid.svg`}
           hidden={displayRange.x === 0}
@@ -39,7 +67,11 @@ const List = ({ list, deleteItem }) => {
         <p>{displayRange.z}</p>
         <Button
           onClick={() =>
-            setDisplayRange({ x: displayRange.x + 5, y: displayRange.y + 5, z: displayRange.z + 1 })
+            setDisplayRange({
+              x: displayRange.x + 5,
+              y: displayRange.y + 5,
+              z: displayRange.z + 1
+            })
           }
           icon={`${process.env.PUBLIC_URL}/assets/images/angle-right-solid.svg`}
           hidden={list.slice(displayRange.x + 5, displayRange.y + 5).length === 0}

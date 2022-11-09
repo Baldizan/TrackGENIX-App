@@ -3,17 +3,6 @@
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  color: #24266f;
-}
-
-.spaceBetween {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.thead {
-  background-color: #ECEEED;
 }
 
 .nav {

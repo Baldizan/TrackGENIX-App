@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '../Button';
 import styles from './row.module.css';
+import Button from '../../Button';
 
 const Row = ({ headers, rowItem, deleteItem, editItem }) => {
   return (
@@ -10,7 +10,7 @@ const Row = ({ headers, rowItem, deleteItem, editItem }) => {
           {rowItem[prop]}
         </td>
       ))}
-      <td className={styles.btnContainer}>
+      <td className={(styles.btnContainer, styles.td)}>
         {editItem && (
           <Button
             style={styles.btnEdit}

@@ -6,7 +6,7 @@ import { Input, Select } from '../../Shared/Input';
 
 const TimeSheetsForm = () => {
   const history = useHistory();
-  const editId = history.location.state?.id;
+  const [selectedTimesheet] = useState(history.location.state);
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [employees, setEmployees] = useState([]);
@@ -36,8 +36,8 @@ const TimeSheetsForm = () => {
       .then((json) => {
         setEmployees(json.data);
       });
-    if (editId) {
-      fetch(`${process.env.REACT_APP_API_URL}/timesheets/${editId}`)
+    if (selectedTimesheet?.project._id) {
+      fetch(`${process.env.REACT_APP_API_URL}/timesheets/${selectedTimesheet._id}`)
         .then((res) => res.json())
         .then((json) => {
           setTimeSheetInput({
@@ -59,7 +59,7 @@ const TimeSheetsForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (editId) {
+    if (selectedTimesheet) {
       editItem(timeSheetInput);
     } else {
       addItem(timeSheetInput);
@@ -97,7 +97,7 @@ const TimeSheetsForm = () => {
       hours: +hours
     };
 
-    fetch(`${process.env.REACT_APP_API_URL}/timeSheets/${editId}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/timeSheets/${selectedTimesheet._id}`, {
       method: 'put',
       headers: {
         'Content-Type': 'application/json'
