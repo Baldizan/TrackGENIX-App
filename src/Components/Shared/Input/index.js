@@ -38,8 +38,8 @@ export const Select = (props) => {
       >
         {arrayToMap.map((item) => {
           return (
-            <option key={item.id} value={item}>
-              {`${item}`}
+            <option key={item.id} value={item.id}>
+              {item.label}
             </option>
           );
         })}
