@@ -9,7 +9,7 @@ const Button = ({
   style,
   hidden,
   icon,
-  theme = style || icon ? null : 'primary'
+  theme = icon ? icon : 'primary'
 }) => {
   return (
     <button

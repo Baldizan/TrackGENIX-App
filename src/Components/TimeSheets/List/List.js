@@ -45,7 +45,14 @@ const List = () => {
   const headers = ['_id', 'project', 'employee', 'task', 'description', 'date', 'hours'];
   return (
     <section className={styles.container}>
-      <Button label={'Add new timesheet +'} onClick={() => history.push('/time-sheets/form')} />
+      <header className={styles.header}>
+        <h2>Timesheet</h2>
+        <Button
+          style={styles.addButton}
+          label={'Add new timesheet +'}
+          onClick={() => history.push('/time-sheets/form')}
+        />
+      </header>
       <Table
         headers={headers}
         data={list
