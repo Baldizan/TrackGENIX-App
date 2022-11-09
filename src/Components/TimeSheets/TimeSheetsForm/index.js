@@ -116,7 +116,7 @@ const TimeSheetsForm = () => {
 
   return (
     <section className={styles.container}>
-      <Form onSubmit={onSubmit} title={titleForm} noValidate={invalid}>
+      <Form onSubmit={onSubmit} title={titleForm} noValidate={invalid} secondColumnIndex={3}>
         <Select
           onChange={onChange}
           value={timeSheetInput.project}

@@ -8,7 +8,7 @@ import Projects from '../Projects';
 import ProjectsForm from '../Projects/Form/form.js';
 import TimeSheets from '../TimeSheets';
 import Tasks from '../Tasks/index';
-import TimeSheetsForm from '../TimeSheets/TimeSheetsForm/TimeSheetsForm';
+import TimeSheetsForm from '../TimeSheets/TimeSheetsForm';
 import FormSuperAdmins from '../SuperAdmins/Form';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
