@@ -8,12 +8,22 @@ import Modal from '../../Shared/Modal';
 const TimeSheetsForm = () => {
   const history = useHistory();
   const [selectedTimesheet] = useState(history.location.state);
-  const [timeSheetInput, setTimeSheetInput] = useState(selectedTimesheet ?? {});
+  const [timeSheetInput, setTimeSheetInput] = useState(
+    selectedTimesheet ?? {
+      project: '',
+      task: '',
+      employee: '',
+      description: '',
+      date: '',
+      hours: ''
+    }
+  );
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [modalDisplay, setModalDisplay] = useState(false);
   const [modalContent, setModalContent] = useState({ message: '', error: '' });
+  const [invalid, setInvalid] = useState(true);
   const titleForm = selectedTimesheet ? 'Edit Timesheet' : 'Add Timesheet';
 
   useEffect(() => {
@@ -34,7 +44,12 @@ const TimeSheetsForm = () => {
       });
   }, []);
 
+  const validation = () => {
+    setInvalid(Object.values(timeSheetInput).some((x) => x === ''));
+  };
+
   const onChange = (e) => {
+    validation();
     setTimeSheetInput({ ...timeSheetInput, [e.target.name]: e.target.value });
   };
 
@@ -101,14 +116,14 @@ const TimeSheetsForm = () => {
 
   return (
     <section className={styles.container}>
-      <Form onSubmit={onSubmit} title={titleForm}>
+      <Form onSubmit={onSubmit} title={titleForm} noValidate={invalid}>
         <Select
-          placeholder="test"
           onChange={onChange}
           value={timeSheetInput.project}
           name="project"
           arrayToMap={project()}
           title={'Project'}
+          placeholder="Select a project"
           required
         />
         <Select
@@ -117,6 +132,7 @@ const TimeSheetsForm = () => {
           name="task"
           arrayToMap={task()}
           title={'Task'}
+          placeholder="Select a task"
           required
         />
         <Select
@@ -125,6 +141,7 @@ const TimeSheetsForm = () => {
           name="employee"
           arrayToMap={employee()}
           title={'Employee'}
+          placeholder="Select an employee"
           required
         />
         <Input
@@ -132,6 +149,7 @@ const TimeSheetsForm = () => {
           value={timeSheetInput.description}
           name="description"
           title={'Description'}
+          placeholder="Add a description"
           required
         />
         <Input
@@ -148,6 +166,7 @@ const TimeSheetsForm = () => {
           name="hours"
           type="number"
           title={'Hours'}
+          placeholder="Assign hours"
           required
         />
       </Form>
