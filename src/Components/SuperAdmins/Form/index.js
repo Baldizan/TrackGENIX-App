@@ -20,7 +20,6 @@ const FormSuperAdmins = () => {
   setModalContent;
 
   useEffect(() => {
-    console.log(selectedSuperAdmin);
     if (selectedSuperAdmin) {
       fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedSuperAdmin._id}`)
         .then((res) => res.json())
