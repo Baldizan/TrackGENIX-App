@@ -2,7 +2,7 @@ import styles from './input.module.css';
 
 import React from 'react';
 
-export const Input = (name, title, id, type, value, onChange, placeholder, disabled, required) => {
+const Input = (name, title, id, type, value, onChange, placeholder, disabled, required) => {
   return (
     <label className={styles.label}>
       {title}
@@ -21,7 +21,7 @@ export const Input = (name, title, id, type, value, onChange, placeholder, disab
   );
 };
 
-export const Select = (
+const Select = (
   name,
   title,
   id,
@@ -60,3 +60,5 @@ export const Select = (
     </label>
   );
 };
+
+export default { Input, Select };

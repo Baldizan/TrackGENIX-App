@@ -5,9 +5,9 @@ import styles from './row.module.css';
 const Row = ({ headers, rowItem, deleteItem, editItem }) => {
   return (
     <tr className={styles.tr}>
-      {headers?.map((prop, i) => (
-        <td key={i} className={styles.td}>
-          {rowItem[prop]}
+      {headers?.map((header, index) => (
+        <td key={index} className={styles.td}>
+          {rowItem[header]}
         </td>
       ))}
       <td className={styles.td}>
