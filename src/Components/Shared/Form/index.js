@@ -26,7 +26,7 @@ const Form = ({
           {legend ? (
             <legend className={styles.legend}>{Array.isArray(legend) ? legend[0] : legend}</legend>
           ) : null}
-          {children.slice(0, secondColumnIndex)}
+          {children.length > 1 ? children.slice(0, secondColumnIndex) : children}
         </fieldset>
         {secondColumnIndex ? (
           <fieldset className={styles.fieldset}>
