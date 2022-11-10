@@ -1,9 +1,10 @@
-.container h2 {
-  text-align: center;
-
-}.container {
+.container {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+}
+
+.container h2 {
+  text-align: center;
 }

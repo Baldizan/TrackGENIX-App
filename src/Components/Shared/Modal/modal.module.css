@@ -1,92 +1,92 @@
 .container {
-    top: 0;
-    left: 0;
-    position: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .title {
-    margin: 0;
+  margin: 0;
 }
 
 .confirm {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    position: absolute;
-    width: 40vw;
-    padding: 12px;
-    background-color: #fff;
-    border: solid 1px #373867;
-    border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+  width: 40vw;
+  padding: 12px;
+  background-color: #fff;
+  border: solid 1px #373867;
+  border-radius: 5px;
 }
 
 .success {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: absolute;
-    width: 25vw;
-    height: 40px;
-    padding: 0 24px;
-    background-color: #AACE9B;
-    border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  width: 25vw;
+  height: 40px;
+  padding: 0 24px;
+  background-color: #aace9b;
+  border-radius: 5px;
 }
 
 .error {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: absolute;
-    width: 25vw;
-    height: 40px;
-    padding: 0 24px;
-    background-color: #F13312;
-    border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  width: 25vw;
+  height: 40px;
+  padding: 0 24px;
+  background-color: #f13312;
+  border-radius: 5px;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 
 .confirm h2 {
-    color: #373867;
+  color: #373867;
 }
 
 .success h2 {
-    font-size: 14px;
-    font-weight: 700;
-    color: #373867;
+  font-size: 14px;
+  font-weight: 700;
+  color: #373867;
 }
 
 .error h2 {
-    font-size: 14px;
-    font-weight: 700;
-    color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
 }
 
 .error button {
-    color: #fff;
+  color: #fff;
 }
 
 .topCloseButton:hover,
 .topCloseButton:focus {
-    font-weight: bold;
-    cursor: pointer;
-    transform: scale(1.10);
-    transition: all .2s ease-in-out;
+  font-weight: bold;
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: all 0.2s ease-in-out;
 }
 
 .content {
-    width: 100%;
-    margin-top: 4px;
-    text-align: left;
-    color: #373867;
+  width: 100%;
+  margin-top: 4px;
+  text-align: left;
+  color: #373867;
 }

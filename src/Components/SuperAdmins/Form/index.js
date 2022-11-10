@@ -100,7 +100,7 @@ const FormSuperAdmins = () => {
           placeholder={'Enter your name'}
           value={superAdminInput.name}
           name="name"
-          title={'Name'}
+          title="Name"
           required
         />
         <Input
@@ -108,7 +108,7 @@ const FormSuperAdmins = () => {
           placeholder={'Enter your last name'}
           value={superAdminInput.lastName}
           name="lastName"
-          title={'Last Name'}
+          title="Last Name"
           required
         />
         <Input
@@ -116,7 +116,7 @@ const FormSuperAdmins = () => {
           placeholder={'Enter a valid email address'}
           value={superAdminInput.email}
           name="email"
-          title={'Email'}
+          title="Email"
           required
         />
         <Input
@@ -125,7 +125,7 @@ const FormSuperAdmins = () => {
           value={superAdminInput.password}
           type="password"
           name="password"
-          title={'Password'}
+          title="Password"
           required
         />
       </Form>

@@ -20,8 +20,8 @@ const Table = ({ data, headers, editItem, deleteItem }) => {
               key={item._id}
               rowItem={item}
               headers={headers}
-              editItem={() => editItem(item)}
-              deleteItem={() => deleteItem(item)}
+              editItem={editItem}
+              deleteItem={deleteItem}
             />
           ))}
         </tbody>
@@ -29,4 +29,5 @@ const Table = ({ data, headers, editItem, deleteItem }) => {
     </div>
   );
 };
+
 export default Table;

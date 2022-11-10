@@ -82,13 +82,14 @@ const SuperAdmins = () => {
           hidden={list.slice(displayRange.x + 5, displayRange.y + 5).length === 0}
         />
       </div>
-      {successModalDisplay ? (
+      {successModalDisplay && (
         <Modal
           heading={`${selectedItem.name} ${selectedItem.lastName} deleted successfully!`}
           setModalDisplay={setSuccessModalDisplay}
           theme={'success'}
         />
-      ) : null}
+      )}
+      ;
       {modalDisplay && (
         <Modal
           heading={'Are you sure you want to delete this SuperAdmin?'}
