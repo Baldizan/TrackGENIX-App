@@ -8,7 +8,7 @@ const Table = ({ data, headers, editItem, deleteItem }) => {
       <table className={styles.table}>
         <thead>
           <tr>
-            {headers.map((header, index) => (
+            {Object.values(headers).map((header, index) => (
               <th key={index}>{header}</th>
             ))}
             <th></th>
@@ -19,7 +19,7 @@ const Table = ({ data, headers, editItem, deleteItem }) => {
             <Row
               key={item._id}
               rowItem={item}
-              headers={headers}
+              headers={Object.keys(headers)}
               editItem={editItem}
               deleteItem={deleteItem}
             />

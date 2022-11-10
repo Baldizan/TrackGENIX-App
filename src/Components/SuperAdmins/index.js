@@ -11,7 +11,11 @@ const SuperAdmins = () => {
   const [selectedItem, setSelectedItem] = useState({});
 
   const [list, setList] = useState([]);
-  const headers = ['name', 'lastName', 'email'];
+  const headers = {
+    name: 'Name',
+    lastName: 'Last Name',
+    email: 'Email'
+  };
   const history = useHistory();
 
   useEffect(() => {
@@ -28,7 +32,7 @@ const SuperAdmins = () => {
   };
 
   const handleDelete = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/timesheets/${selectedItem._id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedItem._id}`, {
       method: 'delete'
     }).then(() => {
       setList([...list.filter((listItem) => listItem._id !== selectedItem._id)]);
