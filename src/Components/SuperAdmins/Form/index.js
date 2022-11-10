@@ -7,7 +7,7 @@ import Modal from '../../Shared/Modal';
 
 const FormSuperAdmins = () => {
   const history = useHistory();
-  const [selectedSuperAdmin] = useState(history.location.state);
+  const [selectedSuperAdmin] = useState(history.location.state?.id);
   const [titleForm, setTitleForm] = useState('Add new SuperAdmin');
   const [superAdminInput, setSuperAdminInput] = useState({
     name: '',
@@ -21,7 +21,7 @@ const FormSuperAdmins = () => {
 
   useEffect(() => {
     if (selectedSuperAdmin) {
-      fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedSuperAdmin._id}`)
+      fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedSuperAdmin}`)
         .then((res) => res.json())
         .then((json) => {
           setSuperAdminInput({
@@ -78,7 +78,7 @@ const FormSuperAdmins = () => {
       password
     };
 
-    fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedSuperAdmin._id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedSuperAdmin}`, {
       method: 'put',
       headers: {
         'Content-Type': 'application/json'

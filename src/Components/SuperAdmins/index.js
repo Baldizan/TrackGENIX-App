@@ -12,11 +12,10 @@ const SuperAdmins = () => {
   const [successModalDisplay, setSuccessModalDisplay] = useState(false);
 
   const [list, setList] = useState([]);
-  const headers = {
-    name: 'Name',
-    lastName: 'Last Name',
-    email: 'Email'
-  };
+  const headers = ['name', 'lastName', 'email'];
+  // name: 'Name',
+  // lastName: 'Last Name',
+  // email: 'Email'
   const history = useHistory();
 
   useEffect(() => {
@@ -46,7 +45,7 @@ const SuperAdmins = () => {
   };
 
   const handleEdit = (item) => {
-    history.push(`/super-admins/form`, item);
+    history.push('/super-admins/form', { id: item._id });
   };
 
   return (
