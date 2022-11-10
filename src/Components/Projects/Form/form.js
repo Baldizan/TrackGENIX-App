@@ -9,6 +9,7 @@ const ProjectsForm = () => {
   let history = useHistory();
   const projectId = history.location.state?.id;
   const [employees, setEmployees] = useState([]);
+  //const [modalContent, setModalContent] = useState();
   const [employee, setEmployee] = useState({
     id: '',
     role: '',
@@ -82,10 +83,15 @@ const ProjectsForm = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(project)
-      }).then(() => {
-        alert(`Project ${project.name} created successfully!`);
-        history.push('/projects');
-      });
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.error) {
+            alert(json.message);
+          } else {
+            history.push('/projects');
+          }
+        });
     }
   };
 
