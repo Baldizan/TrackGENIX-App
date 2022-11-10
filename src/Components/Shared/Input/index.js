@@ -16,6 +16,7 @@ export const Input = (props) => {
         placeholder={placeholder}
         type={type}
         value={value}
+        required
       />
     </label>
   );
@@ -35,6 +36,7 @@ export const Select = (props) => {
         placeholder={placeholder}
         type={type}
         value={value}
+        required
       >
         {arrayToMap.map((item) => (
           <option key={item.id} value={item.id}>

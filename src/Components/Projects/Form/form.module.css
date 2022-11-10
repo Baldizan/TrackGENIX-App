@@ -1,0 +1,18 @@
+.employeesContainer {
+  width: 500px;
+  min-height: 50%;
+  padding: 5px;
+  margin-block: 10px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #373867;
+  font-size: 16px;
+  color: #373867;
+  background-color: #fff;
+  font-weight: 400;
+  line-height: 2;
+}
+
+.btnContainer {
+  display: flex;
+}

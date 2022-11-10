@@ -92,7 +92,7 @@ function Projects() {
           heading={'Do you want delete this project'}
           theme={'confirm'}
         >
-          <div>
+          <div className={styles.btnContainer}>
             <Button label={'Cancel'} theme={'primary'} onClick={handleCloseModal} />
             <Button label={'Delete'} theme={'tertiary'} onClick={confirmDelete} />
           </div>

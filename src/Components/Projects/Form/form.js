@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import styles from './form.module.css';
 import Form from '../../Shared/Form/index';
 import Button from '../../Shared/Button';
 import { Input, Select } from '../../Shared/Input/index';
@@ -114,7 +115,7 @@ const ProjectsForm = () => {
     let employee = employees.find(function (e) {
       return e._id == id;
     });
-    return employee?.name;
+    return employee?.name + ' ' + employee.lastName;
   };
 
   return (
@@ -126,6 +127,7 @@ const ProjectsForm = () => {
           value={project.name}
           name="name"
           onChange={onChange}
+          required
         />
         <Input
           title={'Client'}
@@ -133,6 +135,7 @@ const ProjectsForm = () => {
           value={project.clientName}
           name="clientName"
           onChange={onChange}
+          required
         />
         <Input
           title={'Description'}
@@ -140,6 +143,7 @@ const ProjectsForm = () => {
           value={project.description}
           name="description"
           onChange={onChange}
+          required
         />
         <Input
           title={'Start Date'}
@@ -147,6 +151,7 @@ const ProjectsForm = () => {
           name="startDate"
           type="date"
           onChange={onChange}
+          required
         />
         <Input
           title={'End Date'}
@@ -154,6 +159,7 @@ const ProjectsForm = () => {
           name="endDate"
           type="date"
           onChange={onChange}
+          required
         />
         <Select
           title={'Active'}
@@ -165,23 +171,26 @@ const ProjectsForm = () => {
           }))}
           id="active"
           onChange={onChange}
+          required
         />
         <div>
-          <div>
+          <div className={styles.employeesContainer}>
+            <h3>Employees:</h3>
             {project?.employees?.map((e, i) => (
               <div key={i}>
-                <span>{e.id}</span>
-                <span>{getName(e.id)}</span>
+                <span>{'Name: ' + getName(e.id) + ' '}</span>
+                <span>{'Rol: ' + e.role + ' '}</span>
+                <span>{'Rate: ' + e.rate + ' '}</span>
               </div>
             ))}
           </div>
-          <h3>Employees:</h3>
           <Select
             arrayToMap={employees.map((employee) => ({
               id: employee._id,
               label: employee.name + ' ' + employee.lastName
             }))}
             onChange={handleChangeEmployee}
+            required
           />
           <Select
             arrayToMap={roles.map((rol) => ({
@@ -189,10 +198,11 @@ const ProjectsForm = () => {
               label: rol
             }))}
             onChange={handleChangeRole}
+            required
           />
         </div>
         <div>
-          <Input placeholder={'Rate'} type={'number'} onChange={handleChangeRate} />
+          <Input placeholder={'Rate'} type={'number'} onChange={handleChangeRate} required />
           <Button label={'Assign'} onClick={assignEmployee} />
           <Button label={'Cancel'} />
         </div>
