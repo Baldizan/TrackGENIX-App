@@ -48,9 +48,9 @@ const Select = (
         required={required}
       >
         <option defaultValue value={placeholder} disabled />
-        {arrayToMap.map((item) => {
+        {arrayToMap.map((item, index) => {
           return (
-            <option key={item.id} value={item.id}>
+            <option key={index} value={item.id}>
               {item.label}
             </option>
           );
