@@ -19,10 +19,9 @@ const ProjectsForm = () => {
     startDate: '',
     endDate: '',
     clientName: '',
-    active: 'activeValue',
+    active: '',
     employees: []
   });
-
   const roles = ['Rol', 'DEV', 'TL', 'QA', 'PM'];
   const statusProject = ['Active', 'Inactive'];
 
@@ -71,14 +70,10 @@ const ProjectsForm = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(project)
-      })
-        .then((res) => res.json())
-        .then(function (res) {
-          if (!res.error) {
-            alert(`Project ${project.name} updated successfully!`);
-            history.push('/projects');
-          }
-        });
+      }).then(() => {
+        alert(`Project ${project.name} updated successfully!`);
+        history.push('/projects');
+      });
     } else {
       fetch(`${process.env.REACT_APP_API_URL}/projects`, {
         method: 'POST',
@@ -86,14 +81,10 @@ const ProjectsForm = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(project)
-      })
-        .then((res) => res.json())
-        .then(function (res) {
-          if (!res.error) {
-            alert(`Project ${project.name} created successfully!`);
-            history.push('/projects');
-          }
-        });
+      }).then(() => {
+        alert(`Project ${project.name} created successfully!`);
+        history.push('/projects');
+      });
     }
   };
 
@@ -166,9 +157,10 @@ const ProjectsForm = () => {
         />
         <Select
           title={'Active'}
+          name={'active'}
           value={project.active}
           arrayToMap={statusProject.map((status) => ({
-            id: status,
+            id: status == 'Active',
             label: status
           }))}
           id="active"

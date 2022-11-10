@@ -22,8 +22,8 @@ function Projects() {
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/projects`)
-      .then((response) => response.json())
-      .then((response) => setProjects(response.data || []));
+      .then((res) => res.json())
+      .then((res) => setProjects(res.data || []));
   }, []);
 
   const handleDelete = (item) => {
