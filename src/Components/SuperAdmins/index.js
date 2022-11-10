@@ -92,7 +92,7 @@ const SuperAdmins = () => {
       ;
       {modalDisplay && (
         <Modal
-          heading={'Are you sure you want to delete this SuperAdmin?'}
+          heading={'Are you sure you want to delete this Super-Admin?'}
           setModalDisplay={setModalDisplay}
           theme={'confirm'}
         >
