@@ -3,7 +3,7 @@ import styles from './input.module.css';
 import React from 'react';
 
 export const Input = (props) => {
-  const { name, title, id, type, value, onChange, placeholder, disabled, required } = props;
+  const { name, title, id, type, value, onChange, placeholder, disabled } = props;
   return (
     <label className={styles.label}>
       {title}
@@ -16,7 +16,6 @@ export const Input = (props) => {
         placeholder={placeholder}
         type={type}
         value={value}
-        required={required}
       />
     </label>
   );
