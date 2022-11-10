@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.table {
+  border: 1px solid #D7D7E1;
+  border-spacing: 0;
+  border-collapse: collapse;
+  color: #373867;
+  min-height: 300px;
+}
+
+.thead {
+  background-color: #3738671A;
+}
+
+.tr {
+  display: flex;
+  padding: 10px 10px;
+  border: solid 0.5px #eeeeee;
+  border-collapse: collapse;
+  text-align: start;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  color: #373867;
+}
+
+.addButton {
+  align-self: flex-start;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

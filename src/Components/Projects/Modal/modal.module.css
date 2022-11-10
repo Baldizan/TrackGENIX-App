@@ -1,0 +1,42 @@
+.container {
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+    padding: 20px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+.modal button {
+    width: 75px;
+    height: 30px;
+    margin-right: 20px;
+    float: right;
+    border: 2px solid rgba(234, 51, 81, 0.5);
+    border-radius: 5px;
+}
+
+.closeButton {
+    background-color: rgb(255, 255, 255);
+}
+
+.closeButton:hover {
+    background-color: rgba(234, 51, 81, 0.5);
+}
+
+.deleteButton {
+    background-color: rgba(234, 51, 81, 0.25);
+}
+
+.deleteButton:hover {
+    background-color: rgba(234, 51, 81, 0.5);
+}

@@ -1,0 +1,86 @@
+.default {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.default:hover {
+  cursor: pointer;
+}
+
+.primary {
+  color: #373867;
+  border: 1px solid #373867;
+  background-color: #fff;
+}
+
+.primary:hover,
+.primary:focus {
+  cursor: pointer;
+  text-decoration: underline;
+  background-color: #37386720;
+  transition: all 0.05s ease-in-out;
+}
+
+.secondary {
+  color: #373867;
+  border: 1px solid #aace9b;
+  background-color: #aace9b;
+}
+
+.secondary:hover,
+.secondary:focus {
+  cursor: pointer;
+  text-decoration: underline;
+  background-color: #aace9bcc;
+  transition: all 0.05s ease-in-out;
+}
+
+.tertiary {
+  color: #fff;
+  border: 1px solid #f13312;
+  background-color: #f13312;
+}
+
+.tertiary:hover,
+.tertiary:focus {
+  cursor: pointer;
+  text-decoration: underline;
+  background-color: #f13312f0;
+  transition: all 0.05s ease-in-out;
+}
+
+.disabled {
+  border: 1px solid;
+}
+
+.disabled:hover {
+  cursor: not-allowed;
+}
+
+.icon {
+  margin: 5px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  border: none;
+}
+
+.img {
+  display: block;
+}
+
+.icon:hover,
+.icon:focus {
+  cursor: pointer;
+  transform: scale(1.05);
+  transition: all 0.1s ease-in-out;
+}
+
+.hidden {
+  visibility: hidden;
+}

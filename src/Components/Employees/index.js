@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import styles from './employees.module.css';
-import EmployeesList from './List';
 
 const Employees = () => {
   const [employees, saveEmployees] = useState([]);
@@ -20,7 +19,7 @@ const Employees = () => {
     fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
       method: 'DELETE'
     });
-    saveSelection(employees.filter((employee) => employee._id !== id));
+    saveEmployees(employees.filter((employee) => employee._id !== id));
   };
 
   const handleDelete = (employee) => {
@@ -43,11 +42,36 @@ const Employees = () => {
       <a href="/employees/form" className={styles.button}>
         Add new employee +
       </a>
-      <EmployeesList
-        employees={employees}
-        handleDelete={handleDelete}
-        editEmployee={editEmployee}
-      />
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Last name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Project</th>
+          </tr>
+        </thead>
+        <tbody>
+          {employees.map((employee) => (
+            <tr key={employee._id}>
+              <td>{employee._id}</td>
+              <td>{employee.name}</td>
+              <td>{employee.lastName}</td>
+              <td>{employee.phone}</td>
+              <td>{employee.email}</td>
+              <td>{employee.project.name}</td>
+              <td className={styles.center}>
+                <button onClick={() => editEmployee(employee._id)}>Edit</button>
+              </td>
+              <td className={styles.center}>
+                <button onClick={() => handleDelete(employee)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </section>
   );
 };
