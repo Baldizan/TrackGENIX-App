@@ -1,73 +1,77 @@
-import { useEffect, useState } from 'react';
-import styles from '../projects.module.css';
+import { useState, useEffect } from 'react';
+//import styles from '../projects.module.css';
+//import { useHistory } from 'react-router-dom';
 import Form from '../../Shared/Form/index';
 import Button from '../../Shared/Button';
+//import Table from '../../Shared/Table';
 import { Input, Select } from '../../Shared/Input/index';
 
 const ProjectsForm = () => {
+  // let history = useHistory();
   const paramsURL = new URLSearchParams(window.location.search);
   const projectId = paramsURL.get('id');
-  const [allEmployees, saveAllEmployees] = useState([]);
-  const [selectedEmployee, setSelectedEmployee] = useState();
-  const [selectedRole, setSelectedRole] = useState();
-  const [selectedRate, setSelectedRate] = useState();
-  const [employees] = useState([]);
-  const [employee, saveEmployee] = useState({
+  const [employees, setEmployees] = useState([]);
+  //const headers = ['employee', 'active', 'rol'];
+  // const [selectedEmployee, setSelectedEmployee] = useState();
+  // const [selectedRole, setSelectedRole] = useState();
+  // const [selectedRate, setSelectedRate] = useState();
+  //const [activeValue, changeActiveValue] = useState(false);
+  const [employee, setEmployee] = useState({
     id: '',
     role: '',
     rate: ''
   });
-  const [activeValue, changeActiveValue] = useState(false);
-  const [projectBody, setProjectBody] = useState({
+  const [project, setProject] = useState({
     name: '',
     description: '',
     startDate: '',
     endDate: '',
     clientName: '',
-    active: activeValue,
+    active: 'activeValue',
     employees: []
   });
 
   const roles = ['Rol', 'DEV', 'TL', 'QA', 'PM'];
+  const statusProject = ['Active', 'Inactive'];
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/employees`)
-      .then((response) => response.json())
-      .then((response) => saveAllEmployees(response.data));
+      .then((res) => res.json())
+      .then((res) => setEmployees(res.data));
   }, []);
 
-  useEffect(() => {
-    if (projectId) {
-      fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`)
-        .then((response) => response.json())
-        .then((response) => {
-          setProjectBody({
-            name: response.data.name,
-            description: response.data.description,
-            startDate: response.data.startDate.substring(0, 10),
-            endDate: response.data.endDate.substring(0, 10),
-            clientName: response.data.clientName,
-            active: response.data.active,
-            employees: employees
-          });
-        });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (projectId) {
+  //     fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`)
+  //       .then((res) => res.json())
+  //       .then((res) => {
+  //         setProject({
+  //           name: res.data.name,
+  //           description: res.data.description,
+  //           startDate: res.data.startDate.substring(0, 10),
+  //           endDate: res.data.endDate.substring(0, 10),
+  //           clientName: res.data.clientName,
+  //           active: res.data.active,
+  //           employees: 'employees'
+  //         });
+  //       });
+  //   }
+  // }, []);
 
-  const sendProject = () => {
+  const updateProject = () => {
     if (projectId) {
       fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(projectBody)
+        body: JSON.stringify(project)
       })
-        .then((response) => response.json())
-        .then(function (response) {
-          if (!response.error) {
-            alert(`Project ${projectBody.name} updated successfully!`);
-            window.location.assign('/projects');
+        .then((res) => res.json())
+        .then(function (res) {
+          if (!res.error) {
+            alert(`Project ${project.name} updated successfully!`);
+            history.push('/projects');
           }
         });
     } else {
@@ -76,61 +80,69 @@ const ProjectsForm = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(projectBody)
+        body: JSON.stringify(project)
       })
-        .then((response) => response.json())
-        .then(function (response) {
-          if (!response.error) {
-            alert(`Project ${projectBody.name} created successfully!`);
-            window.location.assign('/projects');
+        .then((res) => res.json())
+        .then(function (res) {
+          if (!res.error) {
+            alert(`Project ${project.name} created successfully!`);
+            history.push('/projects');
           }
         });
     }
   };
 
   const onChange = (e) => {
-    setProjectBody({ ...projectBody, [e.target.name]: e.target.value });
+    setProject({ ...project, [e.target.name]: e.target.value });
   };
 
   const handleChangeActive = (e) => {
-    changeActiveValue(e.target.value);
-    setProjectBody({ ...projectBody, [e.target.name]: e.target.value });
+    //changeActiveValue(e.target.value);
+    setProject({ ...project, [e.target.name]: e.target.value });
   };
 
   const handleChangeEmployee = (e) => {
-    setSelectedEmployee(e.target.value);
-    saveEmployee({ ...employee, [e.target.name]: e.target.value });
+    //setSelectedEmployee(e.target.value);
+    setEmployee({ ...employee, id: e.target.value });
   };
 
   const handleChangeRole = (e) => {
-    setSelectedRole(e.target.value);
-    saveEmployee({ ...employee, [e.target.name]: e.target.value });
+    // setSelectedRole(e.target.value);
+    setEmployee({ ...employee, role: e.target.value });
   };
 
   const handleChangeRate = (e) => {
-    setSelectedRate(e.target.value);
-    saveEmployee({ ...employee, [e.target.name]: e.target.value });
+    // setSelectedRate(e.target.value);
+    setEmployee({ ...employee, rate: e.target.value });
   };
 
-  const assingEmployee = () => {
-    setProjectBody({
-      ...projectBody,
-      employees: [...projectBody.employees, employee]
+  const assignEmployee = () => {
+    const newProject = { ...project };
+    newProject.employees.push(employee);
+    setProject(newProject);
+  };
+
+  console.log('empleados', employee);
+
+  const getName = (id) => {
+    console.log(id);
+    let employee = employees.find(function (e) {
+      return e._id == id;
     });
+    console.log(employee);
+    return employee?.name;
   };
-
-  console.log(allEmployees._id);
 
   return (
     <>
-      <section className={styles.container}>
+      {/* <section className={styles.container}>
         <form className={styles.container}>
           <label htmlFor="projectName">Project name:</label>
           <input
             id="name"
             name="name"
             placeholder="Project name"
-            value={projectBody.name}
+            value={project.name}
             onChange={onChange}
           />
           <label htmlFor="description">Description:</label>
@@ -138,7 +150,7 @@ const ProjectsForm = () => {
             id="description"
             name="description"
             placeholder="Last description"
-            value={projectBody.description}
+            value={project.description}
             onChange={onChange}
           />
           <label htmlFor="startDate">Start Date:</label>
@@ -147,7 +159,7 @@ const ProjectsForm = () => {
             id="startDate"
             name="startDate"
             placeholder="Start Date"
-            value={projectBody.startDate}
+            value={project.startDate}
             onChange={onChange}
           />
           <label htmlFor="endDAte">End Date:</label>
@@ -156,11 +168,11 @@ const ProjectsForm = () => {
             id="endDAte"
             name="endDAte"
             placeholder="End Date"
-            value={projectBody.endDate}
+            value={project.endDate}
             onChange={onChange}
           />
           <label htmlFor="status">Active:</label>
-          <select name="active" value={projectBody.active} onChange={handleChangeActive}>
+          <select name="active" value={project.active} onChange={handleChangeActive}>
             <option value="false">Inactive</option>
             <option value="true">Active</option>
           </select>
@@ -169,7 +181,7 @@ const ProjectsForm = () => {
             id="client"
             name="client"
             placeholder="Client"
-            value={projectBody.clientName}
+            value={project.clientName}
             onChange={onChange}
           />
           <div>
@@ -181,7 +193,7 @@ const ProjectsForm = () => {
               onChange={handleChangeEmployee}
             >
               <option value="">Employees</option>
-              {allEmployees.map((employee) => {
+              {employees.map((employee) => {
                 return (
                   <option key={employee._id} value={employee._id}>
                     {employee.name} {employee.lastName}
@@ -208,42 +220,52 @@ const ProjectsForm = () => {
             </button>
           </div>
         </form>
-        <button onClick={sendProject}>Add</button>
+        <button onClick={updateProject}>Add</button>
         <a href="/projects">
           <button>Cancel</button>
         </a>
-      </section>
-      <Form>
-        <Input title={'ProjectName'} />
-        <Input title={'Description'} />
-        <Input title={'Start Date'} />
-        <Input title={'End Date'} />
+      </section> */}
+      <Form onSubmit={updateProject}>
+        <Input title={'ProjectName'} id="ProjectName" name="ProjectName" onChange={onChange} />
+        <Input title={'Client'} id="client" name="client" onChange={onChange} />
+        <Input title={'Description'} id="description" name="description" onChange={onChange} />
+        <Input title={'Start Date'} type="date" onChange={onChange} />
+        <Input title={'End Date'} type="date" onChange={onChange} />
         <Select
           title={'Active'}
-          arrayToMap={[projectBody.active]}
+          arrayToMap={statusProject.map((status) => ({
+            id: status,
+            label: status
+          }))}
           id="active"
-          onChange={onChange}
+          onChange={handleChangeActive}
         />
-        <Input title={'Client'} />
         <div>
+          <div>
+            {project.employees.map((employee, i) => (
+              <span key={i}>{getName(employee.id)}</span>
+            ))}
+          </div>
           <h3>Employees:</h3>
           <Select
-            arrayToMap={allEmployees.map((employee) => ({
+            arrayToMap={employees.map((employee) => ({
               id: employee._id,
               label: employee.name + ' ' + employee.lastName
             }))}
+            onChange={handleChangeEmployee}
           />
           <Select
             arrayToMap={roles.map((rol) => ({
               id: rol,
               label: rol
             }))}
+            onChange={handleChangeRole}
           />
         </div>
+        {/* <Table headers={headers} data={employees} /> */}
         <div>
-          <Input placeholder={'Rate'} type={'number'} />
-          <Button label={'Assign'} onClick={assingEmployee} />
-          <Button label={'Add'} />
+          <Input placeholder={'Rate'} type={'number'} onChange={handleChangeRate} />
+          <Button label={'Assign'} onClick={assignEmployee} />
           <Button label={'Cancel'} />
         </div>
       </Form>
