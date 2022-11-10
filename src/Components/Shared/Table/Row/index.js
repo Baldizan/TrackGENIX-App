@@ -3,13 +3,6 @@ import Button from '../../Button';
 import styles from './row.module.css';
 
 const Row = ({ headers, rowItem, deleteItem, editItem }) => {
-  const handleEdiClick = () => {
-    editItem(rowItem);
-  };
-  const handleDeleteClick = () => {
-    deleteItem(rowItem);
-  };
-
   return (
     <tr className={styles.tr}>
       {headers?.map((prop, i) => (
@@ -22,13 +15,13 @@ const Row = ({ headers, rowItem, deleteItem, editItem }) => {
           <Button
             style={styles.btnEdit}
             icon={`${process.env.PUBLIC_URL}/assets/images/pen-to-square-solid.svg`}
-            onClick={handleEdiClick}
+            onClick={editItem}
           />
         )}
         {deleteItem && (
           <Button
             icon={`${process.env.PUBLIC_URL}/assets/images/trash-solid.svg`}
-            onClick={handleDeleteClick}
+            onClick={deleteItem}
           />
         )}
       </td>

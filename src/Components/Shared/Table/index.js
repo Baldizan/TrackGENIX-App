@@ -20,8 +20,8 @@ const Table = ({ data, headers, editItem, deleteItem }) => {
               key={item._id}
               rowItem={item}
               headers={headers}
-              editItem={editItem}
-              deleteItem={deleteItem}
+              editItem={() => editItem(item)}
+              deleteItem={() => deleteItem(item)}
             />
           ))}
         </tbody>

@@ -8,6 +8,8 @@ import Button from '../Shared/Button';
 function Projects() {
   let history = useHistory();
   const [modal, setModal] = useState(false);
+  const [modalEmployee, setModalEmployee] = useState(false);
+  const [textEmployee, setTextEmployee] = useState('');
   const [projects, setProjects] = useState([]);
   const [projectDelete, setProjectDelete] = useState();
   const headers = [
@@ -58,12 +60,32 @@ function Projects() {
       employees.forEach((employee) => {
         text.push(employee.id.name + ' ' + employee.role + ' ' + employee.rate);
       });
-      alert(`Assigned employees to project ${name}:\n` + text.join('\n'));
+      setModalEmployee(true);
+      setTextEmployee(`Assigned employees to project ${name}` + text.join('\n'));
+      //alert(`Assigned employees to project ${name}:\n` + text.join('\n'));
+    } else {
+      setTextEmployee('no');
     }
   };
 
+  const projectColumns = projects.map((row) => ({
+    ...row,
+    employees: (
+      <Button
+        label={'See employees'}
+        theme={'primary'}
+        onClick={() => showEmployees(row.employees, row.name)}
+      />
+    )
+  }));
+
   return (
     <section className={styles.container}>
+      {modalEmployee && (
+        <Modal setModalDisplay={setModalEmployee} theme={'confirm'}>
+          {textEmployee}
+        </Modal>
+      )}
       {modal && (
         <Modal
           setModalDisplay={setModal}
@@ -79,16 +101,7 @@ function Projects() {
       <h2 className={styles.title}>Projects</h2>
       <Button label={'Add new project'} theme={'primary'} onClick={addProject} />
       <Table
-        data={projects.map((row) => ({
-          ...row,
-          employees: (
-            <Button
-              label={'See employees'}
-              theme={'primary'}
-              onClick={() => showEmployees(row.employees, row.name)}
-            />
-          )
-        }))}
+        data={projectColumns}
         headers={headers}
         editItem={handleEdit}
         deleteItem={handleDelete}
