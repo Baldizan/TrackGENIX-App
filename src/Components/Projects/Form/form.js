@@ -59,6 +59,7 @@ const ProjectsForm = () => {
     var yyyy = today.getFullYear();
     return mm + '/' + dd + '/' + yyyy;
   };
+
   const updateProject = (e) => {
     e.preventDefault();
     project.startDate = format(project.startDate);
@@ -97,14 +98,6 @@ const ProjectsForm = () => {
   };
 
   const onChange = (e) => {
-    setProject({ ...project, [e.target.name]: e.target.value });
-  };
-
-  const handleChangeDate = (e) => {
-    setProject({ ...project, [e.target.name]: e.target.value });
-  };
-
-  const handleChangeActive = (e) => {
     setProject({ ...project, [e.target.name]: e.target.value });
   };
 
@@ -162,14 +155,14 @@ const ProjectsForm = () => {
           value={project.startDate}
           name="startDate"
           type="date"
-          onChange={handleChangeDate}
+          onChange={onChange}
         />
         <Input
           title={'End Date'}
           value={project.endDate}
           name="endDate"
           type="date"
-          onChange={handleChangeDate}
+          onChange={onChange}
         />
         <Select
           title={'Active'}
@@ -179,7 +172,7 @@ const ProjectsForm = () => {
             label: status
           }))}
           id="active"
-          onChange={handleChangeActive}
+          onChange={onChange}
         />
         <div>
           <div>
