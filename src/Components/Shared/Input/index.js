@@ -2,8 +2,7 @@ import styles from './input.module.css';
 
 import React from 'react';
 
-export const Input = (props) => {
-  const { name, title, id, type, value, onChange, placeholder, disabled } = props;
+const Input = (name, title, id, type, value, onChange, placeholder, disabled, required) => {
   return (
     <label className={styles.label}>
       {title}
@@ -16,13 +15,24 @@ export const Input = (props) => {
         placeholder={placeholder}
         type={type}
         value={value}
+        required={required}
       />
     </label>
   );
 };
 
-export const Select = (props) => {
-  const { name, title, id, type, value, onChange, placeholder, arrayToMap, disabled } = props;
+const Select = (
+  name,
+  title,
+  id,
+  type,
+  value,
+  onChange,
+  placeholder,
+  arrayToMap,
+  disabled,
+  required
+) => {
   return (
     <label className={styles.label}>
       {title}
@@ -35,11 +45,13 @@ export const Select = (props) => {
         placeholder={placeholder}
         type={type}
         value={value}
+        required={required}
       >
-        {arrayToMap.map((item) => {
+        <option defaultValue value={placeholder} disabled />
+        {arrayToMap.map((item, index) => {
           return (
-            <option key={item.id} value={item}>
-              {`${item}`}
+            <option key={index} value={item.id}>
+              {item.label}
             </option>
           );
         })}
@@ -48,3 +60,5 @@ export const Select = (props) => {
     </label>
   );
 };
+
+export default { Input, Select };
