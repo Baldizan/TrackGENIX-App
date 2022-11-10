@@ -36,14 +36,11 @@ export const Select = (props) => {
         type={type}
         value={value}
       >
-        {arrayToMap.map((item) => {
-          return (
-            <option key={item.id} value={item}>
-              {`${item}`}
-            </option>
-          );
-        })}
-        ;
+        {arrayToMap.map((item) => (
+          <option key={item.id} value={item.id}>
+            {item.label}
+          </option>
+        ))}
       </select>
     </label>
   );
