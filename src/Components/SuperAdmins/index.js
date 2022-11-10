@@ -9,6 +9,7 @@ const SuperAdmins = () => {
   const [displayRange, setDisplayRange] = useState({ x: 0, y: 5, z: 0 });
   const [modalDisplay, setModalDisplay] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
+  const [successModalDisplay, setSuccessModalDisplay] = useState(false);
 
   const [list, setList] = useState([]);
   const headers = {
@@ -31,7 +32,12 @@ const SuperAdmins = () => {
     setModalDisplay(true);
   };
 
+  const showSuccessModal = () => {
+    setSuccessModalDisplay(true);
+  };
+
   const handleDelete = () => {
+    showSuccessModal(true);
     fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedItem._id}`, {
       method: 'delete'
     }).then(() => {
@@ -77,6 +83,13 @@ const SuperAdmins = () => {
           hidden={list.slice(displayRange.x + 5, displayRange.y + 5).length === 0}
         />
       </div>
+      {successModalDisplay ? (
+        <Modal
+          heading={`${selectedItem.name} ${selectedItem.lastName} deleted successfully!`}
+          setModalDisplay={setSuccessModalDisplay}
+          theme={'success'}
+        />
+      ) : null}
       {modalDisplay && (
         <Modal
           heading={'Are you sure you want to delete this SuperAdmin?'}
