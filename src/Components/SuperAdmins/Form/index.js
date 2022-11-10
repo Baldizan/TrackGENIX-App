@@ -5,7 +5,7 @@ import Form from '../../Shared/Form';
 import { Input } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
 
-const TimeSheetsForm = () => {
+const FormSuperAdmins = () => {
   const history = useHistory();
   const [selectedSuperAdmin] = useState(history.location.state);
   const [titleForm, setTitleForm] = useState('Add new SuperAdmin');
@@ -140,4 +140,4 @@ const TimeSheetsForm = () => {
     </section>
   );
 };
-export default TimeSheetsForm;
+export default FormSuperAdmins;
