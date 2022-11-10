@@ -1,5 +1,6 @@
 import React from 'react';
 import Admins from '../Admins/index';
+import AdminsForm from '../Admins/Form';
 import SuperAdmins from '../SuperAdmins/index';
 import Home from '../Home/index';
 import Employees from '../Employees/index';
@@ -21,8 +22,11 @@ const Routes = () => {
       <Route exact path="/home">
         <Home />
       </Route>
-      <Route path="/admins">
+      <Route exact path="/admins">
         <Admins />
+      </Route>
+      <Route path="/admins/form">
+        <AdminsForm />
       </Route>
       <Route exact path="/super-admins">
         <SuperAdmins />

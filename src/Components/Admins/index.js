@@ -1,4 +1,5 @@
 import styles from './admins.module.css';
+import { useHistory } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import Modal from '../Shared/Modal';
 import Table from '../Shared/Table';
@@ -9,7 +10,9 @@ const Admins = () => {
   const [deleteModalDisplay, setDeleteModalDisplay] = useState(false);
   const [successModalDisplay, setSuccessModalDisplay] = useState(false);
   const [errorModalDisplay, setErrorModalDisplay] = useState(false);
+  const [selectedAdmin, setSelectedAdmin] = useState({});
   const headers = ['name', 'lastName', 'email'];
+  const history = useHistory();
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/admins`)
@@ -18,15 +21,18 @@ const Admins = () => {
         saveAdmins(response.data);
       });
   }, []);
-  const deleteAdmin = (adminId) => {
-    fetch(`${process.env.REACT_APP_API_URL}/admins/${adminId}`, {
+
+  const deleteAdmin = () => {
+    showSuccessModal(true);
+    fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin._id}`, {
       method: 'DELETE'
     });
-    const updatedAdminList = admins.filter((admin) => admin._id !== adminId);
+    const updatedAdminList = admins.filter((admin) => admin._id !== selectedAdmin._id);
     saveAdmins(updatedAdminList);
   };
 
-  const showDeleteModal = () => {
+  const handleDeleteAdmin = (item) => {
+    setSelectedAdmin(item);
     setDeleteModalDisplay(true);
   };
 
@@ -34,12 +40,8 @@ const Admins = () => {
     setSuccessModalDisplay(true);
   };
 
-  const showErrorModal = () => {
-    setErrorModalDisplay(true);
-  };
-
-  const addEditAdmin = () => {
-    alert('holis, vengo a editar o crear admin');
+  const addEditAdmin = (item) => {
+    history.push(`/admins/form`, item);
   };
 
   return (
@@ -52,24 +54,15 @@ const Admins = () => {
           addEditAdmin();
         }}
       />
-      <Button
-        label={'Success modal'}
-        theme={'primary'}
-        onClick={() => {
-          showSuccessModal();
-        }}
+      <Table
+        data={admins}
+        headers={headers}
+        editItem={addEditAdmin}
+        deleteItem={handleDeleteAdmin}
       />
-      <Button
-        label={'Error modal'}
-        theme={'primary'}
-        onClick={() => {
-          showErrorModal();
-        }}
-      />
-      <Table data={admins} headers={headers} editItem={addEditAdmin} deleteItem={showDeleteModal} />
       {deleteModalDisplay ? (
         <Modal
-          heading={`Do you want to delete admin ${admins.name} ${admins.lastName}?`}
+          heading={`Do you want to delete admin ${selectedAdmin.name} ${selectedAdmin.lastName}?`}
           setModalDisplay={setDeleteModalDisplay}
           theme={'confirm'}
         >
@@ -86,7 +79,8 @@ const Admins = () => {
               label={'Delete'}
               theme={'tertiary'}
               onClick={() => {
-                deleteAdmin(admins._id);
+                deleteAdmin();
+                setDeleteModalDisplay(false);
               }}
             />
           </div>
@@ -94,14 +88,14 @@ const Admins = () => {
       ) : null}
       {successModalDisplay ? (
         <Modal
-          heading={`Admin ${admins.name} ${admins.lastName} deleted successfully!`}
+          heading={`Admin ${selectedAdmin.name} ${selectedAdmin.lastName} deleted successfully!`}
           setModalDisplay={setSuccessModalDisplay}
           theme={'success'}
         />
       ) : null}
       {errorModalDisplay ? (
         <Modal
-          heading={`Could not delete admin ${admins.name} ${admins.lastName}!`}
+          heading={`Could not delete admin ${selectedAdmin.name} ${selectedAdmin.lastName}!`}
           setModalDisplay={setErrorModalDisplay}
           theme={'error'}
         />
