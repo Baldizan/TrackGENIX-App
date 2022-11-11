@@ -92,6 +92,15 @@ const FormSuperAdmins = () => {
       });
   };
 
+  const handleCloseModal = () => {
+    if (!modalContent.error) {
+      setModalDisplay(false);
+      history.push(`/Super-admins`);
+    } else {
+      setModalDisplay(false);
+    }
+  };
+
   return (
     <section className={styles.container}>
       <Form onSubmit={onSubmit} title={titleForm}>
@@ -132,7 +141,7 @@ const FormSuperAdmins = () => {
       {modalDisplay && (
         <Modal
           heading={modalContent.message}
-          setModalDisplay={setModalDisplay}
+          setModalDisplay={handleCloseModal}
           theme={modalContent.error ? 'error' : 'success'}
         />
       )}
