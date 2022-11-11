@@ -12,10 +12,7 @@ const SuperAdmins = () => {
   const [successModalDisplay, setSuccessModalDisplay] = useState(false);
 
   const [list, setList] = useState([]);
-  const headers = ['name', 'lastName', 'email'];
-  // name: 'Name',
-  // lastName: 'Last Name',
-  // email: 'Email'
+  const headers = { name: 'name', lastName: 'Last Name', email: 'Email' };
   const history = useHistory();
 
   useEffect(() => {
@@ -56,6 +53,9 @@ const SuperAdmins = () => {
         data={list.slice(displayRange.x, displayRange.y)}
         editItem={handleEdit}
         deleteItem={deleteItem}
+        title={'Super Admins'}
+        addRedirectLink={'super-admins/form'}
+        itemsPerPage={5}
       />
       <div className={styles.nav}>
         <Button
