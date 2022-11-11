@@ -78,7 +78,7 @@ const TasksForm = () => {
           onChange={onChange}
           value={taskInput.description}
           name="description"
-          title={'Description'}
+          title="Description"
           placeholder="Add a description"
           required
         />

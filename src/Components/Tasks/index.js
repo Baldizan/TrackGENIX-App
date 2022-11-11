@@ -10,6 +10,7 @@ const Tasks = () => {
   const [selectedItem, setSelectedItem] = useState({});
   const [list, setList] = useState([]);
   const history = useHistory();
+  const headers = { _id: 'Task ID', description: 'Description' };
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/tasks`)
@@ -36,7 +37,7 @@ const Tasks = () => {
     setSelectedItem(item);
     history.push(`/tasks/form`, { ...item });
   };
-  const headers = { _id: 'Task ID', description: 'Description' };
+
   return (
     <section className={styles.container}>
       <Table
@@ -44,15 +45,15 @@ const Tasks = () => {
         data={list}
         editItem={handleEdit}
         deleteItem={deleteItem}
-        title={'Tasks'}
-        addRedirectLink={'/tasks/form'}
+        title="Tasks"
+        addRedirectLink="/tasks/form"
         itemsPerPage={5}
       />
       {modalDisplay && (
         <Modal
-          heading={'Are you sure you want to delete this task?'}
+          heading="Are you sure you want to delete this task?"
           setModalDisplay={setModalDisplay}
-          theme={'confirm'}
+          theme="confirm"
         >
           <Button
             label="Confirm"
