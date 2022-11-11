@@ -11,7 +11,7 @@ const SuperAdmins = () => {
   const [successModalDisplay, setSuccessModalDisplay] = useState(false);
 
   const [list, setList] = useState([]);
-  const headers = { name: 'name', lastName: 'Last Name', email: 'Email' };
+  const headers = { name: 'Name', lastName: 'Last Name', email: 'Email' };
   const history = useHistory();
 
   useEffect(() => {
