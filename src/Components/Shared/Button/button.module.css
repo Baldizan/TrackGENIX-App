@@ -2,14 +2,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 10px;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.default:hover {
+  cursor: pointer;
 }
 
 .primary {
-  margin: 10px;
-  padding: 10px 20px;
   color: #373867;
   border: 1px solid #373867;
-  border-radius: 5px;
   background-color: #fff;
 }
 
@@ -22,44 +26,35 @@
 }
 
 .secondary {
-  margin: 10px;
-  padding: 10px 20px;
   color: #373867;
-  border: 1px solid #AACE9B ;
-  border-radius: 5px;
-  background-color: #AACE9B;
+  border: 1px solid #aace9b;
+  background-color: #aace9b;
 }
 
 .secondary:hover,
 .secondary:focus {
   cursor: pointer;
   text-decoration: underline;
-  background-color: #AACE9BCC;
+  background-color: #aace9bcc;
   transition: all 0.05s ease-in-out;
 }
 
 .tertiary {
-  margin: 10px;
-  padding: 10px 20px;
   color: #fff;
-  border: 1px solid #F13312 ;
-  border-radius: 5px;
-  background-color: #F13312;
+  border: 1px solid #f13312;
+  background-color: #f13312;
 }
 
 .tertiary:hover,
 .tertiary:focus {
   cursor: pointer;
   text-decoration: underline;
-  background-color: #F13312F0;
+  background-color: #f13312f0;
   transition: all 0.05s ease-in-out;
 }
 
 .disabled {
-  margin: 10px;
-  padding: 10px 20px;
   border: 1px solid;
-  border-radius: 5px;
 }
 
 .disabled:hover {
@@ -67,6 +62,8 @@
 }
 
 .icon {
+  margin: 5px;
+  padding: 0;
   width: 20px;
   height: 20px;
   background-color: transparent;
