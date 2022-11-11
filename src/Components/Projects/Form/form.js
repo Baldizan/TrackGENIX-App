@@ -53,10 +53,10 @@ const ProjectsForm = () => {
   }, []);
 
   const format = (d) => {
-    var today = new Date(d);
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1;
-    var yyyy = today.getFullYear();
+    const today = new Date(d);
+    const dd = today.getDate();
+    const mm = today.getMonth() + 1;
+    const yyyy = today.getFullYear();
     return mm + '/' + dd + '/' + yyyy;
   };
 
@@ -127,7 +127,7 @@ const ProjectsForm = () => {
     <>
       <Form onSubmit={updateProject}>
         <Input
-          title={'ProjectName'}
+          title="ProjectName"
           id="ProjectName"
           value={project.name}
           name="name"
@@ -135,7 +135,7 @@ const ProjectsForm = () => {
           required
         />
         <Input
-          title={'Client'}
+          title="Client"
           id="client"
           value={project.clientName}
           name="clientName"
@@ -143,7 +143,7 @@ const ProjectsForm = () => {
           required
         />
         <Input
-          title={'Description'}
+          title="Description"
           id="description"
           value={project.description}
           name="description"
@@ -151,7 +151,7 @@ const ProjectsForm = () => {
           required
         />
         <Input
-          title={'Start Date'}
+          title="Start Date"
           value={project.startDate}
           name="startDate"
           type="date"
@@ -159,7 +159,7 @@ const ProjectsForm = () => {
           required
         />
         <Input
-          title={'End Date'}
+          title="End Date"
           value={project.endDate}
           name="endDate"
           type="date"
@@ -167,13 +167,14 @@ const ProjectsForm = () => {
           required
         />
         <Select
-          title={'Active'}
-          name={'active'}
+          title="Active"
+          name="active"
           value={project.active}
           arrayToMap={statusProject.map((status) => ({
-            id: status == 'Active',
+            id: status === 'Active',
             label: status
           }))}
+          placeholder="Status"
           id="active"
           onChange={onChange}
           required
@@ -207,9 +208,9 @@ const ProjectsForm = () => {
           />
         </div>
         <div>
-          <Input placeholder={'Rate'} type={'number'} onChange={handleChangeRate} required />
-          <Button label={'Assign'} onClick={assignEmployee} />
-          <Button label={'Cancel'} />
+          <Input placeholder="Rate" type="number" onChange={handleChangeRate} required />
+          <Button label="Assign" onClick={assignEmployee} />
+          <Button label="Cancel" />
         </div>
       </Form>
     </>
