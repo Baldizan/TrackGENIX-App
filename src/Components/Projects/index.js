@@ -12,15 +12,15 @@ function Projects() {
   const [textEmployee, setTextEmployee] = useState('');
   const [projects, setProjects] = useState([]);
   const [projectDelete, setProjectDelete] = useState();
-  const headers = [
-    'name',
-    'description',
-    'startDate',
-    'endDate',
-    'clientName',
-    'active',
-    'employees'
-  ];
+  const headers = {
+    name: 'Name',
+    description: 'Description',
+    startDate: 'Start date',
+    endDate: 'End date',
+    clientName: 'Client name',
+    active: 'Status',
+    employees: 'Employees'
+  };
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/projects`)
@@ -41,10 +41,6 @@ function Projects() {
     history.push('/projects/form', { id: item._id });
   };
 
-  const addProject = () => {
-    history.push('/projects/form');
-  };
-
   const confirmDelete = () => {
     fetch(`${process.env.REACT_APP_API_URL}/projects/${projectDelete._id}`, {
       method: 'DELETE'
@@ -62,7 +58,6 @@ function Projects() {
       });
       setModalEmployee(true);
       setTextEmployee(`Assigned employees to project ${name}` + text.join('\n'));
-      //alert(`Assigned employees to project ${name}:\n` + text.join('\n'));
     } else {
       setTextEmployee('no');
     }
@@ -98,13 +93,14 @@ function Projects() {
           </div>
         </Modal>
       )}
-      <h2 className={styles.title}>Projects</h2>
-      <Button label={'Add new project'} theme={'primary'} onClick={addProject} />
       <Table
         data={projectColumns}
         headers={headers}
+        title={'Projects'}
+        addRedirectLink={'projects/form'}
         editItem={handleEdit}
         deleteItem={handleDelete}
+        itemsPerPage={5}
       />
     </section>
   );

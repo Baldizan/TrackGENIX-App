@@ -9,7 +9,6 @@ const ProjectsForm = () => {
   let history = useHistory();
   const projectId = history.location.state?.id;
   const [employees, setEmployees] = useState([]);
-  //const [modalContent, setModalContent] = useState();
   const [employee, setEmployee] = useState({
     id: '',
     role: '',
