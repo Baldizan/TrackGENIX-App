@@ -6,8 +6,9 @@ import { Input } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
 
 const FormAdmins = () => {
-  const history = useHistory();
-  const [selectedAdmin] = useState(history.location.state);
+  // const history = useHistory();
+  let history = useHistory();
+  const selectedAdmin = history.location.state?._id;
   const [titleForm, setTitleForm] = useState('Add new admin');
   const [adminInput, setAdminInput] = useState({
     name: '',
@@ -20,7 +21,7 @@ const FormAdmins = () => {
 
   useEffect(() => {
     if (selectedAdmin) {
-      fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin._id}`)
+      fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin}`)
         .then((res) => res.json())
         .then((json) => {
           setAdminInput({
@@ -63,9 +64,19 @@ const FormAdmins = () => {
       body: JSON.stringify(newItem)
     })
       .then((res) => res.json())
-      .then((json) => {
+      .then((res) => {
         setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
+        setModalContent({ message: res.message, error: res.error });
+        console.log(res.status);
+        if (!modalDisplay) {
+          history.push('/admins');
+        }
+      })
+      .then((json) => {
+        console.log(json.error);
+        if (!modalDisplay) {
+          history.push('/admins');
+        }
       });
   };
 
@@ -77,7 +88,7 @@ const FormAdmins = () => {
       password
     };
 
-    fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin._id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin}`, {
       method: 'put',
       headers: {
         'Content-Type': 'application/json'
@@ -88,6 +99,10 @@ const FormAdmins = () => {
       .then((json) => {
         setModalDisplay(true);
         setModalContent({ message: json.message, error: json.error });
+        console.log(json.error);
+        if (!json.error) {
+          history.push('/admins');
+        }
       });
   };
 
@@ -99,7 +114,7 @@ const FormAdmins = () => {
           placeholder={'Enter your name'}
           value={adminInput.name}
           name="name"
-          title={'Name'}
+          title="Name"
           required
         />
         <Input
@@ -107,7 +122,7 @@ const FormAdmins = () => {
           placeholder={'Enter your last name'}
           value={adminInput.lastName}
           name="lastName"
-          title={'Last Name'}
+          title="Last Name"
           required
         />
         <Input
@@ -115,7 +130,7 @@ const FormAdmins = () => {
           placeholder={'Enter a valid email address'}
           value={adminInput.email}
           name="email"
-          title={'Email'}
+          title="Email"
           required
         />
         <Input
@@ -124,17 +139,17 @@ const FormAdmins = () => {
           value={adminInput.password}
           type="password"
           name="password"
-          title={'Password'}
+          title="Password"
           required
         />
       </Form>
-      {modalDisplay ? (
+      {modalDisplay && (
         <Modal
           heading={modalContent.message}
           setModalDisplay={setModalDisplay}
           theme={modalContent.error ? 'error' : 'success'}
         />
-      ) : null}
+      )}
     </section>
   );
 };

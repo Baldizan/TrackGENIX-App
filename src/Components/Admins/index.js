@@ -26,9 +26,10 @@ const Admins = () => {
     showSuccessModal(true);
     fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin._id}`, {
       method: 'DELETE'
+    }).then(() => {
+      const updatedAdminList = admins.filter((admin) => admin._id !== selectedAdmin._id);
+      saveAdmins(updatedAdminList);
     });
-    const updatedAdminList = admins.filter((admin) => admin._id !== selectedAdmin._id);
-    saveAdmins(updatedAdminList);
   };
 
   const handleDeleteAdmin = (item) => {
@@ -60,7 +61,7 @@ const Admins = () => {
         editItem={addEditAdmin}
         deleteItem={handleDeleteAdmin}
       />
-      {deleteModalDisplay ? (
+      {deleteModalDisplay && (
         <Modal
           heading={`Do you want to delete admin ${selectedAdmin.name} ${selectedAdmin.lastName}?`}
           setModalDisplay={setDeleteModalDisplay}
@@ -85,21 +86,21 @@ const Admins = () => {
             />
           </div>
         </Modal>
-      ) : null}
-      {successModalDisplay ? (
+      )}
+      {successModalDisplay && (
         <Modal
           heading={`Admin ${selectedAdmin.name} ${selectedAdmin.lastName} deleted successfully!`}
           setModalDisplay={setSuccessModalDisplay}
           theme={'success'}
         />
-      ) : null}
-      {errorModalDisplay ? (
+      )}
+      {errorModalDisplay && (
         <Modal
           heading={`Could not delete admin ${selectedAdmin.name} ${selectedAdmin.lastName}!`}
           setModalDisplay={setErrorModalDisplay}
           theme={'error'}
         />
-      ) : null}
+      )}
     </section>
   );
 };
