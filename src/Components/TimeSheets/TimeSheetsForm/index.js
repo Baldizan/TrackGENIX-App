@@ -110,6 +110,15 @@ const TimeSheetsForm = () => {
       });
   };
 
+  const handleCloseModal = () => {
+    if (!modalContent.error) {
+      setModalDisplay(false);
+      history.push(`/time-sheets`);
+    } else {
+      setModalDisplay(false);
+    }
+  };
+
   const project = () => projects.map((project) => project._id);
   const task = () => tasks.map((task) => task._id);
   const employee = () => employees.map((employee) => employee._id);
@@ -173,7 +182,7 @@ const TimeSheetsForm = () => {
       {modalDisplay && (
         <Modal
           heading={modalContent.message}
-          setModalDisplay={setModalDisplay}
+          setModalDisplay={handleCloseModal}
           theme={modalContent.error ? 'error' : 'success'}
         />
       )}
