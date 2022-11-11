@@ -52,8 +52,8 @@ const Select = ({
         </option>
         {arrayToMap.map((item, index) => {
           return (
-            <option key={index} value={item}>
-              {`${item}`}
+            <option key={index} value={item.id}>
+              {item.label}
             </option>
           );
         })}
