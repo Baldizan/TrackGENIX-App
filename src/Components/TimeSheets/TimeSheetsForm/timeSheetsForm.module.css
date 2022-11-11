@@ -1,35 +1,10 @@
-.flex-container {
+.container {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  align-items: center;
 }
 
-.column {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
-.form{
-  align-self: center;
-  width: 80%;
-}
-
-.h1{
-  font-size: 20px;
-}
-
-.label{
- width: 30%;
-}
-
-.input, .select {
-  width: 40%;
-}
 .titleAdd {
   align-self: center;
-}
-
-.btn {
-  width: 50%;
 }
