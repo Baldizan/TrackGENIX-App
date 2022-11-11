@@ -67,8 +67,8 @@ function Projects() {
     ...row,
     employees: (
       <Button
-        label={'See employees'}
-        theme={'primary'}
+        label="See employees"
+        theme="primary"
         onClick={() => showEmployees(row.employees, row.name)}
       />
     )
@@ -77,27 +77,23 @@ function Projects() {
   return (
     <section className={styles.container}>
       {modalEmployee && (
-        <Modal setModalDisplay={setModalEmployee} theme={'confirm'}>
+        <Modal setModalDisplay={setModalEmployee} theme="confirm">
           {textEmployee}
         </Modal>
       )}
       {modal && (
-        <Modal
-          setModalDisplay={setModal}
-          heading={'Do you want delete this project'}
-          theme={'confirm'}
-        >
+        <Modal setModalDisplay={setModal} heading="Do you want delete this project" theme="confirm">
           <div className={styles.btnContainer}>
-            <Button label={'Cancel'} theme={'primary'} onClick={handleCloseModal} />
-            <Button label={'Delete'} theme={'tertiary'} onClick={confirmDelete} />
+            <Button label="Cancel" theme="primary" onClick={handleCloseModal} />
+            <Button label="Delete" theme="tertiary" onClick={confirmDelete} />
           </div>
         </Modal>
       )}
       <Table
         data={projectColumns}
         headers={headers}
-        title={'Projects'}
-        addRedirectLink={'projects/form'}
+        title="Projects"
+        addRedirectLink="projects/form"
         editItem={handleEdit}
         deleteItem={handleDelete}
         itemsPerPage={5}
