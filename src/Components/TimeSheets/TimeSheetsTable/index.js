@@ -20,6 +20,17 @@ const List = () => {
     hours: 'Hours'
   };
 
+  const timesheetsData = list.map((row) => ({
+    ...row,
+    date: row.date.slice(0, 10),
+    project: row.project?._id,
+    task: row.task?._id,
+    employee: row.employee?._id,
+    projectName: row.project?.name ?? 'N/A',
+    taskDescription: row.task?.description ?? 'N/A',
+    employeeFormat: row.employee ? `${row.employee?.name} ${row.employee?.lastName}` : 'N/A'
+  }));
+
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/timesheets`)
       .then((res) => res.json())
@@ -55,16 +66,7 @@ const List = () => {
     <section className={styles.container}>
       <Table
         headers={headers}
-        data={list.map((row) => ({
-          ...row,
-          date: row.date.slice(0, 10),
-          project: row.project?._id,
-          task: row.task?._id,
-          employee: row.employee?._id,
-          projectName: row.project?.name ?? 'N/A',
-          taskDescription: row.task?.description ?? 'N/A',
-          employeeFormat: row.employee ? `${row.employee?.name} ${row.employee?.lastName}` : 'N/A'
-        }))}
+        data={timesheetsData}
         editItem={handleEdit}
         deleteItem={deleteItem}
         title="Timesheets"

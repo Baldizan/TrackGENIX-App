@@ -119,13 +119,12 @@ const TimeSheetsForm = () => {
     }
   };
 
-  const project = () => projects.map((project) => ({ id: project._id, label: project.name }));
-  const task = () => tasks.map((task) => ({ id: task._id, label: task.description }));
-  const employee = () =>
-    employees.map((employee) => ({
-      id: employee._id,
-      label: `${employee.name} ${employee.lastName}`
-    }));
+  const projectsMap = projects.map((project) => ({ id: project._id, label: project.name }));
+  const tasksMap = tasks.map((task) => ({ id: task._id, label: task.description }));
+  const employeesMap = employees.map((employee) => ({
+    id: employee._id,
+    label: `${employee.name} ${employee.lastName}`
+  }));
 
   return (
     <section className={styles.container}>
@@ -134,7 +133,7 @@ const TimeSheetsForm = () => {
           onChange={onChange}
           value={timeSheetInput.project}
           name="project"
-          arrayToMap={project()}
+          arrayToMap={projectsMap}
           title="Project"
           placeholder="Select a project"
           required
@@ -143,7 +142,7 @@ const TimeSheetsForm = () => {
           onChange={onChange}
           value={timeSheetInput.task}
           name="task"
-          arrayToMap={task()}
+          arrayToMap={tasksMap}
           title="Task"
           placeholder="Select a task"
           required
@@ -152,7 +151,7 @@ const TimeSheetsForm = () => {
           onChange={onChange}
           value={timeSheetInput.employee}
           name="employee"
-          arrayToMap={employee()}
+          arrayToMap={employeesMap}
           title="Employee"
           placeholder="Select an employee"
           required
