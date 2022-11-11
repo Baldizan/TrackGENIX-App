@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import styles from './form.module.css';
+import Form from '../../Shared/Form/index';
+import Button from '../../Shared/Button';
+import { Input, Select } from '../../Shared/Input/index';
 
 const EmployeesForm = () => {
-  const paramsURL = new URLSearchParams(window.location.search);
-  const id = paramsURL.get('id');
-  const [employee, setEmployee] = useState({});
+  let history = useHistory();
+  const [selectedEmployee] = useState(history.location.state);
   const [allProjects, setProject] = useState([]);
   const [nameValue, setNameValue] = useState('');
   const [lastNameValue, setLastNameValue] = useState('');
@@ -12,10 +15,19 @@ const EmployeesForm = () => {
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
   const [projectsValue, setProjectValues] = useState('');
-
+  const [employee, setEmployee] = useState(
+    selectedEmployee ?? {
+      name: '',
+      lastName: '',
+      phone: '',
+      email: '',
+      password: '',
+      project: ''
+    }
+  );
   useEffect(() => {
-    if (id) {
-      fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`)
+    if (selectedEmployee) {
+      fetch(`${process.env.REACT_APP_API_URL}/employees/${selectedEmployee._id}`)
         .then((response) => response.json())
         .then((response) => {
           setEmployee(response.data);
@@ -52,8 +64,8 @@ const EmployeesForm = () => {
       project: projectsValue
     });
 
-    if (id) {
-      fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
+    if (selectedEmployee._id) {
+      fetch(`${process.env.REACT_APP_API_URL}/employees/${selectedEmployee._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: body
@@ -69,7 +81,7 @@ const EmployeesForm = () => {
         alert('Please complete all required fields');
       } else {
         alert('Employees edited successfully');
-        window.location.assign('/employees');
+        history.push('/employees');
       }
     } else {
       fetch(`${process.env.REACT_APP_API_URL}/employees`, {
@@ -88,7 +100,7 @@ const EmployeesForm = () => {
         alert('Please complete all required fields');
       } else {
         alert('Employees created successfully');
-        window.location.assign('/employees');
+        history.push('/employees');
       }
     }
   };
@@ -113,14 +125,12 @@ const EmployeesForm = () => {
     setPasswordValue(event.target.value);
   };
   const projectInput = (event) => {
-    setProjectValues(event.target.value);
+    setProjectValues({ ...employee, id: event.target.value });
   };
-
   return (
     <section className={styles.container}>
-      <form className={styles.container}>
-        <label htmlFor="name">Name:</label>
-        <input
+      <Form onSubmit={sendEmployee}>
+        <Input
           id="name"
           name="name"
           placeholder="Name"
@@ -128,8 +138,7 @@ const EmployeesForm = () => {
           value={nameValue}
           onChange={nameInput}
         />
-        <label htmlFor="lastName">Last name:</label>
-        <input
+        <Input
           id="lastName"
           name="lastName"
           placeholder="Last name"
@@ -137,17 +146,15 @@ const EmployeesForm = () => {
           value={lastNameValue}
           onChange={lastNameInput}
         />
-        <label htmlFor="phone">Phone:</label>
-        <input
+        <Input
           id="phone"
           name="phone"
-          placeholder="phone"
+          placeholder="Phone"
           required
           value={phoneValue}
           onChange={phoneInput}
         />
-        <label htmlFor="email">Email:</label>
-        <input
+        <Input
           id="email"
           name="email"
           placeholder="Email"
@@ -155,8 +162,7 @@ const EmployeesForm = () => {
           value={emailValue}
           onChange={emailInput}
         />
-        <label htmlFor="password">Password:</label>
-        <input
+        <Input
           id="password"
           type="password"
           name="password"
@@ -165,28 +171,32 @@ const EmployeesForm = () => {
           value={passwordValue}
           onChange={passwordInput}
         />
-        <label htmlFor="project">Project:</label>
-        <select
-          name="employees"
-          placeholder="Employees"
+        <Select
+          placeholder="Project"
           required
-          value={projectsValue}
+          value={selectedEmployee.project?._id}
           onChange={projectInput}
-        >
-          <option value="">Project</option>
-          {allProjects.map((project) => {
-            return (
-              <option key={project._id} value={project._id}>
-                {project.name}
-              </option>
-            );
-          })}
-        </select>
-      </form>
-      <button onClick={sendEmployee}>Confirm</button>
-      <a href="/employees">
-        <button>Cancel</button>
-      </a>
+          arrayToMap={allProjects.map((project) => ({
+            id: project._id,
+            label: project.name
+          }))}
+        />
+        {/* {selectedEmployee ? (
+          <Select
+            title="Active"
+            name="active"
+            value={employee.active}
+            arrayToMap={employee.map(() => ({
+              id: selectedEmployee.active,
+              label: selectedEmployee
+            }))}
+            placeholder="Status"
+            id="active"
+            required
+          />
+        ) : null} */}
+        <Button label={'Cancel'} onClick={() => history.push('/employees')} />
+      </Form>
     </section>
   );
 };
