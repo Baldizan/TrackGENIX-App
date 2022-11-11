@@ -42,7 +42,6 @@ const Select = ({
         id={id}
         name={name}
         onChange={onChange}
-        placeholder={placeholder}
         type={type}
         value={value}
         required={required}

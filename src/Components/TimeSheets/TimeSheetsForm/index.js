@@ -135,8 +135,8 @@ const TimeSheetsForm = () => {
           value={timeSheetInput.project}
           name="project"
           arrayToMap={project()}
-          title={'Project'}
-          placeholder={'Select a project'}
+          title="Project"
+          placeholder="Select a project"
           required
         />
         <Select
@@ -144,7 +144,7 @@ const TimeSheetsForm = () => {
           value={timeSheetInput.task}
           name="task"
           arrayToMap={task()}
-          title={'Task'}
+          title="Task"
           placeholder="Select a task"
           required
         />
@@ -153,7 +153,7 @@ const TimeSheetsForm = () => {
           value={timeSheetInput.employee}
           name="employee"
           arrayToMap={employee()}
-          title={'Employee'}
+          title="Employee"
           placeholder="Select an employee"
           required
         />
@@ -161,7 +161,7 @@ const TimeSheetsForm = () => {
           onChange={onChange}
           value={timeSheetInput.description}
           name="description"
-          title={'Description'}
+          title="Description"
           placeholder="Add a description"
           required
         />
@@ -170,7 +170,7 @@ const TimeSheetsForm = () => {
           value={timeSheetInput.date}
           name="date"
           type="date"
-          title={'Date'}
+          title="Date"
           required
         />
         <Input
@@ -178,7 +178,7 @@ const TimeSheetsForm = () => {
           value={timeSheetInput.hours}
           name="hours"
           type="number"
-          title={'Hours'}
+          title="Hours"
           placeholder="Assign hours"
           required
         />

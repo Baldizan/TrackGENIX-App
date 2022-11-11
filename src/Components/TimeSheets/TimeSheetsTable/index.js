@@ -68,14 +68,14 @@ const List = () => {
         editItem={handleEdit}
         deleteItem={deleteItem}
         title="Timesheets"
-        addRedirectLink={'/time-sheets/form'}
+        addRedirectLink="/time-sheets/form"
         itemsPerPage={5}
       />
       {modalDisplay && (
         <Modal
-          heading={'Are you sure you want to delete this timesheet?'}
+          heading="Are you sure you want to delete this timesheet?"
           setModalDisplay={setModalDisplay}
-          theme={'confirm'}
+          theme="confirm"
         >
           <Button
             label="Confirm"
