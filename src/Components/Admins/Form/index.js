@@ -6,7 +6,6 @@ import { Input } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
 
 const FormAdmins = () => {
-  // const history = useHistory();
   let history = useHistory();
   const selectedAdmin = history.location.state?._id;
   const [titleForm, setTitleForm] = useState('Add new admin');
@@ -67,16 +66,6 @@ const FormAdmins = () => {
       .then((res) => {
         setModalDisplay(true);
         setModalContent({ message: res.message, error: res.error });
-        console.log(res.status);
-        if (!modalDisplay) {
-          history.push('/admins');
-        }
-      })
-      .then((json) => {
-        console.log(json.error);
-        if (!modalDisplay) {
-          history.push('/admins');
-        }
       });
   };
 
@@ -99,10 +88,6 @@ const FormAdmins = () => {
       .then((json) => {
         setModalDisplay(true);
         setModalContent({ message: json.message, error: json.error });
-        console.log(json.error);
-        if (!json.error) {
-          history.push('/admins');
-        }
       });
   };
 

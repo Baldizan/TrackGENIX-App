@@ -11,7 +11,7 @@ const Admins = () => {
   const [successModalDisplay, setSuccessModalDisplay] = useState(false);
   const [errorModalDisplay, setErrorModalDisplay] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState({});
-  const headers = ['name', 'lastName', 'email'];
+  const headers = { name: 'Name', lastName: 'Last Name', email: 'Email' };
   const history = useHistory();
 
   useEffect(() => {
@@ -47,19 +47,14 @@ const Admins = () => {
 
   return (
     <section className={styles.container}>
-      <h2>Admin list</h2>
-      <Button
-        label={'Add admin'}
-        theme={'primary'}
-        onClick={() => {
-          addEditAdmin();
-        }}
-      />
       <Table
         data={admins}
         headers={headers}
         editItem={addEditAdmin}
         deleteItem={handleDeleteAdmin}
+        title={'Admins'}
+        addRedirectLink={'/admins/form'}
+        itemsPerPage={5}
       />
       {deleteModalDisplay && (
         <Modal
