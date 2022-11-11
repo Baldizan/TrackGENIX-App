@@ -32,7 +32,14 @@ const TasksForm = () => {
     }
   };
 
-  console.log(taskInput);
+  const handleCloseModal = () => {
+    if (!modalContent.error) {
+      setModalDisplay(false);
+      history.push(`/tasks`);
+    } else {
+      setModalDisplay(false);
+    }
+  };
 
   const addItem = () => {
     fetch(`${process.env.REACT_APP_API_URL}/tasks`, {
@@ -79,7 +86,7 @@ const TasksForm = () => {
       {modalDisplay && (
         <Modal
           heading={modalContent.message}
-          setModalDisplay={setModalDisplay}
+          setModalDisplay={handleCloseModal}
           theme={modalContent.error ? 'error' : 'success'}
         />
       )}
