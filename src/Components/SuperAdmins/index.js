@@ -6,7 +6,6 @@ import Table from '../Shared/Table';
 import Modal from '../Shared/Modal';
 
 const SuperAdmins = () => {
-  const [displayRange, setDisplayRange] = useState({ x: 0, y: 5, z: 0 });
   const [modalDisplay, setModalDisplay] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
   const [successModalDisplay, setSuccessModalDisplay] = useState(false);
@@ -47,41 +46,15 @@ const SuperAdmins = () => {
 
   return (
     <section className={styles.container}>
-      <Button label={'Add new SuperAdmin +'} onClick={() => history.push('/super-admins/form')} />
       <Table
         headers={headers}
-        data={list.slice(displayRange.x, displayRange.y)}
+        data={list}
         editItem={handleEdit}
         deleteItem={deleteItem}
         title={'Super Admins'}
         addRedirectLink={'super-admins/form'}
         itemsPerPage={5}
       />
-      <div className={styles.nav}>
-        <Button
-          onClick={() =>
-            setDisplayRange({
-              x: displayRange.x - 5,
-              y: displayRange.y - 5,
-              z: displayRange.z - 1
-            })
-          }
-          icon={`${process.env.PUBLIC_URL}/assets/images/angle-left-solid.svg`}
-          hidden={displayRange.x === 0}
-        />
-        <p>{displayRange.z}</p>
-        <Button
-          onClick={() =>
-            setDisplayRange({
-              x: displayRange.x + 5,
-              y: displayRange.y + 5,
-              z: displayRange.z + 1
-            })
-          }
-          icon={`${process.env.PUBLIC_URL}/assets/images/angle-right-solid.svg`}
-          hidden={list.slice(displayRange.x + 5, displayRange.y + 5).length === 0}
-        />
-      </div>
       {successModalDisplay && (
         <Modal
           heading={`${selectedItem.name} ${selectedItem.lastName} deleted successfully!`}
@@ -89,7 +62,6 @@ const SuperAdmins = () => {
           theme={'success'}
         />
       )}
-      ;
       {modalDisplay && (
         <Modal
           heading={'Are you sure you want to delete this Super-Admin?'}

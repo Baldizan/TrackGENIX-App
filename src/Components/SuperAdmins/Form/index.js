@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './form.module.css';
 import Form from '../../Shared/Form';
-import Input from '../../Shared/Input';
+import { Input } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
 
 const FormSuperAdmins = () => {
