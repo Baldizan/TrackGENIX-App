@@ -2,7 +2,7 @@ import styles from './input.module.css';
 
 import React from 'react';
 
-const Input = (name, title, id, type, value, onChange, placeholder, disabled, required) => {
+const Input = ({ name, title, id, type, value, onChange, placeholder, disabled, required }) => {
   return (
     <label className={styles.label}>
       {title}
@@ -21,7 +21,7 @@ const Input = (name, title, id, type, value, onChange, placeholder, disabled, re
   );
 };
 
-const Select = (
+const Select = ({
   name,
   title,
   id,
@@ -32,7 +32,7 @@ const Select = (
   arrayToMap,
   disabled,
   required
-) => {
+}) => {
   return (
     <label className={styles.label}>
       {title}
@@ -47,11 +47,13 @@ const Select = (
         value={value}
         required={required}
       >
-        <option defaultValue value={placeholder} disabled />
+        <option selected disabled>
+          {placeholder}
+        </option>
         {arrayToMap.map((item, index) => {
           return (
-            <option key={index} value={item.id}>
-              {item.label}
+            <option key={index} value={item}>
+              {`${item}`}
             </option>
           );
         })}
@@ -61,4 +63,4 @@ const Select = (
   );
 };
 
-export default { Input, Select };
+export { Input, Select };
