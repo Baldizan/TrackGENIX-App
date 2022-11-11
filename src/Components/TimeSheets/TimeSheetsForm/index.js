@@ -119,9 +119,13 @@ const TimeSheetsForm = () => {
     }
   };
 
-  const project = () => projects.map((project) => project._id);
-  const task = () => tasks.map((task) => task._id);
-  const employee = () => employees.map((employee) => employee._id);
+  const project = () => projects.map((project) => ({ id: project._id, label: project.name }));
+  const task = () => tasks.map((task) => ({ id: task._id, label: task.description }));
+  const employee = () =>
+    employees.map((employee) => ({
+      id: employee._id,
+      label: `${employee.name} ${employee.lastName}`
+    }));
 
   return (
     <section className={styles.container}>
@@ -132,7 +136,7 @@ const TimeSheetsForm = () => {
           name="project"
           arrayToMap={project()}
           title={'Project'}
-          placeholder="Select a project"
+          placeholder={'Select a project'}
           required
         />
         <Select
