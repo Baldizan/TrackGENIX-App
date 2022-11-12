@@ -23,7 +23,7 @@ const ProjectsForm = () => {
     active: '',
     employees: []
   });
-  const roles = ['Rol', 'DEV', 'TL', 'QA', 'PM'];
+  const roles = ['DEV', 'TL', 'QA', 'PM'];
   const statusProject = ['Active', 'Inactive'];
 
   useEffect(() => {
@@ -40,8 +40,8 @@ const ProjectsForm = () => {
           setProject({
             name: res.data.name,
             description: res.data.description,
-            startDate: res.data.startDate.substring(0, 10),
-            endDate: res.data.endDate.substring(0, 10),
+            startDate: res.data.startDate.slice(0, 10),
+            endDate: res.data.endDate.slice(0, 10),
             clientName: res.data.clientName,
             active: res.data.active,
             employees: res.data.employees
@@ -98,16 +98,12 @@ const ProjectsForm = () => {
     setProject({ ...project, [e.target.name]: e.target.value });
   };
 
+  const onChangeEmployee = (e) => {
+    setEmployee({ ...employee, [e.target.name]: e.target.value });
+  };
+
   const handleChangeEmployee = (e) => {
     setEmployee({ ...employee, id: e.target.value });
-  };
-
-  const handleChangeRole = (e) => {
-    setEmployee({ ...employee, role: e.target.value });
-  };
-
-  const handleChangeRate = (e) => {
-    setEmployee({ ...employee, rate: +e.target.value });
   };
 
   const assignEmployee = () => {
@@ -118,14 +114,14 @@ const ProjectsForm = () => {
 
   const getName = (id) => {
     let employee = employees.find(function (e) {
-      return e._id == id;
+      return e._id === id;
     });
-    return employee?.name + ' ' + employee.lastName;
+    return employee?.name + ' ' + employee?.lastName;
   };
-
+  console.log(employee);
   return (
-    <>
-      <Form onSubmit={updateProject}>
+    <section className={styles.container}>
+      <Form onSubmit={updateProject} secondColumnIndex={5}>
         <Input
           title="ProjectName"
           id="ProjectName"
@@ -179,18 +175,20 @@ const ProjectsForm = () => {
           onChange={onChange}
           required
         />
-        <div>
+        <div className={styles.divContainer}>
           <div className={styles.employeesContainer}>
             <h3>Employees:</h3>
             {project?.employees?.map((e, i) => (
               <div key={i}>
                 <span>{'Name: ' + getName(e.id) + ' '}</span>
-                <span>{'Rol: ' + e.role + ' '}</span>
+                <span>{'Role: ' + e.role + ' '}</span>
                 <span>{'Rate: ' + e.rate + ' '}</span>
               </div>
             ))}
           </div>
           <Select
+            name="name"
+            placeholder="Name"
             arrayToMap={employees.map((employee) => ({
               id: employee._id,
               label: employee.name + ' ' + employee.lastName
@@ -199,21 +197,26 @@ const ProjectsForm = () => {
             required
           />
           <Select
+            name="role"
+            placeholder="Role"
             arrayToMap={roles.map((rol) => ({
               id: rol,
               label: rol
             }))}
-            onChange={handleChangeRole}
+            onChange={onChangeEmployee}
             required
           />
-        </div>
-        <div>
-          <Input placeholder="Rate" type="number" onChange={handleChangeRate} required />
-          <Button label="Assign" onClick={assignEmployee} />
-          <Button label="Cancel" />
+          <Input
+            name="rate"
+            placeholder="Rate"
+            type="number"
+            onChange={onChangeEmployee}
+            required
+          />
+          <Button className={styles.btnAssign} label="Assign" onClick={assignEmployee} />
         </div>
       </Form>
-    </>
+    </section>
   );
 };
 

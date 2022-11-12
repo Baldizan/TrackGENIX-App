@@ -1,5 +1,15 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.divContainer {
+  width: 100%;
+}
+
 .employeesContainer {
-  width: 500px;
+  width: 100%;
   min-height: 50%;
   padding: 5px;
   margin-block: 10px;
