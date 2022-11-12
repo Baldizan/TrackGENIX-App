@@ -1,7 +1,19 @@
+.tr:hover {
+  background-color: #aace9b50;
+}
+
 .td {
-  padding: 10px 15px;
+  padding: 10px 20px;
   border-bottom: 1px solid #d7d7e1;
   border-top: 1px solid #d7d7e1;
+}
+
+.styles.active {
+  color: #038D00;
+}
+
+.styles.inactive {
+  color: #FF1717;
 }
 
 .btnContainer {

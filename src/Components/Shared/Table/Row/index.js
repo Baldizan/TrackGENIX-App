@@ -6,7 +6,17 @@ const Row = ({ headers, rowItem, deleteItem, editItem }) => {
   return (
     <tr className={styles.tr}>
       {headers?.map((header, index) => (
-        <td key={index} className={styles.td}>
+        <td
+          key={index}
+          className={`${styles.td} ${
+            header.toLowerCase() === 'status'
+              ? rowItem[header].toLowerCase() === 'active'
+                ? styles.active
+                : styles.inactive
+              : null
+          }
+        `}
+        >
           {rowItem[header]}
         </td>
       ))}

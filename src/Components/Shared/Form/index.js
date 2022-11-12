@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import styles from './form.module.css';
 import Button from '../Button';
 
@@ -12,6 +13,7 @@ const Form = ({
   title,
   secondColumnIndex
 }) => {
+  const history = useHistory();
   return (
     <form
       className={styles.form}
@@ -20,6 +22,12 @@ const Form = ({
       noValidate={noValidate}
       onSubmit={onSubmit}
     >
+      <div className={styles.navBack}>
+        <Button
+          onClick={() => history.goBack()}
+          icon={`${process.env.PUBLIC_URL}/assets/images/angle-left-solid.svg`}
+        />
+      </div>
       {title ? <h2 className={styles.title}>{title}</h2> : null}
       <div className={secondColumnIndex ? styles.fieldsetColumns : styles.fieldsetContainer}>
         <fieldset className={styles.fieldset}>
@@ -38,6 +46,7 @@ const Form = ({
         ) : null}
       </div>
       <div className={styles.btnContainer}>
+        <Button label="Cancel" onClick={() => history.goBack()} />
         <Button
           type="submit"
           label="Submit"
