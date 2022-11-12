@@ -58,3 +58,9 @@
   transform: scale(1.10);
   transition: all .4s ease-in-out;
 }
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}

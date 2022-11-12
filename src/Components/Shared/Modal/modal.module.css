@@ -27,27 +27,27 @@
 }
 
 .success {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: absolute;
-  width: 25vw;
-  height: 40px;
-  padding: 0 24px;
-  background-color: #aace9b;
-  border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    width: 25vw;
+    min-height: 40px;
+    padding: 4px 24px;
+    background-color: #AACE9B;
+    border-radius: 5px;
 }
 
 .error {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: absolute;
-  width: 25vw;
-  height: 40px;
-  padding: 0 24px;
-  background-color: #f13312;
-  border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    width: 25vw;
+    min-height: 40px;
+    padding: 4px 24px;
+    background-color: #F13312;
+    border-radius: 5px;
 }
 
 .header {
