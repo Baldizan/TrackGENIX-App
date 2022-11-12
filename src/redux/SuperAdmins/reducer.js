@@ -12,21 +12,21 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         list: action.payload,
-        pending: false
+        isPending: false
       };
     }
     case GET_SUPERADMINS_SUCCESS: {
       return {
         ...state,
         list: action.payload,
-        pending: false
+        isPending: false
       };
     }
     case GET_SUPERADMINS_ERROR: {
       return {
         ...state,
         list: action.payload,
-        pending: false
+        isPending: false
       };
     }
     default:
