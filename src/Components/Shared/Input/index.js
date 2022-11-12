@@ -42,18 +42,17 @@ const Select = ({
         id={id}
         name={name}
         onChange={onChange}
-        placeholder={placeholder}
         type={type}
         value={value}
         required={required}
       >
-        <option selected disabled>
+        <option value="" hidden disabled>
           {placeholder}
         </option>
         {arrayToMap.map((item, index) => {
           return (
-            <option key={index} value={item}>
-              {`${item}`}
+            <option key={index} value={item.id}>
+              {`${item.label}`}
             </option>
           );
         })}

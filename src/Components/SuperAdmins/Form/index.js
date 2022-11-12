@@ -1,179 +1,151 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import styles from './form.module.css';
-import ModalAlert from '../ModalAlert';
+import Form from '../../Shared/Form';
+import { Input } from '../../Shared/Input';
+import Modal from '../../Shared/Modal';
 
 const FormSuperAdmins = () => {
-  const paramsURL = new URLSearchParams(window.location.search);
-  const userId = paramsURL.get('id');
-
-  const [modalAlert, setModalAlert] = useState(false);
-  const [message, setMessage] = useState('');
-  const [titleModal, setTitleModal] = useState('');
-  const [userInput, setUserInput] = useState({
+  const history = useHistory();
+  const [selectedSuperAdmin] = useState(history.location.state?.id);
+  const [titleForm, setTitleForm] = useState('Add new SuperAdmin');
+  const [superAdminInput, setSuperAdminInput] = useState({
     name: '',
     lastName: '',
     email: '',
     password: ''
   });
+  const [modalDisplay, setModalDisplay] = useState(false);
+  const [modalContent, setModalContent] = useState({ message: '', error: '' });
+  setModalContent;
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    setUserInput({
-      name: '',
-      lastName: '',
-      email: '',
-      password: ''
-    });
-  };
-
-  useEffect(async () => {
-    if (userId) {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${userId}`);
-      const data = await res.json();
-      setUserInput({
-        name: data.data.name,
-        lastName: data.data.lastName,
-        email: data.data.email,
-        password: data.data.password
-      });
+  useEffect(() => {
+    if (selectedSuperAdmin) {
+      fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedSuperAdmin}`)
+        .then((res) => res.json())
+        .then((json) => {
+          setSuperAdminInput({
+            name: json.data.name,
+            lastName: json.data.lastName,
+            email: json.data.email,
+            password: json.data.password
+          });
+        });
+      setTitleForm('Edit SuperAdmin');
     }
   }, []);
 
-  const editSuperAdmin = async (userId) => {
-    await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${userId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: userInput.name,
-        lastName: userInput.lastName,
-        email: userInput.email,
-        password: userInput.password
-      })
-    });
-    if (!userInput.name || !userInput.lastName || !userInput.email || !userInput.password) {
-      setTitleModal('Edit Super Admin');
-      setMessage('Super Admin Error');
-      setModalAlert(true);
+  const onChange = (e) => {
+    setSuperAdminInput({ ...superAdminInput, [e.target.name]: e.target.value });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (selectedSuperAdmin) {
+      editItem(superAdminInput);
     } else {
-      setTitleModal('Edit Super Admin');
-      setMessage('Super Admin successfully edited');
-      setModalAlert(true);
+      addItem(superAdminInput);
     }
   };
 
-  const addSuperAdmin = async () => {
-    try {
-      await fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userInput)
+  const addItem = ({ name, lastName, email, password }) => {
+    const newItem = {
+      name,
+      lastName,
+      email,
+      password
+    };
+
+    fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newItem)
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        setModalDisplay(true);
+        setModalContent({ message: json.message, error: json.error });
       });
-    } catch (error) {
-      console.log(error);
-    }
-    if (!userInput.name || !userInput.lastName || !userInput.email || !userInput.password) {
-      setTitleModal('Add Super Admin');
-      setMessage('Super Admin Error');
-      setModalAlert(true);
+  };
+
+  const editItem = ({ name, lastName, email, password }) => {
+    const editItem = {
+      name,
+      lastName,
+      email,
+      password
+    };
+
+    fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedSuperAdmin}`, {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(editItem)
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        setModalDisplay(true);
+        setModalContent({ message: json.message, error: json.error });
+      });
+  };
+
+  const handleCloseModal = () => {
+    if (!modalContent.error) {
+      setModalDisplay(false);
+      history.push(`/Super-admins`);
     } else {
-      setTitleModal('Add Super Admin');
-      setMessage('Super Admin successfully created');
-      setModalAlert(true);
+      setModalDisplay(false);
     }
   };
 
   return (
     <section className={styles.container}>
-      <h1>Form</h1>
-      <div className={styles.form}>
-        <form onSubmit={onSubmit}>
-          <div>
-            <label htmlFor="name">Name</label>
-            <input
-              id="name"
-              type="text"
-              name="name"
-              value={userInput.name}
-              onChange={(e) => {
-                setUserInput({
-                  ...userInput,
-                  name: e.target.value
-                });
-              }}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="lastName">Last Name</label>
-            <input
-              id="lastName"
-              type="text"
-              name="lastName"
-              value={userInput.lastName}
-              onChange={(e) => {
-                setUserInput({
-                  ...userInput,
-                  lastName: e.target.value
-                });
-              }}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="text"
-              name="email"
-              value={userInput.email}
-              onChange={(e) => {
-                setUserInput({
-                  ...userInput,
-                  email: e.target.value
-                });
-              }}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              value={userInput.password}
-              onChange={(e) => {
-                setUserInput({
-                  ...userInput,
-                  password: e.target.value
-                });
-              }}
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            onClick={userId ? () => editSuperAdmin(userId) : () => addSuperAdmin()}
-          >
-            Save
-          </button>
-        </form>
-        <a href={'http://localhost:3000/super-admins'}>
-          <button type="text">Cancel</button>
-        </a>
-      </div>
-      <ModalAlert
-        modalAlert={modalAlert}
-        setModalAlert={setModalAlert}
-        message={message}
-        titleModal={titleModal}
-      />
+      <Form onSubmit={onSubmit} title={titleForm}>
+        <Input
+          onChange={onChange}
+          placeholder={'Enter your name'}
+          value={superAdminInput.name}
+          name="name"
+          title="Name"
+          required
+        />
+        <Input
+          onChange={onChange}
+          placeholder={'Enter your last name'}
+          value={superAdminInput.lastName}
+          name="lastName"
+          title="Last Name"
+          required
+        />
+        <Input
+          onChange={onChange}
+          placeholder={'Enter a valid email address'}
+          value={superAdminInput.email}
+          name="email"
+          title="Email"
+          required
+        />
+        <Input
+          onChange={onChange}
+          placeholder={'Enter a password'}
+          value={superAdminInput.password}
+          type="password"
+          name="password"
+          title="Password"
+          required
+        />
+      </Form>
+      {modalDisplay && (
+        <Modal
+          heading={modalContent.message}
+          setModalDisplay={handleCloseModal}
+          theme={modalContent.error ? 'error' : 'success'}
+        />
+      )}
     </section>
   );
 };
-
 export default FormSuperAdmins;

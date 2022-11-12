@@ -1,16 +1,17 @@
 import React from 'react';
+import Home from '../Home/index';
 import Admins from '../Admins/index';
 import AdminsForm from '../Admins/Form';
-import SuperAdmins from '../SuperAdmins/index';
-import Home from '../Home/index';
 import Employees from '../Employees/index';
 import EmployeesForm from '../Employees/Form';
 import Projects from '../Projects';
 import ProjectsForm from '../Projects/Form/form.js';
-import TimeSheets from '../TimeSheets';
-import Tasks from '../Tasks/index';
-import TimeSheetsForm from '../TimeSheets/TimeSheetsForm/TimeSheetsForm';
+import SuperAdmins from '../SuperAdmins/index';
 import FormSuperAdmins from '../SuperAdmins/Form';
+import Tasks from '../Tasks/index';
+import TasksForm from '../Tasks/TasksForm';
+import TimeSheets from '../TimeSheets';
+import TimeSheetsForm from '../TimeSheets/TimeSheetsForm';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 const Routes = () => {
@@ -52,8 +53,11 @@ const Routes = () => {
       <Route path="/time-sheets/form">
         <TimeSheetsForm />
       </Route>
-      <Route path="/tasks">
+      <Route exact path="/tasks">
         <Tasks />
+      </Route>
+      <Route path="/tasks/form">
+        <TasksForm />
       </Route>
     </Switch>
   );
