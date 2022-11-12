@@ -44,7 +44,7 @@ const Table = ({ data, headers, editItem, deleteItem, addRedirectLink, title, it
           ) : null}
         </header>
       ) : null}
-      <div className={styles.tableContainer}>
+      <div className={itemsPerPage ? styles.tableContainer : null}>
         <table className={styles.table}>
           <thead className={styles.thead}>
             <tr>
@@ -53,14 +53,14 @@ const Table = ({ data, headers, editItem, deleteItem, addRedirectLink, title, it
                   {header}
                 </th>
               ))}
-              <th className={styles.th}></th>
+              {editItem || deleteItem ? <th className={styles.th}></th> : null}
             </tr>
           </thead>
           <tbody>
             {data
-              .map((item) => (
+              .map((item, index) => (
                 <Row
-                  key={item._id}
+                  key={index}
                   rowItem={item}
                   headers={Object.keys(headers)}
                   editItem={editItem ? () => editItem(item) : null}

@@ -20,22 +20,24 @@ const Row = ({ headers, rowItem, deleteItem, editItem }) => {
           {rowItem[header]}
         </td>
       ))}
-      <td className={styles.td}>
-        <span className={styles.btnContainer}>
-          {editItem && (
-            <Button
-              icon={`${process.env.PUBLIC_URL}/assets/images/pen-to-square-solid.svg`}
-              onClick={editItem}
-            />
-          )}
-          {deleteItem && (
-            <Button
-              icon={`${process.env.PUBLIC_URL}/assets/images/trash-solid.svg`}
-              onClick={deleteItem}
-            />
-          )}
-        </span>
-      </td>
+      {editItem || deleteItem ? (
+        <td className={styles.td}>
+          <span className={styles.btnContainer}>
+            {editItem && (
+              <Button
+                icon={`${process.env.PUBLIC_URL}/assets/images/pen-to-square-solid.svg`}
+                onClick={editItem}
+              />
+            )}
+            {deleteItem && (
+              <Button
+                icon={`${process.env.PUBLIC_URL}/assets/images/trash-solid.svg`}
+                onClick={deleteItem}
+              />
+            )}
+          </span>
+        </td>
+      ) : null}
     </tr>
   );
 };
