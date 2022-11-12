@@ -20,6 +20,17 @@ const Employees = () => {
     project: 'Project',
     status: 'Status'
   };
+
+  const employeesData = employees.map((employee) => ({
+    ...employee,
+    name: employee.name,
+    lastName: employee.lastName,
+    phone: employee.phone,
+    email: employee.email,
+    project: employee.project ? `${employee.project?.name}` : 'N/A',
+    status: employee.active ? 'Active' : 'Inactive'
+  }));
+
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/employees`)
       .then((res) => res.json())
@@ -54,22 +65,14 @@ const Employees = () => {
   };
 
   const employeeEdit = (item) => {
-    history.push('/employees/form', item);
+    history.push('/employees/form', { ...item, project: item.project._id });
   };
 
   return (
     <section className={styles.container}>
       <Table
         headers={headers}
-        data={employees.map((employee) => ({
-          ...employee,
-          name: employee.name,
-          lastName: employee.lastName,
-          phone: employee.phone,
-          email: employee.email,
-          project: employee.project ? `${employee.project?.name}` : 'N/A',
-          status: employee.active ? 'active' : 'inactive'
-        }))}
+        data={employeesData}
         editItem={employeeEdit}
         deleteItem={employeeDelete}
         title="Employees"

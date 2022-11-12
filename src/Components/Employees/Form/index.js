@@ -4,163 +4,130 @@ import styles from './form.module.css';
 import Form from '../../Shared/Form/index';
 import Button from '../../Shared/Button';
 import { Input, Select } from '../../Shared/Input/index';
+import Modal from '../../Shared/Modal';
 
 const EmployeesForm = () => {
   let history = useHistory();
   const [selectedEmployee] = useState(history.location.state);
-  const [allProjects, setProject] = useState([]);
-  const [nameValue, setNameValue] = useState('');
-  const [lastNameValue, setLastNameValue] = useState('');
-  const [phoneValue, setPhoneValue] = useState('');
-  const [emailValue, setEmailValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
-  const [projectsValue, setProjectValues] = useState('');
-  const [employee, setEmployee] = useState(
+  const [allProjects, setAllProjects] = useState([]);
+  const [modalDisplay, setModalDisplay] = useState(false);
+  const [modalContent, setModalContent] = useState({ message: '', error: '' });
+  const [employeeInput, setEmployeeInput] = useState(
     selectedEmployee ?? {
       name: '',
       lastName: '',
       phone: '',
       email: '',
       password: '',
-      project: ''
+      project: '',
+      active: false
     }
   );
-  useEffect(() => {
-    if (selectedEmployee) {
-      fetch(`${process.env.REACT_APP_API_URL}/employees/${selectedEmployee._id}`)
-        .then((response) => response.json())
-        .then((response) => {
-          setEmployee(response.data);
-        });
-    }
-  }, []);
+
+  const body = JSON.stringify({
+    name: employeeInput.name,
+    lastName: employeeInput.lastName,
+    phone: employeeInput.phone,
+    email: employeeInput.email,
+    password: employeeInput.password,
+    project: employeeInput.project,
+    active: employeeInput.active
+  });
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/projects/`)
       .then((response) => response.json())
       .then((response) => {
-        setProject(response.data);
+        setAllProjects(response.data);
       });
   }, []);
 
-  useEffect(() => {
-    if (employee._id) {
-      setNameValue(employee.name);
-      setLastNameValue(employee.lastName);
-      setPhoneValue(employee.phone);
-      setEmailValue(employee.email);
-      setProjectValues(allProjects.name);
-      setPasswordValue(employee.password);
-    }
-  }, [employee]);
+  const onChange = (e) => {
+    setEmployeeInput({ ...employeeInput, [e.target.name]: e.target.value });
+  };
 
-  const sendEmployee = () => {
-    const body = JSON.stringify({
-      name: nameValue,
-      lastName: lastNameValue,
-      phone: phoneValue,
-      email: emailValue,
-      password: passwordValue,
-      project: projectsValue
-    });
+  const addItem = () => {
+    fetch(`${process.env.REACT_APP_API_URL}/employees`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: body
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        setModalDisplay(true);
+        setModalContent({ message: json.message, error: json.error });
+      });
+  };
 
-    if (selectedEmployee._id) {
-      fetch(`${process.env.REACT_APP_API_URL}/employees/${selectedEmployee._id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: body
-      }).then((response) => response.json());
-      if (
-        !nameValue ||
-        !lastNameValue ||
-        !phoneValue ||
-        !emailValue ||
-        !passwordValue ||
-        !projectsValue
-      ) {
-        alert('Please complete all required fields');
-      } else {
-        alert('Employees edited successfully');
-        history.push('/employees');
-      }
+  const editItem = () => {
+    fetch(`${process.env.REACT_APP_API_URL}/employees/${selectedEmployee._id}`, {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: body
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        setModalDisplay(true);
+        setModalContent({ message: json.message, error: json.error });
+      });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (selectedEmployee) {
+      editItem(employeeInput);
     } else {
-      fetch(`${process.env.REACT_APP_API_URL}/employees`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: body
-      }).then((response) => response.json());
-      if (
-        !nameValue ||
-        !lastNameValue ||
-        !phoneValue ||
-        !emailValue ||
-        !passwordValue ||
-        !projectsValue
-      ) {
-        alert('Please complete all required fields');
-      } else {
-        alert('Employees created successfully');
-        history.push('/employees');
-      }
+      addItem(employeeInput);
     }
   };
 
-  const nameInput = (event) => {
-    setNameValue(event.target.value);
+  const handleCloseModal = () => {
+    if (!modalContent.error) {
+      setModalDisplay(false);
+      history.push(`/employees`);
+    } else {
+      setModalDisplay(false);
+    }
   };
 
-  const lastNameInput = (event) => {
-    setLastNameValue(event.target.value);
-  };
-
-  const phoneInput = (event) => {
-    setPhoneValue(event.target.value);
-  };
-
-  const emailInput = (event) => {
-    setEmailValue(event.target.value);
-  };
-
-  const passwordInput = (event) => {
-    setPasswordValue(event.target.value);
-  };
-  const projectInput = (event) => {
-    setProjectValues({ ...employee, id: event.target.value });
-  };
   return (
     <section className={styles.container}>
-      <Form onSubmit={sendEmployee}>
+      <Form onSubmit={onSubmit}>
         <Input
           id="name"
           name="name"
           placeholder="Name"
           required
-          value={nameValue}
-          onChange={nameInput}
+          value={employeeInput.name}
+          onChange={onChange}
         />
         <Input
           id="lastName"
           name="lastName"
           placeholder="Last name"
           required
-          value={lastNameValue}
-          onChange={lastNameInput}
+          value={employeeInput.lastName}
+          onChange={onChange}
         />
         <Input
           id="phone"
           name="phone"
           placeholder="Phone"
           required
-          value={phoneValue}
-          onChange={phoneInput}
+          value={employeeInput.phone}
+          onChange={onChange}
         />
         <Input
           id="email"
           name="email"
           placeholder="Email"
           required
-          value={emailValue}
-          onChange={emailInput}
+          value={employeeInput.email}
+          onChange={onChange}
         />
         <Input
           id="password"
@@ -168,35 +135,44 @@ const EmployeesForm = () => {
           name="password"
           placeholder="Password"
           required
-          value={passwordValue}
-          onChange={passwordInput}
+          value={employeeInput.password}
+          onChange={onChange}
         />
         <Select
+          onChange={onChange}
+          title="Project"
           placeholder="Project"
-          required
-          value={selectedEmployee.project?._id}
-          onChange={projectInput}
+          name="project"
+          value={employeeInput.project}
           arrayToMap={allProjects.map((project) => ({
             id: project._id,
             label: project.name
           }))}
+          required
         />
-        {/* {selectedEmployee ? (
+        {selectedEmployee ? (
           <Select
+            onChange={onChange}
             title="Active"
             name="active"
-            value={employee.active}
-            arrayToMap={employee.map(() => ({
-              id: selectedEmployee.active,
-              label: selectedEmployee
-            }))}
+            value={employeeInput.active}
+            arrayToMap={[
+              { id: true, label: 'Active' },
+              { id: false, label: 'Inactive' }
+            ]}
             placeholder="Status"
-            id="active"
             required
           />
-        ) : null} */}
+        ) : null}
         <Button label={'Cancel'} onClick={() => history.push('/employees')} />
       </Form>
+      {modalDisplay && (
+        <Modal
+          heading={modalContent.message}
+          setModalDisplay={handleCloseModal}
+          theme={modalContent.error ? 'error' : 'success'}
+        />
+      )}
     </section>
   );
 };
