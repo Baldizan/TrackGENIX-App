@@ -1,132 +1,103 @@
 import React, { useEffect, useState } from 'react';
-import Modal from './Modal/modal.js';
+import Modal from '../Shared/Modal/index';
+import Table from '../Shared/Table/index';
 import styles from './projects.module.css';
+import { useHistory } from 'react-router-dom';
+import Button from '../Shared/Button';
 
 function Projects() {
-  const [showModal, setShowModal] = useState(false);
-  const [projects, saveProjects] = useState([]);
-  const [selectedProject, setSelection] = useState({});
-  const [assignedEmployees] = useState([]);
+  let history = useHistory();
+  const [modal, setModal] = useState(false);
+  const [modalEmployee, setModalEmployee] = useState(false);
+  const [textEmployee, setTextEmployee] = useState('');
+  const [projects, setProjects] = useState([]);
+  const [projectDelete, setProjectDelete] = useState();
+  const headers = {
+    name: 'Name',
+    description: 'Description',
+    startDate: 'Start date',
+    endDate: 'End date',
+    clientName: 'Client name',
+    active: 'Status',
+    employees: 'Employees'
+  };
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/projects`)
-      .then((response) => response.json())
-      .then((response) => saveProjects(response.data || []));
+      .then((res) => res.json())
+      .then((res) => setProjects(res.data || []));
   }, []);
 
-  const newEditProject = (id) => {
-    if (id) {
-      window.location.assign(`/projects/form?id=${id}`);
-    } else {
-      window.location.assign('/projects/form');
-    }
+  const handleDelete = (item) => {
+    setModal(true);
+    setProjectDelete(item);
   };
 
-  const deleteProject = (projectToDelete) => {
-    fetch(`${process.env.REACT_APP_API_URL}/projects/${projectToDelete.id}`, {
+  const handleCloseModal = () => {
+    setModal(false);
+  };
+
+  const handleEdit = (item) => {
+    history.push('/projects/form', { id: item._id });
+  };
+
+  const confirmDelete = () => {
+    fetch(`${process.env.REACT_APP_API_URL}/projects/${projectDelete._id}`, {
       method: 'DELETE'
+    }).then(() => {
+      setModal(false);
+      setProjects(projects.filter((project) => project._id !== projectDelete._id));
     });
-    const projectsDeleted = projects.filter((project) => project._id !== projectToDelete.id);
-    saveProjects(projectsDeleted);
-    alert(`Project ${projectToDelete.name} deleted successfully!`);
-  };
-
-  const handleDelete = (project) => {
-    setShowModal(true);
-    setSelection({ id: project._id, name: project.name });
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
   };
 
   const showEmployees = (employees, name) => {
-    assignedEmployees.splice(0, assignedEmployees.length);
-    for (let i = 0; i < employees.length; i++) {
-      assignedEmployees.push(
-        `Employee: ${employees[i].id.name} ${employees[i].id.lastName} - Role: ${employees[i].role} - Rate: ${employees[i].rate}`
-      );
+    if (employees) {
+      let text = [];
+      employees.forEach((employee) => {
+        text.push(employee.id.name + ' ' + employee.role + ' ' + employee.rate);
+      });
+      setModalEmployee(true);
+      setTextEmployee(`Assigned employees to project ${name}` + text.join('\n'));
+    } else {
+      setTextEmployee('no');
     }
-    alert(`Assigned employees to project ${name}:\n` + assignedEmployees.join('\n'));
   };
+
+  const projectColumns = projects.map((row) => ({
+    ...row,
+    employees: (
+      <Button
+        label="See employees"
+        theme="primary"
+        onClick={() => showEmployees(row.employees, row.name)}
+      />
+    )
+  }));
 
   return (
     <section className={styles.container}>
-      <Modal
-        show={showModal}
-        closeModal={closeModal}
-        deleteFunction={deleteProject}
-        projectToBeDeleted={selectedProject}
+      {modalEmployee && (
+        <Modal setModalDisplay={setModalEmployee} theme="confirm">
+          {textEmployee}
+        </Modal>
+      )}
+      {modal && (
+        <Modal setModalDisplay={setModal} heading="Do you want delete this project" theme="confirm">
+          <div className={styles.btnContainer}>
+            <Button label="Cancel" theme="primary" onClick={handleCloseModal} />
+            <Button label="Delete" theme="tertiary" onClick={confirmDelete} />
+          </div>
+        </Modal>
+      )}
+      <Table
+        data={projectColumns}
+        headers={headers}
+        title="Projects"
+        addRedirectLink="projects/form"
+        editItem={handleEdit}
+        deleteItem={handleDelete}
+        itemsPerPage={5}
       />
-      <h2 className={styles.title}>Projects</h2>
-      <button
-        className={styles.button}
-        onClick={() => {
-          newEditProject();
-        }}
-      >
-        Add New Project
-      </button>
-      <table className={styles.table}>
-        <thead className={styles.tableHead}>
-          <tr>
-            <th className={styles.tableCell}>Project name</th>
-            <th className={styles.tableDescription}>Project description</th>
-            <th className={styles.tableCell}>Employees</th>
-            <th className={styles.tableCell}>Start Date</th>
-            <th className={styles.tableCell}>End Date</th>
-            <th className={styles.tableCell}>Client</th>
-            <th className={styles.tableCell}>Status</th>
-            <th className={styles.emptyTableCell}></th>
-          </tr>
-        </thead>
-        <tbody className={styles.tableBody}>
-          {projects.map((project) => {
-            return (
-              <tr className={styles.row} key={project._id}>
-                <td className={styles.tableCell}>{project.name}</td>
-                <td className={styles.tableDescription}>{project.description}</td>
-                <td className={styles.tableCell}>
-                  <button
-                    className={styles.button}
-                    onClick={() => showEmployees(project.employees, project.name)}
-                  >
-                    See employees
-                  </button>
-                </td>
-                <td className={styles.tableCell}>{project.startDate.slice(0, 10)}</td>
-                <td className={styles.tableCell}>{project.endDate.slice(0, 10)}</td>
-                <td className={styles.tableCell}>{project.clientName}</td>
-                <td className={styles.tableCell}>{project.status}</td>
-                <td className={styles.tableCell}>
-                  <button
-                    className={styles.deleteEditButton}
-                    onClick={() => {
-                      handleDelete(project);
-                    }}
-                  >
-                    <img
-                      className={styles.deleteEditIcon}
-                      src={`${process.env.PUBLIC_URL}/assets/images/delete.svg`}
-                    />
-                  </button>
-                  <button
-                    className={styles.deleteEditButton}
-                    onClick={() => {
-                      newEditProject(project._id);
-                    }}
-                  >
-                    <img
-                      className={styles.deleteEditIcon}
-                      src={`${process.env.PUBLIC_URL}/assets/images/edit.svg`}
-                    />
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
     </section>
   );
 }
