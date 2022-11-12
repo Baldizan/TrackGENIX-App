@@ -2,7 +2,7 @@ import { GET_ADMINS_ERROR, GET_ADMINS_PENDING, GET_ADMINS_SUCCESS } from './type
 
 const INITIAL_STATE = {
   list: [],
-  pending: false,
+  isPending: false,
   error: ''
 };
 

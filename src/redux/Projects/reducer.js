@@ -2,7 +2,7 @@ import { GET_PROJECTS_ERROR, GET_PROJECTS_PENDING, GET_PROJECTS_SUCCESS } from '
 
 const INITIAL_STATE = {
   list: [],
-  pending: false,
+  isPending: false,
   error: ''
 };
 

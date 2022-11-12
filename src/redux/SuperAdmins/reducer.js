@@ -2,7 +2,7 @@ import { GET_SUPERADMINS_ERROR, GET_SUPERADMINS_PENDING, GET_SUPERADMINS_SUCCESS
 
 const INITIAL_STATE = {
   list: [],
-  pending: false,
+  isPending: false,
   error: ''
 };
 

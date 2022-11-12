@@ -2,7 +2,7 @@ import { GET_TASKS_ERROR, GET_TASKS_PENDING, GET_TASKS_SUCCESS } from './types';
 
 const INITIAL_STATE = {
   list: [],
-  pending: false,
+  isPending: false,
   error: ''
 };
 

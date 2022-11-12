@@ -2,7 +2,7 @@ import { GET_EMPLOYEES_ERROR, GET_EMPLOYEES_PENDING, GET_EMPLOYEES_SUCCESS } fro
 
 const INITIAL_STATE = {
   list: [],
-  pending: false,
+  isPending: false,
   error: ''
 };
 
