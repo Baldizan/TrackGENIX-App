@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .tableContainer{
@@ -20,7 +21,6 @@
   border-collapse: collapse;
   color: #373867;
   width: 100%;
-  /* min-height: 300px; */
 }
 
 .thead {
