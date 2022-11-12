@@ -1,16 +1,16 @@
-import { getTasksError, getTasksPending, getTasksSuccess } from './action';
+import { getAdminsError, getAdminsPending, getAdminsSuccess } from './action';
 
-export const getTasks = () => {
+export const getAdmins = () => {
   return (dispatch) => {
-    dispatch(getTasksPending());
-    return fetch(`${process.env.REACT_APP_API_URL}/tasks`)
+    dispatch(getAdminsPending());
+    return fetch(`${process.env.REACT_APP_API_URL}/admins`)
       .then((response) => response.json())
       .then((response) => {
-        dispatch(getTasksSuccess(response.data));
+        dispatch(getAdminsSuccess(response.data));
         return response.data;
       })
       .catch((error) => {
-        dispatch(getTasksError(error.toString()));
+        dispatch(getAdminsError(error.toString()));
       });
   };
 };
