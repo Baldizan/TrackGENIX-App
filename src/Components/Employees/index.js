@@ -1,77 +1,107 @@
-import { useEffect, useState } from 'react';
-import Modal from './Modal';
-import styles from './employees.module.css';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import styles from '../Shared/Table/table.module.css';
+import Button from '../Shared/Button';
+import Table from '../Shared/Table';
+import Modal from '../Shared/Modal';
 
 const Employees = () => {
-  const [employees, saveEmployees] = useState([]);
-  const [selectedEmployee, saveSelection] = useState({});
-  const [showModal, saveShowModal] = useState(false);
+  const [modalDisplay, setModalDisplay] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState({});
+  const [feedbackModalDisplay, setFeedbackModalDisplay] = useState(false);
+  const [employees, setEmployees] = useState([]);
+  const [modalContent, setModalContent] = useState({ message: '', theme: '' });
+  const history = useHistory();
+  const headers = {
+    name: 'Name',
+    lastName: 'Last Name',
+    phone: 'Phone',
+    email: 'Email',
+    project: 'Project',
+    status: 'Status'
+  };
+
+  const employeesData = employees.map((employee) => ({
+    ...employee,
+    name: employee.name,
+    lastName: employee.lastName,
+    phone: employee.phone,
+    email: employee.email,
+    project: employee.project ? `${employee.project?.name}` : 'N/A',
+    status: employee.active ? 'Active' : 'Inactive'
+  }));
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/employees`)
-      .then((response) => response.json())
-      .then((response) => {
-        saveEmployees(response.data);
+      .then((res) => res.json())
+      .then((json) => {
+        setEmployees(json.data);
       });
   }, []);
 
-  const deleteEmployee = async (id) => {
-    fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
-      method: 'DELETE'
-    });
-    saveEmployees(employees.filter((employee) => employee._id !== id));
+  const employeeDelete = (item) => {
+    setSelectedEmployee(item);
+    setModalDisplay(true);
   };
 
-  const handleDelete = (employee) => {
-    saveSelection({ id: employee._id, name: employee.name });
-    saveShowModal(true);
+  const handleDelete = () => {
+    if (selectedEmployee) {
+      fetch(`${process.env.REACT_APP_API_URL}/employees/${selectedEmployee._id}`, {
+        method: 'DELETE'
+      }).then((res) => {
+        if (res.ok) {
+          setEmployees([...employees.filter((listItem) => listItem._id !== selectedEmployee._id)]);
+          setModalContent({ message: 'Employee deleted successfully', theme: 'success' });
+          setFeedbackModalDisplay(true);
+        } else {
+          setModalContent({
+            message: `The employee could not be deleted. Status: ${res.status} ${res.statusText}`,
+            theme: 'error'
+          });
+          setFeedbackModalDisplay(true);
+        }
+      });
+    }
   };
 
-  const editEmployee = (id) => {
-    window.location.assign(`/employees/form?id=${id}`);
+  const employeeEdit = (item) => {
+    history.push('/employees/form', { ...item, project: item.project._id });
   };
 
   return (
     <section className={styles.container}>
-      <Modal
-        show={showModal}
-        handleModal={saveShowModal}
-        deleteEmployee={deleteEmployee}
-        employee={selectedEmployee}
+      <Table
+        headers={headers}
+        data={employeesData}
+        editItem={employeeEdit}
+        deleteItem={employeeDelete}
+        title="Employees"
+        addRedirectLink={'/employees/form'}
+        itemsPerPage={5}
       />
-      <a href="/employees/form" className={styles.button}>
-        Add new employee +
-      </a>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Last name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Project</th>
-          </tr>
-        </thead>
-        <tbody>
-          {employees.map((employee) => (
-            <tr key={employee._id}>
-              <td>{employee._id}</td>
-              <td>{employee.name}</td>
-              <td>{employee.lastName}</td>
-              <td>{employee.phone}</td>
-              <td>{employee.email}</td>
-              <td>{employee.project.name}</td>
-              <td className={styles.center}>
-                <button onClick={() => editEmployee(employee._id)}>Edit</button>
-              </td>
-              <td className={styles.center}>
-                <button onClick={() => handleDelete(employee)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {feedbackModalDisplay ? (
+        <Modal
+          heading={modalContent.message}
+          setModalDisplay={setFeedbackModalDisplay}
+          theme={modalContent.theme}
+        />
+      ) : null}
+      {modalDisplay && (
+        <Modal
+          heading={`Are you sure you want to delete this Employees: ${selectedEmployee.name} ${selectedEmployee.lastName}?`}
+          setModalDisplay={setModalDisplay}
+          theme={'confirm'}
+        >
+          <Button
+            label="Confirm"
+            theme="tertiary"
+            onClick={() => {
+              handleDelete();
+              setModalDisplay(false);
+            }}
+          />
+        </Modal>
+      )}
     </section>
   );
 };
