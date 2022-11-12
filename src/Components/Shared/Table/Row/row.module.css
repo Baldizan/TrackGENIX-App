@@ -3,17 +3,21 @@
 }
 
 .td {
-  padding: 10px 20px;
+  padding: 10px;
   border-bottom: 1px solid #d7d7e1;
   border-top: 1px solid #d7d7e1;
+  max-width: 25ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .styles.active {
-  color: #038D00;
+  color: #038d00;
 }
 
 .styles.inactive {
-  color: #FF1717;
+  color: #ff1717;
 }
 
 .btnContainer {

@@ -8,11 +8,11 @@ const Table = ({ data, headers, editItem, deleteItem, addRedirectLink, title, it
   const [displayRange, setDisplayRange] = useState({
     x: 0,
     y: itemsPerPage,
-    z: 0
+    z: 1
   });
   const history = useHistory();
   const navValidation = {
-    back: displayRange.z === 0,
+    back: displayRange.x === 0,
     forward: data.slice(displayRange.x + itemsPerPage, displayRange.y + itemsPerPage).length === 0
   };
   const navOnClick = {
