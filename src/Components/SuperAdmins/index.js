@@ -1,51 +1,83 @@
-import { useEffect, useState } from 'react';
-import styles from './super-admins.module.css';
-import ListSuperAdmins from './List';
-import ModalWarning from './Modal';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import styles from '../Shared/Table/table.module.css';
+import Button from '../Shared/Button';
+import Table from '../Shared/Table';
+import Modal from '../Shared/Modal';
 
 const SuperAdmins = () => {
-  const [superAdmins, setSuperAdmins] = useState([]);
-  const [modal, setModal] = useState(false);
-  const [id, setId] = useState(null);
-  const selectedSuperAdmin = superAdmins.find((superAdmin) => superAdmin._id === id);
+  const [modalDisplay, setModalDisplay] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({});
+  const [successModalDisplay, setSuccessModalDisplay] = useState(false);
 
-  const handleDeleteClick = () => {
-    setModal(true);
-  };
+  const [list, setList] = useState([]);
+  const headers = { name: 'Name', lastName: 'Last Name', email: 'Email' };
+  const history = useHistory();
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/super-admins`)
       .then((res) => res.json())
-      .then((json) => setSuperAdmins(json.data));
+      .then((json) => {
+        setList(json.data);
+      });
   }, []);
 
-  const deleteSuperAdmin = async () => {
-    await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`, {
-      method: 'DELETE'
+  const deleteItem = (item) => {
+    setSelectedItem(item);
+    setModalDisplay(true);
+  };
+
+  const showSuccessModal = () => {
+    setSuccessModalDisplay(true);
+  };
+
+  const handleDelete = () => {
+    showSuccessModal(true);
+    fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedItem._id}`, {
+      method: 'delete'
+    }).then(() => {
+      setList([...list.filter((listItem) => listItem._id !== selectedItem._id)]);
     });
-    setSuperAdmins([...superAdmins.filter((listItem) => listItem._id !== id)]);
-    setModal(false);
+  };
+
+  const handleEdit = (item) => {
+    history.push('/super-admins/form', { id: item._id });
   };
 
   return (
     <section className={styles.container}>
-      <h2>SuperAdmins</h2>
-      <ListSuperAdmins
-        superAdmins={superAdmins}
-        setSuperAdmins={setSuperAdmins}
-        deleteSuperAdmin={deleteSuperAdmin}
-        onDeleteClick={handleDeleteClick}
-        modal={modal}
-        setModal={setModal}
-        id={id}
-        setId={setId}
+      <Table
+        headers={headers}
+        data={list}
+        editItem={handleEdit}
+        deleteItem={deleteItem}
+        title={'Super Admins'}
+        addRedirectLink={'super-admins/form'}
+        itemsPerPage={5}
       />
-      <ModalWarning
-        modal={modal}
-        setModal={setModal}
-        deleteSuperAdmin={deleteSuperAdmin}
-        fedbackTitle={`Do you really want to delete Super Admin "${selectedSuperAdmin?.email}" ?`}
-      />
+      {successModalDisplay && (
+        <Modal
+          heading={`${selectedItem.name} ${selectedItem.lastName} deleted successfully!`}
+          setModalDisplay={setSuccessModalDisplay}
+          theme={'success'}
+        />
+      )}
+      {modalDisplay && (
+        <Modal
+          heading={'Are you sure you want to delete this Super-Admin?'}
+          setModalDisplay={setModalDisplay}
+          theme={'confirm'}
+        >
+          <Button
+            label="Confirm"
+            theme="tertiary"
+            onClick={() => {
+              handleDelete();
+              setModalDisplay(false);
+            }}
+          />
+        </Modal>
+      )}
     </section>
   );
 };

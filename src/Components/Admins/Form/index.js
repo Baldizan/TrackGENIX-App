@@ -5,11 +5,11 @@ import Form from '../../Shared/Form';
 import { Input } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
 
-const FormSuperAdmins = () => {
-  const history = useHistory();
-  const [selectedSuperAdmin] = useState(history.location.state?.id);
-  const [titleForm, setTitleForm] = useState('Add new SuperAdmin');
-  const [superAdminInput, setSuperAdminInput] = useState({
+const FormAdmins = () => {
+  let history = useHistory();
+  const selectedAdmin = history.location.state?._id;
+  const [titleForm, setTitleForm] = useState('Add new admin');
+  const [adminInput, setAdminInput] = useState({
     name: '',
     lastName: '',
     email: '',
@@ -17,34 +17,33 @@ const FormSuperAdmins = () => {
   });
   const [modalDisplay, setModalDisplay] = useState(false);
   const [modalContent, setModalContent] = useState({ message: '', error: '' });
-  setModalContent;
 
   useEffect(() => {
-    if (selectedSuperAdmin) {
-      fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedSuperAdmin}`)
+    if (selectedAdmin) {
+      fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin}`)
         .then((res) => res.json())
         .then((json) => {
-          setSuperAdminInput({
+          setAdminInput({
             name: json.data.name,
             lastName: json.data.lastName,
             email: json.data.email,
             password: json.data.password
           });
         });
-      setTitleForm('Edit SuperAdmin');
+      setTitleForm('Edit admin');
     }
   }, []);
 
   const onChange = (e) => {
-    setSuperAdminInput({ ...superAdminInput, [e.target.name]: e.target.value });
+    setAdminInput({ ...adminInput, [e.target.name]: e.target.value });
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (selectedSuperAdmin) {
-      editItem(superAdminInput);
+    if (selectedAdmin) {
+      editItem(adminInput);
     } else {
-      addItem(superAdminInput);
+      addItem(adminInput);
     }
   };
 
@@ -56,7 +55,7 @@ const FormSuperAdmins = () => {
       password
     };
 
-    fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
+    fetch(`${process.env.REACT_APP_API_URL}/admins`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
@@ -64,9 +63,9 @@ const FormSuperAdmins = () => {
       body: JSON.stringify(newItem)
     })
       .then((res) => res.json())
-      .then((json) => {
+      .then((res) => {
         setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
+        setModalContent({ message: res.message, error: res.error });
       });
   };
 
@@ -78,7 +77,7 @@ const FormSuperAdmins = () => {
       password
     };
 
-    fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedSuperAdmin}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin}`, {
       method: 'put',
       headers: {
         'Content-Type': 'application/json'
@@ -95,7 +94,7 @@ const FormSuperAdmins = () => {
   const handleCloseModal = () => {
     if (!modalContent.error) {
       setModalDisplay(false);
-      history.push(`/Super-admins`);
+      history.push(`/admins`);
     } else {
       setModalDisplay(false);
     }
@@ -107,7 +106,7 @@ const FormSuperAdmins = () => {
         <Input
           onChange={onChange}
           placeholder={'Enter your name'}
-          value={superAdminInput.name}
+          value={adminInput.name}
           name="name"
           title="Name"
           required
@@ -115,7 +114,7 @@ const FormSuperAdmins = () => {
         <Input
           onChange={onChange}
           placeholder={'Enter your last name'}
-          value={superAdminInput.lastName}
+          value={adminInput.lastName}
           name="lastName"
           title="Last Name"
           required
@@ -123,7 +122,7 @@ const FormSuperAdmins = () => {
         <Input
           onChange={onChange}
           placeholder={'Enter a valid email address'}
-          value={superAdminInput.email}
+          value={adminInput.email}
           name="email"
           title="Email"
           required
@@ -131,7 +130,7 @@ const FormSuperAdmins = () => {
         <Input
           onChange={onChange}
           placeholder={'Enter a password'}
-          value={superAdminInput.password}
+          value={adminInput.password}
           type="password"
           name="password"
           title="Password"
@@ -148,4 +147,5 @@ const FormSuperAdmins = () => {
     </section>
   );
 };
-export default FormSuperAdmins;
+
+export default FormAdmins;
