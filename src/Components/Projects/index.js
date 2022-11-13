@@ -4,13 +4,16 @@ import Table from '../Shared/Table/index';
 import styles from './projects.module.css';
 import { useHistory } from 'react-router-dom';
 import Button from '../Shared/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import { getProjects } from '../../redux/Projects/thunks';
 
-function Projects() {
-  let history = useHistory();
+const Projects = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { list: projects } = useSelector((state) => state.projects);
   const [modal, setModal] = useState(false);
   const [modalEmployee, setModalEmployee] = useState(false);
   const [textEmployee, setTextEmployee] = useState('');
-  const [projects, setProjects] = useState([]);
   const [projectDelete, setProjectDelete] = useState();
   const headers = {
     name: 'Name',
@@ -18,15 +21,13 @@ function Projects() {
     startDate: 'Start date',
     endDate: 'End date',
     clientName: 'Client name',
-    active: 'Status',
-    employees: 'Employees'
+    employees: 'Employees',
+    status: 'Status'
   };
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/projects`)
-      .then((res) => res.json())
-      .then((res) => setProjects(res.data || []));
-  }, []);
+    dispatch(getProjects());
+  }, [projects]);
 
   const handleDelete = (item) => {
     setModal(true);
@@ -46,7 +47,6 @@ function Projects() {
       method: 'DELETE'
     }).then(() => {
       setModal(false);
-      setProjects(projects.filter((project) => project._id !== projectDelete._id));
     });
   };
 
@@ -54,10 +54,10 @@ function Projects() {
     if (employees) {
       let text = [];
       employees.forEach((employee) => {
-        text.push(employee.id.name + ' ' + employee.role + ' ' + employee.rate);
+        text.push(employee?.id?.name + ' ' + employee?.role + ' ' + employee?.rate);
       });
       setModalEmployee(true);
-      setTextEmployee(`Assigned employees to project ${name}` + text.join('\n'));
+      setTextEmployee(`Assigned employees to project ${name}: ` + text.join('\n'));
     } else {
       setTextEmployee('no');
     }
@@ -65,6 +65,7 @@ function Projects() {
 
   const projectColumns = projects.map((row) => ({
     ...row,
+    status: row.active ? 'Active' : 'Inactive',
     employees: (
       <Button
         label="See employees"
@@ -82,11 +83,13 @@ function Projects() {
         </Modal>
       )}
       {modal && (
-        <Modal setModalDisplay={setModal} heading="Do you want delete this project" theme="confirm">
-          <div className={styles.btnContainer}>
-            <Button label="Cancel" theme="primary" onClick={handleCloseModal} />
-            <Button label="Delete" theme="tertiary" onClick={confirmDelete} />
-          </div>
+        <Modal
+          setModalDisplay={setModal}
+          heading="Are you sure you want to delete this project?"
+          theme="confirm"
+        >
+          <Button label="Cancel" theme="primary" onClick={handleCloseModal} />
+          <Button label="Delete" theme="tertiary" onClick={confirmDelete} />
         </Modal>
       )}
       <Table
@@ -100,6 +103,6 @@ function Projects() {
       />
     </section>
   );
-}
+};
 
 export default Projects;

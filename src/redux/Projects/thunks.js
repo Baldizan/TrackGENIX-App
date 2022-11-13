@@ -1,4 +1,4 @@
-import { getProjectsError, getProjectsPending, getProjectsSuccess } from './action';
+import { getProjectsError, getProjectsPending, getProjectsSuccess } from './actions';
 
 export const getProjects = () => {
   return (dispatch) => {

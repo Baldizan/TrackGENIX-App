@@ -4,6 +4,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .divContainer {
   width: 100%;
 }
@@ -23,6 +24,22 @@
   line-height: 2;
 }
 
+.tableContainer {
+  width: 100%;
+  overflow-x: hidden;
+  max-height: 267px;
+  margin: 35px 0 18px 0;
+}
+
 .btnContainer {
   display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.btnAssign {
+  width: 50%;
+  height: 44px;
+  margin-top: 25px;
 }
