@@ -3,19 +3,19 @@ import Button from '../Button';
 
 const Modal = ({ heading, children, setModalDisplay, theme }) => {
   return (
-    <div className={styles.container}>
+    <section className={styles.container}>
       <div className={styles[theme]}>
-        <div className={styles.header}>
+        <header className={styles.header}>
           <h2 className={styles.title}>{heading}</h2>
           <Button
             className={styles.topCloseButton}
             onClick={() => setModalDisplay()}
             icon={`${process.env.PUBLIC_URL}/assets/images/close-cross.svg`}
           />
-        </div>
+        </header>
         {children ? <div className={styles.content}>{children}</div> : null}
       </div>
-    </div>
+    </section>
   );
 };
 

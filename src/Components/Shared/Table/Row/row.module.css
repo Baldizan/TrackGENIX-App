@@ -1,7 +1,23 @@
+.tr:hover {
+  background-color: #aace9b50;
+}
+
 .td {
-  padding: 10px 15px;
+  padding: 10px;
   border-bottom: 1px solid #d7d7e1;
   border-top: 1px solid #d7d7e1;
+  max-width: 25ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.styles.active {
+  color: #038d00;
+}
+
+.styles.inactive {
+  color: #ff1717;
 }
 
 .btnContainer {

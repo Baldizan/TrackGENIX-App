@@ -26,6 +26,17 @@
   font-weight: 400;
   line-height: 2;
 }
+
+.input:hover {
+  cursor: pointer;
+  background-color: #37386720;
+}
+
+.input:focus {
+  cursor: auto;
+  outline: 1px solid #373867;
+}
+
 .disabled {
   border: 1px solid #37386770;
   color: #37386770;
