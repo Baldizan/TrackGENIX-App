@@ -13,7 +13,7 @@ const Projects = () => {
   const { list: projects } = useSelector((state) => state.projects);
   const [modal, setModal] = useState(false);
   const [modalEmployee, setModalEmployee] = useState(false);
-  const [textEmployee, setTextEmployee] = useState('');
+  const [projectEmployees, setProjectEmployees] = useState([]);
   const [projectDelete, setProjectDelete] = useState();
   const headers = {
     name: 'Name',
@@ -50,16 +50,15 @@ const Projects = () => {
     });
   };
 
-  const showEmployees = (employees, name) => {
+  const showEmployees = (employees) => {
     if (employees) {
-      let text = [];
-      employees.forEach((employee) => {
-        text.push(employee?.id?.name + ' ' + employee?.role + ' ' + employee?.rate);
-      });
+      const projectEmployees = employees.map((employee) => ({
+        _id: employee._id,
+        role: employee.role,
+        rate: employee.rate
+      }));
+      setProjectEmployees(projectEmployees);
       setModalEmployee(true);
-      setTextEmployee(`Assigned employees to project ${name}: ` + text.join('\n'));
-    } else {
-      setTextEmployee('no');
     }
   };
 
@@ -79,7 +78,13 @@ const Projects = () => {
     <section className={styles.container}>
       {modalEmployee && (
         <Modal setModalDisplay={setModalEmployee} theme="confirm">
-          {textEmployee}
+          <div className={styles.employeesTableContainer}>
+            <Table
+              data={projectEmployees}
+              headers={{ _id: 'Employee ID', role: 'Role', rate: 'Rate' }}
+              title="Project employees"
+            />
+          </div>
         </Modal>
       )}
       {modal && (

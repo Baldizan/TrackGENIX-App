@@ -116,9 +116,13 @@ const ProjectsForm = () => {
 
   return (
     <section className={styles.container}>
-      <Form onSubmit={updateProject} secondColumnIndex={6}>
+      <Form
+        title={projectId ? 'Edit project' : 'Add project'}
+        onSubmit={updateProject}
+        secondColumnIndex={6}
+      >
         <Input
-          title="ProjectName"
+          title="Project Name"
           id="ProjectName"
           value={project.name}
           name="name"
@@ -157,26 +161,28 @@ const ProjectsForm = () => {
           onChange={onChange}
           required
         />
-        {projectId ? (
-          <Select
-            title="Active"
-            name="active"
-            value={project.active}
-            arrayToMap={statusProject.map((status) => ({
-              id: status === 'Active',
-              label: status
-            }))}
-            placeholder="Status"
-            id="active"
-            onChange={onChange}
-            required
-          />
-        ) : null}
+        <Select
+          title="Status"
+          name="active"
+          value={project.active}
+          arrayToMap={statusProject.map((status) => ({
+            id: status === 'Active',
+            label: status
+          }))}
+          placeholder={projectId ? 'Select status' : 'Inactive'}
+          id="active"
+          onChange={onChange}
+          disabled={projectId ? false : true}
+          required
+        />
         <div className={`${styles.tableContainer} ${styles.employeesContainer}`}>
-          <Table headers={{ id: 'name', role: 'role', rate: 'rate' }} data={project?.employees} />
+          <Table
+            headers={{ id: 'Employee ID', role: 'Role', rate: 'Rate' }}
+            data={project?.employees}
+          />
         </div>
         <Select
-          title="test"
+          title="Employee"
           name="name"
           value={employee.id}
           placeholder="Name"
@@ -188,7 +194,7 @@ const ProjectsForm = () => {
           required
         />
         <Select
-          title="test"
+          title="Role"
           name="role"
           value={employee.role}
           placeholder="Role"
@@ -201,7 +207,7 @@ const ProjectsForm = () => {
         />
         <div className={styles.btnContainer}>
           <Input
-            title="test"
+            title="Rate"
             name="rate"
             value={employee.rate}
             placeholder="Rate"

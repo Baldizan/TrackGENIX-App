@@ -27,8 +27,9 @@
 .tableContainer {
   width: 100%;
   overflow-x: hidden;
-  max-height: 267px;
-  margin: 35px 0 18px 0;
+  height: 264px;
+  margin: 36px 0 20px 0;
+  padding: 0;
 }
 
 .btnContainer {
