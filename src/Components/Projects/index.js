@@ -18,8 +18,8 @@ const Projects = () => {
   const headers = {
     name: 'Name',
     description: 'Description',
-    startDate: 'Start date',
-    endDate: 'End date',
+    startDateFormat: 'Start date',
+    endDateFormat: 'End date',
     clientName: 'Client name',
     employees: 'Employees',
     status: 'Status'
@@ -65,6 +65,8 @@ const Projects = () => {
   const projectColumns = projects.map((row) => ({
     ...row,
     status: row.active ? 'Active' : 'Inactive',
+    startDateFormat: row.startDate.slice(0, 10),
+    endDateFormat: row.startDate.slice(0, 10),
     employees: (
       <Button
         label="See employees"

@@ -191,7 +191,7 @@ const ProjectsForm = () => {
             label: employee.name + ' ' + employee.lastName
           }))}
           onChange={handleChangeEmployee}
-          required
+          required={!projectId}
         />
         <Select
           title="Role"
@@ -203,7 +203,7 @@ const ProjectsForm = () => {
             label: rol
           }))}
           onChange={onChangeEmployee}
-          required
+          required={!projectId}
         />
         <div className={styles.btnContainer}>
           <Input
@@ -213,7 +213,7 @@ const ProjectsForm = () => {
             placeholder="Rate"
             type="number"
             onChange={onChangeEmployee}
-            required
+            required={!projectId}
           />
 
           <Button
