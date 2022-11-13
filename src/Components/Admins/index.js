@@ -1,12 +1,15 @@
 import styles from './admins.module.css';
 import { useHistory } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAdmins } from '../../redux/Admins/thunks';
 import Modal from '../Shared/Modal';
 import Table from '../Shared/Table';
 import Button from '../Shared/Button';
 
 const Admins = () => {
-  const [admins, saveAdmins] = useState([]);
+  const { list: adminsList, isPending, error } = useSelector((state) => state.admins);
+  const dispatch = useDispatch();
   const [deleteModalDisplay, setDeleteModalDisplay] = useState(false);
   const [successModalDisplay, setSuccessModalDisplay] = useState(false);
   const [errorModalDisplay, setErrorModalDisplay] = useState(false);
@@ -15,11 +18,7 @@ const Admins = () => {
   const history = useHistory();
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/admins`)
-      .then((response) => response.json())
-      .then((response) => {
-        saveAdmins(response.data);
-      });
+    dispatch(getAdmins());
   }, []);
 
   const deleteAdmin = () => {
@@ -27,8 +26,8 @@ const Admins = () => {
     fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin._id}`, {
       method: 'DELETE'
     }).then(() => {
-      const updatedAdminList = admins.filter((admin) => admin._id !== selectedAdmin._id);
-      saveAdmins(updatedAdminList);
+      // const updatedAdminList = admins.filter((admin) => admin._id !== selectedAdmin._id);
+      // saveAdmins(updatedAdminList);
     });
   };
 
@@ -47,15 +46,19 @@ const Admins = () => {
 
   return (
     <section className={styles.container}>
-      <Table
-        data={admins}
-        headers={headers}
-        editItem={addEditAdmin}
-        deleteItem={handleDeleteAdmin}
-        title={'Admins'}
-        addRedirectLink={'/admins/form'}
-        itemsPerPage={5}
-      />
+      {isPending && <p>...Loading</p>}
+      {!isPending && !error && (
+        <Table
+          data={adminsList}
+          headers={headers}
+          editItem={addEditAdmin}
+          deleteItem={handleDeleteAdmin}
+          title={'Admins'}
+          addRedirectLink={'/admins/form'}
+          itemsPerPage={5}
+        />
+      )}
+      {error && <p>Admin not found</p>}
       {deleteModalDisplay && (
         <Modal
           heading={`Do you want to delete admin ${selectedAdmin.name} ${selectedAdmin.lastName}?`}
