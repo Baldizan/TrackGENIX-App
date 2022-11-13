@@ -25,9 +25,6 @@ const Admins = () => {
     showSuccessModal(true);
     fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin._id}`, {
       method: 'DELETE'
-    }).then(() => {
-      // const updatedAdminList = admins.filter((admin) => admin._id !== selectedAdmin._id);
-      // saveAdmins(updatedAdminList);
     });
   };
 
