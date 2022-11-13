@@ -1,4 +1,4 @@
-import { getEmployeesError, getEmployeesPending, getEmployeesSuccess } from './action';
+import { getEmployeesError, getEmployeesPending, getEmployeesSuccess } from './actions';
 
 export const getEmployees = () => {
   return (dispatch) => {
