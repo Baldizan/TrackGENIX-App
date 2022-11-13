@@ -27,7 +27,7 @@ const Projects = () => {
 
   useEffect(() => {
     dispatch(getProjects());
-  }, [projects]);
+  }, []);
 
   const handleDelete = (item) => {
     setModal(true);
