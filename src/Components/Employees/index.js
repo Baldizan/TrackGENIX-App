@@ -76,14 +76,14 @@ const Employees = () => {
           itemsPerPage={5}
         />
       )}
-      {error && <p>Employees not found</p>}
-      {feedbackModalDisplay ? (
+      {error && <p>{error}</p>}
+      {feedbackModalDisplay && (
         <Modal
           heading={modalContent.message}
           setModalDisplay={setFeedbackModalDisplay}
           theme={modalContent.theme}
         />
-      ) : null}
+      )}
       {modalDisplay && (
         <Modal
           heading={`Are you sure you want to delete employee: ${selectedEmployee.name} ${selectedEmployee.lastName}?`}
