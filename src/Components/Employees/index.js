@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getEmployees } from '../../redux/Employees/thunks.js';
-import styles from '../Shared/Table/table.module.css';
+import styles from './employees.module.css';
 import Button from '../Shared/Button';
 import Table from '../Shared/Table';
 import Modal from '../Shared/Modal';
@@ -24,19 +24,15 @@ const Employees = () => {
     status: 'Status'
   };
 
-  // const employeesData = employees.map((employee) => ({
-  //   ...employee,
-  //   name: employee.name,
-  //   lastName: employee.lastName,
-  //   phone: employee.phone,
-  //   email: employee.email,
-  //   project: employee.project ? `${employee.project?.name}` : 'N/A',
-  //   status: employee.active ? 'Active' : 'Inactive'
-  // }));
-
   useEffect(() => {
     dispatch(getEmployees());
   }, []);
+
+  const employeesColumns = employeesList.map((row) => ({
+    ...row,
+    status: row.active ? 'Active' : 'Inactive',
+    project: row.project?.name ?? 'N/A'
+  }));
 
   const employeeDelete = (item) => {
     setSelectedEmployee(item);
@@ -49,7 +45,6 @@ const Employees = () => {
         method: 'DELETE'
       }).then((res) => {
         if (res.ok) {
-          // setEmployees([...employees.filter((listItem) => listItem._id !== selectedEmployee._id)]);
           setModalContent({ message: 'Employee deleted successfully', theme: 'success' });
           setFeedbackModalDisplay(true);
         } else {
@@ -72,7 +67,7 @@ const Employees = () => {
       {isPending && <p>Loading...</p>}
       {!isPending && !error && (
         <Table
-          data={employeesList}
+          data={employeesColumns}
           headers={headers}
           editItem={employeeEdit}
           deleteItem={employeeDelete}
