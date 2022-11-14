@@ -1,4 +1,11 @@
-import { GET_SUPERADMINS_ERROR, GET_SUPERADMINS_PENDING, GET_SUPERADMINS_SUCCESS } from './types';
+import {
+  GET_SUPERADMINS_ERROR,
+  GET_SUPERADMINS_PENDING,
+  GET_SUPERADMINS_SUCCESS,
+  POST_SUPERADMINS_PENDING,
+  POST_SUPERADMINS_SUCCESS,
+  POST_SUPERADMINS_ERROR
+} from './types';
 
 const INITIAL_STATE = {
   list: [],
@@ -22,6 +29,26 @@ const reducer = (state = INITIAL_STATE, action) => {
       };
     }
     case GET_SUPERADMINS_ERROR: {
+      return {
+        ...state,
+        isPending: false,
+        error: action.payload
+      };
+    }
+    case POST_SUPERADMINS_PENDING: {
+      return {
+        ...state,
+        isPending: true
+      };
+    }
+    case POST_SUPERADMINS_SUCCESS: {
+      return {
+        ...state,
+        list: [...state.list, action.payload],
+        isPending: false
+      };
+    }
+    case POST_SUPERADMINS_ERROR: {
       return {
         ...state,
         isPending: false,

@@ -4,6 +4,8 @@ import styles from './form.module.css';
 import Form from '../../Shared/Form';
 import { Input } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { postSuperAdmins } from '../../../redux/SuperAdmins/thunks';
 
 const FormSuperAdmins = () => {
   const history = useHistory();
@@ -15,9 +17,11 @@ const FormSuperAdmins = () => {
     email: '',
     password: ''
   });
-  const [modalDisplay, setModalDisplay] = useState(false);
+  const [modal, setModal] = useState(false);
   const [modalContent, setModalContent] = useState({ message: '', error: '' });
+  const dispatch = useDispatch();
   setModalContent;
+  const { isPending, error } = useSelector((state) => state.superAdmins);
 
   useEffect(() => {
     if (selectedSuperAdmin) {
@@ -39,36 +43,27 @@ const FormSuperAdmins = () => {
     setSuperAdminInput({ ...superAdminInput, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (selectedSuperAdmin) {
-      editItem(superAdminInput);
-    } else {
-      addItem(superAdminInput);
-    }
-  };
-
-  const addItem = ({ name, lastName, email, password }) => {
-    const newItem = {
-      name,
-      lastName,
-      email,
-      password
-    };
-
-    fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newItem)
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
-      });
-  };
+  // const addItem = () => {
+  //   // const newItem = {
+  //   //   name,
+  //   //   lastName,
+  //   //   email,
+  //   //   password
+  //   // };
+  //   postSuperAdmins(newItem);
+  //   // fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
+  //   //   method: 'post',
+  //   //   headers: {
+  //   //     'Content-Type': 'application/json'
+  //   //   },
+  //   //   body: JSON.stringify(newItem)
+  //   // })
+  //   //   .then((res) => res.json())
+  //   //   .then((json) => {
+  //   //     setModalDisplay(true);
+  //   //
+  //   //   });
+  // };
 
   const editItem = ({ name, lastName, email, password }) => {
     const editItem = {
@@ -87,19 +82,32 @@ const FormSuperAdmins = () => {
     })
       .then((res) => res.json())
       .then((json) => {
-        setModalDisplay(true);
+        // setModalDisplay(true);
         setModalContent({ message: json.message, error: json.error });
       });
   };
 
   const handleCloseModal = () => {
     if (!modalContent.error) {
-      setModalDisplay(false);
+      //setModalDisplay(false);
       history.push(`/Super-admins`);
     } else {
-      setModalDisplay(false);
+      //setModalDisplay(false);
     }
   };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (selectedSuperAdmin) {
+      editItem(superAdminInput);
+    } else {
+      dispatch(postSuperAdmins(superAdminInput));
+      setModal(true);
+      setModalContent(error);
+    }
+  };
+
+  console.log(superAdminInput);
 
   return (
     <section className={styles.container}>
@@ -138,7 +146,8 @@ const FormSuperAdmins = () => {
           required
         />
       </Form>
-      {modalDisplay && (
+      {isPending && <p>...loading</p>}
+      {modal && (
         <Modal
           heading={modalContent.message}
           setModalDisplay={handleCloseModal}
