@@ -6,26 +6,38 @@ const Row = ({ headers, rowItem, deleteItem, editItem }) => {
   return (
     <tr className={styles.tr}>
       {headers?.map((header, index) => (
-        <td key={index} className={styles.td}>
+        <td
+          key={index}
+          className={`${styles.td} ${
+            header.toLowerCase() === 'status'
+              ? rowItem[header].toLowerCase() === 'active'
+                ? styles.active
+                : styles.inactive
+              : null
+          }
+        `}
+        >
           {rowItem[header]}
         </td>
       ))}
-      <td className={styles.td}>
-        <span className={styles.btnContainer}>
-          {editItem && (
-            <Button
-              icon={`${process.env.PUBLIC_URL}/assets/images/pen-to-square-solid.svg`}
-              onClick={editItem}
-            />
-          )}
-          {deleteItem && (
-            <Button
-              icon={`${process.env.PUBLIC_URL}/assets/images/trash-solid.svg`}
-              onClick={deleteItem}
-            />
-          )}
-        </span>
-      </td>
+      {editItem || deleteItem ? (
+        <td className={styles.td}>
+          <span className={styles.btnContainer}>
+            {editItem && (
+              <Button
+                icon={`${process.env.PUBLIC_URL}/assets/images/pen-to-square-solid.svg`}
+                onClick={editItem}
+              />
+            )}
+            {deleteItem && (
+              <Button
+                icon={`${process.env.PUBLIC_URL}/assets/images/trash-solid.svg`}
+                onClick={deleteItem}
+              />
+            )}
+          </span>
+        </td>
+      ) : null}
     </tr>
   );
 };
