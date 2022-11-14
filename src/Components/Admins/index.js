@@ -2,7 +2,7 @@ import styles from './admins.module.css';
 import { useHistory } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAdmins } from '../../redux/Admins/thunks';
+import { getAdmins, deleteAdmin } from '../../redux/Admins/thunks';
 import Modal from '../Shared/Modal';
 import Table from '../Shared/Table';
 import Button from '../Shared/Button';
@@ -21,11 +21,9 @@ const Admins = () => {
     dispatch(getAdmins());
   }, []);
 
-  const deleteAdmin = () => {
+  const adminDelete = () => {
     showSuccessModal(true);
-    fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin._id}`, {
-      method: 'DELETE'
-    });
+    dispatch(deleteAdmin(selectedAdmin._id));
   };
 
   const handleDeleteAdmin = (item) => {
@@ -75,7 +73,7 @@ const Admins = () => {
               label={'Delete'}
               theme={'tertiary'}
               onClick={() => {
-                deleteAdmin();
+                adminDelete();
                 setDeleteModalDisplay(false);
               }}
             />

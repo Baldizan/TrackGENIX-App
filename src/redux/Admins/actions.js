@@ -1,4 +1,11 @@
-import { GET_ADMINS_PENDING, GET_ADMINS_SUCCESS, GET_ADMINS_ERROR } from './types';
+import {
+  GET_ADMINS_PENDING,
+  GET_ADMINS_SUCCESS,
+  GET_ADMINS_ERROR,
+  DELETE_ADMIN_PENDING,
+  DELETE_ADMIN_SUCCESS,
+  DELETE_ADMIN_ERROR
+} from './types';
 
 export const getAdminsPending = () => {
   return {
@@ -16,6 +23,26 @@ export const getAdminsSuccess = (data) => {
 export const getAdminsError = (error) => {
   return {
     type: GET_ADMINS_ERROR,
+    payload: error
+  };
+};
+
+export const deleteAdminPending = () => {
+  return {
+    type: DELETE_ADMIN_PENDING
+  };
+};
+
+export const deleteAdminSuccess = (payload) => {
+  return {
+    type: DELETE_ADMIN_SUCCESS,
+    payload
+  };
+};
+
+export const deleteAdminError = (error) => {
+  return {
+    type: DELETE_ADMIN_ERROR,
     payload: error
   };
 };

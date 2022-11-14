@@ -1,4 +1,11 @@
-import { GET_ADMINS_ERROR, GET_ADMINS_PENDING, GET_ADMINS_SUCCESS } from './types';
+import {
+  GET_ADMINS_ERROR,
+  GET_ADMINS_PENDING,
+  GET_ADMINS_SUCCESS,
+  DELETE_ADMIN_ERROR,
+  DELETE_ADMIN_PENDING,
+  DELETE_ADMIN_SUCCESS
+} from './types';
 
 const INITIAL_STATE = {
   list: [],
@@ -24,8 +31,27 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_ADMINS_ERROR: {
       return {
         ...state,
-        error: action.payload,
+        isPending: false,
+        error: action.payload
+      };
+    }
+    case DELETE_ADMIN_PENDING: {
+      return {
+        ...state,
+        isPending: true
+      };
+    }
+    case DELETE_ADMIN_SUCCESS:
+      return {
+        ...state,
+        list: state.list.filter((item) => item._id !== action.payload),
         isPending: false
+      };
+    case DELETE_ADMIN_ERROR: {
+      return {
+        ...state,
+        isPending: false,
+        error: action.payload
       };
     }
     default:
