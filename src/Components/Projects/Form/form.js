@@ -24,7 +24,7 @@ const ProjectsForm = () => {
     startDate: '',
     endDate: '',
     clientName: '',
-    active: '',
+    active: false,
     employees: []
   });
   const roles = ['DEV', 'TL', 'QA', 'PM'];
@@ -114,6 +114,11 @@ const ProjectsForm = () => {
     setProject(newProject);
   };
 
+  const removeEmployee = (row) => {
+    const newEmployeesArray = project.employees.filter((e) => e !== row);
+    setProject({ ...project, employees: newEmployeesArray });
+  };
+
   return (
     <section className={styles.container}>
       <Form
@@ -172,13 +177,14 @@ const ProjectsForm = () => {
           placeholder={projectId ? 'Select status' : 'Inactive'}
           id="active"
           onChange={onChange}
-          disabled={projectId ? false : true}
-          required
+          disabled={!projectId}
+          required={projectId}
         />
         <div className={`${styles.tableContainer} ${styles.employeesContainer}`}>
           <Table
             headers={{ id: 'Employee ID', role: 'Role', rate: 'Rate' }}
             data={project?.employees}
+            deleteItem={removeEmployee}
           />
         </div>
         <Select

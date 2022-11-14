@@ -35,12 +35,14 @@
 .input:focus {
   cursor: auto;
   outline: 1px solid #373867;
+  background-color: #FFF;
 }
 
 .disabled {
   border: 1px solid #37386770;
   color: #37386770;
 }
+
 .disabled:hover {
   cursor: not-allowed;
 }
