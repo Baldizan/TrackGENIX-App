@@ -11,8 +11,7 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_SUPERADMINS_PENDING: {
       return {
         ...state,
-        list: action.payload,
-        isPending: false
+        isPending: true
       };
     }
     case GET_SUPERADMINS_SUCCESS: {
@@ -25,8 +24,8 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_SUPERADMINS_ERROR: {
       return {
         ...state,
-        list: action.payload,
-        isPending: false
+        isPending: false,
+        error: action.payload
       };
     }
     default:
