@@ -4,13 +4,16 @@ export const getSuperAdmins = () => {
   return (dispatch) => {
     dispatch(getSuperAdminsPending());
     return fetch(`${process.env.REACT_APP_API_URL}/super-admins`)
-      .then((response) => response.json())
-      .then((response) => {
-        dispatch(getSuperAdminsSuccess(response.data));
-        return response.data;
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.error) {
+          dispatch(getSuperAdminsError(json.message));
+        } else {
+          dispatch(getSuperAdminsSuccess(json.data));
+        }
       })
       .catch((error) => {
-        dispatch(getSuperAdminsError(error.toString()));
+        dispatch(getSuperAdminsError(error.message));
       });
   };
 };

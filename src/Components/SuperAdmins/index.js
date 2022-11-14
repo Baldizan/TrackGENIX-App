@@ -39,14 +39,14 @@ const SuperAdmins = () => {
   const handleEdit = (item) => {
     history.push('/super-admins/form', { id: item._id });
   };
-
+  console.log(superAdmins);
   return (
     <section className={styles.container}>
       {isPending && <p>...loading</p>}
       {!isPending && !error && (
         <Table
           headers={headers}
-          data={superAdmins}
+          data={superAdmins ?? []}
           editItem={handleEdit}
           deleteItem={deleteItem}
           title={'Super Admins'}
@@ -54,7 +54,7 @@ const SuperAdmins = () => {
           itemsPerPage={5}
         />
       )}
-      {error && <p>ERROR</p>}
+      {error && <p>{error}</p>}
       {successModalDisplay && (
         <Modal
           heading={`${selectedItem.name} ${selectedItem.lastName} deleted successfully!`}
