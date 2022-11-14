@@ -1,4 +1,4 @@
-import { GET_PROJECTS_ERROR, GET_PROJECTS_PENDING, GET_PROJECTS_SUCCESS } from './types';
+import { GET_PROJECTS_PENDING, GET_PROJECTS_SUCCESS, GET_PROJECTS_ERROR } from './types';
 
 const INITIAL_STATE = {
   list: [],
@@ -11,8 +11,7 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_PROJECTS_PENDING: {
       return {
         ...state,
-        list: action.payload,
-        isPending: false
+        isPending: true
       };
     }
     case GET_PROJECTS_SUCCESS: {
@@ -25,7 +24,7 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_PROJECTS_ERROR: {
       return {
         ...state,
-        list: action.payload,
+        error: action.payload,
         isPending: false
       };
     }

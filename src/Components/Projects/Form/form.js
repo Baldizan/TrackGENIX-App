@@ -4,11 +4,15 @@ import styles from './form.module.css';
 import Form from '../../Shared/Form/index';
 import Button from '../../Shared/Button';
 import { Input, Select } from '../../Shared/Input/index';
+import Table from '../../Shared/Table';
+import { useSelector, useDispatch } from 'react-redux';
+import { getEmployees } from '../../../redux/Employees/thunks';
 
 const ProjectsForm = () => {
-  let history = useHistory();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { list: employees } = useSelector((state) => state.employees);
   const projectId = history.location.state?.id;
-  const [employees, setEmployees] = useState([]);
   const [employee, setEmployee] = useState({
     id: '',
     role: '',
@@ -20,16 +24,14 @@ const ProjectsForm = () => {
     startDate: '',
     endDate: '',
     clientName: '',
-    active: '',
+    active: false,
     employees: []
   });
   const roles = ['DEV', 'TL', 'QA', 'PM'];
   const statusProject = ['Active', 'Inactive'];
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/employees`)
-      .then((res) => res.json())
-      .then((res) => setEmployees(res.data));
+    dispatch(getEmployees());
   }, []);
 
   useEffect(() => {
@@ -108,22 +110,24 @@ const ProjectsForm = () => {
 
   const assignEmployee = () => {
     const newProject = { ...project };
-    newProject.employees.push(employee);
+    newProject.employees?.push(employee);
     setProject(newProject);
   };
 
-  const getName = (id) => {
-    let employee = employees.find(function (e) {
-      return e._id === id;
-    });
-    return employee?.name + ' ' + employee?.lastName;
+  const removeEmployee = (row) => {
+    const newEmployeesArray = project.employees.filter((e) => e !== row);
+    setProject({ ...project, employees: newEmployeesArray });
   };
-  console.log(employee);
+
   return (
     <section className={styles.container}>
-      <Form onSubmit={updateProject} secondColumnIndex={5}>
+      <Form
+        title={projectId ? 'Edit project' : 'Add project'}
+        onSubmit={updateProject}
+        secondColumnIndex={6}
+      >
         <Input
-          title="ProjectName"
+          title="Project Name"
           id="ProjectName"
           value={project.name}
           name="name"
@@ -163,57 +167,67 @@ const ProjectsForm = () => {
           required
         />
         <Select
-          title="Active"
+          title="Status"
           name="active"
           value={project.active}
           arrayToMap={statusProject.map((status) => ({
             id: status === 'Active',
             label: status
           }))}
-          placeholder="Status"
+          placeholder={projectId ? 'Select status' : 'Inactive'}
           id="active"
           onChange={onChange}
-          required
+          disabled={!projectId}
+          required={projectId}
         />
-        <div className={styles.divContainer}>
-          <div className={styles.employeesContainer}>
-            <h3>Employees:</h3>
-            {project?.employees?.map((e, i) => (
-              <div key={i}>
-                <span>{'Name: ' + getName(e.id) + ' '}</span>
-                <span>{'Role: ' + e.role + ' '}</span>
-                <span>{'Rate: ' + e.rate + ' '}</span>
-              </div>
-            ))}
-          </div>
-          <Select
-            name="name"
-            placeholder="Name"
-            arrayToMap={employees.map((employee) => ({
-              id: employee._id,
-              label: employee.name + ' ' + employee.lastName
-            }))}
-            onChange={handleChangeEmployee}
-            required
+        <div className={`${styles.tableContainer} ${styles.employeesContainer}`}>
+          <Table
+            headers={{ id: 'Employee ID', role: 'Role', rate: 'Rate' }}
+            data={project?.employees}
+            deleteItem={removeEmployee}
           />
-          <Select
-            name="role"
-            placeholder="Role"
-            arrayToMap={roles.map((rol) => ({
-              id: rol,
-              label: rol
-            }))}
-            onChange={onChangeEmployee}
-            required
-          />
+        </div>
+        <Select
+          title="Employee"
+          name="name"
+          value={employee.id}
+          placeholder="Name"
+          arrayToMap={employees.map((employee) => ({
+            id: employee._id,
+            label: employee.name + ' ' + employee.lastName
+          }))}
+          onChange={handleChangeEmployee}
+          required={!projectId}
+        />
+        <Select
+          title="Role"
+          name="role"
+          value={employee.role}
+          placeholder="Role"
+          arrayToMap={roles.map((rol) => ({
+            id: rol,
+            label: rol
+          }))}
+          onChange={onChangeEmployee}
+          required={!projectId}
+        />
+        <div className={styles.btnContainer}>
           <Input
+            title="Rate"
             name="rate"
+            value={employee.rate}
             placeholder="Rate"
             type="number"
             onChange={onChangeEmployee}
-            required
+            required={!projectId}
           />
-          <Button className={styles.btnAssign} label="Assign" onClick={assignEmployee} />
+
+          <Button
+            theme="secondary"
+            style={styles.btnAssign}
+            label="Assign"
+            onClick={assignEmployee}
+          />
         </div>
       </Form>
     </section>

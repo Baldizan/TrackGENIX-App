@@ -4,28 +4,29 @@ import Table from '../Shared/Table/index';
 import styles from './projects.module.css';
 import { useHistory } from 'react-router-dom';
 import Button from '../Shared/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import { getProjects } from '../../redux/Projects/thunks';
 
-function Projects() {
-  let history = useHistory();
+const Projects = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { list: projects } = useSelector((state) => state.projects);
   const [modal, setModal] = useState(false);
   const [modalEmployee, setModalEmployee] = useState(false);
-  const [textEmployee, setTextEmployee] = useState('');
-  const [projects, setProjects] = useState([]);
+  const [projectEmployees, setProjectEmployees] = useState([]);
   const [projectDelete, setProjectDelete] = useState();
   const headers = {
     name: 'Name',
     description: 'Description',
-    startDate: 'Start date',
-    endDate: 'End date',
+    startDateFormat: 'Start date',
+    endDateFormat: 'End date',
     clientName: 'Client name',
-    active: 'Status',
-    employees: 'Employees'
+    employees: 'Employees',
+    status: 'Status'
   };
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/projects`)
-      .then((res) => res.json())
-      .then((res) => setProjects(res.data || []));
+    dispatch(getProjects());
   }, []);
 
   const handleDelete = (item) => {
@@ -46,25 +47,26 @@ function Projects() {
       method: 'DELETE'
     }).then(() => {
       setModal(false);
-      setProjects(projects.filter((project) => project._id !== projectDelete._id));
     });
   };
 
-  const showEmployees = (employees, name) => {
+  const showEmployees = (employees) => {
     if (employees) {
-      let text = [];
-      employees.forEach((employee) => {
-        text.push(employee.id.name + ' ' + employee.role + ' ' + employee.rate);
-      });
+      const projectEmployees = employees.map((employee) => ({
+        _id: employee._id,
+        role: employee.role,
+        rate: employee.rate
+      }));
+      setProjectEmployees(projectEmployees);
       setModalEmployee(true);
-      setTextEmployee(`Assigned employees to project ${name}` + text.join('\n'));
-    } else {
-      setTextEmployee('no');
     }
   };
 
   const projectColumns = projects.map((row) => ({
     ...row,
+    status: row.active ? 'Active' : 'Inactive',
+    startDateFormat: row.startDate.slice(0, 10),
+    endDateFormat: row.startDate.slice(0, 10),
     employees: (
       <Button
         label="See employees"
@@ -78,15 +80,23 @@ function Projects() {
     <section className={styles.container}>
       {modalEmployee && (
         <Modal setModalDisplay={setModalEmployee} theme="confirm">
-          {textEmployee}
+          <div className={styles.employeesTableContainer}>
+            <Table
+              data={projectEmployees}
+              headers={{ _id: 'Employee ID', role: 'Role', rate: 'Rate' }}
+              title="Project employees"
+            />
+          </div>
         </Modal>
       )}
       {modal && (
-        <Modal setModalDisplay={setModal} heading="Do you want delete this project" theme="confirm">
-          <div className={styles.btnContainer}>
-            <Button label="Cancel" theme="primary" onClick={handleCloseModal} />
-            <Button label="Delete" theme="tertiary" onClick={confirmDelete} />
-          </div>
+        <Modal
+          setModalDisplay={setModal}
+          heading="Are you sure you want to delete this project?"
+          theme="confirm"
+        >
+          <Button label="Cancel" theme="primary" onClick={handleCloseModal} />
+          <Button label="Delete" theme="tertiary" onClick={confirmDelete} />
         </Modal>
       )}
       <Table
@@ -100,6 +110,6 @@ function Projects() {
       />
     </section>
   );
-}
+};
 
 export default Projects;
