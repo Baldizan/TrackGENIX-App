@@ -1,4 +1,4 @@
-import { getAdminsError, getAdminsPending, getAdminsSuccess } from './action';
+import { getAdminsError, getAdminsPending, getAdminsSuccess } from './actions';
 
 export const getAdmins = () => {
   return (dispatch) => {

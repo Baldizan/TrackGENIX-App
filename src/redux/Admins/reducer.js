@@ -11,8 +11,7 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_ADMINS_PENDING: {
       return {
         ...state,
-        list: action.payload,
-        isPending: false
+        isPending: true
       };
     }
     case GET_ADMINS_SUCCESS: {
@@ -25,7 +24,7 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_ADMINS_ERROR: {
       return {
         ...state,
-        list: action.payload,
+        error: action.payload,
         isPending: false
       };
     }
