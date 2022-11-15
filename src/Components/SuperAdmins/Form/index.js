@@ -40,68 +40,9 @@ const FormSuperAdmins = () => {
     setSuperAdmin({ ...superAdmin, [e.target.name]: e.target.value });
   };
 
-  // const addItem = () => {
-  //   // const newItem = {
-  //   //   name,
-  //   //   lastName,
-  //   //   email,
-  //   //   password
-  //   // };
-  //   postSuperAdmins(newItem);
-  //   // fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
-  //   //   method: 'post',
-  //   //   headers: {
-  //   //     'Content-Type': 'application/json'
-  //   //   },
-  //   //   body: JSON.stringify(newItem)
-  //   // })
-  //   //   .then((res) => res.json())
-  //   //   .then((json) => {
-  //   //     setModalDisplay(true);
-  //   //
-  //   //   });
-  // };
-
-  //   fetch(`${process.env.REACT_APP_API_URL}/super-admins/${idSuperAdmin}`)
-  //     .then((res) => res.json())
-  //     .then((json) => {
-  //       setSuperAdminInput({
-  //         name: json.data.name,
-  //         lastName: json.data.lastName,
-  //         email: json.data.email,
-  //         password: json.data.password
-  //       });
-  //     });
-  //
-  // }
-  // const editItem = ({ name, lastName, email, password }) => {
-  //   const editItem = {
-  //     name,
-  //     lastName,
-  //     email,
-  //     password
-  //   };
-  //   dispatch(putSuperAdmins(idSuperAdmin, editItem));
-  //   // fetch(`${process.env.REACT_APP_API_URL}/super-admins/${idSuperAdmin}`, {
-  //   //   method: 'put',
-  //   //   headers: {
-  //   //     'Content-Type': 'application/json'
-  //   //   },
-  //   //   body: JSON.stringify(editItem)
-  //   // })
-  //   //   .then((res) => res.json())
-  //   //   .then((json) => {
-  //   //     // setModalDisplay(true);
-  //   //     setModalContent({ message: json.message, error: json.error });
-  //   //   });
-  // };
-
   const handleCloseModal = () => {
     if (!modalContent.error) {
-      //setModalDisplay(false);
       history.push(`/Super-admins`);
-    } else {
-      //setModalDisplay(false);
     }
   };
 
@@ -117,8 +58,6 @@ const FormSuperAdmins = () => {
       history.push(`/Super-admins`);
     }
   };
-
-  // console.log(superAdminInput);
 
   return (
     <section className={styles.container}>

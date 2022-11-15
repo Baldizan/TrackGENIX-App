@@ -37,7 +37,7 @@ const SuperAdmins = () => {
   const handleEdit = (item) => {
     history.push('/super-admins/form', { id: item._id });
   };
-  console.log(superAdmins);
+
   return (
     <section className={styles.container}>
       {isPending && <p>...loading</p>}
