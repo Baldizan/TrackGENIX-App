@@ -4,16 +4,17 @@ import styles from './form.module.css';
 import Form from '../../Shared/Form';
 import { Input } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
+import Button from '../../Shared/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { postSuperAdmins, putSuperAdmins, getSuperAdmins } from '../../../redux/SuperAdmins/thunks';
 
 const FormSuperAdmins = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [titleForm, setTitleForm] = useState('Add new SuperAdmin');
+  const [titleForm, setTitleForm] = useState('');
+  const [modalContent, setModalContent] = useState('');
   const [modal, setModal] = useState(false);
-  const [modalContent, setModalContent] = useState({ message: '', error: '' });
-  const { list, isPending, error } = useSelector((state) => state.superAdmins);
+  const { list, isPending } = useSelector((state) => state.superAdmins);
   const [idSuperAdmin] = useState(history.location.state?.id);
   const [superAdmin, setSuperAdmin] = useState({
     name: '',
@@ -25,7 +26,11 @@ const FormSuperAdmins = () => {
   useEffect(() => {
     if (idSuperAdmin) {
       setTitleForm('Edit SuperAdmin');
+      setModalContent('Do you want edit this super admin');
       dispatch(getSuperAdmins());
+    } else {
+      setTitleForm('Add SuperAdmin');
+      setModalContent('Do you want add this super admin');
     }
   }, []);
 
@@ -41,9 +46,12 @@ const FormSuperAdmins = () => {
   };
 
   const handleCloseModal = () => {
-    if (!modalContent.error) {
-      history.push(`/Super-admins`);
-    }
+    setModal(false);
+  };
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    setModal(true);
   };
 
   const onSubmit = (e) => {
@@ -54,14 +62,13 @@ const FormSuperAdmins = () => {
     } else {
       dispatch(postSuperAdmins(superAdmin));
       setModal(true);
-      setModalContent(error);
       history.push(`/Super-admins`);
     }
   };
 
   return (
     <section className={styles.container}>
-      <Form onSubmit={onSubmit} title={titleForm}>
+      <Form onSubmit={handleOnSubmit} title={titleForm}>
         <Input
           onChange={onChange}
           placeholder={'Enter your name'}
@@ -98,11 +105,12 @@ const FormSuperAdmins = () => {
       </Form>
       {isPending && <p>...loading</p>}
       {modal && (
-        <Modal
-          heading={modalContent.message}
-          setModalDisplay={handleCloseModal}
-          theme={modalContent.error ? 'error' : 'success'}
-        />
+        <Modal setModalDisplay={handleCloseModal} heading={modalContent} theme="confirm">
+          <div className={styles.btnContainer}>
+            <Button label="Cancel" theme="tertiary" onClick={handleCloseModal} />
+            <Button label="Confirm" theme="primary" onClick={onSubmit} />
+          </div>
+        </Modal>
       )}
     </section>
   );
