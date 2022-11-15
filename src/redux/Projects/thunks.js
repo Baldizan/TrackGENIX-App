@@ -63,10 +63,8 @@ const deleteProject = (projectId) => {
     return fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`, {
       method: 'DELETE'
     })
-      .then((res) => res.json())
       .then((res) => {
         dispatch(deleteProjectSuccess(res.data));
-        return res.data;
       })
       .catch((error) => {
         dispatch(deleteProjectError(error.message));
@@ -83,14 +81,10 @@ const putProject = (projectId, project) => {
       body: JSON.stringify(project)
     })
       .then((res) => {
-        return res.json();
+        return dispatch(putProjectSuccess(res.data));
       })
-      .then((json) => {
-        if (!json.error) {
-          dispatch(putProjectSuccess(json.data));
-        } else {
-          dispatch(putProjectError(json.message));
-        }
+      .catch((error) => {
+        dispatch(putProjectError(error.message));
       });
   };
 };

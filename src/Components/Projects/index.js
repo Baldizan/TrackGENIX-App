@@ -10,11 +10,10 @@ import { getProjects, deleteProject } from '../../redux/Projects/thunks';
 const Projects = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { list: projects, isPending, error } = useSelector((state) => state.projects);
+  const { list: projectsList, isPending, error } = useSelector((state) => state.projects);
   const [modal, setModal] = useState(false);
   const [modalEmployee, setModalEmployee] = useState(false);
   const [projectEmployees, setProjectEmployees] = useState([]);
-  const [projectDelete, setProjectDelete] = useState();
   const headers = {
     name: 'Name',
     description: 'Description',
@@ -38,13 +37,9 @@ const Projects = () => {
   };
 
   const handleDelete = (item) => {
-    setModal(true);
-    setProjectDelete(item);
-  };
-
-  const confirmDelete = () => {
-    dispatch(deleteProject(projectDelete._id));
+    dispatch(deleteProject(item._id));
     setModal(false);
+    dispatch(getProjects());
   };
 
   const showEmployees = (employees) => {
@@ -59,7 +54,7 @@ const Projects = () => {
     }
   };
 
-  const projectColumns = projects.map((row) => ({
+  const projectColumns = projectsList.map((row) => ({
     ...row,
     status: row.active ? 'Active' : 'Inactive',
     startDateFormat: row.startDate.slice(0, 10),
@@ -95,7 +90,14 @@ const Projects = () => {
           theme="confirm"
         >
           <Button label="Cancel" theme="primary" onClick={handleCloseModal} />
-          <Button label="Delete" theme="tertiary" onClick={confirmDelete} />
+          <Button
+            label="Delete"
+            theme="tertiary"
+            onClick={() => {
+              handleDelete();
+              setModal(false);
+            }}
+          />
         </Modal>
       )}
       {!isPending && !error ? (

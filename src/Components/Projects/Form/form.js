@@ -60,9 +60,9 @@ const ProjectsForm = () => {
     } else {
       dispatch(postProject(project));
     }
-    // if (!isPending && !error) {
-    //   history.goBack();
-    // }
+    if (!isPending && !error) {
+      history.goBack();
+    }
   };
 
   const onChange = (e) => {

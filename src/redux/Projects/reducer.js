@@ -50,7 +50,7 @@ const reducer = (state = INITIAL_STATE, action) => {
     case POST_PROJECT_SUCCESS: {
       return {
         ...state,
-        list: action.payload,
+        list: [...state.list, action.payload],
         isPending: false
       };
     }
@@ -70,7 +70,6 @@ const reducer = (state = INITIAL_STATE, action) => {
     case DELETE_PROJECT_SUCCESS: {
       return {
         ...state,
-        list: action.payload,
         isPending: false
       };
     }
@@ -90,7 +89,6 @@ const reducer = (state = INITIAL_STATE, action) => {
     case PUT_PROJECT_SUCCESS: {
       return {
         ...state,
-        list: action.payload,
         isPending: false
       };
     }
