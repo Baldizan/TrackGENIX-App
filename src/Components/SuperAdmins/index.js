@@ -30,8 +30,8 @@ const SuperAdmins = () => {
   };
 
   const handleDelete = () => {
-    showSuccessModal(true);
     dispatch(deleteSuperAdmins(selectedItem._id));
+    showSuccessModal(true);
   };
 
   const handleEdit = (item) => {
