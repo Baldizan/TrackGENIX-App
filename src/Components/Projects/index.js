@@ -5,7 +5,7 @@ import styles from './projects.module.css';
 import { useHistory } from 'react-router-dom';
 import Button from '../Shared/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { getProjects } from '../../redux/Projects/thunks';
+import { getProjects, deleteProject } from '../../redux/Projects/thunks';
 
 const Projects = () => {
   const history = useHistory();
@@ -29,11 +29,6 @@ const Projects = () => {
     dispatch(getProjects());
   }, []);
 
-  const handleDelete = (item) => {
-    setModal(true);
-    setProjectDelete(item);
-  };
-
   const handleCloseModal = () => {
     setModal(false);
   };
@@ -42,12 +37,14 @@ const Projects = () => {
     history.push('/projects/form', { id: item._id });
   };
 
+  const handleDelete = (item) => {
+    setModal(true);
+    setProjectDelete(item);
+  };
+
   const confirmDelete = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/projects/${projectDelete._id}`, {
-      method: 'DELETE'
-    }).then(() => {
-      setModal(false);
-    });
+    dispatch(deleteProject(projectDelete._id));
+    setModal(false);
   };
 
   const showEmployees = (employees) => {
