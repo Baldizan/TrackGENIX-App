@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { postEmployee, putEmployee } from '../../../redux/Employees/thunks.js';
 import styles from './form.module.css';
 import Form from '../../Shared/Form/index';
-import Button from '../../Shared/Button';
 import { Input, Select } from '../../Shared/Input/index';
 import Modal from '../../Shared/Modal';
 
 const EmployeesForm = () => {
   let history = useHistory();
+  const dispatch = useDispatch();
   const [selectedEmployee] = useState(history.location.state);
+  const { list, isPending, error } = useSelector((state) => state.employees);
   const [allProjects, setAllProjects] = useState([]);
   const [modalDisplay, setModalDisplay] = useState(false);
-  const [modalContent, setModalContent] = useState({ message: '', error: '' });
   const [employeeInput, setEmployeeInput] = useState(
     selectedEmployee ?? {
       name: '',
@@ -24,15 +26,12 @@ const EmployeesForm = () => {
     }
   );
 
-  const body = JSON.stringify({
-    name: employeeInput.name,
-    lastName: employeeInput.lastName,
-    phone: employeeInput.phone,
-    email: employeeInput.email,
-    password: employeeInput.password,
-    project: employeeInput.project,
-    active: employeeInput.active
-  });
+  useEffect(() => {
+    if (selectedEmployee && list.length > 0) {
+      const newEmployee = list.find((l) => l._id === selectedEmployee._id);
+      setEmployeeInput(newEmployee);
+    }
+  }, [list]);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/projects/`)
@@ -46,47 +45,19 @@ const EmployeesForm = () => {
     setEmployeeInput({ ...employeeInput, [e.target.name]: e.target.value });
   };
 
-  const addItem = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/employees`, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: body
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
-      });
-  };
-
-  const editItem = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/employees/${selectedEmployee._id}`, {
-      method: 'put',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: body
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
-      });
-  };
-
   const onSubmit = (e) => {
     e.preventDefault();
     if (selectedEmployee) {
-      editItem(employeeInput);
+      dispatch(putEmployee(selectedEmployee._id, employeeInput));
+      setModalDisplay(true);
     } else {
-      addItem(employeeInput);
+      dispatch(postEmployee(employeeInput));
+      setModalDisplay(true);
     }
   };
 
   const handleCloseModal = () => {
-    if (!modalContent.error) {
+    if (!error) {
       setModalDisplay(false);
       history.push(`/employees`);
     } else {
@@ -164,13 +135,17 @@ const EmployeesForm = () => {
             required
           />
         ) : null}
-        <Button label={'Cancel'} onClick={() => history.push('/employees')} />
       </Form>
+      {isPending && <p>Loading...</p>}
       {modalDisplay && (
         <Modal
-          heading={modalContent.message}
+          heading={
+            error
+              ? error
+              : `Employee ${employeeInput.name} ${employeeInput.lastName} submited successfully!`
+          }
           setModalDisplay={handleCloseModal}
-          theme={modalContent.error ? 'error' : 'success'}
+          theme={error ? 'error' : 'success'}
         />
       )}
     </section>

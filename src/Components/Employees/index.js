@@ -57,7 +57,7 @@ const Employees = () => {
   };
 
   const employeeEdit = (item) => {
-    history.push('/employees/form', { ...item, project: item.project._id });
+    history.push('/employees/form', { ...item });
   };
 
   return (
