@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTasks } from '../../redux/Tasks/thunks';
 import styles from './tasks.module.css';
 import Button from '../Shared/Button';
 import Table from '../Shared/Table';
 import Modal from '../Shared/Modal';
 
 const Tasks = () => {
+  const dispatch = useDispatch();
   const [modalDisplay, setModalDisplay] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
-  const [list, setList] = useState([]);
   const history = useHistory();
-  const headers = { _id: 'Task ID', description: 'Description' };
+  const { list: Tasks, isPending, error } = useSelector((state) => state.tasks);
+  const headers = { description: 'Description' };
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
-      .then((res) => res.json())
-      .then((json) => {
-        setList(json.data);
-      });
+    dispatch(getTasks());
   }, []);
 
   const deleteItem = (item) => {
@@ -28,8 +27,6 @@ const Tasks = () => {
   const handleDelete = () => {
     fetch(`${process.env.REACT_APP_API_URL}/tasks/${selectedItem._id}`, {
       method: 'delete'
-    }).then(() => {
-      setList([...list.filter((listItem) => listItem._id !== selectedItem._id)]);
     });
   };
 
@@ -40,15 +37,18 @@ const Tasks = () => {
 
   return (
     <section className={styles.container}>
-      <Table
-        headers={headers}
-        data={list}
-        editItem={handleEdit}
-        deleteItem={deleteItem}
-        title="Tasks"
-        addRedirectLink="/tasks/form"
-        itemsPerPage={5}
-      />
+      {isPending && <p>...loading</p>}
+      {!isPending && !error && (
+        <Table
+          headers={headers}
+          data={Tasks}
+          editItem={handleEdit}
+          deleteItem={deleteItem}
+          title="Tasks"
+          addRedirectLink="/tasks/form"
+          itemsPerPage={5}
+        />
+      )}
       {modalDisplay && (
         <Modal
           heading="Are you sure you want to delete this task?"
