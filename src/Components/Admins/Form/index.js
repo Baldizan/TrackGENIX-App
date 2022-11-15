@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { editAdmin } from '../../../redux/Admins/thunks';
 import styles from './form.module.css';
 import Form from '../../Shared/Form';
 import { Input } from '../../Shared/Input';
@@ -7,16 +9,17 @@ import Modal from '../../Shared/Modal';
 
 const FormAdmins = () => {
   let history = useHistory();
+  const dispatch = useDispatch();
   const selectedAdmin = history.location.state?._id;
   const [titleForm, setTitleForm] = useState('Add new admin');
+  const [modalDisplay, setModalDisplay] = useState(false);
+  const [modalContent, setModalContent] = useState({ message: '', error: '' });
   const [adminInput, setAdminInput] = useState({
     name: '',
     lastName: '',
     email: '',
     password: ''
   });
-  const [modalDisplay, setModalDisplay] = useState(false);
-  const [modalContent, setModalContent] = useState({ message: '', error: '' });
 
   useEffect(() => {
     if (selectedAdmin) {
@@ -41,7 +44,8 @@ const FormAdmins = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (selectedAdmin) {
-      editItem(adminInput);
+      dispatch(editAdmin(selectedAdmin, adminInput));
+      history.push(`/admins`);
     } else {
       addItem(adminInput);
     }
@@ -69,27 +73,27 @@ const FormAdmins = () => {
       });
   };
 
-  const editItem = ({ name, lastName, email, password }) => {
-    const editItem = {
-      name,
-      lastName,
-      email,
-      password
-    };
+  // const editItem = ({ name, lastName, email, password }) => {
+  //   const editItem = {
+  //     name,
+  //     lastName,
+  //     email,
+  //     password
+  //   };
 
-    fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin}`, {
-      method: 'put',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(editItem)
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
-      });
-  };
+  //   fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin}`, {
+  //     method: 'put',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(editItem)
+  //   })
+  //     .then((res) => res.json())
+  //     .then((json) => {
+  //       setModalDisplay(true);
+  //       setModalContent({ message: json.message, error: json.error });
+  //     });
+  // };
 
   const handleCloseModal = () => {
     if (!modalContent.error) {
