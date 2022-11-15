@@ -11,21 +11,24 @@ const FormAdmins = () => {
   let history = useHistory();
   const dispatch = useDispatch();
   const selectedAdmin = history.location.state?._id;
-  const { list, isPending, error } = useSelector((state) => state.admins);
-  const [titleForm, setTitleForm] = useState('Add new admin');
-  const [modalDisplay, setModalDisplay] = useState(false);
-  const [modalContent, setModalContent] = useState({ message: '', error: '' });
+  const { list, isPending } = useSelector((state) => state.admins);
+  const [titleForm, setTitleForm] = useState('');
+  const [modal, setModal] = useState(false);
+  const [modalContent, setModalContent] = useState('');
   const [adminInput, setAdminInput] = useState({
     name: '',
     lastName: '',
     email: '',
     password: ''
   });
-
   useEffect(() => {
     if (selectedAdmin) {
       setTitleForm('Edit admin');
+      setModalContent('Admin edited successfully');
       dispatch(getAdmins());
+    } else {
+      setTitleForm('Add new admin');
+      setModalContent('Admin added successfully');
     }
   }, []);
 
@@ -44,20 +47,16 @@ const FormAdmins = () => {
     e.preventDefault();
     if (selectedAdmin) {
       dispatch(editAdmin(selectedAdmin, adminInput));
-      history.push(`/admins`);
+      setModal(true);
     } else {
       dispatch(addAdmin(adminInput));
-      setModalDisplay(true);
-      setModalContent(error);
-      history.push(`/admins`);
+      setModal(true);
     }
   };
 
   const handleCloseModal = () => {
-    if (!modalContent.error) {
-      setModalDisplay(false);
-      history.push(`/admins`);
-    }
+    setModal(false);
+    history.push(`/admins`);
   };
 
   return (
@@ -98,12 +97,8 @@ const FormAdmins = () => {
         />
       </Form>
       {isPending && <p>...Loading</p>}
-      {modalDisplay && (
-        <Modal
-          heading={modalContent.message}
-          setModalDisplay={handleCloseModal}
-          theme={modalContent.error ? 'error' : 'success'}
-        />
+      {modal && (
+        <Modal heading={modalContent} setModalDisplay={handleCloseModal} theme={'success'} />
       )}
     </section>
   );
