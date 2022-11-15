@@ -14,6 +14,9 @@ const Projects = () => {
   const [modal, setModal] = useState(false);
   const [modalEmployee, setModalEmployee] = useState(false);
   const [projectEmployees, setProjectEmployees] = useState([]);
+  const [feedbackModal, setFeedbackModal] = useState(false);
+  const [feedback, setFeedback] = useState({ heading: '', theme: '' });
+  const [itemToDelete, setItemToDelete] = useState({});
   const headers = {
     name: 'Name',
     description: 'Description',
@@ -28,18 +31,24 @@ const Projects = () => {
     dispatch(getProjects());
   }, []);
 
-  const handleCloseModal = () => {
-    setModal(false);
-  };
-
   const handleEdit = (item) => {
     history.push('/projects/form', { id: item._id });
   };
 
   const handleDelete = (item) => {
-    dispatch(deleteProject(item._id));
-    setModal(false);
-    dispatch(getProjects());
+    setItemToDelete(item._id);
+    setModal(true);
+  };
+
+  const deleteItem = async () => {
+    dispatch(deleteProject(itemToDelete));
+    if (error) {
+      setFeedback({ heading: `There was an error: ${error}`, theme: 'error' });
+    } else {
+      setFeedback({ heading: 'Project deleted', theme: 'success' });
+      dispatch(getProjects());
+    }
+    setFeedbackModal(true);
   };
 
   const showEmployees = (employees) => {
@@ -58,7 +67,7 @@ const Projects = () => {
     ...row,
     status: row.active ? 'Active' : 'Inactive',
     startDateFormat: row.startDate.slice(0, 10),
-    endDateFormat: row.startDate.slice(0, 10),
+    endDateFormat: row.endDate.slice(0, 10),
     employees: (
       <Button
         label="See employees"
@@ -89,16 +98,29 @@ const Projects = () => {
           heading="Are you sure you want to delete this project?"
           theme="confirm"
         >
-          <Button label="Cancel" theme="primary" onClick={handleCloseModal} />
+          <Button
+            label="Cancel"
+            theme="primary"
+            onClick={() => {
+              setModal(false);
+            }}
+          />
           <Button
             label="Delete"
             theme="tertiary"
             onClick={() => {
-              handleDelete();
+              deleteItem();
               setModal(false);
             }}
           />
         </Modal>
+      )}
+      {feedbackModal && (
+        <Modal
+          setModalDisplay={setFeedbackModal}
+          heading={feedback.heading}
+          theme={feedback.theme}
+        ></Modal>
       )}
       {!isPending && !error ? (
         <Table

@@ -44,7 +44,8 @@ const reducer = (state = INITIAL_STATE, action) => {
     case POST_PROJECT_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case POST_PROJECT_SUCCESS: {
@@ -64,7 +65,8 @@ const reducer = (state = INITIAL_STATE, action) => {
     case DELETE_PROJECT_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case DELETE_PROJECT_SUCCESS: {
@@ -83,7 +85,8 @@ const reducer = (state = INITIAL_STATE, action) => {
     case PUT_PROJECT_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case PUT_PROJECT_SUCCESS: {

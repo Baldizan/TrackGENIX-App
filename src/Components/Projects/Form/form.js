@@ -8,6 +8,7 @@ import Table from '../../Shared/Table';
 import { useSelector, useDispatch } from 'react-redux';
 import { getEmployees } from '../../../redux/Employees/thunks';
 import { postProject, putProject } from '../../../redux/Projects/thunks';
+import Modal from '../../Shared/Modal';
 
 const ProjectsForm = () => {
   const history = useHistory();
@@ -29,6 +30,7 @@ const ProjectsForm = () => {
     active: false,
     employees: []
   });
+  const [feedbackModal, setFeedbackModal] = useState(false);
   const roles = ['DEV', 'TL', 'QA', 'PM'];
   const statusProject = ['Active', 'Inactive'];
 
@@ -39,13 +41,13 @@ const ProjectsForm = () => {
         .then((res) => res.json())
         .then((res) => {
           setProject({
-            name: res.data.name,
-            description: res.data.description,
-            startDate: res.data.startDate.slice(0, 10),
-            endDate: res.data.endDate.slice(0, 10),
-            clientName: res.data.clientName,
-            active: res.data.active,
-            employees: res.data.employees
+            name: res.data?.name,
+            description: res.data?.description,
+            startDate: res.data?.startDate.slice(0, 10),
+            endDate: res.data?.endDate.slice(0, 10),
+            clientName: res.data?.clientName,
+            active: res.data?.active,
+            employees: res.data?.employees
               .filter((e) => e.id && typeof e.id == 'object')
               .map((e) => ({ id: e.id._id, role: e.role, rate: e.rate }))
           });
@@ -57,11 +59,19 @@ const ProjectsForm = () => {
     e.preventDefault();
     if (projectId) {
       dispatch(putProject(projectId, project));
+      setFeedbackModal(true);
     } else {
       dispatch(postProject(project));
+      setFeedbackModal(true);
     }
-    if (!isPending && !error) {
-      history.goBack();
+  };
+
+  const handleModalClose = () => {
+    if (!error) {
+      setFeedbackModal(false);
+      history.push(`/projects`);
+    } else {
+      setFeedbackModal(false);
     }
   };
 
@@ -92,6 +102,13 @@ const ProjectsForm = () => {
     <section className={styles.container}>
       {isPending && <p>Loading...</p>}
       {error && <p>Error</p>}
+      {feedbackModal ? (
+        <Modal
+          setModalDisplay={handleModalClose}
+          heading={projectId ? (error ? error : 'Project edited') : error ? error : 'Project added'}
+          theme={error ? 'error' : 'success'}
+        ></Modal>
+      ) : null}
       <Form
         title={projectId ? 'Edit project' : 'Add project'}
         onSubmit={onSubmit}
