@@ -7,7 +7,10 @@ import {
   DELETE_ADMIN_ERROR,
   PUT_ADMIN_PENDING,
   PUT_ADMIN_SUCCESS,
-  PUT_ADMIN_ERROR
+  PUT_ADMIN_ERROR,
+  POST_ADMIN_PENDING,
+  POST_ADMIN_SUCCESS,
+  POST_ADMIN_ERROR
 } from './types';
 
 export const getAdminsPending = () => {
@@ -65,6 +68,26 @@ export const putAdminSuccess = () => {
 export const putAdminError = (error) => {
   return {
     type: PUT_ADMIN_ERROR,
+    payload: error
+  };
+};
+
+export const postAdminPending = () => {
+  return {
+    type: POST_ADMIN_PENDING
+  };
+};
+
+export const postAdminSuccess = (payload) => {
+  return {
+    type: POST_ADMIN_SUCCESS,
+    payload
+  };
+};
+
+export const postAdminError = (error) => {
+  return {
+    type: POST_ADMIN_ERROR,
     payload: error
   };
 };
