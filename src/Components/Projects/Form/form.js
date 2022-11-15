@@ -7,10 +7,12 @@ import { Input, Select } from '../../Shared/Input/index';
 import Table from '../../Shared/Table';
 import { useSelector, useDispatch } from 'react-redux';
 import { getEmployees } from '../../../redux/Employees/thunks';
+import { postProject, putProject } from '../../../redux/Projects/thunks';
 
 const ProjectsForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const { isPending, error } = useSelector((state) => state.projects);
   const { list: employees } = useSelector((state) => state.employees);
   const projectId = history.location.state?.id;
   const [employee, setEmployee] = useState({
@@ -32,9 +34,6 @@ const ProjectsForm = () => {
 
   useEffect(() => {
     dispatch(getEmployees());
-  }, []);
-
-  useEffect(() => {
     if (projectId) {
       fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`)
         .then((res) => res.json())
@@ -54,46 +53,16 @@ const ProjectsForm = () => {
     }
   }, []);
 
-  const format = (d) => {
-    const today = new Date(d);
-    const dd = today.getDate();
-    const mm = today.getMonth() + 1;
-    const yyyy = today.getFullYear();
-    return mm + '/' + dd + '/' + yyyy;
-  };
-
-  const updateProject = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    project.startDate = format(project.startDate);
-    project.endDate = format(project.endDate);
     if (projectId) {
-      fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(project)
-      }).then(() => {
-        alert(`Project ${project.name} updated successfully!`);
-        history.push('/projects');
-      });
+      dispatch(putProject(projectId, project));
     } else {
-      fetch(`${process.env.REACT_APP_API_URL}/projects`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(project)
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          if (json.error) {
-            alert(json.message);
-          } else {
-            history.push('/projects');
-          }
-        });
+      dispatch(postProject(project));
     }
+    // if (!isPending && !error) {
+    //   history.goBack();
+    // }
   };
 
   const onChange = (e) => {
@@ -121,9 +90,11 @@ const ProjectsForm = () => {
 
   return (
     <section className={styles.container}>
+      {isPending && <p>Loading...</p>}
+      {error && <p>Error</p>}
       <Form
         title={projectId ? 'Edit project' : 'Add project'}
-        onSubmit={updateProject}
+        onSubmit={onSubmit}
         secondColumnIndex={6}
       >
         <Input

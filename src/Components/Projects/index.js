@@ -10,7 +10,7 @@ import { getProjects, deleteProject } from '../../redux/Projects/thunks';
 const Projects = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { list: projects } = useSelector((state) => state.projects);
+  const { list: projects, isPending, error } = useSelector((state) => state.projects);
   const [modal, setModal] = useState(false);
   const [modalEmployee, setModalEmployee] = useState(false);
   const [projectEmployees, setProjectEmployees] = useState([]);
@@ -75,6 +75,8 @@ const Projects = () => {
 
   return (
     <section className={styles.container}>
+      {isPending && <p>Loading...</p>}
+      {error && <p>Error</p>}
       {modalEmployee && (
         <Modal setModalDisplay={setModalEmployee} theme="confirm">
           <div className={styles.employeesTableContainer}>
@@ -96,15 +98,17 @@ const Projects = () => {
           <Button label="Delete" theme="tertiary" onClick={confirmDelete} />
         </Modal>
       )}
-      <Table
-        data={projectColumns}
-        headers={headers}
-        title="Projects"
-        addRedirectLink="projects/form"
-        editItem={handleEdit}
-        deleteItem={handleDelete}
-        itemsPerPage={5}
-      />
+      {!isPending && !error ? (
+        <Table
+          data={projectColumns}
+          headers={headers}
+          title="Projects"
+          addRedirectLink="projects/form"
+          editItem={handleEdit}
+          deleteItem={handleDelete}
+          itemsPerPage={5}
+        />
+      ) : null}
     </section>
   );
 };

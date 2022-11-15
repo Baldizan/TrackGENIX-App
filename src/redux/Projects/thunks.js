@@ -12,7 +12,6 @@ import {
   putProjectSuccess,
   putProjectError
 } from './actions';
-import { useHistory } from 'react-router-dom';
 
 const getProjects = () => {
   return (dispatch) => {
@@ -30,7 +29,6 @@ const getProjects = () => {
 };
 
 const postProject = (project) => {
-  const history = useHistory();
   return (dispatch) => {
     dispatch(postProjectPending());
     return fetch(`${process.env.REACT_APP_API_URL}/projects`, {
@@ -38,13 +36,20 @@ const postProject = (project) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(project)
+      body: JSON.stringify({
+        name: project.name,
+        description: project.description,
+        startDate: project.startDate.slice(0, 10),
+        endDate: project.endDate.slice(0, 10),
+        clientName: project.clientName,
+        active: project.active,
+        employees: project.employees
+      })
     })
       .then((res) => res.json())
       .then((json) => {
         if (!json.error) {
           dispatch(postProjectSuccess(json.data));
-          history.push('/projects');
         } else {
           dispatch(postProjectError(json.message));
         }
@@ -69,34 +74,24 @@ const deleteProject = (projectId) => {
   };
 };
 
-const putProject = (projectId) => {
+const putProject = (projectId, project) => {
   return (dispatch) => {
     dispatch(putProjectPending());
-    return (
-      fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`)
-        .then((res) => res.json())
-        .then((res) => {
-          putProjectSuccess({
-            name: res.data.name,
-            description: res.data.description,
-            startDate: res.data.startDate.slice(0, 10),
-            endDate: res.data.endDate.slice(0, 10),
-            clientName: res.data.clientName,
-            active: res.data.active,
-            employees: res.data.employees
-              .filter((e) => e.id && typeof e.id === 'object')
-              .map((e) => ({ id: e.id._id, role: e.role, rate: e.rate }))
-          });
-        })
-        // .then((res) => {
-        //   dispatch(updateProjectSuccess(res.data));
-        //   // dispatch(setModal(false));
-        //   return res.data;
-        // })
-        .catch((error) => {
-          dispatch(putProjectError(error.message));
-        })
-    );
+    return fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(project)
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((json) => {
+        if (!json.error) {
+          dispatch(putProjectSuccess(json.data));
+        } else {
+          dispatch(putProjectError(json.message));
+        }
+      });
   };
 };
 
