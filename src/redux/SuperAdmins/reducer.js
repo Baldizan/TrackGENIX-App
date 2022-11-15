@@ -64,7 +64,8 @@ const reducer = (state = INITIAL_STATE, action) => {
     case DELETE_SUPERADMINS_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case DELETE_SUPERADMINS_SUCCESS: {
@@ -83,7 +84,8 @@ const reducer = (state = INITIAL_STATE, action) => {
     case PUT_SUPERADMINS_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case PUT_SUPERADMINS_SUCCESS: {

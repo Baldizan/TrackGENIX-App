@@ -4,7 +4,6 @@ import styles from './form.module.css';
 import Form from '../../Shared/Form';
 import { Input } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
-import Button from '../../Shared/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { postSuperAdmins, putSuperAdmins, getSuperAdmins } from '../../../redux/SuperAdmins/thunks';
 
@@ -14,7 +13,7 @@ const FormSuperAdmins = () => {
   const [titleForm, setTitleForm] = useState('');
   const [modalContent, setModalContent] = useState('');
   const [modal, setModal] = useState(false);
-  const { list, isPending } = useSelector((state) => state.superAdmins);
+  const { list, isPending, error } = useSelector((state) => state.superAdmins);
   const [idSuperAdmin] = useState(history.location.state?.id);
   const [superAdmin, setSuperAdmin] = useState({
     name: '',
@@ -26,14 +25,13 @@ const FormSuperAdmins = () => {
   useEffect(() => {
     if (idSuperAdmin) {
       setTitleForm('Edit SuperAdmin');
-      setModalContent('Do you want edit this super admin');
       dispatch(getSuperAdmins());
     } else {
       setTitleForm('Add SuperAdmin');
-      setModalContent('Do you want add this super admin');
     }
   }, []);
 
+  console.log(error);
   useEffect(() => {
     if (idSuperAdmin && list.length > 0) {
       const newSuperAdmin = list.find((l) => l._id === idSuperAdmin);
@@ -41,34 +39,41 @@ const FormSuperAdmins = () => {
     }
   }, [list]);
 
+  useEffect(() => {
+    if (error) {
+      setModalContent(error);
+    } else {
+      setModalContent('Edit super admin successfully');
+    }
+  }, [error]);
+
   const onChange = (e) => {
     setSuperAdmin({ ...superAdmin, [e.target.name]: e.target.value });
   };
 
   const handleCloseModal = () => {
-    setModal(false);
-  };
-
-  const handleOnSubmit = (e) => {
-    e.preventDefault();
-    setModal(true);
+    if (error) {
+      setModal(false);
+    } else {
+      history.push(`/Super-admins`);
+    }
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (idSuperAdmin) {
       dispatch(putSuperAdmins(idSuperAdmin, superAdmin));
-      history.push(`/Super-admins`);
+      setModal(true);
     } else {
       dispatch(postSuperAdmins(superAdmin));
       setModal(true);
-      history.push(`/Super-admins`);
     }
   };
+  console.log(modalContent);
 
   return (
     <section className={styles.container}>
-      <Form onSubmit={handleOnSubmit} title={titleForm}>
+      <Form onSubmit={onSubmit} title={titleForm}>
         <Input
           onChange={onChange}
           placeholder={'Enter your name'}
@@ -105,12 +110,11 @@ const FormSuperAdmins = () => {
       </Form>
       {isPending && <p>...loading</p>}
       {modal && (
-        <Modal setModalDisplay={handleCloseModal} heading={modalContent} theme="confirm">
-          <div className={styles.btnContainer}>
-            <Button label="Cancel" theme="tertiary" onClick={handleCloseModal} />
-            <Button label="Confirm" theme="primary" onClick={onSubmit} />
-          </div>
-        </Modal>
+        <Modal
+          setModalDisplay={handleCloseModal}
+          heading={modalContent}
+          theme={error ? 'error' : 'success'}
+        />
       )}
     </section>
   );
