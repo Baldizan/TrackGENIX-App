@@ -56,10 +56,9 @@ export const deleteSuperAdminsPending = () => {
   };
 };
 
-export const deleteSuperAdminsSuccess = (data) => {
+export const deleteSuperAdminsSuccess = () => {
   return {
-    type: DELETE_SUPERADMINS_SUCCESS,
-    payload: data
+    type: DELETE_SUPERADMINS_SUCCESS
   };
 };
 

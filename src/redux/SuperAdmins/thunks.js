@@ -61,13 +61,8 @@ export const deleteSuperAdmins = (id) => {
         'Content-Type': 'application/json'
       }
     })
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.error) {
-          dispatch(deleteSuperAdminsError(json.message));
-        } else {
-          dispatch(deleteSuperAdminsSuccess(json.data));
-        }
+      .then(() => {
+        dispatch(deleteSuperAdminsSuccess());
       })
       .catch((error) => {
         dispatch(deleteSuperAdminsError(error.message));

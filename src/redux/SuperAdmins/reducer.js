@@ -67,7 +67,7 @@ const reducer = (state = INITIAL_STATE, action) => {
     case DELETE_SUPERADMINS_SUCCESS: {
       return {
         ...state,
-        list: [...state.list, action.payload],
+        list: action.payload,
         isPending: false
       };
     }
