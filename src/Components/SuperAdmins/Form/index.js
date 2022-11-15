@@ -31,7 +31,6 @@ const FormSuperAdmins = () => {
     }
   }, []);
 
-  console.log(error);
   useEffect(() => {
     if (idSuperAdmin && list.length > 0) {
       const newSuperAdmin = list.find((l) => l._id === idSuperAdmin);
@@ -43,7 +42,9 @@ const FormSuperAdmins = () => {
     if (error) {
       setModalContent(error);
     } else {
-      setModalContent('Edit super admin successfully');
+      setModalContent(
+        idSuperAdmin ? 'Edit super admin successfully' : 'Add super admin successfully'
+      );
     }
   }, [error]);
 
