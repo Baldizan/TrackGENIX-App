@@ -39,10 +39,10 @@ export const deleteAdminPending = () => {
   };
 };
 
-export const deleteAdminSuccess = (payload) => {
+export const deleteAdminSuccess = (data) => {
   return {
     type: DELETE_ADMIN_SUCCESS,
-    payload
+    payload: data
   };
 };
 
@@ -78,10 +78,10 @@ export const postAdminPending = () => {
   };
 };
 
-export const postAdminSuccess = (payload) => {
+export const postAdminSuccess = (data) => {
   return {
     type: POST_ADMIN_SUCCESS,
-    payload
+    payload: data
   };
 };
 
