@@ -20,7 +20,6 @@ const getProjects = () => {
       .then((response) => response.json())
       .then((response) => {
         dispatch(getProjectsSuccess(response.data));
-        return response.data;
       })
       .catch((error) => {
         dispatch(getProjectsError(error.toString()));
@@ -65,6 +64,7 @@ const deleteProject = (projectId) => {
     })
       .then((res) => {
         dispatch(deleteProjectSuccess(res.data));
+        dispatch(getProjects());
       })
       .catch((error) => {
         dispatch(deleteProjectError(error.message));

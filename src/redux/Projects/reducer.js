@@ -24,14 +24,16 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_PROJECTS_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case GET_PROJECTS_SUCCESS: {
       return {
         ...state,
         list: action.payload,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case GET_PROJECTS_ERROR: {
@@ -52,7 +54,8 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         list: [...state.list, action.payload],
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case POST_PROJECT_ERROR: {
@@ -72,7 +75,8 @@ const reducer = (state = INITIAL_STATE, action) => {
     case DELETE_PROJECT_SUCCESS: {
       return {
         ...state,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case DELETE_PROJECT_ERROR: {
@@ -92,7 +96,8 @@ const reducer = (state = INITIAL_STATE, action) => {
     case PUT_PROJECT_SUCCESS: {
       return {
         ...state,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case PUT_PROJECT_ERROR: {

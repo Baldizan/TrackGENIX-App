@@ -101,7 +101,6 @@ const ProjectsForm = () => {
   return (
     <section className={styles.container}>
       {isPending && <p>Loading...</p>}
-      {error && <p>Error</p>}
       {feedbackModal ? (
         <Modal
           setModalDisplay={handleModalClose}

@@ -46,7 +46,6 @@ const Projects = () => {
       setFeedback({ heading: `There was an error: ${error}`, theme: 'error' });
     } else {
       setFeedback({ heading: 'Project deleted', theme: 'success' });
-      dispatch(getProjects());
     }
     setFeedbackModal(true);
   };
