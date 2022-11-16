@@ -57,7 +57,7 @@ const Employees = () => {
   };
 
   const employeeEdit = (item) => {
-    history.push('/employees/form', { ...item });
+    history.push('/employees/form', item);
   };
 
   return (
@@ -88,6 +88,7 @@ const Employees = () => {
           setModalDisplay={setModalDisplay}
           theme={'confirm'}
         >
+          <p>This change cannot be undone</p>
           <Button
             label="Confirm"
             theme="tertiary"

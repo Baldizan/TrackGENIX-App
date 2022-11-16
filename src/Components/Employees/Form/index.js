@@ -42,6 +42,10 @@ const EmployeesForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (selectedEmployee) {
+      console.log(employeeInput);
+      if (typeof employeeInput.project != 'string') {
+        employeeInput.project = employeeInput.project._id;
+      }
       dispatch(putEmployee(selectedEmployee._id, employeeInput));
       setModalDisplay(true);
     } else {
@@ -108,7 +112,7 @@ const EmployeesForm = () => {
           title="Project"
           placeholder="Project"
           name="project"
-          value={employeeInput.project}
+          value={employeeInput.project._id}
           arrayToMap={projectsList.map((project) => ({
             id: project._id,
             label: project.name
