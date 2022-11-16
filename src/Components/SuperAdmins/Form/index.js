@@ -15,6 +15,7 @@ const FormSuperAdmins = () => {
   const [modal, setModal] = useState(false);
   const { list, isPending, error } = useSelector((state) => state.superAdmins);
   const [idSuperAdmin] = useState(history.location.state?.id);
+  const [theme, setTheme] = useState('');
   const [superAdmin, setSuperAdmin] = useState({
     name: '',
     lastName: '',
@@ -40,8 +41,10 @@ const FormSuperAdmins = () => {
 
   useEffect(() => {
     if (error) {
+      setTheme('error');
       setModalContent(error);
     } else {
+      setTheme('success');
       setModalContent(
         idSuperAdmin ? 'Edit super admin successfully' : 'Add super admin successfully'
       );
@@ -70,7 +73,6 @@ const FormSuperAdmins = () => {
       setModal(true);
     }
   };
-  console.log(modalContent);
 
   return (
     <section className={styles.container}>
@@ -110,13 +112,7 @@ const FormSuperAdmins = () => {
         />
       </Form>
       {isPending && <p>...loading</p>}
-      {modal && (
-        <Modal
-          setModalDisplay={handleCloseModal}
-          heading={modalContent}
-          theme={error ? 'error' : 'success'}
-        />
-      )}
+      {modal && <Modal setModalDisplay={handleCloseModal} heading={modalContent} theme={theme} />}
     </section>
   );
 };

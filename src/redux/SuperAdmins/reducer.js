@@ -24,14 +24,16 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_SUPERADMINS_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case GET_SUPERADMINS_SUCCESS: {
       return {
         ...state,
         list: action.payload,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case GET_SUPERADMINS_ERROR: {
@@ -44,14 +46,16 @@ const reducer = (state = INITIAL_STATE, action) => {
     case POST_SUPERADMINS_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case POST_SUPERADMINS_SUCCESS: {
       return {
         ...state,
         list: [...state.list, action.payload],
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case POST_SUPERADMINS_ERROR: {
@@ -71,7 +75,8 @@ const reducer = (state = INITIAL_STATE, action) => {
     case DELETE_SUPERADMINS_SUCCESS: {
       return {
         ...state,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case DELETE_SUPERADMINS_ERROR: {
@@ -91,7 +96,8 @@ const reducer = (state = INITIAL_STATE, action) => {
     case PUT_SUPERADMINS_SUCCESS: {
       return {
         ...state,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case PUT_SUPERADMINS_ERROR: {

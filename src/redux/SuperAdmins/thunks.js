@@ -97,7 +97,6 @@ export const putSuperAdmins = (id, data) => {
           dispatch(putSuperAdminsSuccess(json.message));
           dispatch(getSuperAdmins());
         }
-        console.log(json.error);
       })
       .catch((error) => {
         dispatch(putSuperAdminsError(error.message));
