@@ -24,14 +24,16 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_ADMINS_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case GET_ADMINS_SUCCESS: {
       return {
         ...state,
         list: action.payload,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case GET_ADMINS_ERROR: {
@@ -44,14 +46,16 @@ const reducer = (state = INITIAL_STATE, action) => {
     case DELETE_ADMIN_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case DELETE_ADMIN_SUCCESS:
       return {
         ...state,
         list: state.list.filter((item) => item._id !== action.payload),
-        isPending: false
+        isPending: false,
+        error: false
       };
     case DELETE_ADMIN_ERROR: {
       return {
@@ -63,13 +67,15 @@ const reducer = (state = INITIAL_STATE, action) => {
     case PUT_ADMIN_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case PUT_ADMIN_SUCCESS:
       return {
         ...state,
-        isPending: false
+        isPending: false,
+        error: false
       };
     case PUT_ADMIN_ERROR: {
       return {
@@ -81,14 +87,16 @@ const reducer = (state = INITIAL_STATE, action) => {
     case POST_ADMIN_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case POST_ADMIN_SUCCESS:
       return {
         ...state,
         list: [...state.list, action.payload],
-        isPending: false
+        isPending: false,
+        error: false
       };
     case POST_ADMIN_ERROR: {
       return {

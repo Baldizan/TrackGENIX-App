@@ -20,9 +20,9 @@ export const getAdmins = () => {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`);
       const json = await response.json();
       if (json.error) {
-        throw new Error();
+        throw new Error(json.message);
       }
-      dispatch(getAdminsSuccess(json.data));
+      dispatch(getAdminsSuccess(json.data, json.message));
     } catch (error) {
       dispatch(getAdminsError(error.toString()));
     }
@@ -68,9 +68,9 @@ export const editAdmin = (id, data) => {
       });
       const json = await response.json();
       if (json.error) {
-        throw new Error();
+        throw new Error(json.message);
       }
-      dispatch(putAdminSuccess(json.data));
+      dispatch(putAdminSuccess(json.data, json.message));
       dispatch(getAdmins());
     } catch (error) {
       dispatch(putAdminError(error.toString()));
@@ -91,9 +91,9 @@ export const addAdmin = (data) => {
       });
       const json = await response.json();
       if (json.error) {
-        throw new Error();
+        throw new Error(json.message);
       }
-      dispatch(postAdminSuccess(json.data));
+      dispatch(postAdminSuccess(json.data, json.message));
       dispatch(getAdmins());
     } catch (error) {
       dispatch(postAdminError(error.toString()));

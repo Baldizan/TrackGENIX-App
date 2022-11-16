@@ -11,10 +11,9 @@ const FormAdmins = () => {
   let history = useHistory();
   const dispatch = useDispatch();
   const selectedAdmin = history.location.state?._id;
-  const { list, isPending } = useSelector((state) => state.admins);
+  const { list, isPending, error } = useSelector((state) => state.admins);
   const [titleForm, setTitleForm] = useState('');
   const [modal, setModal] = useState(false);
-  const [modalContent, setModalContent] = useState('');
   const [adminInput, setAdminInput] = useState({
     name: '',
     lastName: '',
@@ -24,11 +23,9 @@ const FormAdmins = () => {
   useEffect(() => {
     if (selectedAdmin) {
       setTitleForm('Edit admin');
-      setModalContent('Admin edited successfully');
       dispatch(getAdmins());
     } else {
       setTitleForm('Add new admin');
-      setModalContent('Admin added successfully');
     }
   }, []);
 
@@ -55,8 +52,12 @@ const FormAdmins = () => {
   };
 
   const handleCloseModal = () => {
-    setModal(false);
-    history.push(`/admins`);
+    if (!error) {
+      setModal(false);
+      history.push(`/admins`);
+    } else {
+      setModal(false);
+    }
   };
 
   return (
@@ -98,7 +99,13 @@ const FormAdmins = () => {
       </Form>
       {isPending && <p>...Loading</p>}
       {modal && (
-        <Modal heading={modalContent} setModalDisplay={handleCloseModal} theme={'success'} />
+        <Modal
+          heading={
+            error ? error : `Admin ${adminInput.name} ${adminInput.lastName} submited successfully!`
+          }
+          setModalDisplay={handleCloseModal}
+          theme={error ? 'error' : 'success'}
+        />
       )}
     </section>
   );
