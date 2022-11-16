@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { postEmployee, putEmployee } from '../../../redux/Employees/thunks.js';
+import { getProjects } from '../../../redux/Projects/thunks.js';
 import styles from './form.module.css';
 import Form from '../../Shared/Form/index';
 import { Input, Select } from '../../Shared/Input/index';
@@ -12,7 +13,7 @@ const EmployeesForm = () => {
   const dispatch = useDispatch();
   const [selectedEmployee] = useState(history.location.state);
   const { list, isPending, error } = useSelector((state) => state.employees);
-  const [allProjects, setAllProjects] = useState([]);
+  const { list: projectsList } = useSelector((state) => state.projects);
   const [modalDisplay, setModalDisplay] = useState(false);
   const [employeeInput, setEmployeeInput] = useState(
     selectedEmployee ?? {
@@ -31,15 +32,8 @@ const EmployeesForm = () => {
       const newEmployee = list.find((l) => l._id === selectedEmployee._id);
       setEmployeeInput(newEmployee);
     }
+    dispatch(getProjects());
   }, [list]);
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/projects/`)
-      .then((response) => response.json())
-      .then((response) => {
-        setAllProjects(response.data);
-      });
-  }, []);
 
   const onChange = (e) => {
     setEmployeeInput({ ...employeeInput, [e.target.name]: e.target.value });
@@ -115,7 +109,7 @@ const EmployeesForm = () => {
           placeholder="Project"
           name="project"
           value={employeeInput.project}
-          arrayToMap={allProjects.map((project) => ({
+          arrayToMap={projectsList.map((project) => ({
             id: project._id,
             label: project.name
           }))}

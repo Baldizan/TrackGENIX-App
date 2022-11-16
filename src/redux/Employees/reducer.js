@@ -24,14 +24,16 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_EMPLOYEES_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case GET_EMPLOYEES_SUCCESS: {
       return {
         ...state,
         list: action.payload,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case GET_EMPLOYEES_ERROR: {
@@ -44,13 +46,15 @@ const reducer = (state = INITIAL_STATE, action) => {
     case DELETE_EMPLOYEES_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case DELETE_EMPLOYEES_SUCCESS: {
       return {
         ...state,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case DELETE_EMPLOYEES_ERROR: {

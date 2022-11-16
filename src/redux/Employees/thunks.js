@@ -60,7 +60,7 @@ export const putEmployee = (id, data) => {
         phone: data.phone,
         email: data.email,
         password: data.password,
-        project: data.project._id,
+        project: data.project,
         active: data.active
       })
     })
