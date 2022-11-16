@@ -12,7 +12,7 @@ const Tasks = () => {
   const [modalDisplay, setModalDisplay] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
   const history = useHistory();
-  const { list: Tasks, isPending, error } = useSelector((state) => state.tasks);
+  const { list: tasks, isPending, error } = useSelector((state) => state.tasks);
   const headers = { description: 'Description' };
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const Tasks = () => {
       {!isPending && !error && (
         <Table
           headers={headers}
-          data={Tasks}
+          data={tasks}
           editItem={handleEdit}
           deleteItem={deleteItem}
           title="Tasks"
