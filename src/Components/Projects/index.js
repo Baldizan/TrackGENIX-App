@@ -53,7 +53,7 @@ const Projects = () => {
   const showEmployees = (employees) => {
     if (employees) {
       const projectEmployees = employees.map((employee) => ({
-        _id: employee._id,
+        _id: employee.id._id,
         role: employee.role,
         rate: employee.rate
       }));
@@ -71,7 +71,7 @@ const Projects = () => {
       <Button
         label="See employees"
         theme="primary"
-        onClick={() => showEmployees(row.employees, row.name)}
+        onClick={() => showEmployees(row.employees.filter((e) => e.id !== null))}
       />
     )
   }));
@@ -80,6 +80,17 @@ const Projects = () => {
     <section className={styles.container}>
       {isPending && <p>Loading...</p>}
       {error && <p>There has been an error: {error}</p>}
+      {!isPending && !error ? (
+        <Table
+          data={projectColumns}
+          headers={headers}
+          title="Projects"
+          addRedirectLink="projects/form"
+          editItem={handleEdit}
+          deleteItem={handleDelete}
+          itemsPerPage={5}
+        />
+      ) : null}
       {modalEmployee && (
         <Modal setModalDisplay={setModalEmployee} theme="confirm">
           <div className={styles.employeesTableContainer}>
@@ -121,17 +132,6 @@ const Projects = () => {
           theme={feedback.theme}
         ></Modal>
       )}
-      {!isPending && !error ? (
-        <Table
-          data={projectColumns}
-          headers={headers}
-          title="Projects"
-          addRedirectLink="projects/form"
-          editItem={handleEdit}
-          deleteItem={handleDelete}
-          itemsPerPage={5}
-        />
-      ) : null}
     </section>
   );
 };

@@ -101,13 +101,6 @@ const ProjectsForm = () => {
   return (
     <section className={styles.container}>
       {isPending && <p>Loading...</p>}
-      {feedbackModal ? (
-        <Modal
-          setModalDisplay={handleModalClose}
-          heading={projectId ? (error ? error : 'Project edited') : error ? error : 'Project added'}
-          theme={error ? 'error' : 'success'}
-        ></Modal>
-      ) : null}
       <Form
         title={projectId ? 'Edit project' : 'Add project'}
         onSubmit={onSubmit}
@@ -217,6 +210,13 @@ const ProjectsForm = () => {
           />
         </div>
       </Form>
+      {feedbackModal ? (
+        <Modal
+          setModalDisplay={handleModalClose}
+          heading={projectId ? (error ? error : 'Project edited') : error ? error : 'Project added'}
+          theme={error ? 'error' : 'success'}
+        ></Modal>
+      ) : null}
     </section>
   );
 };
