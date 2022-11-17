@@ -1,36 +1,39 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styles from './tasks.module.css';
 import Button from '../Shared/Button';
 import Table from '../Shared/Table';
 import Modal from '../Shared/Modal';
+import { getTasks, deleteTask } from '../../redux/Tasks/thunks';
 
 const Tasks = () => {
-  const [modalDisplay, setModalDisplay] = useState(false);
+  const dispatch = useDispatch();
+  const { list, isPending, error } = useSelector((state) => state.tasks);
   const [selectedItem, setSelectedItem] = useState({});
-  const [list, setList] = useState([]);
+  const [modalDisplay, setModalDisplay] = useState(false);
+  const [feedbackModal, setFeedbackModal] = useState(false);
+  const [feedback, setFeedback] = useState({ heading: '', theme: '' });
   const history = useHistory();
   const headers = { _id: 'Task ID', description: 'Description' };
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
-      .then((res) => res.json())
-      .then((json) => {
-        setList(json.data);
-      });
+    dispatch(getTasks());
   }, []);
 
-  const deleteItem = (item) => {
-    setSelectedItem(item);
+  const handleDelete = (item) => {
+    setSelectedItem(item._id);
     setModalDisplay(true);
   };
 
-  const handleDelete = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/tasks/${selectedItem._id}`, {
-      method: 'delete'
-    }).then(() => {
-      setList([...list.filter((listItem) => listItem._id !== selectedItem._id)]);
-    });
+  const deleteItem = async () => {
+    dispatch(deleteTask(selectedItem));
+    if (error) {
+      setFeedback({ heading: `There was an error: ${error}`, theme: 'error' });
+    } else {
+      setFeedback({ heading: 'Task deleted', theme: 'success' });
+    }
+    setFeedbackModal(true);
   };
 
   const handleEdit = (item) => {
@@ -40,15 +43,19 @@ const Tasks = () => {
 
   return (
     <section className={styles.container}>
-      <Table
-        headers={headers}
-        data={list}
-        editItem={handleEdit}
-        deleteItem={deleteItem}
-        title="Tasks"
-        addRedirectLink="/tasks/form"
-        itemsPerPage={5}
-      />
+      {isPending && <p>Loading...</p>}
+      {error && <p>There has been an error: {error}</p>}
+      {!isPending && !error ? (
+        <Table
+          headers={headers}
+          data={list}
+          editItem={handleEdit}
+          deleteItem={handleDelete}
+          title="Tasks"
+          addRedirectLink="/tasks/form"
+          itemsPerPage={5}
+        />
+      ) : null}
       {modalDisplay && (
         <Modal
           heading="Are you sure you want to delete this task?"
@@ -59,11 +66,18 @@ const Tasks = () => {
             label="Confirm"
             theme="tertiary"
             onClick={() => {
-              handleDelete();
+              deleteItem();
               setModalDisplay(false);
             }}
           />
         </Modal>
+      )}
+      {feedbackModal && (
+        <Modal
+          setModalDisplay={setFeedbackModal}
+          heading={feedback.heading}
+          theme={feedback.theme}
+        ></Modal>
       )}
     </section>
   );

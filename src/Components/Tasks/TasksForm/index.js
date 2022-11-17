@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { postTask, putTask } from '../../../redux/Tasks/thunks';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styles from './tasksForm.module.css';
 import Form from '../../Shared/Form';
@@ -7,12 +9,13 @@ import Modal from '../../Shared/Modal';
 
 const TasksForm = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const { isPending, error } = useSelector((state) => state.tasks);
   const [selectedTask] = useState(history.location.state);
   const [taskInput, setTaskInput] = useState({ description: selectedTask?.description ?? '' });
-  const [modalDisplay, setModalDisplay] = useState(false);
-  const [modalContent, setModalContent] = useState({ message: '', error: '' });
   const [invalid, setInvalid] = useState(true);
   const titleForm = selectedTask ? 'Edit Task' : 'Add Task';
+  const [feedbackModal, setFeedbackModal] = useState(false);
 
   const validation = () => {
     setInvalid(Object.values(taskInput).some((x) => x === ''));
@@ -26,53 +29,26 @@ const TasksForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (selectedTask) {
-      editItem(taskInput);
+      dispatch(putTask(selectedTask._id, taskInput));
+      setFeedbackModal(true);
     } else {
-      addItem(taskInput);
+      dispatch(postTask(taskInput));
+      setFeedbackModal(true);
     }
   };
 
   const handleCloseModal = () => {
-    if (!modalContent.error) {
-      setModalDisplay(false);
+    if (!error) {
+      setFeedbackModal(false);
       history.push(`/tasks`);
     } else {
-      setModalDisplay(false);
+      setFeedbackModal(false);
     }
-  };
-
-  const addItem = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/tasks`, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ description: taskInput.description })
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
-      });
-  };
-
-  const editItem = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/tasks/${selectedTask._id}`, {
-      method: 'put',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ description: taskInput.description })
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
-      });
   };
 
   return (
     <section className={styles.container}>
+      {isPending && <p>Loading...</p>}
       <Form onSubmit={onSubmit} title={titleForm} noValidate={invalid}>
         <Input
           onChange={onChange}
@@ -83,13 +59,13 @@ const TasksForm = () => {
           required
         />
       </Form>
-      {modalDisplay && (
+      {feedbackModal ? (
         <Modal
-          heading={modalContent.message}
           setModalDisplay={handleCloseModal}
-          theme={modalContent.error ? 'error' : 'success'}
-        />
-      )}
+          heading={selectedTask ? (error ? error : 'Task edited') : error ? error : 'Task added'}
+          theme={error ? 'error' : 'success'}
+        ></Modal>
+      ) : null}
     </section>
   );
 };
