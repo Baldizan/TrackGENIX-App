@@ -4,7 +4,10 @@ import {
   GET_TIMESHEETS_ERROR,
   DELETE_TIMESHEET_PENDING,
   DELETE_TIMESHEET_SUCCESS,
-  DELETE_TIMESHEET_ERROR
+  DELETE_TIMESHEET_ERROR,
+  POST_TIMESHEET_PENDING,
+  POST_TIMESHEET_SUCCESS,
+  POST_TIMESHEET_ERROR
 } from './types';
 
 export const getTimeSheetsPending = () => {
@@ -43,6 +46,26 @@ export const deleteTimeSheetSuccess = (data) => {
 export const deleteTimeSheetError = (error) => {
   return {
     type: DELETE_TIMESHEET_ERROR,
+    payload: error
+  };
+};
+
+export const postTimeSheetPending = () => {
+  return {
+    type: POST_TIMESHEET_PENDING
+  };
+};
+
+export const postTimeSheetSuccess = (data) => {
+  return {
+    type: POST_TIMESHEET_SUCCESS,
+    payload: data
+  };
+};
+
+export const postTimeSheetError = (error) => {
+  return {
+    type: POST_TIMESHEET_ERROR,
     payload: error
   };
 };

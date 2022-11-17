@@ -1,4 +1,4 @@
-import { getTasksError, getTasksPending, getTasksSuccess } from './action';
+import { getTasksError, getTasksPending, getTasksSuccess } from './actions';
 
 export const getTasks = () => {
   return (dispatch) => {

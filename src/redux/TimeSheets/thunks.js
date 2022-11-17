@@ -4,7 +4,10 @@ import {
   getTimeSheetsSuccess,
   deleteTimeSheetError,
   deleteTimeSheetPending,
-  deleteTimeSheetSuccess
+  deleteTimeSheetSuccess,
+  postTimeSheetError,
+  postTimeSheetPending,
+  postTimeSheetSuccess
 } from './actions';
 
 export const getTimeSheets = () => {
@@ -40,6 +43,28 @@ export const deleteTimeSheet = (id) => {
       dispatch(deleteTimeSheetSuccess(id));
     } catch (error) {
       dispatch(deleteTimeSheetError(error.toString()));
+    }
+  };
+};
+
+export const addTimeSheet = (data) => {
+  return async (dispatch) => {
+    dispatch(postTimeSheetPending());
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/timesheets`, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      const json = await response.json();
+      if (json.error) {
+        throw new Error(json.message);
+      }
+      dispatch(postTimeSheetSuccess(json.data, json.message));
+    } catch (error) {
+      dispatch(postTimeSheetError(error.toString()));
     }
   };
 };
