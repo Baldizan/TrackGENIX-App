@@ -19,10 +19,10 @@ const Projects = () => {
   const [itemToDelete, setItemToDelete] = useState({});
   const headers = {
     name: 'Name',
+    clientName: 'Client name',
     description: 'Description',
     startDateFormat: 'Start date',
     endDateFormat: 'End date',
-    clientName: 'Client name',
     employees: 'Employees',
     status: 'Status'
   };
@@ -79,7 +79,7 @@ const Projects = () => {
   return (
     <section className={styles.container}>
       {isPending && <p>Loading...</p>}
-      {error && <p>Error</p>}
+      {error && <p>There has been an error: {error}</p>}
       {modalEmployee && (
         <Modal setModalDisplay={setModalEmployee} theme="confirm">
           <div className={styles.employeesTableContainer}>
