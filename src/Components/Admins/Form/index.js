@@ -10,31 +10,24 @@ import Modal from '../../Shared/Modal';
 const FormAdmins = () => {
   let history = useHistory();
   const dispatch = useDispatch();
-  const selectedAdmin = history.location.state?._id;
-  const { list, isPending, error } = useSelector((state) => state.admins);
-  const [titleForm, setTitleForm] = useState('');
+  const [selectedAdmin] = useState(history.location.state);
+  const { isPending, error } = useSelector((state) => state.admins);
+  const titleForm = selectedAdmin ? 'Edit admin' : 'Add new admin';
+
   const [modal, setModal] = useState(false);
-  const [adminInput, setAdminInput] = useState({
-    name: '',
-    lastName: '',
-    email: '',
-    password: ''
-  });
+  const [adminInput, setAdminInput] = useState(
+    selectedAdmin ?? {
+      name: '',
+      lastName: '',
+      email: '',
+      password: ''
+    }
+  );
   useEffect(() => {
     if (selectedAdmin) {
-      setTitleForm('Edit admin');
       dispatch(getAdmins());
-    } else {
-      setTitleForm('Add new admin');
     }
   }, []);
-
-  useEffect(() => {
-    if (selectedAdmin && list.length > 0) {
-      const newAdmin = list.find((row) => row._id === selectedAdmin);
-      setAdminInput(newAdmin);
-    }
-  }, [list]);
 
   const onChange = (e) => {
     setAdminInput({ ...adminInput, [e.target.name]: e.target.value });
@@ -43,7 +36,7 @@ const FormAdmins = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (selectedAdmin) {
-      dispatch(editAdmin(selectedAdmin, adminInput));
+      dispatch(editAdmin(selectedAdmin._id, adminInput));
       setModal(true);
     } else {
       dispatch(addAdmin(adminInput));
