@@ -76,7 +76,7 @@ const List = () => {
           itemsPerPage={5}
         />
       )}
-      {error && <p>Timesheets not found</p>}
+      {error && <p>{error}</p>}
       {modalDisplay && (
         <Modal
           heading="Are you sure you want to delete this timesheet?"
