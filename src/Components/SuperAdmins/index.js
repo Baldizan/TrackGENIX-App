@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import styles from '../Shared/Table/table.module.css';
+import styles from './super-admins.module.css';
 import Button from '../Shared/Button';
 import Table from '../Shared/Table';
 import Modal from '../Shared/Modal';
