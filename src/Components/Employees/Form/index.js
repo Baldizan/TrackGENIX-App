@@ -42,7 +42,6 @@ const EmployeesForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (selectedEmployee) {
-      console.log(employeeInput);
       if (typeof employeeInput.project != 'string') {
         employeeInput.project = employeeInput.project._id;
       }

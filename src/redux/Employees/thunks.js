@@ -40,6 +40,9 @@ export const deleteEmployee = (id) => {
       .then(() => {
         dispatch(deleteEmployeeSuccess());
       })
+      .then(() => {
+        dispatch(getEmployees());
+      })
       .catch((error) => {
         dispatch(deleteEmployeeError(error.toString()));
       });

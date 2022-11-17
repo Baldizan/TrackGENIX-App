@@ -53,7 +53,6 @@ const Employees = () => {
         setFeedbackModalDisplay(true);
       }
     }
-    dispatch(getEmployees());
   };
 
   const employeeEdit = (item) => {
