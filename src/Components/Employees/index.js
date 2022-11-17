@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getEmployees } from '../../redux/Employees/thunks.js';
+import { deleteEmployee, getEmployees } from '../../redux/Employees/thunks.js';
 import styles from './employees.module.css';
 import Button from '../Shared/Button';
 import Table from '../Shared/Table';
@@ -41,25 +41,22 @@ const Employees = () => {
 
   const handleDelete = () => {
     if (selectedEmployee) {
-      fetch(`${process.env.REACT_APP_API_URL}/employees/${selectedEmployee._id}`, {
-        method: 'DELETE'
-      }).then((res) => {
-        if (res.ok) {
-          setModalContent({ message: 'Employee deleted successfully', theme: 'success' });
-          setFeedbackModalDisplay(true);
-        } else {
-          setModalContent({
-            message: `The employee could not be deleted. Status: ${res.status} ${res.statusText}`,
-            theme: 'error'
-          });
-          setFeedbackModalDisplay(true);
-        }
-      });
+      dispatch(deleteEmployee(selectedEmployee._id));
+      if (!error) {
+        setModalContent({ message: 'Employee deleted successfully', theme: 'success' });
+        setFeedbackModalDisplay(true);
+      } else {
+        setModalContent({
+          message: `The employee could not be deleted. Status: ${error.status} ${error.statusText}`,
+          theme: 'error'
+        });
+        setFeedbackModalDisplay(true);
+      }
     }
   };
 
   const employeeEdit = (item) => {
-    history.push('/employees/form', { ...item, project: item.project._id });
+    history.push('/employees/form', item);
   };
 
   return (
@@ -90,6 +87,7 @@ const Employees = () => {
           setModalDisplay={setModalDisplay}
           theme={'confirm'}
         >
+          <p>This change cannot be undone</p>
           <Button
             label="Confirm"
             theme="tertiary"
