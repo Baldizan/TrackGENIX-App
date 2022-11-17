@@ -18,8 +18,12 @@ const getProjects = () => {
     dispatch(getProjectsPending());
     return fetch(`${process.env.REACT_APP_API_URL}/projects`)
       .then((response) => response.json())
-      .then((response) => {
-        dispatch(getProjectsSuccess(response.data));
+      .then((json) => {
+        if (json.error) {
+          dispatch(getProjectsError(json.message));
+        } else {
+          dispatch(getProjectsSuccess(json.data));
+        }
       })
       .catch((error) => {
         dispatch(getProjectsError(error.toString()));
@@ -47,11 +51,14 @@ const postProject = (project) => {
     })
       .then((res) => res.json())
       .then((json) => {
-        if (!json.error) {
-          dispatch(postProjectSuccess(json.data));
-        } else {
+        if (json.error) {
           dispatch(postProjectError(json.message));
+        } else {
+          dispatch(postProjectSuccess(json.data));
         }
+      })
+      .catch((error) => {
+        dispatch(postProjectError(error.message));
       });
   };
 };
@@ -80,11 +87,16 @@ const putProject = (projectId, project) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(project)
     })
-      .then((res) => {
-        return dispatch(putProjectSuccess(res.data));
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.error) {
+          dispatch(putProjectError(json.message));
+        } else {
+          dispatch(putProjectSuccess(json.data));
+        }
       })
       .catch((error) => {
-        dispatch(putProjectError(error.message));
+        dispatch(putProjectError(error));
       });
   };
 };
