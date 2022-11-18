@@ -13,7 +13,7 @@ import {
   postAdminSuccess
 } from './actions';
 
-const getAdmins = () => {
+export const getAdmins = () => {
   return async (dispatch) => {
     dispatch(getAdminsPending());
     try {
@@ -29,7 +29,7 @@ const getAdmins = () => {
   };
 };
 
-const deleteAdmin = (id) => {
+export const deleteAdmin = (id) => {
   return async (dispatch) => {
     dispatch(deleteAdminPending());
     try {
@@ -50,7 +50,7 @@ const deleteAdmin = (id) => {
   };
 };
 
-const editAdmin = (id, data) => {
+export const editAdmin = (id, data) => {
   return async (dispatch) => {
     dispatch(putAdminPending());
     try {
@@ -78,7 +78,7 @@ const editAdmin = (id, data) => {
   };
 };
 
-const addAdmin = (data) => {
+export const addAdmin = (data) => {
   return async (dispatch) => {
     dispatch(postAdminPending());
     try {
@@ -100,5 +100,3 @@ const addAdmin = (data) => {
     }
   };
 };
-
-export { getAdmins, deleteAdmin, editAdmin, addAdmin };

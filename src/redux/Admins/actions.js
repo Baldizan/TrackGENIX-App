@@ -13,96 +13,81 @@ import {
   POST_ADMIN_ERROR
 } from './types';
 
-const getAdminsPending = () => {
+export const getAdminsPending = () => {
   return {
     type: GET_ADMINS_PENDING
   };
 };
 
-const getAdminsSuccess = (data) => {
+export const getAdminsSuccess = (data) => {
   return {
     type: GET_ADMINS_SUCCESS,
     payload: data
   };
 };
 
-const getAdminsError = (error) => {
+export const getAdminsError = (error) => {
   return {
     type: GET_ADMINS_ERROR,
     payload: error
   };
 };
 
-const deleteAdminPending = () => {
+export const deleteAdminPending = () => {
   return {
     type: DELETE_ADMIN_PENDING
   };
 };
 
-const deleteAdminSuccess = (data) => {
+export const deleteAdminSuccess = (data) => {
   return {
     type: DELETE_ADMIN_SUCCESS,
     payload: data
   };
 };
 
-const deleteAdminError = (error) => {
+export const deleteAdminError = (error) => {
   return {
     type: DELETE_ADMIN_ERROR,
     payload: error
   };
 };
 
-const putAdminPending = () => {
+export const putAdminPending = () => {
   return {
     type: PUT_ADMIN_PENDING
   };
 };
 
-const putAdminSuccess = () => {
+export const putAdminSuccess = () => {
   return {
     type: PUT_ADMIN_SUCCESS
   };
 };
 
-const putAdminError = (error) => {
+export const putAdminError = (error) => {
   return {
     type: PUT_ADMIN_ERROR,
     payload: error
   };
 };
 
-const postAdminPending = () => {
+export const postAdminPending = () => {
   return {
     type: POST_ADMIN_PENDING
   };
 };
 
-const postAdminSuccess = (data) => {
+export const postAdminSuccess = (data) => {
   return {
     type: POST_ADMIN_SUCCESS,
     payload: data
   };
 };
 
-const postAdminError = (error) => {
+export const postAdminError = (error) => {
   return {
     type: POST_ADMIN_ERROR,
     payload: error
   };
-};
-
-export {
-  getAdminsPending,
-  getAdminsSuccess,
-  getAdminsError,
-  deleteAdminPending,
-  deleteAdminSuccess,
-  deleteAdminError,
-  putAdminPending,
-  putAdminSuccess,
-  putAdminError,
-  postAdminPending,
-  postAdminSuccess,
-  postAdminError
 };

@@ -50,13 +50,14 @@ const reducer = (state = INITIAL_STATE, action) => {
         error: false
       };
     }
-    case DELETE_ADMIN_SUCCESS:
+    case DELETE_ADMIN_SUCCESS: {
       return {
         ...state,
         list: state.list.filter((item) => item._id !== action.payload),
         isPending: false,
         error: false
       };
+    }
     case DELETE_ADMIN_ERROR: {
       return {
         ...state,
@@ -71,12 +72,13 @@ const reducer = (state = INITIAL_STATE, action) => {
         error: false
       };
     }
-    case PUT_ADMIN_SUCCESS:
+    case PUT_ADMIN_SUCCESS: {
       return {
         ...state,
         isPending: false,
         error: false
       };
+    }
     case PUT_ADMIN_ERROR: {
       return {
         ...state,
@@ -91,13 +93,14 @@ const reducer = (state = INITIAL_STATE, action) => {
         error: false
       };
     }
-    case POST_ADMIN_SUCCESS:
+    case POST_ADMIN_SUCCESS: {
       return {
         ...state,
         list: [...state.list, action.payload],
         isPending: false,
         error: false
       };
+    }
     case POST_ADMIN_ERROR: {
       return {
         ...state,
