@@ -4,8 +4,14 @@ import styles from './timeSheetsForm.module.css';
 import Form from '../../Shared/Form';
 import { Input, Select } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
+import { useDispatch, useSelector } from 'react-redux';
+// import { getProjects } from '../../../redux/Projects/thunks';
+// import { getTasks } from '../../../redux/Tasks/thunks';
+// import { getEmployees } from '../../../redux/Employees/thunks';
+import { addTimeSheet } from '../../../redux/TimeSheets/thunks';
 
 const TimeSheetsForm = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [selectedTimesheet] = useState(history.location.state);
   const [timeSheetInput, setTimeSheetInput] = useState(
@@ -18,6 +24,10 @@ const TimeSheetsForm = () => {
       hours: ''
     }
   );
+  const { isPending, error } = useSelector((state) => state.timesheets);
+  // const { list: employees } = useSelector((state) => state.employees);
+  // const { list: tasks } = useSelector((state) => state.tasks);
+  // const { list: projects } = useSelector((state) => state.projects);
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [employees, setEmployees] = useState([]);
@@ -44,6 +54,12 @@ const TimeSheetsForm = () => {
       });
   }, []);
 
+  // useEffect(() => {
+  //   dispatch(getProjects());
+  //   dispatch(getEmployees());
+  //   dispatch(getTasks());
+  // }, []);
+
   const validation = () => {
     setInvalid(Object.values(timeSheetInput).some((x) => x === ''));
   };
@@ -58,33 +74,34 @@ const TimeSheetsForm = () => {
     if (selectedTimesheet) {
       editItem(timeSheetInput);
     } else {
-      addItem(timeSheetInput);
+      dispatch(addTimeSheet(timeSheetInput));
+      setModalDisplay(true);
     }
   };
 
-  const addItem = ({ project, task, employee, description, date, hours }) => {
-    const newItem = {
-      project,
-      task,
-      employee,
-      description,
-      date,
-      hours
-    };
+  // const addItem = ({ project, task, employee, description, date, hours }) => {
+  //   const newItem = {
+  //     project,
+  //     task,
+  //     employee,
+  //     description,
+  //     date,
+  //     hours
+  //   };
 
-    fetch(`${process.env.REACT_APP_API_URL}/timeSheets`, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newItem)
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
-      });
-  };
+  //   fetch(`${process.env.REACT_APP_API_URL}/timeSheets`, {
+  //     method: 'post',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(newItem)
+  //   })
+  //     .then((res) => res.json())
+  //     .then((json) => {
+  //       setModalDisplay(true);
+  //       setModalContent({ message: json.message, error: json.error });
+  //     });
+  // };
 
   const editItem = ({ project, task, employee, description, date, hours }) => {
     const editItem = {
@@ -182,11 +199,12 @@ const TimeSheetsForm = () => {
           required
         />
       </Form>
+      {isPending && <p>...Loading</p>}
       {modalDisplay && (
         <Modal
-          heading={modalContent.message}
+          heading={error ? error : `Time Sheet submited successfully!`}
           setModalDisplay={handleCloseModal}
-          theme={modalContent.error ? 'error' : 'success'}
+          theme={error ? 'error' : 'success'}
         />
       )}
     </section>

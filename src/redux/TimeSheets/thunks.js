@@ -17,9 +17,10 @@ export const getTimeSheets = () => {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/timesheets`);
       const json = await response.json();
       if (json.error) {
-        dispatch(getTimeSheetsError(json.message));
+        throw new Error(json.message);
+      } else {
+        dispatch(getTimeSheetsSuccess(json.data));
       }
-      dispatch(getTimeSheetsSuccess(json.data));
     } catch (error) {
       dispatch(getTimeSheetsError(error.toString()));
     }
@@ -39,8 +40,9 @@ export const deleteTimeSheet = (id) => {
       const json = await response.json();
       if (json.error) {
         throw new Error(json.message);
+      } else {
+        dispatch(deleteTimeSheetSuccess(id));
       }
-      dispatch(deleteTimeSheetSuccess(id));
     } catch (error) {
       dispatch(deleteTimeSheetError(error.toString()));
     }
@@ -56,13 +58,21 @@ export const addTimeSheet = (data) => {
         headers: {
           'Content-type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify({
+          project: data.project,
+          task: data.task,
+          employee: data.employee,
+          description: data.description,
+          date: data.date,
+          hours: data.hours
+        })
       });
       const json = await response.json();
       if (json.error) {
         throw new Error(json.message);
+      } else {
+        dispatch(postTimeSheetSuccess(json.data, json.message));
       }
-      dispatch(postTimeSheetSuccess(json.data, json.message));
     } catch (error) {
       dispatch(postTimeSheetError(error.toString()));
     }
