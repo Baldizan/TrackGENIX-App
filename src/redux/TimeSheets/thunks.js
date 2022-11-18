@@ -8,8 +8,9 @@ export const getTimesheets = () => {
       const json = await response.json();
       if (json.error) {
         dispatch(getTimeSheetsError(json.message));
+      } else {
+        dispatch(getTimeSheetsSuccess(json.data));
       }
-      dispatch(getTimeSheetsSuccess(json.data));
     } catch (error) {
       dispatch(getTimeSheetsError(error.toString()));
     }
