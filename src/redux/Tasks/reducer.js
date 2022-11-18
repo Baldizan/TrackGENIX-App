@@ -11,22 +11,23 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_TASKS_PENDING: {
       return {
         ...state,
-        list: action.payload,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case GET_TASKS_SUCCESS: {
       return {
         ...state,
         list: action.payload,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case GET_TASKS_ERROR: {
       return {
         ...state,
-        list: action.payload,
-        isPending: false
+        isPending: false,
+        error: action.payload
       };
     }
     default:

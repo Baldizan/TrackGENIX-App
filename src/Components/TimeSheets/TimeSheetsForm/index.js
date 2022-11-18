@@ -5,9 +5,9 @@ import Form from '../../Shared/Form';
 import { Input, Select } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-// import { getProjects } from '../../../redux/Projects/thunks';
-// import { getTasks } from '../../../redux/Tasks/thunks';
-// import { getEmployees } from '../../../redux/Employees/thunks';
+import { getProjects } from '../../../redux/Projects/thunks';
+import { getTasks } from '../../../redux/Tasks/thunks';
+import { getEmployees } from '../../../redux/Employees/thunks';
 import { addTimeSheet } from '../../../redux/TimeSheets/thunks';
 
 const TimeSheetsForm = () => {
@@ -25,40 +25,20 @@ const TimeSheetsForm = () => {
     }
   );
   const { isPending, error } = useSelector((state) => state.timesheets);
-  // const { list: employees } = useSelector((state) => state.employees);
-  // const { list: tasks } = useSelector((state) => state.tasks);
-  // const { list: projects } = useSelector((state) => state.projects);
-  const [projects, setProjects] = useState([]);
-  const [tasks, setTasks] = useState([]);
-  const [employees, setEmployees] = useState([]);
+  const { list: employees } = useSelector((state) => state.employees);
+  const { list: tasks } = useSelector((state) => state.tasks);
+  const { list: projects } = useSelector((state) => state.projects);
+
   const [modalDisplay, setModalDisplay] = useState(false);
   const [modalContent, setModalContent] = useState({ message: '', error: '' });
   const [invalid, setInvalid] = useState(true);
   const titleForm = selectedTimesheet ? 'Edit Timesheet' : 'Add Timesheet';
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
-      .then((res) => res.json())
-      .then((json) => {
-        setTasks(json.data);
-      });
-    fetch(`${process.env.REACT_APP_API_URL}/projects`)
-      .then((res) => res.json())
-      .then((json) => {
-        setProjects(json.data);
-      });
-    fetch(`${process.env.REACT_APP_API_URL}/employees`)
-      .then((res) => res.json())
-      .then((json) => {
-        setEmployees(json.data);
-      });
+    dispatch(getProjects());
+    dispatch(getEmployees());
+    dispatch(getTasks());
   }, []);
-
-  // useEffect(() => {
-  //   dispatch(getProjects());
-  //   dispatch(getEmployees());
-  //   dispatch(getTasks());
-  // }, []);
 
   const validation = () => {
     setInvalid(Object.values(timeSheetInput).some((x) => x === ''));
@@ -78,30 +58,6 @@ const TimeSheetsForm = () => {
       setModalDisplay(true);
     }
   };
-
-  // const addItem = ({ project, task, employee, description, date, hours }) => {
-  //   const newItem = {
-  //     project,
-  //     task,
-  //     employee,
-  //     description,
-  //     date,
-  //     hours
-  //   };
-
-  //   fetch(`${process.env.REACT_APP_API_URL}/timeSheets`, {
-  //     method: 'post',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(newItem)
-  //   })
-  //     .then((res) => res.json())
-  //     .then((json) => {
-  //       setModalDisplay(true);
-  //       setModalContent({ message: json.message, error: json.error });
-  //     });
-  // };
 
   const editItem = ({ project, task, employee, description, date, hours }) => {
     const editItem = {

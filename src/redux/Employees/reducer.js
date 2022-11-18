@@ -11,22 +11,23 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_EMPLOYEES_PENDING: {
       return {
         ...state,
-        list: action.payload,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case GET_EMPLOYEES_SUCCESS: {
       return {
         ...state,
         list: action.payload,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case GET_EMPLOYEES_ERROR: {
       return {
         ...state,
-        error: action.payload,
-        isPending: false
+        isPending: false,
+        error: action.payload
       };
     }
     default:
