@@ -10,10 +10,10 @@ import { postSuperAdmins, putSuperAdmins, getSuperAdmins } from '../../../redux/
 const FormSuperAdmins = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const { list, isPending, error } = useSelector((state) => state.superAdmins);
   const [titleForm, setTitleForm] = useState('');
   const [modalContent, setModalContent] = useState('');
   const [modal, setModal] = useState(false);
-  const { list, isPending, error } = useSelector((state) => state.superAdmins);
   const [idSuperAdmin] = useState(history.location.state?.id);
   const [theme, setTheme] = useState('');
   const [superAdmin, setSuperAdmin] = useState({
@@ -34,7 +34,7 @@ const FormSuperAdmins = () => {
 
   useEffect(() => {
     if (idSuperAdmin && list.length > 0) {
-      const newSuperAdmin = list.find((l) => l._id === idSuperAdmin);
+      const newSuperAdmin = list.find((item) => item._id === idSuperAdmin);
       setSuperAdmin(newSuperAdmin);
     }
   }, [list]);
