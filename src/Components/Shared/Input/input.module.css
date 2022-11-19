@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: flex-start;
   width: 100%;
-  margin-block: 10px;
+  margin-block: 5px;
   color: #373867;
   font-weight: 500;
   font-size: 14px;
@@ -16,7 +16,8 @@
   width: 100%;
   min-height: 44px;
   padding: 5px;
-  margin-block: 10px;
+  margin-block: 5px;
+  height: 30px;
   box-sizing: border-box;
   border-radius: 5px;
   border: 1px solid #373867;
@@ -35,7 +36,7 @@
 .input:focus {
   cursor: auto;
   outline: 1px solid #373867;
-  background-color: #FFF;
+  background-color: #fff;
 }
 
 .disabled {
@@ -45,4 +46,14 @@
 
 .disabled:hover {
   cursor: not-allowed;
+}
+
+.error {
+  height: 20px;
+  color: #f13312;
+  font-size: 12px;
+}
+
+.hidden {
+  visibility: hidden;
 }
