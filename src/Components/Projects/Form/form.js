@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styles from './form.module.css';
-import Form from '../../Shared/Form/index';
-import Button from '../../Shared/Button';
-import { Input, Select } from '../../Shared/Input/index';
-import Table from '../../Shared/Table';
-import { useSelector, useDispatch } from 'react-redux';
-import { getEmployees } from '../../../redux/Employees/thunks';
-import { postProject, putProject } from '../../../redux/Projects/thunks';
-import Modal from '../../Shared/Modal';
+import Form from 'Components/Shared/Form';
+import Button from 'Components/Shared/Button';
+import { Input, Select } from 'Components/Shared/Input';
+import Table from 'Components/Shared/Table';
+import Modal from 'Components/Shared/Modal';
+import { getEmployees } from 'redux/Employees/thunks';
+import { postProject, putProject } from 'redux/Projects/thunks';
 
 const ProjectsForm = () => {
   const history = useHistory();
