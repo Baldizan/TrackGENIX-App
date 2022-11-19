@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './timeSheetsForm.module.css';
 import Form from '../../Shared/Form';
 import { Input, Select } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProjects } from '../../../redux/Projects/thunks';
+import { getTasks } from '../../../redux/Tasks/thunks';
+import { getEmployees } from '../../../redux/Employees/thunks';
+import { addTimeSheet, editTimeSheet } from '../../../redux/TimeSheets/thunks';
 
 const TimeSheetsForm = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [selectedTimesheet] = useState(history.location.state);
   const [timeSheetInput, setTimeSheetInput] = useState(
@@ -19,13 +24,21 @@ const TimeSheetsForm = () => {
       hours: ''
     }
   );
+  const { isPending, error } = useSelector((state) => state.timesheets);
   const { list: employees } = useSelector((state) => state.employees);
   const { list: tasks } = useSelector((state) => state.tasks);
   const { list: projects } = useSelector((state) => state.projects);
+
   const [modalDisplay, setModalDisplay] = useState(false);
-  const [modalContent, setModalContent] = useState({ message: '', error: '' });
   const [invalid, setInvalid] = useState(true);
   const titleForm = selectedTimesheet ? 'Edit Timesheet' : 'Add Timesheet';
+
+  useEffect(() => {
+    dispatch(getProjects());
+    dispatch(getEmployees());
+    dispatch(getTasks());
+  }, []);
+
   const validation = () => {
     setInvalid(Object.values(timeSheetInput).some((x) => x === ''));
   };
@@ -38,62 +51,16 @@ const TimeSheetsForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (selectedTimesheet) {
-      editItem(timeSheetInput);
+      dispatch(editTimeSheet(timeSheetInput, selectedTimesheet._id));
+      setModalDisplay(true);
     } else {
-      addItem(timeSheetInput);
+      dispatch(addTimeSheet(timeSheetInput));
+      setModalDisplay(true);
     }
   };
 
-  const addItem = ({ project, task, employee, description, date, hours }) => {
-    const newItem = {
-      project,
-      task,
-      employee,
-      description,
-      date,
-      hours
-    };
-
-    fetch(`${process.env.REACT_APP_API_URL}/timeSheets`, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newItem)
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
-      });
-  };
-
-  const editItem = ({ project, task, employee, description, date, hours }) => {
-    const editItem = {
-      project,
-      task,
-      employee,
-      description,
-      date,
-      hours: +hours
-    };
-
-    fetch(`${process.env.REACT_APP_API_URL}/timeSheets/${selectedTimesheet._id}`, {
-      method: 'put',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(editItem)
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
-      });
-  };
-
   const handleCloseModal = () => {
-    if (!modalContent.error) {
+    if (!error) {
       setModalDisplay(false);
       history.push(`/time-sheets`);
     } else {
@@ -164,11 +131,12 @@ const TimeSheetsForm = () => {
           required
         />
       </Form>
+      {isPending && <p>...Loading</p>}
       {modalDisplay && (
         <Modal
-          heading={modalContent.message}
+          heading={error ? error : `Time Sheet submited successfully!`}
           setModalDisplay={handleCloseModal}
-          theme={modalContent.error ? 'error' : 'success'}
+          theme={error ? 'error' : 'success'}
         />
       )}
     </section>

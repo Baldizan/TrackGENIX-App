@@ -18,7 +18,8 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         list: action.payload,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case GET_TASKS_ERROR: {

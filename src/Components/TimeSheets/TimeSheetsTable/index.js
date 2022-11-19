@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getTimesheets } from '../../../redux/TimeSheets/thunks';
+import { getTimeSheets, deleteTimeSheet } from '../../../redux/TimeSheets/thunks';
 import styles from './List.module.css';
 import Button from '../../Shared/Button';
 import Table from '../../Shared/Table';
 import Modal from '../../Shared/Modal';
 
 const List = () => {
-  const [modalDisplay, setModalDisplay] = useState(false);
+  const [deleteModalDisplay, setDeleteModalDisplay] = useState(false);
+  const [successModalDisplay, setSuccessModalDisplay] = useState(false);
+  const [errorModalDisplay, setErrorModalDisplay] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
   const { list: timesheetList, isPending, error } = useSelector((state) => state.timesheets);
   const dispatch = useDispatch();
@@ -38,18 +40,21 @@ const List = () => {
   };
 
   useEffect(() => {
-    dispatch(getTimesheets());
+    dispatch(getTimeSheets());
   }, []);
 
-  const deleteItem = (item) => {
+  const handleDelete = (item) => {
     setSelectedItem(item);
-    setModalDisplay(true);
+    setDeleteModalDisplay(true);
   };
 
-  const handleDelete = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/timesheets/${selectedItem._id}`, {
-      method: 'delete'
-    });
+  const showSuccessModal = () => {
+    setSuccessModalDisplay(true);
+  };
+
+  const deleteItem = () => {
+    showSuccessModal(true);
+    dispatch(deleteTimeSheet(selectedItem._id));
   };
 
   const handleEdit = (item) => {
@@ -70,28 +75,52 @@ const List = () => {
           headers={headers}
           data={timeSheetData()}
           editItem={handleEdit}
-          deleteItem={deleteItem}
+          deleteItem={handleDelete}
           title="Timesheets"
           addRedirectLink="/time-sheets/form"
           itemsPerPage={5}
         />
       )}
       {error && <p>{error}</p>}
-      {modalDisplay && (
+      {deleteModalDisplay && (
         <Modal
-          heading="Are you sure you want to delete this timesheet?"
-          setModalDisplay={setModalDisplay}
-          theme="confirm"
+          heading={`Do you want to delete this Timesheet?`}
+          setModalDisplay={setDeleteModalDisplay}
+          theme={'confirm'}
         >
-          <Button
-            label="Confirm"
-            theme="tertiary"
-            onClick={() => {
-              handleDelete();
-              setModalDisplay(false);
-            }}
-          />
+          <p>This change can not be undone!</p>
+          <div className={styles.buttons}>
+            <Button
+              label={'Cancel'}
+              theme={'primary'}
+              onClick={() => {
+                setDeleteModalDisplay();
+              }}
+            />
+            <Button
+              label={'Delete'}
+              theme={'tertiary'}
+              onClick={() => {
+                deleteItem();
+                setDeleteModalDisplay(false);
+              }}
+            />
+          </div>
         </Modal>
+      )}
+      {successModalDisplay && (
+        <Modal
+          heading={'Timesheet deleted successfully!'}
+          setModalDisplay={setSuccessModalDisplay}
+          theme={'success'}
+        />
+      )}
+      {errorModalDisplay && (
+        <Modal
+          heading={`Could not delete Timesheet!`}
+          setModalDisplay={setErrorModalDisplay}
+          theme={'error'}
+        />
       )}
     </section>
   );
