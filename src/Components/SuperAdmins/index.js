@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import styles from '../Shared/Table/table.module.css';
+import styles from './super-admins.module.css';
 import Button from '../Shared/Button';
 import Table from '../Shared/Table';
 import Modal from '../Shared/Modal';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSuperAdmins } from '../../redux/SuperAdmins/thunks';
+import { getSuperAdmins, deleteSuperAdmins } from '../../redux/SuperAdmins/thunks';
 
 const SuperAdmins = () => {
   const [modalDisplay, setModalDisplay] = useState(false);
@@ -30,16 +30,14 @@ const SuperAdmins = () => {
   };
 
   const handleDelete = () => {
+    dispatch(deleteSuperAdmins(selectedItem._id));
     showSuccessModal(true);
-    fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedItem._id}`, {
-      method: 'delete'
-    });
   };
 
   const handleEdit = (item) => {
     history.push('/super-admins/form', { id: item._id });
   };
-  console.log(superAdmins);
+
   return (
     <section className={styles.container}>
       {isPending && <p>...loading</p>}

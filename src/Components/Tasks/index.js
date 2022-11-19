@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { getTasks, deleteTask } from '../../redux/Tasks/thunks';
 import styles from './tasks.module.css';
 import Button from '../Shared/Button';
 import Table from '../Shared/Table';
 import Modal from '../Shared/Modal';
-import { getTasks, deleteTask } from '../../redux/Tasks/thunks';
 
 const Tasks = () => {
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const Tasks = () => {
   const [feedbackModal, setFeedbackModal] = useState(false);
   const [feedback, setFeedback] = useState({ heading: '', theme: '' });
   const history = useHistory();
-  const headers = { _id: 'Task ID', description: 'Description' };
+  const headers = { description: 'Description' };
 
   useEffect(() => {
     dispatch(getTasks());

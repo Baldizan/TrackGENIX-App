@@ -48,3 +48,7 @@
   color: #fff;
   background-color: #6b6b6b;
 }
+
+.btnContainer {
+  display: flex;
+}
