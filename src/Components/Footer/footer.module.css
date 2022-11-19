@@ -26,6 +26,7 @@
   font-size: 2rem;
   font-weight: bold;
   color: #aace9b;
+  user-select: none;
 }
 
 .routes {
@@ -43,6 +44,7 @@
   text-transform: capitalize;
   color: #aace9b;
   position: relative;
+  user-select: none;
 }
 
 .routes > li > a::before {
@@ -76,6 +78,7 @@
   border: 1px solid #aace9b;
   border-bottom: none;
   border-radius: 10px 10px 0 0;
+  user-select: none;
 }
 
 .copyright {
@@ -85,4 +88,5 @@
 
 .socialIcon {
   margin-left: 5px;
+  user-select: none;
 }

@@ -6,7 +6,7 @@ function Footer() {
     <footer className={styles.container}>
       <div className={styles.main}>
         <div className={styles.appName}>
-          Track<span>GENIX</span>
+          Track<span className={styles.capitalized}>genix</span>
         </div>
         <ul className={styles.routes}>
           <li>
