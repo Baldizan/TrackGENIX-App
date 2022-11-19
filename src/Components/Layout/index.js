@@ -1,18 +1,21 @@
-import Header from '../Header/index';
-import Footer from '../Footer/index';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import React from 'react';
-import Routes from './routes';
 import styles from './layout.module.css';
+import Header from '../Header/index';
+import Loader from 'Components/Shared/Loader';
+import Routes from './routes';
+import Footer from '../Footer/index';
 
 function Layout() {
   return (
     <div className={styles.container}>
-      <Router>
-        <Header />
-        <Routes />
-        <Footer />
-      </Router>
+      <Suspense fallback={<Loader />}>
+        <Router>
+          <Header />
+          <Routes />
+          <Footer />
+        </Router>
+      </Suspense>
     </div>
   );
 }
