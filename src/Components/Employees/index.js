@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import styles from '../Shared/Table/table.module.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteEmployee, getEmployees } from '../../redux/Employees/thunks.js';
+import styles from './employees.module.css';
 import Button from '../Shared/Button';
 import Table from '../Shared/Table';
 import Modal from '../Shared/Modal';
@@ -9,7 +11,8 @@ const Employees = () => {
   const [modalDisplay, setModalDisplay] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState({});
   const [feedbackModalDisplay, setFeedbackModalDisplay] = useState(false);
-  const [employees, setEmployees] = useState([]);
+  const { list: employeesList, isPending, error } = useSelector((state) => state.employees);
+  const dispatch = useDispatch();
   const [modalContent, setModalContent] = useState({ message: '', theme: '' });
   const history = useHistory();
   const headers = {
@@ -21,23 +24,15 @@ const Employees = () => {
     status: 'Status'
   };
 
-  const employeesData = employees.map((employee) => ({
-    ...employee,
-    name: employee.name,
-    lastName: employee.lastName,
-    phone: employee.phone,
-    email: employee.email,
-    project: employee.project ? `${employee.project?.name}` : 'N/A',
-    status: employee.active ? 'Active' : 'Inactive'
-  }));
-
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/employees`)
-      .then((res) => res.json())
-      .then((json) => {
-        setEmployees(json.data);
-      });
+    dispatch(getEmployees());
   }, []);
+
+  const employeesColumns = employeesList.map((row) => ({
+    ...row,
+    status: row.active ? 'Active' : 'Inactive',
+    project: row.project?.name ?? 'N/A'
+  }));
 
   const employeeDelete = (item) => {
     setSelectedEmployee(item);
@@ -46,52 +41,53 @@ const Employees = () => {
 
   const handleDelete = () => {
     if (selectedEmployee) {
-      fetch(`${process.env.REACT_APP_API_URL}/employees/${selectedEmployee._id}`, {
-        method: 'DELETE'
-      }).then((res) => {
-        if (res.ok) {
-          setEmployees([...employees.filter((listItem) => listItem._id !== selectedEmployee._id)]);
-          setModalContent({ message: 'Employee deleted successfully', theme: 'success' });
-          setFeedbackModalDisplay(true);
-        } else {
-          setModalContent({
-            message: `The employee could not be deleted. Status: ${res.status} ${res.statusText}`,
-            theme: 'error'
-          });
-          setFeedbackModalDisplay(true);
-        }
-      });
+      dispatch(deleteEmployee(selectedEmployee._id));
+      if (!error) {
+        setModalContent({ message: 'Employee deleted successfully', theme: 'success' });
+        setFeedbackModalDisplay(true);
+      } else {
+        setModalContent({
+          message: `The employee could not be deleted. Status: ${error.status} ${error.statusText}`,
+          theme: 'error'
+        });
+        setFeedbackModalDisplay(true);
+      }
     }
   };
 
   const employeeEdit = (item) => {
-    history.push('/employees/form', { ...item, project: item.project._id });
+    history.push('/employees/form', item);
   };
 
   return (
     <section className={styles.container}>
-      <Table
-        headers={headers}
-        data={employeesData}
-        editItem={employeeEdit}
-        deleteItem={employeeDelete}
-        title="Employees"
-        addRedirectLink={'/employees/form'}
-        itemsPerPage={5}
-      />
-      {feedbackModalDisplay ? (
+      {isPending && <p>Loading...</p>}
+      {!isPending && !error && (
+        <Table
+          data={employeesColumns}
+          headers={headers}
+          editItem={employeeEdit}
+          deleteItem={employeeDelete}
+          title="Employees"
+          addRedirectLink={'/employees/form'}
+          itemsPerPage={5}
+        />
+      )}
+      {error && <p>{error}</p>}
+      {feedbackModalDisplay && (
         <Modal
           heading={modalContent.message}
           setModalDisplay={setFeedbackModalDisplay}
           theme={modalContent.theme}
         />
-      ) : null}
+      )}
       {modalDisplay && (
         <Modal
-          heading={`Are you sure you want to delete this Employees: ${selectedEmployee.name} ${selectedEmployee.lastName}?`}
+          heading={`Are you sure you want to delete employee: ${selectedEmployee.name} ${selectedEmployee.lastName}?`}
           setModalDisplay={setModalDisplay}
           theme={'confirm'}
         >
+          <p>This change cannot be undone</p>
           <Button
             label="Confirm"
             theme="tertiary"

@@ -3,33 +3,5 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.table {
-  width: 70vw;
-  margin: 10vh 0;
-  border: 1px solid #888;
-  border-radius: 1%;
-  border-collapse: collapse;
-}
-
-.table th {
-  padding: 1% 1%;
-  text-align: start;
-}
-
-.table tr {
-  border-top: 1px solid #888;
-}
-
-.table tbody tr:hover {
-  background-color: #EA335430;
-}
-
-.table td {
-  padding: 1% 1%;
-}
-
-.center {
-  text-align: center;
+  margin: 2% 5%;
 }

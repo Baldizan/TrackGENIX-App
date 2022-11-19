@@ -4,100 +4,73 @@ import styles from './form.module.css';
 import Form from '../../Shared/Form';
 import { Input } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { postSuperAdmins, putSuperAdmins, getSuperAdmins } from '../../../redux/SuperAdmins/thunks';
 
 const FormSuperAdmins = () => {
   const history = useHistory();
-  const [selectedSuperAdmin] = useState(history.location.state?.id);
-  const [titleForm, setTitleForm] = useState('Add new SuperAdmin');
-  const [superAdminInput, setSuperAdminInput] = useState({
+  const dispatch = useDispatch();
+  const { list, isPending, error } = useSelector((state) => state.superAdmins);
+  const [titleForm, setTitleForm] = useState('');
+  const [modalContent, setModalContent] = useState('');
+  const [modal, setModal] = useState(false);
+  const [idSuperAdmin] = useState(history.location.state?.id);
+  const [theme, setTheme] = useState('');
+  const [superAdmin, setSuperAdmin] = useState({
     name: '',
     lastName: '',
     email: '',
     password: ''
   });
-  const [modalDisplay, setModalDisplay] = useState(false);
-  const [modalContent, setModalContent] = useState({ message: '', error: '' });
-  setModalContent;
 
   useEffect(() => {
-    if (selectedSuperAdmin) {
-      fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedSuperAdmin}`)
-        .then((res) => res.json())
-        .then((json) => {
-          setSuperAdminInput({
-            name: json.data.name,
-            lastName: json.data.lastName,
-            email: json.data.email,
-            password: json.data.password
-          });
-        });
+    if (idSuperAdmin) {
       setTitleForm('Edit SuperAdmin');
+      dispatch(getSuperAdmins());
+    } else {
+      setTitleForm('Add SuperAdmin');
     }
   }, []);
 
+  useEffect(() => {
+    if (idSuperAdmin && list.length > 0) {
+      const newSuperAdmin = list.find((item) => item._id === idSuperAdmin);
+      setSuperAdmin(newSuperAdmin);
+    }
+  }, [list]);
+
+  useEffect(() => {
+    if (error) {
+      setTheme('error');
+      setModalContent(error);
+    } else {
+      setTheme('success');
+      setModalContent(
+        idSuperAdmin ? 'Edit super admin successfully' : 'Add super admin successfully'
+      );
+    }
+  }, [error]);
+
   const onChange = (e) => {
-    setSuperAdminInput({ ...superAdminInput, [e.target.name]: e.target.value });
+    setSuperAdmin({ ...superAdmin, [e.target.name]: e.target.value });
+  };
+
+  const handleCloseModal = () => {
+    if (error) {
+      setModal(false);
+    } else {
+      history.push(`/Super-admins`);
+    }
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (selectedSuperAdmin) {
-      editItem(superAdminInput);
+    if (idSuperAdmin) {
+      dispatch(putSuperAdmins(idSuperAdmin, superAdmin));
+      setModal(true);
     } else {
-      addItem(superAdminInput);
-    }
-  };
-
-  const addItem = ({ name, lastName, email, password }) => {
-    const newItem = {
-      name,
-      lastName,
-      email,
-      password
-    };
-
-    fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newItem)
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
-      });
-  };
-
-  const editItem = ({ name, lastName, email, password }) => {
-    const editItem = {
-      name,
-      lastName,
-      email,
-      password
-    };
-
-    fetch(`${process.env.REACT_APP_API_URL}/super-admins/${selectedSuperAdmin}`, {
-      method: 'put',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(editItem)
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
-      });
-  };
-
-  const handleCloseModal = () => {
-    if (!modalContent.error) {
-      setModalDisplay(false);
-      history.push(`/Super-admins`);
-    } else {
-      setModalDisplay(false);
+      dispatch(postSuperAdmins(superAdmin));
+      setModal(true);
     }
   };
 
@@ -107,7 +80,7 @@ const FormSuperAdmins = () => {
         <Input
           onChange={onChange}
           placeholder={'Enter your name'}
-          value={superAdminInput.name}
+          value={superAdmin.name}
           name="name"
           title="Name"
           required
@@ -115,7 +88,7 @@ const FormSuperAdmins = () => {
         <Input
           onChange={onChange}
           placeholder={'Enter your last name'}
-          value={superAdminInput.lastName}
+          value={superAdmin.lastName}
           name="lastName"
           title="Last Name"
           required
@@ -123,7 +96,7 @@ const FormSuperAdmins = () => {
         <Input
           onChange={onChange}
           placeholder={'Enter a valid email address'}
-          value={superAdminInput.email}
+          value={superAdmin.email}
           name="email"
           title="Email"
           required
@@ -131,20 +104,15 @@ const FormSuperAdmins = () => {
         <Input
           onChange={onChange}
           placeholder={'Enter a password'}
-          value={superAdminInput.password}
+          value={superAdmin.password}
           type="password"
           name="password"
           title="Password"
           required
         />
       </Form>
-      {modalDisplay && (
-        <Modal
-          heading={modalContent.message}
-          setModalDisplay={handleCloseModal}
-          theme={modalContent.error ? 'error' : 'success'}
-        />
-      )}
+      {isPending && <p>...loading</p>}
+      {modal && <Modal setModalDisplay={handleCloseModal} heading={modalContent} theme={theme} />}
     </section>
   );
 };

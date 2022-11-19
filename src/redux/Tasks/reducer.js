@@ -11,8 +11,7 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_TASKS_PENDING: {
       return {
         ...state,
-        isPending: false,
-        error: false
+        isPending: true
       };
     }
     case GET_TASKS_SUCCESS: {

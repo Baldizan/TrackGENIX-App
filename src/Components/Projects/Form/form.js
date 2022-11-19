@@ -4,11 +4,18 @@ import styles from './form.module.css';
 import Form from '../../Shared/Form/index';
 import Button from '../../Shared/Button';
 import { Input, Select } from '../../Shared/Input/index';
+import Table from '../../Shared/Table';
+import { useSelector, useDispatch } from 'react-redux';
+import { getEmployees } from '../../../redux/Employees/thunks';
+import { postProject, putProject } from '../../../redux/Projects/thunks';
+import Modal from '../../Shared/Modal';
 
 const ProjectsForm = () => {
-  let history = useHistory();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { isPending, error } = useSelector((state) => state.projects);
+  const { list: employees } = useSelector((state) => state.employees);
   const projectId = history.location.state?.id;
-  const [employees, setEmployees] = useState([]);
   const [employee, setEmployee] = useState({
     id: '',
     role: '',
@@ -20,31 +27,27 @@ const ProjectsForm = () => {
     startDate: '',
     endDate: '',
     clientName: '',
-    active: '',
+    active: false,
     employees: []
   });
+  const [feedbackModal, setFeedbackModal] = useState(false);
   const roles = ['DEV', 'TL', 'QA', 'PM'];
   const statusProject = ['Active', 'Inactive'];
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/employees`)
-      .then((res) => res.json())
-      .then((res) => setEmployees(res.data));
-  }, []);
-
-  useEffect(() => {
+    dispatch(getEmployees());
     if (projectId) {
       fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`)
         .then((res) => res.json())
         .then((res) => {
           setProject({
-            name: res.data.name,
-            description: res.data.description,
-            startDate: res.data.startDate.slice(0, 10),
-            endDate: res.data.endDate.slice(0, 10),
-            clientName: res.data.clientName,
-            active: res.data.active,
-            employees: res.data.employees
+            name: res.data?.name,
+            description: res.data?.description,
+            startDate: res.data?.startDate.slice(0, 10),
+            endDate: res.data?.endDate.slice(0, 10),
+            clientName: res.data?.clientName,
+            active: res.data?.active,
+            employees: res.data?.employees
               .filter((e) => e.id && typeof e.id == 'object')
               .map((e) => ({ id: e.id._id, role: e.role, rate: e.rate }))
           });
@@ -52,45 +55,23 @@ const ProjectsForm = () => {
     }
   }, []);
 
-  const format = (d) => {
-    const today = new Date(d);
-    const dd = today.getDate();
-    const mm = today.getMonth() + 1;
-    const yyyy = today.getFullYear();
-    return mm + '/' + dd + '/' + yyyy;
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (projectId) {
+      dispatch(putProject(projectId, project));
+      setFeedbackModal(true);
+    } else {
+      dispatch(postProject(project));
+      setFeedbackModal(true);
+    }
   };
 
-  const updateProject = (e) => {
-    e.preventDefault();
-    project.startDate = format(project.startDate);
-    project.endDate = format(project.endDate);
-    if (projectId) {
-      fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(project)
-      }).then(() => {
-        alert(`Project ${project.name} updated successfully!`);
-        history.push('/projects');
-      });
+  const handleModalClose = () => {
+    if (!error) {
+      setFeedbackModal(false);
+      history.push(`/projects`);
     } else {
-      fetch(`${process.env.REACT_APP_API_URL}/projects`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(project)
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          if (json.error) {
-            alert(json.message);
-          } else {
-            history.push('/projects');
-          }
-        });
+      setFeedbackModal(false);
     }
   };
 
@@ -108,22 +89,25 @@ const ProjectsForm = () => {
 
   const assignEmployee = () => {
     const newProject = { ...project };
-    newProject.employees.push(employee);
+    newProject.employees?.push(employee);
     setProject(newProject);
   };
 
-  const getName = (id) => {
-    let employee = employees.find(function (e) {
-      return e._id === id;
-    });
-    return employee?.name + ' ' + employee?.lastName;
+  const removeEmployee = (row) => {
+    const newEmployeesArray = project.employees.filter((e) => e !== row);
+    setProject({ ...project, employees: newEmployeesArray });
   };
-  console.log(employee);
+
   return (
     <section className={styles.container}>
-      <Form onSubmit={updateProject} secondColumnIndex={5}>
+      {isPending && <p>Loading...</p>}
+      <Form
+        title={projectId ? 'Edit project' : 'Add project'}
+        onSubmit={onSubmit}
+        secondColumnIndex={6}
+      >
         <Input
-          title="ProjectName"
+          title="Project Name"
           id="ProjectName"
           value={project.name}
           name="name"
@@ -163,59 +147,76 @@ const ProjectsForm = () => {
           required
         />
         <Select
-          title="Active"
+          title="Status"
           name="active"
           value={project.active}
           arrayToMap={statusProject.map((status) => ({
             id: status === 'Active',
             label: status
           }))}
-          placeholder="Status"
+          placeholder={projectId ? 'Select status' : 'Inactive'}
           id="active"
           onChange={onChange}
-          required
+          disabled={!projectId}
+          required={projectId}
         />
-        <div className={styles.divContainer}>
-          <div className={styles.employeesContainer}>
-            <h3>Employees:</h3>
-            {project?.employees?.map((e, i) => (
-              <div key={i}>
-                <span>{'Name: ' + getName(e.id) + ' '}</span>
-                <span>{'Role: ' + e.role + ' '}</span>
-                <span>{'Rate: ' + e.rate + ' '}</span>
-              </div>
-            ))}
-          </div>
-          <Select
-            name="name"
-            placeholder="Name"
-            arrayToMap={employees.map((employee) => ({
-              id: employee._id,
-              label: employee.name + ' ' + employee.lastName
-            }))}
-            onChange={handleChangeEmployee}
-            required
+        <div className={`${styles.tableContainer} ${styles.employeesContainer}`}>
+          <Table
+            headers={{ id: 'Employee ID', role: 'Role', rate: 'Rate' }}
+            data={project?.employees}
+            deleteItem={removeEmployee}
           />
-          <Select
-            name="role"
-            placeholder="Role"
-            arrayToMap={roles.map((rol) => ({
-              id: rol,
-              label: rol
-            }))}
-            onChange={onChangeEmployee}
-            required
-          />
+        </div>
+        <Select
+          title="Employee"
+          name="name"
+          value={employee.id}
+          placeholder="Name"
+          arrayToMap={employees.map((employee) => ({
+            id: employee._id,
+            label: employee.name + ' ' + employee.lastName
+          }))}
+          onChange={handleChangeEmployee}
+          required={!projectId}
+        />
+        <Select
+          title="Role"
+          name="role"
+          value={employee.role}
+          placeholder="Role"
+          arrayToMap={roles.map((rol) => ({
+            id: rol,
+            label: rol
+          }))}
+          onChange={onChangeEmployee}
+          required={!projectId}
+        />
+        <div className={styles.btnContainer}>
           <Input
+            title="Rate"
             name="rate"
+            value={employee.rate}
             placeholder="Rate"
             type="number"
             onChange={onChangeEmployee}
-            required
+            required={!projectId}
           />
-          <Button className={styles.btnAssign} label="Assign" onClick={assignEmployee} />
+
+          <Button
+            theme="secondary"
+            style={styles.btnAssign}
+            label="Assign"
+            onClick={assignEmployee}
+          />
         </div>
       </Form>
+      {feedbackModal ? (
+        <Modal
+          setModalDisplay={handleModalClose}
+          heading={projectId ? (error ? error : 'Project edited') : error ? error : 'Project added'}
+          theme={error ? 'error' : 'success'}
+        ></Modal>
+      ) : null}
     </section>
   );
 };

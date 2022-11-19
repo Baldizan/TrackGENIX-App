@@ -8,7 +8,9 @@ const Row = ({ headers, rowItem, deleteItem, editItem }) => {
       {headers?.map((header, index) => (
         <td
           key={index}
-          className={`${styles.td} ${
+          className={`
+          ${styles.td}
+          ${
             header.toLowerCase() === 'status'
               ? rowItem[header].toLowerCase() === 'active'
                 ? styles.active

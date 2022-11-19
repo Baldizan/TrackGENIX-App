@@ -4,102 +4,136 @@ import Table from '../Shared/Table/index';
 import styles from './projects.module.css';
 import { useHistory } from 'react-router-dom';
 import Button from '../Shared/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import { getProjects, deleteProject } from '../../redux/Projects/thunks';
 
-function Projects() {
-  let history = useHistory();
+const Projects = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { list: projectsList, isPending, error } = useSelector((state) => state.projects);
   const [modal, setModal] = useState(false);
   const [modalEmployee, setModalEmployee] = useState(false);
-  const [textEmployee, setTextEmployee] = useState('');
-  const [projects, setProjects] = useState([]);
-  const [projectDelete, setProjectDelete] = useState();
+  const [projectEmployees, setProjectEmployees] = useState([]);
+  const [feedbackModal, setFeedbackModal] = useState(false);
+  const [feedback, setFeedback] = useState({ heading: '', theme: '' });
+  const [itemToDelete, setItemToDelete] = useState({});
   const headers = {
     name: 'Name',
-    description: 'Description',
-    startDate: 'Start date',
-    endDate: 'End date',
     clientName: 'Client name',
-    active: 'Status',
-    employees: 'Employees'
+    description: 'Description',
+    startDateFormat: 'Start date',
+    endDateFormat: 'End date',
+    employees: 'Employees',
+    status: 'Status'
   };
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/projects`)
-      .then((res) => res.json())
-      .then((res) => setProjects(res.data || []));
+    dispatch(getProjects());
   }, []);
-
-  const handleDelete = (item) => {
-    setModal(true);
-    setProjectDelete(item);
-  };
-
-  const handleCloseModal = () => {
-    setModal(false);
-  };
 
   const handleEdit = (item) => {
     history.push('/projects/form', { id: item._id });
   };
 
-  const confirmDelete = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/projects/${projectDelete._id}`, {
-      method: 'DELETE'
-    }).then(() => {
-      setModal(false);
-      setProjects(projects.filter((project) => project._id !== projectDelete._id));
-    });
+  const handleDelete = (item) => {
+    setItemToDelete(item._id);
+    setModal(true);
   };
 
-  const showEmployees = (employees, name) => {
-    if (employees) {
-      let text = [];
-      employees.forEach((employee) => {
-        text.push(employee.id.name + ' ' + employee.role + ' ' + employee.rate);
-      });
-      setModalEmployee(true);
-      setTextEmployee(`Assigned employees to project ${name}` + text.join('\n'));
+  const deleteItem = async () => {
+    dispatch(deleteProject(itemToDelete));
+    if (error) {
+      setFeedback({ heading: `There was an error: ${error}`, theme: 'error' });
     } else {
-      setTextEmployee('no');
+      setFeedback({ heading: 'Project deleted', theme: 'success' });
+    }
+    setFeedbackModal(true);
+  };
+
+  const showEmployees = (employees) => {
+    if (employees) {
+      const projectEmployees = employees.map((employee) => ({
+        _id: employee.id._id,
+        role: employee.role,
+        rate: employee.rate
+      }));
+      setProjectEmployees(projectEmployees);
+      setModalEmployee(true);
     }
   };
 
-  const projectColumns = projects.map((row) => ({
+  const projectColumns = projectsList.map((row) => ({
     ...row,
+    status: row.active ? 'Active' : 'Inactive',
+    startDateFormat: row.startDate.slice(0, 10),
+    endDateFormat: row.endDate.slice(0, 10),
     employees: (
       <Button
         label="See employees"
         theme="primary"
-        onClick={() => showEmployees(row.employees, row.name)}
+        onClick={() => showEmployees(row.employees.filter((e) => e.id !== null))}
       />
     )
   }));
 
   return (
     <section className={styles.container}>
+      {isPending && <p>Loading...</p>}
+      {error && <p>There has been an error: {error}</p>}
+      {!isPending && !error ? (
+        <Table
+          data={projectColumns}
+          headers={headers}
+          title="Projects"
+          addRedirectLink="projects/form"
+          editItem={handleEdit}
+          deleteItem={handleDelete}
+          itemsPerPage={5}
+        />
+      ) : null}
       {modalEmployee && (
         <Modal setModalDisplay={setModalEmployee} theme="confirm">
-          {textEmployee}
-        </Modal>
-      )}
-      {modal && (
-        <Modal setModalDisplay={setModal} heading="Do you want delete this project" theme="confirm">
-          <div className={styles.btnContainer}>
-            <Button label="Cancel" theme="primary" onClick={handleCloseModal} />
-            <Button label="Delete" theme="tertiary" onClick={confirmDelete} />
+          <div className={styles.employeesTableContainer}>
+            <Table
+              data={projectEmployees}
+              headers={{ _id: 'Employee ID', role: 'Role', rate: 'Rate' }}
+              title="Project employees"
+            />
           </div>
         </Modal>
       )}
-      <Table
-        data={projectColumns}
-        headers={headers}
-        title="Projects"
-        addRedirectLink="projects/form"
-        editItem={handleEdit}
-        deleteItem={handleDelete}
-        itemsPerPage={5}
-      />
+      {modal && (
+        <Modal
+          setModalDisplay={setModal}
+          heading="Are you sure you want to delete this project?"
+          theme="confirm"
+        >
+          <Button
+            label="Cancel"
+            theme="primary"
+            onClick={() => {
+              setModal(false);
+            }}
+          />
+          <Button
+            label="Delete"
+            theme="tertiary"
+            onClick={() => {
+              deleteItem();
+              setModal(false);
+            }}
+          />
+        </Modal>
+      )}
+      {feedbackModal && (
+        <Modal
+          setModalDisplay={setFeedbackModal}
+          heading={feedback.heading}
+          theme={feedback.theme}
+        ></Modal>
+      )}
     </section>
   );
-}
+};
 
 export default Projects;

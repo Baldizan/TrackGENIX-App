@@ -12,11 +12,11 @@
   text-overflow: ellipsis;
 }
 
-.styles.active {
+.active {
   color: #038d00;
 }
 
-.styles.inactive {
+.inactive {
   color: #ff1717;
 }
 
