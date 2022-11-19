@@ -49,10 +49,10 @@
 }
 
 .error {
-  line-height: 1;
   color: #f13312;
   font-size: 12px;
   font-weight: 300;
+  line-height: 1;
 }
 
 .hidden {
