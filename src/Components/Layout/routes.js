@@ -13,6 +13,10 @@ import TasksForm from '../Tasks/TasksForm';
 import TimeSheets from '../TimeSheets';
 import TimeSheetsForm from '../TimeSheets/TimeSheetsForm';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import EmployeeHome from '../Employee/Home';
+import EmployeeProjects from '../Employee/Projects';
+import EmployeeTimesheets from '../Employee/Timesheets';
+import EmployeeProfile from '../Employee/Profile';
 
 const Routes = () => {
   return (
@@ -22,6 +26,18 @@ const Routes = () => {
       </Route>
       <Route exact path="/home">
         <Home />
+      </Route>
+      <Route exact path="/employee/home">
+        <EmployeeHome />
+      </Route>
+      <Route path="/employee/projects">
+        <EmployeeProjects />
+      </Route>
+      <Route path="/employee/time-sheets">
+        <EmployeeTimesheets />
+      </Route>
+      <Route path="/employee/profile">
+        <EmployeeProfile />
       </Route>
       <Route exact path="/admins">
         <Admins />
