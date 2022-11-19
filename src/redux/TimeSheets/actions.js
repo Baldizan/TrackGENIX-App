@@ -7,7 +7,10 @@ import {
   DELETE_TIMESHEET_ERROR,
   POST_TIMESHEET_PENDING,
   POST_TIMESHEET_SUCCESS,
-  POST_TIMESHEET_ERROR
+  POST_TIMESHEET_ERROR,
+  PUT_TIMESHEET_PENDING,
+  PUT_TIMESHEET_SUCCESS,
+  PUT_TIMESHEET_ERROR
 } from './types';
 
 export const getTimeSheetsPending = () => {
@@ -66,6 +69,26 @@ export const postTimeSheetSuccess = (data) => {
 export const postTimeSheetError = (error) => {
   return {
     type: POST_TIMESHEET_ERROR,
+    payload: error
+  };
+};
+
+export const putTimeSheetPending = () => {
+  return {
+    type: PUT_TIMESHEET_PENDING
+  };
+};
+
+export const putTimeSheetSuccess = (data) => {
+  return {
+    type: PUT_TIMESHEET_SUCCESS,
+    payload: data
+  };
+};
+
+export const putTimeSheetError = (error) => {
+  return {
+    type: PUT_TIMESHEET_ERROR,
     payload: error
   };
 };

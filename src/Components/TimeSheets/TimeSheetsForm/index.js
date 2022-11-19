@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProjects } from '../../../redux/Projects/thunks';
 import { getTasks } from '../../../redux/Tasks/thunks';
 import { getEmployees } from '../../../redux/Employees/thunks';
-import { addTimeSheet } from '../../../redux/TimeSheets/thunks';
+import { addTimeSheet, editTimeSheet } from '../../../redux/TimeSheets/thunks';
 
 const TimeSheetsForm = () => {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const TimeSheetsForm = () => {
   const { list: projects } = useSelector((state) => state.projects);
 
   const [modalDisplay, setModalDisplay] = useState(false);
-  const [modalContent, setModalContent] = useState({ message: '', error: '' });
+  // const [modalContent, setModalContent] = useState({ message: '', error: '' });
   const [invalid, setInvalid] = useState(true);
   const titleForm = selectedTimesheet ? 'Edit Timesheet' : 'Add Timesheet';
 
@@ -52,39 +52,40 @@ const TimeSheetsForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (selectedTimesheet) {
-      editItem(timeSheetInput);
+      dispatch(editTimeSheet(timeSheetInput, selectedTimesheet._id));
+      setModalDisplay(true);
     } else {
       dispatch(addTimeSheet(timeSheetInput));
       setModalDisplay(true);
     }
   };
 
-  const editItem = ({ project, task, employee, description, date, hours }) => {
-    const editItem = {
-      project,
-      task,
-      employee,
-      description,
-      date,
-      hours: +hours
-    };
+  // const editItem = ({ project, task, employee, description, date, hours }) => {
+  //   const editItem = {
+  //     project,
+  //     task,
+  //     employee,
+  //     description,
+  //     date,
+  //     hours: +hours
+  //   };
 
-    fetch(`${process.env.REACT_APP_API_URL}/timeSheets/${selectedTimesheet._id}`, {
-      method: 'put',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(editItem)
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
-      });
-  };
+  //   fetch(`${process.env.REACT_APP_API_URL}/timeSheets/${selectedTimesheet._id}`, {
+  //     method: 'put',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(editItem)
+  //   })
+  //     .then((res) => res.json())
+  //     .then((json) => {
+  //       setModalDisplay(true);
+  //       setModalContent({ message: json.message, error: json.error });
+  //     });
+  // };
 
   const handleCloseModal = () => {
-    if (!modalContent.error) {
+    if (!error) {
       setModalDisplay(false);
       history.push(`/time-sheets`);
     } else {
