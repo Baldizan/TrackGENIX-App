@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { editAdmin, addAdmin, getAdmins } from '../../../redux/Admins/thunks';
 import styles from './form.module.css';
 import Form from '../../Shared/Form';
 import { Input } from '../../Shared/Input';
@@ -7,30 +9,23 @@ import Modal from '../../Shared/Modal';
 
 const FormAdmins = () => {
   let history = useHistory();
-  const selectedAdmin = history.location.state?._id;
-  const [titleForm, setTitleForm] = useState('Add new admin');
-  const [adminInput, setAdminInput] = useState({
-    name: '',
-    lastName: '',
-    email: '',
-    password: ''
-  });
-  const [modalDisplay, setModalDisplay] = useState(false);
-  const [modalContent, setModalContent] = useState({ message: '', error: '' });
+  const dispatch = useDispatch();
+  const [selectedAdmin] = useState(history.location.state);
+  const { isPending, error } = useSelector((state) => state.admins);
+  const titleForm = selectedAdmin ? 'Edit admin' : 'Add new admin';
 
+  const [modal, setModal] = useState(false);
+  const [adminInput, setAdminInput] = useState(
+    selectedAdmin ?? {
+      name: '',
+      lastName: '',
+      email: '',
+      password: ''
+    }
+  );
   useEffect(() => {
     if (selectedAdmin) {
-      fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin}`)
-        .then((res) => res.json())
-        .then((json) => {
-          setAdminInput({
-            name: json.data.name,
-            lastName: json.data.lastName,
-            email: json.data.email,
-            password: json.data.password
-          });
-        });
-      setTitleForm('Edit admin');
+      dispatch(getAdmins());
     }
   }, []);
 
@@ -41,62 +36,20 @@ const FormAdmins = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (selectedAdmin) {
-      editItem(adminInput);
+      dispatch(editAdmin(selectedAdmin._id, adminInput));
+      setModal(true);
     } else {
-      addItem(adminInput);
+      dispatch(addAdmin(adminInput));
+      setModal(true);
     }
   };
 
-  const addItem = ({ name, lastName, email, password }) => {
-    const newItem = {
-      name,
-      lastName,
-      email,
-      password
-    };
-
-    fetch(`${process.env.REACT_APP_API_URL}/admins`, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newItem)
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setModalDisplay(true);
-        setModalContent({ message: res.message, error: res.error });
-      });
-  };
-
-  const editItem = ({ name, lastName, email, password }) => {
-    const editItem = {
-      name,
-      lastName,
-      email,
-      password
-    };
-
-    fetch(`${process.env.REACT_APP_API_URL}/admins/${selectedAdmin}`, {
-      method: 'put',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(editItem)
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setModalDisplay(true);
-        setModalContent({ message: json.message, error: json.error });
-      });
-  };
-
   const handleCloseModal = () => {
-    if (!modalContent.error) {
-      setModalDisplay(false);
+    if (!error) {
+      setModal(false);
       history.push(`/admins`);
     } else {
-      setModalDisplay(false);
+      setModal(false);
     }
   };
 
@@ -137,11 +90,14 @@ const FormAdmins = () => {
           required
         />
       </Form>
-      {modalDisplay && (
+      {isPending && <p>...Loading</p>}
+      {modal && (
         <Modal
-          heading={modalContent.message}
+          heading={
+            error ? error : `Admin ${adminInput.name} ${adminInput.lastName} submited successfully!`
+          }
           setModalDisplay={handleCloseModal}
-          theme={modalContent.error ? 'error' : 'success'}
+          theme={error ? 'error' : 'success'}
         />
       )}
     </section>
