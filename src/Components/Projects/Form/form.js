@@ -7,10 +7,13 @@ import { Input, Select } from '../../Shared/Input/index';
 import Table from '../../Shared/Table';
 import { useSelector, useDispatch } from 'react-redux';
 import { getEmployees } from '../../../redux/Employees/thunks';
+import { postProject, putProject } from '../../../redux/Projects/thunks';
+import Modal from '../../Shared/Modal';
 
 const ProjectsForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const { isPending, error } = useSelector((state) => state.projects);
   const { list: employees } = useSelector((state) => state.employees);
   const projectId = history.location.state?.id;
   const [employee, setEmployee] = useState({
@@ -27,26 +30,24 @@ const ProjectsForm = () => {
     active: false,
     employees: []
   });
+  const [feedbackModal, setFeedbackModal] = useState(false);
   const roles = ['DEV', 'TL', 'QA', 'PM'];
   const statusProject = ['Active', 'Inactive'];
 
   useEffect(() => {
     dispatch(getEmployees());
-  }, []);
-
-  useEffect(() => {
     if (projectId) {
       fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`)
         .then((res) => res.json())
         .then((res) => {
           setProject({
-            name: res.data.name,
-            description: res.data.description,
-            startDate: res.data.startDate.slice(0, 10),
-            endDate: res.data.endDate.slice(0, 10),
-            clientName: res.data.clientName,
-            active: res.data.active,
-            employees: res.data.employees
+            name: res.data?.name,
+            description: res.data?.description,
+            startDate: res.data?.startDate.slice(0, 10),
+            endDate: res.data?.endDate.slice(0, 10),
+            clientName: res.data?.clientName,
+            active: res.data?.active,
+            employees: res.data?.employees
               .filter((e) => e.id && typeof e.id == 'object')
               .map((e) => ({ id: e.id._id, role: e.role, rate: e.rate }))
           });
@@ -54,45 +55,23 @@ const ProjectsForm = () => {
     }
   }, []);
 
-  const format = (d) => {
-    const today = new Date(d);
-    const dd = today.getDate();
-    const mm = today.getMonth() + 1;
-    const yyyy = today.getFullYear();
-    return mm + '/' + dd + '/' + yyyy;
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (projectId) {
+      dispatch(putProject(projectId, project));
+      setFeedbackModal(true);
+    } else {
+      dispatch(postProject(project));
+      setFeedbackModal(true);
+    }
   };
 
-  const updateProject = (e) => {
-    e.preventDefault();
-    project.startDate = format(project.startDate);
-    project.endDate = format(project.endDate);
-    if (projectId) {
-      fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(project)
-      }).then(() => {
-        alert(`Project ${project.name} updated successfully!`);
-        history.push('/projects');
-      });
+  const handleModalClose = () => {
+    if (!error) {
+      setFeedbackModal(false);
+      history.push(`/projects`);
     } else {
-      fetch(`${process.env.REACT_APP_API_URL}/projects`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(project)
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          if (json.error) {
-            alert(json.message);
-          } else {
-            history.push('/projects');
-          }
-        });
+      setFeedbackModal(false);
     }
   };
 
@@ -121,9 +100,10 @@ const ProjectsForm = () => {
 
   return (
     <section className={styles.container}>
+      {isPending && <p>Loading...</p>}
       <Form
         title={projectId ? 'Edit project' : 'Add project'}
-        onSubmit={updateProject}
+        onSubmit={onSubmit}
         secondColumnIndex={6}
       >
         <Input
@@ -230,6 +210,13 @@ const ProjectsForm = () => {
           />
         </div>
       </Form>
+      {feedbackModal ? (
+        <Modal
+          setModalDisplay={handleModalClose}
+          heading={projectId ? (error ? error : 'Project edited') : error ? error : 'Project added'}
+          theme={error ? 'error' : 'success'}
+        ></Modal>
+      ) : null}
     </section>
   );
 };

@@ -1,4 +1,17 @@
-import { GET_PROJECTS_PENDING, GET_PROJECTS_SUCCESS, GET_PROJECTS_ERROR } from './types';
+import {
+  GET_PROJECTS_PENDING,
+  GET_PROJECTS_SUCCESS,
+  GET_PROJECTS_ERROR,
+  POST_PROJECT_PENDING,
+  POST_PROJECT_SUCCESS,
+  POST_PROJECT_ERROR,
+  DELETE_PROJECT_PENDING,
+  DELETE_PROJECT_SUCCESS,
+  DELETE_PROJECT_ERROR,
+  PUT_PROJECT_PENDING,
+  PUT_PROJECT_SUCCESS,
+  PUT_PROJECT_ERROR
+} from './types';
 
 const INITIAL_STATE = {
   list: [],
@@ -11,17 +24,83 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_PROJECTS_PENDING: {
       return {
         ...state,
-        isPending: true
+        isPending: true,
+        error: false
       };
     }
     case GET_PROJECTS_SUCCESS: {
       return {
         ...state,
         list: action.payload,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case GET_PROJECTS_ERROR: {
+      return {
+        ...state,
+        error: action.payload,
+        isPending: false
+      };
+    }
+    case POST_PROJECT_PENDING: {
+      return {
+        ...state,
+        isPending: true,
+        error: false
+      };
+    }
+    case POST_PROJECT_SUCCESS: {
+      return {
+        ...state,
+        list: [...state.list, action.payload],
+        isPending: false,
+        error: false
+      };
+    }
+    case POST_PROJECT_ERROR: {
+      return {
+        ...state,
+        error: action.payload,
+        isPending: false
+      };
+    }
+    case DELETE_PROJECT_PENDING: {
+      return {
+        ...state,
+        isPending: true,
+        error: false
+      };
+    }
+    case DELETE_PROJECT_SUCCESS: {
+      return {
+        ...state,
+        isPending: false,
+        error: false
+      };
+    }
+    case DELETE_PROJECT_ERROR: {
+      return {
+        ...state,
+        error: action.payload,
+        isPending: false
+      };
+    }
+    case PUT_PROJECT_PENDING: {
+      return {
+        ...state,
+        isPending: true,
+        error: false
+      };
+    }
+    case PUT_PROJECT_SUCCESS: {
+      return {
+        ...state,
+        isPending: false,
+        error: false
+      };
+    }
+    case PUT_PROJECT_ERROR: {
       return {
         ...state,
         error: action.payload,
