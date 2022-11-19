@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Modal from '../Shared/Modal/index';
-import Table from '../Shared/Table/index';
-import styles from './projects.module.css';
 import { useHistory } from 'react-router-dom';
-import Button from '../Shared/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { getProjects, deleteProject } from '../../redux/Projects/thunks';
+import styles from './projects.module.css';
+import Button from 'Components/Shared/Button';
+import Table from 'Components/Shared/Table';
+import Modal from 'Components/Shared/Modal';
+import { getProjects, deleteProject } from 'redux/Projects/thunks';
 
 const Projects = () => {
   const history = useHistory();
