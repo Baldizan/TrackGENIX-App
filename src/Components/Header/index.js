@@ -1,11 +1,16 @@
-import styles from './header.module.css';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import styles from './header.module.css';
+import Button from '../Shared/Button';
 
 function Header() {
+  const [navbarDisplay, setNavBarDisplay] = useState(true);
   return (
     <header>
       <div className={styles.container}>
-        <div className={styles.brand}>Radium Rocket</div>
+        <p className={styles.brand}>
+          Track<span className={styles.capitalized}>genix</span>
+        </p>
         <div>
           <a href={'https://www.facebook.com/radiumrocket'} target={'_blank'} rel="noreferrer">
             <img
@@ -27,34 +32,33 @@ function Header() {
           </a>
         </div>
       </div>
-      <nav className={styles.navbar}>
-        <div className={styles.appName}>
-          Track<span>GENIX</span>
-        </div>
-        <ul className={styles.rutes}>
+      <nav className={`${styles.navbar} ${!navbarDisplay && styles.hidden}`}>
+        <ul className={styles.routes}>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/employee/home">Home</Link>
           </li>
           <li>
-            <Link to="/Admins">Admins</Link>
+            <Link to="/employee/projects">My projects</Link>
           </li>
           <li>
-            <Link to="/Super-admins">Super admins</Link>
+            <Link to="/employee/time-sheets">My time-sheets</Link>
           </li>
           <li>
-            <Link to="/Employees">Employees</Link>
-          </li>
-          <li>
-            <Link to="/Projects">Projects</Link>
-          </li>
-          <li>
-            <Link to="/Time-sheets">Timesheets</Link>
-          </li>
-          <li>
-            <Link to="/Tasks">Tasks</Link>
+            <Link to="/employee/profile">My profile</Link>
           </li>
         </ul>
       </nav>
+      <div className={styles.buttonContainer}>
+        <Button
+          icon={
+            navbarDisplay
+              ? `${process.env.PUBLIC_URL}/assets/images/angle-up-solid.svg`
+              : `${process.env.PUBLIC_URL}/assets/images/angle-down-solid.svg`
+          }
+          style={styles.navButton}
+          onClick={() => setNavBarDisplay(!navbarDisplay)}
+        />
+      </div>
     </header>
   );
 }

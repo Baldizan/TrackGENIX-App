@@ -8,7 +8,7 @@ function Footer() {
         <div className={styles.appName}>
           Track<span>GENIX</span>
         </div>
-        <ul className={styles.rutes}>
+        <ul className={styles.routes}>
           <li>
             <Link to="/Admins">admins</Link>
           </li>
@@ -30,7 +30,9 @@ function Footer() {
         </ul>
       </div>
       <div className={styles.license}>
-        <div className={styles.copyright}>Copyright © {new Date().getFullYear()} Radium Rocket</div>
+        <div className={styles.copyright}>
+          Copyright © {new Date().getFullYear()} By GigaTech Software Solutions SA
+        </div>
         <div>
           <a href={'https://www.facebook.com/radiumrocket'} target={'_blank'} rel="noreferrer">
             <img
