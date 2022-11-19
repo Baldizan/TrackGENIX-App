@@ -18,8 +18,8 @@
 }
 
 .capitalized {
-  text-transform: uppercase;
   display: inline-block;
+  text-transform: uppercase;
 }
 
 .appName {
@@ -31,31 +31,31 @@
 
 .routes {
   display: flex;
-  flex-wrap: wrap;
   justify-content: flex-end;
+  flex-wrap: wrap;
   list-style-type: none;
 }
 
 .routes > li > a {
+  position: relative;
   margin-left: 15px;
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
   text-transform: capitalize;
   color: #aace9b;
-  position: relative;
   user-select: none;
 }
 
 .routes > li > a::before {
-  content: '';
   position: absolute;
   width: 100%;
   height: 2px;
-  border-radius: 4px;
-  background-color: #aace9b;
   bottom: -2px;
   left: 0;
+  content: '';
+  border-radius: 4px;
+  background-color: #aace9b;
   transform-origin: right;
   transform: scaleX(0);
   transition: transform 0.3s ease-in-out;
@@ -73,11 +73,11 @@
   height: 50px;
   width: 90%;
   padding: 0 20px;
-  background-color: #373867;
-  color: #aace9b;
   border: 1px solid #aace9b;
   border-bottom: none;
   border-radius: 10px 10px 0 0;
+  background-color: #373867;
+  color: #aace9b;
   user-select: none;
 }
 
