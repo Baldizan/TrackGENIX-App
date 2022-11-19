@@ -13,7 +13,7 @@ import {
   putTaskError
 } from './actions';
 
-const getTasks = () => {
+export const getTasks = () => {
   return (dispatch) => {
     dispatch(getTasksPending());
     return fetch(`${process.env.REACT_APP_API_URL}/tasks`)
@@ -31,7 +31,7 @@ const getTasks = () => {
   };
 };
 
-const postTask = (task) => {
+export const postTask = (task) => {
   return (dispatch) => {
     dispatch(postTaskPending());
     return fetch(`${process.env.REACT_APP_API_URL}/tasks`, {
@@ -57,7 +57,7 @@ const postTask = (task) => {
   };
 };
 
-const deleteTask = (taskId) => {
+export const deleteTask = (taskId) => {
   return (dispatch) => {
     dispatch(deleteTaskPending());
     return fetch(`${process.env.REACT_APP_API_URL}/tasks/${taskId}`, {
@@ -73,7 +73,7 @@ const deleteTask = (taskId) => {
   };
 };
 
-const putTask = (taskId, task) => {
+export const putTask = (taskId, task) => {
   return (dispatch) => {
     dispatch(putTaskPending());
     return fetch(`${process.env.REACT_APP_API_URL}/tasks/${taskId}`, {
@@ -94,5 +94,3 @@ const putTask = (taskId, task) => {
       });
   };
 };
-
-export { getTasks, postTask, deleteTask, putTask };

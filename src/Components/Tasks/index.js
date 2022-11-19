@@ -45,7 +45,7 @@ const Tasks = () => {
     <section className={styles.container}>
       {isPending && <p>Loading...</p>}
       {error && <p>There has been an error: {error}</p>}
-      {!isPending && !error ? (
+      {!isPending && !error && (
         <Table
           headers={headers}
           data={list}
@@ -55,7 +55,7 @@ const Tasks = () => {
           addRedirectLink="/tasks/form"
           itemsPerPage={5}
         />
-      ) : null}
+      )}
       {modalDisplay && (
         <Modal
           heading="Are you sure you want to delete this task?"
