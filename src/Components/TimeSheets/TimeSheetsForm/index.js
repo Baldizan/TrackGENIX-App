@@ -5,12 +5,8 @@ import Form from '../../Shared/Form';
 import { Input, Select } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
 import { useSelector } from 'react-redux';
-// import { getProjects } from '../../../redux/Projects/thunks';
-// import { getTasks } from '../../../redux/Tasks/thunks';
-// import { getEmployees } from '../../../redux/Employees/thunks';
 
 const TimeSheetsForm = () => {
-  // const dispatch = useDispatch();
   const history = useHistory();
   const [selectedTimesheet] = useState(history.location.state);
   const [timeSheetInput, setTimeSheetInput] = useState(
@@ -33,13 +29,6 @@ const TimeSheetsForm = () => {
   const validation = () => {
     setInvalid(Object.values(timeSheetInput).some((x) => x === ''));
   };
-
-  // dispatch(getProjects());
-  // dispatch(getEmployees());
-  // dispatch(getTasks());
-  console.log(projects);
-  console.log(employees);
-  console.log(tasks);
 
   const onChange = (e) => {
     validation();
