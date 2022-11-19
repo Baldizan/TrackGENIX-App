@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 50%;
+  height: 300px;
+}
+
+.img {
+  width: 55%;
+}
+
+.text {
+  font-size: 21px;
+  color: #373867;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  line-height: 25px;
+}
