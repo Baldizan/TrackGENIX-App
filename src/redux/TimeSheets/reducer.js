@@ -11,22 +11,23 @@ const reducer = (state = INITIAL_STATE, action) => {
     case GET_TIMESHEETS_PENDING: {
       return {
         ...state,
-        list: action.payload,
-        isPending: false
+        isPending: true,
+        error: false
       };
     }
     case GET_TIMESHEETS_SUCCESS: {
       return {
         ...state,
         list: action.payload,
-        isPending: false
+        isPending: false,
+        error: false
       };
     }
     case GET_TIMESHEETS_ERROR: {
       return {
         ...state,
-        list: action.payload,
-        isPending: false
+        isPending: false,
+        error: action.payload
       };
     }
     default:

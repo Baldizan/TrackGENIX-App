@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './timeSheetsForm.module.css';
 import Form from '../../Shared/Form';
 import { Input, Select } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
+import { useSelector } from 'react-redux';
 
 const TimeSheetsForm = () => {
   const history = useHistory();
@@ -18,32 +19,13 @@ const TimeSheetsForm = () => {
       hours: ''
     }
   );
-  const [projects, setProjects] = useState([]);
-  const [tasks, setTasks] = useState([]);
-  const [employees, setEmployees] = useState([]);
+  const { list: employees } = useSelector((state) => state.employees);
+  const { list: tasks } = useSelector((state) => state.tasks);
+  const { list: projects } = useSelector((state) => state.projects);
   const [modalDisplay, setModalDisplay] = useState(false);
   const [modalContent, setModalContent] = useState({ message: '', error: '' });
   const [invalid, setInvalid] = useState(true);
   const titleForm = selectedTimesheet ? 'Edit Timesheet' : 'Add Timesheet';
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
-      .then((res) => res.json())
-      .then((json) => {
-        setTasks(json.data);
-      });
-    fetch(`${process.env.REACT_APP_API_URL}/projects`)
-      .then((res) => res.json())
-      .then((json) => {
-        setProjects(json.data);
-      });
-    fetch(`${process.env.REACT_APP_API_URL}/employees`)
-      .then((res) => res.json())
-      .then((json) => {
-        setEmployees(json.data);
-      });
-  }, []);
-
   const validation = () => {
     setInvalid(Object.values(timeSheetInput).some((x) => x === ''));
   };
