@@ -2,10 +2,10 @@ import styles from './admins.module.css';
 import { useHistory } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAdmins, deleteAdmin } from '../../redux/Admins/thunks';
-import Modal from '../Shared/Modal';
-import Table from '../Shared/Table';
-import Button from '../Shared/Button';
+import { getAdmins, deleteAdmin } from 'redux/Admins/thunks';
+import Modal from 'Components/Shared/Modal';
+import Table from 'Components/Shared/Table';
+import Button from 'Components/Shared/Button';
 
 const Admins = () => {
   const { list: adminsList, isPending, error } = useSelector((state) => state.admins);

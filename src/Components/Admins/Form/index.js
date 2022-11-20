@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { editAdmin, addAdmin, getAdmins } from '../../../redux/Admins/thunks';
+import { editAdmin, addAdmin, getAdmins } from 'redux/Admins/thunks';
 import styles from './form.module.css';
-import Form from '../../Shared/Form';
-import { Input } from '../../Shared/Input';
-import Modal from '../../Shared/Modal';
+import Form from 'Components/Shared/Form';
+import { Input } from 'Components/Shared/Input';
+import Modal from 'Components/Shared/Modal';
 
 const FormAdmins = () => {
   let history = useHistory();
