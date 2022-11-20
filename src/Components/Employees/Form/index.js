@@ -1,55 +1,54 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
 import { useSelector, useDispatch } from 'react-redux';
 import { postEmployee, putEmployee } from 'redux/Employees/thunks.js';
 import { getProjects } from 'redux/Projects/thunks.js';
 import styles from './form.module.css';
+import { schema } from './validations';
 import Form from 'Components/Shared/Form/index';
 import { Input, Select } from 'Components/Shared/Input/index';
 import Modal from 'Components/Shared/Modal';
 import Loader from 'Components/Shared/Loader';
 
 const EmployeesForm = () => {
-  let history = useHistory();
+  const history = useHistory();
   const dispatch = useDispatch();
   const [selectedEmployee] = useState(history.location.state);
-  const { list, isPending, error } = useSelector((state) => state.employees);
+  const { isPending, error } = useSelector((state) => state.employees);
   const { list: projectsList } = useSelector((state) => state.projects);
   const [modalDisplay, setModalDisplay] = useState(false);
-  const [employeeInput, setEmployeeInput] = useState(
-    selectedEmployee ?? {
-      name: '',
-      lastName: '',
-      phone: '',
-      email: '',
-      password: '',
-      project: '',
-      active: false
-    }
-  );
 
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors }
+  } = useForm({
+    mode: 'onChange',
+    resolver: joiResolver(schema)
+  });
   useEffect(() => {
-    if (selectedEmployee && list.length > 0) {
-      const newEmployee = list.find((l) => l._id === selectedEmployee._id);
-      setEmployeeInput(newEmployee);
-    }
     dispatch(getProjects());
-  }, [list]);
+    selectedEmployee &&
+      reset({
+        name: selectedEmployee?.name,
+        lastName: selectedEmployee?.lastName,
+        phone: selectedEmployee?.phone,
+        email: selectedEmployee?.email,
+        password: selectedEmployee?.password,
+        project: selectedEmployee?.project,
+        active: selectedEmployee?.active
+      });
+  }, []);
 
-  const onChange = (e) => {
-    setEmployeeInput({ ...employeeInput, [e.target.name]: e.target.value });
-  };
-
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (data) => {
     if (selectedEmployee) {
-      if (typeof employeeInput.project != 'string') {
-        employeeInput.project = employeeInput.project._id;
-      }
-      dispatch(putEmployee(selectedEmployee._id, employeeInput));
+      dispatch(putEmployee(selectedEmployee._id, data));
       setModalDisplay(true);
     } else {
-      dispatch(postEmployee(employeeInput));
+      dispatch(postEmployee(data));
       setModalDisplay(true);
     }
   };
@@ -66,7 +65,7 @@ const EmployeesForm = () => {
   return (
     <section className={styles.container}>
       <Form
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         title={selectedEmployee ? 'Edit employee' : 'Add employee'}
         secondColumnIndex={3}
       >
@@ -75,36 +74,36 @@ const EmployeesForm = () => {
           name="name"
           title="First Name"
           placeholder="Name"
+          register={register}
+          error={errors.name?.message}
           required
-          value={employeeInput.name}
-          onChange={onChange}
         />
         <Input
           id="lastName"
           name="lastName"
           title="Last Name"
           placeholder="Last name"
+          register={register}
+          error={errors.lastName?.message}
           required
-          value={employeeInput.lastName}
-          onChange={onChange}
         />
         <Input
           id="phone"
           name="phone"
           title="Phone Number"
           placeholder="Phone number"
+          register={register}
+          error={errors.phone?.message}
           required
-          value={employeeInput.phone}
-          onChange={onChange}
         />
         <Input
           id="email"
           name="email"
           title="Email address"
           placeholder="Email"
+          register={register}
+          error={errors.email?.message}
           required
-          value={employeeInput.email}
-          onChange={onChange}
         />
         <Input
           id="password"
@@ -112,33 +111,33 @@ const EmployeesForm = () => {
           name="password"
           title="Password"
           placeholder="Password"
+          register={register}
+          error={errors.password?.message}
           required
-          value={employeeInput.password}
-          onChange={onChange}
         />
         <Select
-          onChange={onChange}
           name="project"
           title="Project"
           placeholder="Select project"
-          value={employeeInput.project}
           arrayToMap={projectsList.map((project) => ({
             id: project._id,
             label: project.name
           }))}
+          register={register}
+          error={errors.project?.message}
           required
         />
         {selectedEmployee ? (
           <Select
-            onChange={onChange}
             name="active"
             title="Active"
             placeholder="Select status"
-            value={employeeInput.active}
             arrayToMap={[
               { id: true, label: 'Active' },
               { id: false, label: 'Inactive' }
             ]}
+            register={register}
+            error={errors.active?.message}
             required
           />
         ) : null}
@@ -149,7 +148,9 @@ const EmployeesForm = () => {
           heading={
             error
               ? error
-              : `Employee ${employeeInput.name} ${employeeInput.lastName} successfully submitted!`
+              : `Employee ${
+                  selectedEmployee ? `${selectedEmployee.name} ${selectedEmployee.lastName}` : null
+                } successfully submitted!`
           }
           setModalDisplay={handleCloseModal}
           theme={error ? 'error' : 'success'}

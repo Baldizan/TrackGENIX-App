@@ -12,7 +12,8 @@ const Input = ({
   placeholder,
   disabled,
   required,
-  error
+  error,
+  register = () => {}
 }) => {
   return (
     <>
@@ -28,6 +29,7 @@ const Input = ({
           type={type}
           value={value}
           required={required}
+          {...register(name)}
         />
       </label>
       <p className={`${styles.error} ${!error && styles.hidden}`}>{error}</p>
