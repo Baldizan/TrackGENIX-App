@@ -6,6 +6,7 @@ import { Input } from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { postSuperAdmins, putSuperAdmins, getSuperAdmins } from '../../../redux/SuperAdmins/thunks';
+import Error from '../../Shared/Error';
 
 const FormSuperAdmins = () => {
   const history = useHistory();
@@ -113,6 +114,7 @@ const FormSuperAdmins = () => {
       </Form>
       {isPending && <p>...loading</p>}
       {modal && <Modal setModalDisplay={handleCloseModal} heading={modalContent} theme={theme} />}
+      <Error text={error} />
     </section>
   );
 };
