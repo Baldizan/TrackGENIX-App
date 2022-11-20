@@ -48,7 +48,8 @@ const Select = ({
   arrayToMap,
   disabled,
   required,
-  error
+  error,
+  register = () => {}
 }) => {
   return (
     <label className={styles.label}>
@@ -62,6 +63,7 @@ const Select = ({
         type={type}
         value={value}
         required={required}
+        {...register(name)}
       >
         <option value="" hidden disabled>
           {placeholder}
