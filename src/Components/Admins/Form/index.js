@@ -1,45 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { editAdmin, addAdmin, getAdmins } from 'redux/Admins/thunks';
+import { useForm } from 'react-hook-form';
+import { editAdmin, addAdmin } from 'redux/Admins/thunks';
+import { joiResolver } from '@hookform/resolvers/joi';
+import { schema } from './validations';
 import styles from './form.module.css';
 import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
 import Modal from 'Components/Shared/Modal';
+import Loader from 'Components/Shared/Loader';
 
 const FormAdmins = () => {
-  let history = useHistory();
+  const history = useHistory();
   const dispatch = useDispatch();
   const [selectedAdmin] = useState(history.location.state);
+  const [addedAdmin, setAddedAdmin] = useState({});
   const { isPending, error } = useSelector((state) => state.admins);
   const titleForm = selectedAdmin ? 'Edit admin' : 'Add new admin';
-
   const [modal, setModal] = useState(false);
-  const [adminInput, setAdminInput] = useState(
-    selectedAdmin ?? {
-      name: '',
-      lastName: '',
-      email: '',
-      password: ''
-    }
-  );
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors }
+  } = useForm({
+    mode: 'onChange',
+    resolver: joiResolver(schema)
+  });
+
   useEffect(() => {
-    if (selectedAdmin) {
-      dispatch(getAdmins());
-    }
+    selectedAdmin &&
+      reset({
+        name: selectedAdmin?.name,
+        lastName: selectedAdmin?.lastName,
+        email: selectedAdmin?.email,
+        password: selectedAdmin?.password
+      });
   }, []);
 
-  const onChange = (e) => {
-    setAdminInput({ ...adminInput, [e.target.name]: e.target.value });
-  };
-
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (data) => {
     if (selectedAdmin) {
-      dispatch(editAdmin(selectedAdmin._id, adminInput));
+      dispatch(editAdmin(selectedAdmin._id, data));
       setModal(true);
     } else {
-      dispatch(addAdmin(adminInput));
+      dispatch(addAdmin(data));
+      setAddedAdmin(data);
       setModal(true);
     }
   };
@@ -55,46 +61,49 @@ const FormAdmins = () => {
 
   return (
     <section className={styles.container}>
-      <Form onSubmit={onSubmit} title={titleForm}>
+      <Form onSubmit={handleSubmit(onSubmit)} title={titleForm}>
         <Input
-          onChange={onChange}
+          register={register}
           placeholder={'Enter your name'}
-          value={adminInput.name}
           name="name"
           title="Name"
           required
+          error={errors.name?.message}
         />
         <Input
-          onChange={onChange}
+          register={register}
           placeholder={'Enter your last name'}
-          value={adminInput.lastName}
           name="lastName"
           title="Last Name"
           required
         />
         <Input
-          onChange={onChange}
+          register={register}
           placeholder={'Enter a valid email address'}
-          value={adminInput.email}
           name="email"
           title="Email"
           required
         />
         <Input
-          onChange={onChange}
+          register={register}
           placeholder={'Enter a password'}
-          value={adminInput.password}
           type="password"
           name="password"
           title="Password"
           required
         />
       </Form>
-      {isPending && <p>...Loading</p>}
+      {isPending && <Loader />}
       {modal && (
         <Modal
           heading={
-            error ? error : `Admin ${adminInput.name} ${adminInput.lastName} submited successfully!`
+            error
+              ? error
+              : `Admin ${
+                  selectedAdmin
+                    ? `${selectedAdmin.name} ${selectedAdmin.lastName}`
+                    : `${addedAdmin.name} ${addedAdmin.lastName}`
+                } submited successfully!`
           }
           setModalDisplay={handleCloseModal}
           theme={error ? 'error' : 'success'}
