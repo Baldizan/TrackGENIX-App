@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getTimeSheets, deleteTimeSheet } from '../../../redux/TimeSheets/thunks';
+import { getTimeSheets, deleteTimeSheet } from 'redux/TimeSheets/thunks';
 import styles from './List.module.css';
-import Button from '../../Shared/Button';
-import Table from '../../Shared/Table';
-import Modal from '../../Shared/Modal';
+import Button from 'Components/Shared/Button';
+import Table from 'Components/Shared/Table';
+import Modal from 'Components/Shared/Modal';
+import Loader from 'Components/Shared/Loader';
+import Error from 'Components/Shared/Error';
 
 const List = () => {
   const [deleteModalDisplay, setDeleteModalDisplay] = useState(false);
@@ -69,7 +71,8 @@ const List = () => {
 
   return (
     <section className={styles.container}>
-      {isPending && <p>...Loading</p>}
+      {isPending && <Loader />}
+      {error && <Error text={error} />}
       {!isPending && !error && (
         <Table
           headers={headers}
