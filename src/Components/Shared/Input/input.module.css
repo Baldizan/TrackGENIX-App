@@ -5,7 +5,7 @@
   align-items: flex-start;
   width: 100%;
   margin-block: 10px;
-  color: #373867;
+  color: var(--primaryColor);
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
@@ -19,9 +19,9 @@
   margin-block: 10px;
   box-sizing: border-box;
   border-radius: 5px;
-  border: 1px solid #373867;
+  border: 1px solid var(--primaryColor);
   font-size: 16px;
-  color: #373867;
+  color: var(--primaryColor);
   background-color: #fff;
   font-weight: 400;
   line-height: 2;
@@ -29,20 +29,45 @@
 
 .input:hover {
   cursor: pointer;
-  background-color: #37386720;
+  background-color: var(--primaryColorLighter);
 }
 
 .input:focus {
   cursor: auto;
-  outline: 1px solid #373867;
-  background-color: #FFF;
+  outline: 1px solid var(--primaryColor);
+  background-color: #fff;
 }
 
 .disabled {
-  border: 1px solid #37386770;
-  color: #37386770;
+  border: 1px solid var(--primaryColorLight);
+  color: var(--primaryColorLight);
 }
 
 .disabled:hover {
   cursor: not-allowed;
+}
+
+@media (prefers-color-scheme: dark) {
+  .label {
+    color: var(--secondaryColor);
+  }
+
+  .input {
+    background-color: var(--primaryColorLight);
+    border-color: var(--secondaryColor);
+    color: var(--secondaryColor);
+  }
+
+  .input:hover {
+    background-color: var(--primaryColorLighter);
+  }
+
+  .input:focus {
+    background-color: var(--primaryColorLighter);
+  }
+
+  .disabled {
+    border: 1px solid var(--secondaryColorLight);
+    color: var(--secondaryColorLight);
+  }
 }

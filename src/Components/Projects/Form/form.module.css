@@ -16,9 +16,9 @@
   margin-block: 10px;
   box-sizing: border-box;
   border-radius: 5px;
-  border: 1px solid #373867;
+  border: 1px solid var(--primaryColor);
   font-size: 16px;
-  color: #373867;
+  color: var(--primaryColor);
   background-color: #fff;
   font-weight: 400;
   line-height: 2;
@@ -43,4 +43,11 @@
   width: 50%;
   height: 44px;
   margin-top: 25px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .employeesContainer {
+    background-color: var(--primaryColorLighter);
+    border-color: var(--secondaryColor);
+  }
 }
