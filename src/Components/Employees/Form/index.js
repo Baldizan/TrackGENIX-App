@@ -25,7 +25,7 @@ const EmployeesForm = () => {
     handleSubmit,
     register,
     reset,
-    formState: { errors }
+    formState: { errors, isValid }
   } = useForm({
     mode: 'onChange',
     resolver: joiResolver(schema)
@@ -65,12 +65,18 @@ const EmployeesForm = () => {
     }
   };
 
+  const test = () => {
+    return joiResolver(schema);
+  };
+
+  console.log(test);
   return (
     <section className={styles.container}>
       <Form
         onSubmit={handleSubmit(onSubmit)}
         title={selectedEmployee ? 'Edit employee' : 'Add employee'}
         secondColumnIndex={3}
+        noValidate={!isValid}
       >
         <Input
           id="name"
