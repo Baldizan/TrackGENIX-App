@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { postEmployee, putEmployee } from '../../../redux/Employees/thunks.js';
-import { getProjects } from '../../../redux/Projects/thunks.js';
+import { postEmployee, putEmployee } from 'redux/Employees/thunks.js';
+import { getProjects } from 'redux/Projects/thunks.js';
 import styles from './form.module.css';
-import Form from '../../Shared/Form/index';
-import { Input, Select } from '../../Shared/Input/index';
-import Modal from '../../Shared/Modal';
+import Form from 'Components/Shared/Form/index';
+import { Input, Select } from 'Components/Shared/Input/index';
+import Modal from 'Components/Shared/Modal';
+import Loader from 'Components/Shared/Loader';
 
 const EmployeesForm = () => {
   let history = useHistory();
@@ -64,10 +65,15 @@ const EmployeesForm = () => {
 
   return (
     <section className={styles.container}>
-      <Form onSubmit={onSubmit}>
+      <Form
+        onSubmit={onSubmit}
+        title={selectedEmployee ? 'Edit employee' : 'Add employee'}
+        secondColumnIndex={3}
+      >
         <Input
           id="name"
           name="name"
+          title="First Name"
           placeholder="Name"
           required
           value={employeeInput.name}
@@ -76,6 +82,7 @@ const EmployeesForm = () => {
         <Input
           id="lastName"
           name="lastName"
+          title="Last Name"
           placeholder="Last name"
           required
           value={employeeInput.lastName}
@@ -84,7 +91,8 @@ const EmployeesForm = () => {
         <Input
           id="phone"
           name="phone"
-          placeholder="Phone"
+          title="Phone Number"
+          placeholder="Phone number"
           required
           value={employeeInput.phone}
           onChange={onChange}
@@ -92,6 +100,7 @@ const EmployeesForm = () => {
         <Input
           id="email"
           name="email"
+          title="Email address"
           placeholder="Email"
           required
           value={employeeInput.email}
@@ -101,6 +110,7 @@ const EmployeesForm = () => {
           id="password"
           type="password"
           name="password"
+          title="Password"
           placeholder="Password"
           required
           value={employeeInput.password}
@@ -108,10 +118,10 @@ const EmployeesForm = () => {
         />
         <Select
           onChange={onChange}
-          title="Project"
-          placeholder="Project"
           name="project"
-          value={employeeInput.project._id}
+          title="Project"
+          placeholder="Select project"
+          value={employeeInput.project}
           arrayToMap={projectsList.map((project) => ({
             id: project._id,
             label: project.name
@@ -121,25 +131,25 @@ const EmployeesForm = () => {
         {selectedEmployee ? (
           <Select
             onChange={onChange}
-            title="Active"
             name="active"
+            title="Active"
+            placeholder="Select status"
             value={employeeInput.active}
             arrayToMap={[
               { id: true, label: 'Active' },
               { id: false, label: 'Inactive' }
             ]}
-            placeholder="Status"
             required
           />
         ) : null}
       </Form>
-      {isPending && <p>Loading...</p>}
+      {isPending && <Loader />}
       {modalDisplay && (
         <Modal
           heading={
             error
               ? error
-              : `Employee ${employeeInput.name} ${employeeInput.lastName} submited successfully!`
+              : `Employee ${employeeInput.name} ${employeeInput.lastName} successfully submitted!`
           }
           setModalDisplay={handleCloseModal}
           theme={error ? 'error' : 'success'}

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteEmployee, getEmployees } from '../../redux/Employees/thunks.js';
+import { deleteEmployee, getEmployees } from 'redux/Employees/thunks.js';
 import styles from './employees.module.css';
-import Button from '../Shared/Button';
-import Table from '../Shared/Table';
-import Modal from '../Shared/Modal';
+import Button from 'Components/Shared/Button';
+import Table from 'Components/Shared/Table';
+import Modal from 'Components/Shared/Modal';
+import Loader from 'Components/Shared/Loader/index.js';
+import Error from 'Components/Shared/Error/index.js';
 
 const Employees = () => {
   const [modalDisplay, setModalDisplay] = useState(false);
@@ -56,12 +58,11 @@ const Employees = () => {
   };
 
   const employeeEdit = (item) => {
-    history.push('/employees/form', item);
+    history.push('/employees/form', { ...item, project: item.project._id });
   };
 
   return (
     <section className={styles.container}>
-      {isPending && <p>Loading...</p>}
       {!isPending && !error && (
         <Table
           data={employeesColumns}
@@ -73,7 +74,6 @@ const Employees = () => {
           itemsPerPage={5}
         />
       )}
-      {error && <p>{error}</p>}
       {feedbackModalDisplay && (
         <Modal
           heading={modalContent.message}
@@ -81,6 +81,8 @@ const Employees = () => {
           theme={modalContent.theme}
         />
       )}
+      {isPending && <Loader />}
+      {error && <Error text={error} />}
       {modalDisplay && (
         <Modal
           heading={`Are you sure you want to delete employee: ${selectedEmployee.name} ${selectedEmployee.lastName}?`}
