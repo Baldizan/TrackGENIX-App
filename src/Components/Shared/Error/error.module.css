@@ -4,6 +4,7 @@
   justify-content: space-evenly;
   width: 50%;
   height: 300px;
+  color: #373867;
 }
 
 .img {
@@ -11,8 +12,8 @@
 }
 
 .text {
+  color: #f13312;
   font-size: 21px;
-  color: #373867;
   font-weight: 400;
   letter-spacing: 0.1em;
   line-height: 25px;
