@@ -19,6 +19,7 @@ const EmployeesForm = () => {
   const { isPending, error } = useSelector((state) => state.employees);
   const { list: projectsList } = useSelector((state) => state.projects);
   const [modalDisplay, setModalDisplay] = useState(false);
+  const [feedback, setFeedback] = useState({ name: '', lastName: '' });
 
   const {
     handleSubmit,
@@ -46,9 +47,11 @@ const EmployeesForm = () => {
   const onSubmit = (data) => {
     if (selectedEmployee) {
       dispatch(putEmployee(selectedEmployee._id, data));
+      setFeedback({ name: data.name, lastName: data.lastName });
       setModalDisplay(true);
     } else {
       dispatch(postEmployee(data));
+      setFeedback({ name: data.name, lastName: data.lastName });
       setModalDisplay(true);
     }
   };
@@ -146,11 +149,7 @@ const EmployeesForm = () => {
       {modalDisplay && (
         <Modal
           heading={
-            error
-              ? error
-              : `Employee ${
-                  selectedEmployee ? `${selectedEmployee.name} ${selectedEmployee.lastName}` : null
-                } successfully submitted!`
+            error ? error : `Employee ${feedback.name} ${feedback.lastName} successfully submitted!`
           }
           setModalDisplay={handleCloseModal}
           theme={error ? 'error' : 'success'}
