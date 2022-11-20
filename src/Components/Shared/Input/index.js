@@ -2,22 +2,36 @@ import styles from './input.module.css';
 
 import React from 'react';
 
-const Input = ({ name, title, id, type, value, onChange, placeholder, disabled, required }) => {
+const Input = ({
+  name,
+  title,
+  id,
+  type,
+  value,
+  onChange,
+  placeholder,
+  disabled,
+  required,
+  error
+}) => {
   return (
-    <label className={styles.label}>
-      {title}
-      <input
-        className={`${disabled && styles.disabled} ${styles.input}`}
-        disabled={disabled}
-        id={id}
-        name={name}
-        onChange={onChange}
-        placeholder={placeholder}
-        type={type}
-        value={value}
-        required={required}
-      />
-    </label>
+    <>
+      <label className={styles.label}>
+        {title}
+        <input
+          className={`${disabled && styles.disabled} ${styles.input}`}
+          disabled={disabled}
+          id={id}
+          name={name}
+          onChange={onChange}
+          placeholder={placeholder}
+          type={type}
+          value={value}
+          required={required}
+        />
+      </label>
+      <p className={`${styles.error} ${!error && styles.hidden}`}>{error}</p>
+    </>
   );
 };
 
@@ -31,7 +45,8 @@ const Select = ({
   placeholder,
   arrayToMap,
   disabled,
-  required
+  required,
+  error
 }) => {
   return (
     <label className={styles.label}>
@@ -58,6 +73,7 @@ const Select = ({
         })}
         ;
       </select>
+      <p className={`${styles.error} ${!error && styles.hidden}`}>{error}</p>
     </label>
   );
 };
