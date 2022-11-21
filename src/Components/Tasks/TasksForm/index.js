@@ -24,7 +24,7 @@ const TasksForm = () => {
     reset,
     formState: { errors }
   } = useForm({
-    mode: 'onChange',
+    mode: 'all',
     resolver: joiResolver(schema)
   });
 
