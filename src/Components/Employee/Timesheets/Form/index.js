@@ -20,7 +20,7 @@ const EmployeeTimesheetsForm = () => {
   const { isPending, error } = useSelector((state) => state.timesheets);
 
   const [modalDisplay, setModalDisplay] = useState(false);
-  const titleForm = selectedTimesheet ? 'Edit Timesheet' : 'Add Timesheet';
+  const titleForm = 'Add Hours';
   const {
     handleSubmit,
     register,
@@ -75,7 +75,7 @@ const EmployeeTimesheetsForm = () => {
             name="project"
             value={selectedTimesheet?.projectName}
             title="Project"
-            placeholder="Select a project"
+            placeholder="Project unavailable"
             error={errors.project?.message}
             disabled
           />
@@ -83,23 +83,15 @@ const EmployeeTimesheetsForm = () => {
             name="task"
             value={selectedTimesheet?.taskDescription}
             title="Task description"
-            placeholder="Select a task"
+            placeholder="Task unavailable"
             error={errors.task?.message}
-            disabled
-          />
-          <Input
-            name="employee"
-            value={selectedTimesheet?.employeeFormat}
-            title="Employee"
-            placeholder="Select an employee"
-            error={errors.employee?.message}
             disabled
           />
           <Input
             name="description"
             value={selectedTimesheet?.description}
             title="Description"
-            placeholder="Add a description"
+            placeholder="Description unavailable"
             error={errors.description?.message}
             disabled
           />
@@ -124,7 +116,7 @@ const EmployeeTimesheetsForm = () => {
       )}
       {modalDisplay && (
         <Modal
-          heading={error ? error : `Time Sheet successfully submitted!`}
+          heading={error ? error : `Hours successfully submitted!`}
           setModalDisplay={handleCloseModal}
           theme={error ? 'error' : 'success'}
         />
