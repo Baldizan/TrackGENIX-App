@@ -23,3 +23,7 @@
   flex-direction: row;
   align-items: center;
 }
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+}
