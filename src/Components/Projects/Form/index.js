@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import styles from './form.module.css';
-import Form from 'Components/Shared/Form';
+import { useSelector, useDispatch } from 'react-redux';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { schema } from './validations';
 import Button from 'Components/Shared/Button';
 import { Input, Select } from 'Components/Shared/Input';
+import Form from 'Components/Shared/Form';
 import Table from 'Components/Shared/Table';
 import Modal from 'Components/Shared/Modal';
 import Loader from 'Components/Shared/Loader';
 import { getEmployees } from 'redux/Employees/thunks';
 import { postProject, putProject } from 'redux/Projects/thunks';
+import styles from './form.module.css';
 
 const ProjectsForm = () => {
   const history = useHistory();
@@ -189,7 +189,6 @@ const ProjectsForm = () => {
                 })) ?? []
               }
               register={register}
-              //required={!project}
             />
             <Select
               title="Role"

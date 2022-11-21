@@ -3,14 +3,14 @@ import Joi from 'joi';
 export const schema = Joi.object({
   name: Joi.string()
     .min(3)
-    .max(30)
+    .max(20)
     .regex(/^[a-zA-Z]+$/)
     .required()
     .messages({
       'string.empty': 'Name required',
       'string.pattern.base': 'Name should be letters only',
       'string.min': 'Name should have a minimum length of 3 characters',
-      'string.max': 'Name should have a maximum length of 30 characters',
+      'string.max': 'Name should have a maximum length of 20 characters',
       'any.required': 'Name required'
     }),
   description: Joi.string().min(5).max(150).required().messages({
