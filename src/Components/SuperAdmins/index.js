@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import styles from './super-admins.module.css';
-import Button from '../Shared/Button';
-import Table from '../Shared/Table';
-import Modal from '../Shared/Modal';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSuperAdmins, deleteSuperAdmins } from '../../redux/SuperAdmins/thunks';
+import { getSuperAdmins, deleteSuperAdmins } from 'redux/SuperAdmins/thunks';
+import styles from './super-admins.module.css';
+import Button from 'Components/Shared/Button';
+import Table from 'Components/Shared/Table';
+import Modal from 'Components/Shared/Modal';
+import Error from 'Components/Shared/Error';
+import Loader from 'Components/Shared/Loader';
 
 const SuperAdmins = () => {
   const [modalDisplay, setModalDisplay] = useState(false);
@@ -35,12 +37,12 @@ const SuperAdmins = () => {
   };
 
   const handleEdit = (item) => {
-    history.push('/super-admins/form', { id: item._id });
+    history.push('/super-admins/form', item);
   };
 
   return (
     <section className={styles.container}>
-      {isPending && <p>...loading</p>}
+      {isPending && <Loader />}
       {!isPending && !error && (
         <Table
           headers={headers}
@@ -52,7 +54,7 @@ const SuperAdmins = () => {
           itemsPerPage={5}
         />
       )}
-      {error && <p>{error}</p>}
+      {error && <Error text={error} />}
       {successModalDisplay && (
         <Modal
           heading={`${selectedItem.name} ${selectedItem.lastName} deleted successfully!`}
@@ -62,7 +64,7 @@ const SuperAdmins = () => {
       )}
       {modalDisplay && (
         <Modal
-          heading={'Are you sure you want to delete this Super-Admin?'}
+          heading={`Are you sure you want to delete Super Admin: ${selectedItem.name} ${selectedItem.lastName}?`}
           setModalDisplay={setModalDisplay}
           theme={'confirm'}
         >
