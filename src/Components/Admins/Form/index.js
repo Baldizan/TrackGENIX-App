@@ -15,8 +15,8 @@ const FormAdmins = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [selectedAdmin] = useState(history.location.state);
-  const [addedAdmin, setAddedAdmin] = useState({});
   const { isPending, error } = useSelector((state) => state.admins);
+  const [feedback, setFeedback] = useState({ name: '', lastName: '' });
   const titleForm = selectedAdmin ? 'Edit admin' : 'Add new admin';
   const [modal, setModal] = useState(false);
   const {
@@ -45,9 +45,9 @@ const FormAdmins = () => {
       setModal(true);
     } else {
       dispatch(addAdmin(data));
-      setAddedAdmin(data);
       setModal(true);
     }
+    setFeedback({ name: data.name, lastName: data.lastName });
   };
 
   const handleCloseModal = () => {
@@ -97,13 +97,7 @@ const FormAdmins = () => {
       {modal && (
         <Modal
           heading={
-            error
-              ? error
-              : `Admin ${
-                  selectedAdmin
-                    ? `${selectedAdmin.name} ${selectedAdmin.lastName}`
-                    : `${addedAdmin.name} ${addedAdmin.lastName}`
-                } submited successfully!`
+            error ? error : `Admin ${feedback.name} ${feedback.lastName} submited successfully!`
           }
           setModalDisplay={handleCloseModal}
           theme={error ? 'error' : 'success'}
