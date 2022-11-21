@@ -24,7 +24,7 @@ const FormSuperAdmins = () => {
     reset,
     formState: { errors }
   } = useForm({
-    mode: 'onChange',
+    mode: 'all',
     resolver: joiResolver(schema)
   });
 
