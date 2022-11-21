@@ -4,39 +4,24 @@ import { useHistory } from 'react-router-dom';
 import styles from './form.module.css';
 import Form from 'Components/Shared/Form';
 import { useForm, useFieldArray } from 'react-hook-form';
-
 import { joiResolver } from '@hookform/resolvers/joi';
 import { schema } from './validations';
 import Button from 'Components/Shared/Button';
 import { Input, Select } from 'Components/Shared/Input';
 import Table from 'Components/Shared/Table';
-// import Modal from 'Components/Shared/Modal';
+import Modal from 'Components/Shared/Modal';
+import Loader from 'Components/Shared/Loader';
 import { getEmployees } from 'redux/Employees/thunks';
-// import { postProject, putProject } from 'redux/Projects/thunks';
+import { postProject, putProject } from 'redux/Projects/thunks';
 
 const ProjectsForm = () => {
   const history = useHistory();
-  const projectId = history.location.state.id;
+  const projectId = history.location.state?.id;
   const dispatch = useDispatch();
   const { isPending } = useSelector((state) => state.projects);
-  // const { employees, setEmployees } = useState;
   const [displayForm, setDisplayForm] = useState(false);
-  const { list: employees } = useSelector((state) => state.employees);
-  // const [employee, setEmployee] = useState({
-  //   id: '',
-  //   role: '',
-  //   rate: ''
-  // });
-  const [project, setProject] = useState({
-    name: '',
-    description: '',
-    startDate: '',
-    endDate: '',
-    clientName: '',
-    active: false,
-    employees: []
-  });
-  // const [feedbackModal, setFeedbackModal] = useState(false);
+  const { list: employees, error } = useSelector((state) => state.employees);
+  const [feedbackModal, setFeedbackModal] = useState(false);
   const roles = ['DEV', 'TL', 'QA', 'PM'];
   const statusProject = ['Active', 'Inactive'];
   const {
@@ -49,12 +34,12 @@ const ProjectsForm = () => {
     mode: 'onChange',
     resolver: joiResolver(schema)
   });
+  console.log('errors', errors);
 
   const { fields, update, remove, prepend } = useFieldArray({
     control,
     name: 'employees'
   });
-  //
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -65,81 +50,61 @@ const ProjectsForm = () => {
           const MOCK_DATA = {
             name: res.data?.name,
             description: res.data?.description,
-            startDate: res.data?.startDate?.slice(0, 10),
-            endDate: res.data?.endDate?.slice(0, 10),
+            startDate: res.data?.startDate,
+            endDate: res.data?.endDate,
             clientName: res.data?.clientName,
             active: res.data?.active,
             employees: res.data?.employees
               ?.filter((e) => e.id && typeof e.id == 'object')
               .map((e) => ({
                 employeeId: e.id._id,
-                //  name: e.id.name,
                 role: e.role,
                 rate: e.rate
               }))
           };
           reset(MOCK_DATA);
-          setProject(MOCK_DATA);
         });
     }
   }, []);
 
-  console.log(errors);
   const onSubmit = (data) => {
-    // e.preventDefault();
-    // if (projectId) {
-    //   dispatch(putProject(projectId, project));
-    //   setFeedbackModal(true);
-    // } else {
-    //   dispatch(postProject(project));
-    //   setFeedbackModal(true);
-    // }
+    if (projectId) {
+      data.employees = data.employees.map((e) => ({
+        ...e,
+        id: e.employeeId,
+        employeeId: undefined
+      }));
+      dispatch(putProject(projectId, data));
+      setFeedbackModal(true);
+    } else {
+      dispatch(postProject(data));
+      setFeedbackModal(true);
+    }
     console.log('data form: ', data);
   };
 
-  // const handleModalClose = () => {
-  //   if (!error) {
-  //     setFeedbackModal(false);
-  //     history.push(`/projects`);
-  //   } else {
-  //     setFeedbackModal(false);
-  //   }
-  // };
-
-  // const onChange = (e) => {
-  //   setProject({ ...project, [e.target.name]: e.target.value });
-  // };
-
-  // const onChangeEmployee = (e) => {
-  //   setEmployee({ ...employee, [e.target.name]: e.target.value });
-  // };
-
-  // const handleChangeEmployee = (e) => {
-  //   setEmployee({ ...employee, id: e.target.value });
-  // };
+  const handleModalClose = () => {
+    if (!error) {
+      setFeedbackModal(false);
+      history.push(`/projects`);
+    } else {
+      setFeedbackModal(error);
+    }
+  };
 
   const assignEmployee = () => {
-    // const newProject = { ...project };
-    // newProject.employees?.push(employee);
-    // setProject(newProject);
-    // console.log('hola', { ...fields[0], name: 'hjgjgj' });
     update();
     setDisplayForm(false);
   };
 
-  // const removeEmployee = (row) => {
-  //   // const newEmployeesArray = project.employees.filter((e) => e !== row);
-  //   // setProject({ ...project, employees: newEmployeesArray });
-  // };
   const handleAddEmployee = () => {
     setDisplayForm(true);
     prepend();
   };
-  console.log('fields:', fields);
-  console.log('fields.len:', fields.length);
+
   return (
     <section className={styles.container}>
-      {isPending && <p>Loading...</p>}
+      {isPending && <Loader />}
       <Form
         title={projectId ? 'Edit project' : 'Add project'}
         onSubmit={handleSubmit(onSubmit)}
@@ -149,67 +114,47 @@ const ProjectsForm = () => {
           register={register}
           title="Project Name"
           id="ProjectName"
-          // value={project.name}
           name="name"
-          // onChange={onChange}
           error={errors.name?.message}
-          // required
         />
         <Input
           register={register}
           title="Client"
           id="client"
-          // value={project.clientName}
           name="clientName"
-          // onChange={onChange}
           error={errors.clientName?.message}
-          // required
         />
         <Input
           register={register}
           title="Description"
           id="description"
-          // value={project.description}
           name="description"
-          // onChange={onChange}
           error={errors.description?.message}
-          // required
         />
         <Input
           register={register}
           title="Start Date"
-          // value={project.startDate}
           name="startDate"
           type="date"
-          // onChange={onChange}
           error={errors.startDate?.message}
-          // required
         />
         <Input
           register={register}
           title="End Date"
-          // value={project.endDate}
           name="endDate"
           type="date"
-          // onChange={onChange}
           error={errors.startDate?.message}
-          // required
         />
         <Select
           title="Status"
           name="active"
-          // value={project.active}
           arrayToMap={statusProject.map((status) => ({
             id: status === 'Active',
             label: status
           }))}
-          // placeholder={projectId ? 'Select status' : 'Inactive'}
           id="active"
           error={errors.active?.message}
           register={register}
-          // onChange={onChange}
-          // disabled={!projectId}
-          // required={projectId}
         />
         <div className={`${styles.tableContainer} ${styles.employeesContainer}`}>
           <Table
@@ -235,7 +180,6 @@ const ProjectsForm = () => {
           <>
             <Select
               title="Employee"
-              // value={employees[0].id}
               name={`employees[0].employeeId`}
               placeholder="Name"
               arrayToMap={
@@ -244,34 +188,26 @@ const ProjectsForm = () => {
                   label: employee.name + ' ' + employee.lastName
                 })) ?? []
               }
-              // onChange={handleChangeEmployee}
               register={register}
-              required={!project}
+              //required={!project}
             />
             <Select
               title="Role"
               name={`employees[0].role`}
-              // ${fields.length}
-              // value={employee.role}
               placeholder="Role"
               arrayToMap={roles.map((rol) => ({
                 id: rol,
                 label: rol
               }))}
               register={register}
-              // onChange={onChangeEmployee}
-              // required={!projectId}
             />
             <div className={styles.btnContainer}>
               <Input
                 title="Rate"
                 name={`employees[0].rate`}
-                // value={employee.rate}
                 placeholder="Rate"
                 type="number"
                 register={register}
-                // onChange={onChangeEmployee}
-                // required={!projectId}
               />
 
               <Button
@@ -284,13 +220,13 @@ const ProjectsForm = () => {
           </>
         )}
       </Form>
-      {/* {feedbackModal ? (
+      {feedbackModal && (
         <Modal
           setModalDisplay={handleModalClose}
-          heading={project ? (error ? error : 'Project edited') : error ? error : 'Project added'}
+          heading={projectId ? 'Project edited' : 'Project added'}
           theme={error ? 'error' : 'success'}
         ></Modal>
-      ) : null} */}
+      )}
     </section>
   );
 };

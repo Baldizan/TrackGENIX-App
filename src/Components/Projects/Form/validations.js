@@ -19,12 +19,11 @@ export const schema = Joi.object({
     'string.max': 'Description should have a maximum length of 150 characters',
     'any.required': 'Description required'
   }),
-  startDate: Joi.date().greater('now').required().messages({
+  startDate: Joi.date().required().messages({
     'string.empty': 'StartDate required',
-    'date.pattern.base': 'StartDate must be after today',
     'any.required': 'StartDate required'
   }),
-  endDate: Joi.date().greater('now').messages({
+  endDate: Joi.date().greater(Joi.ref('startDate')).messages({
     'date.pattern.base': 'EndDate must be after today'
   }),
   active: Joi.boolean().required().messages({
@@ -37,6 +36,6 @@ export const schema = Joi.object({
     'string.min': 'clientName should have a minimum length of 2 characters',
     'string.max': 'clientName should have a maximum length of 30 characters',
     'any.required': 'clientName required'
-  })
-  // teamMembers: Joi.array().items(teamMembersValidation)
+  }),
+  employees: Joi.array().required()
 });

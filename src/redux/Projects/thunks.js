@@ -42,8 +42,8 @@ const postProject = (project) => {
       body: JSON.stringify({
         name: project.name,
         description: project.description,
-        startDate: project.startDate.slice(0, 10),
-        endDate: project.endDate.slice(0, 10),
+        startDate: project.startDate,
+        endDate: project.endDate,
         clientName: project.clientName,
         active: project.active,
         employees: project.employees

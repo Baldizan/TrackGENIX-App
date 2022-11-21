@@ -5,6 +5,8 @@ import styles from './projects.module.css';
 import Button from 'Components/Shared/Button';
 import Table from 'Components/Shared/Table';
 import Modal from 'Components/Shared/Modal';
+import Loader from 'Components/Shared/Loader';
+import Error from 'Components/Shared/Error';
 import { getProjects, deleteProject } from 'redux/Projects/thunks';
 
 const Projects = () => {
@@ -53,7 +55,7 @@ const Projects = () => {
   const showEmployees = (employees) => {
     if (employees) {
       const projectEmployees = employees.map((employee) => ({
-        _id: employee.id._id,
+        name: employee.id.name,
         role: employee.role,
         rate: employee.rate
       }));
@@ -71,15 +73,15 @@ const Projects = () => {
       <Button
         label="See employees"
         theme="primary"
-        onClick={() => showEmployees(row.employees.filter((e) => e.id !== null))}
+        onClick={() => showEmployees(row.employees.filter((employee) => employee.id !== null))}
       />
     )
   }));
 
   return (
     <section className={styles.container}>
-      {isPending && <p>Loading...</p>}
-      {error && <p>There has been an error: {error}</p>}
+      {isPending && <Loader />}
+      {error && <Error text={`There has been an error: ${error}`} />}
       {!isPending && !error ? (
         <Table
           data={projectColumns}
@@ -96,7 +98,7 @@ const Projects = () => {
           <div className={styles.employeesTableContainer}>
             <Table
               data={projectEmployees}
-              headers={{ _id: 'Employee ID', role: 'Role', rate: 'Rate' }}
+              headers={{ name: 'Employee', role: 'Role', rate: 'Rate' }}
               title="Project employees"
             />
           </div>
