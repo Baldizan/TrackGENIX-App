@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { editAdmin, addAdmin } from 'redux/Admins/thunks';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { schema } from './validations';
+import { editAdmin, addAdmin } from 'redux/Admins/thunks';
 import styles from './form.module.css';
 import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
@@ -25,7 +25,7 @@ const FormAdmins = () => {
     reset,
     formState: { errors }
   } = useForm({
-    mode: 'onChange',
+    mode: 'all',
     resolver: joiResolver(schema)
   });
 
@@ -76,6 +76,7 @@ const FormAdmins = () => {
           name="lastName"
           title="Last Name"
           required
+          error={errors.lastName?.message}
         />
         <Input
           register={register}
@@ -83,6 +84,7 @@ const FormAdmins = () => {
           name="email"
           title="Email"
           required
+          error={errors.email?.message}
         />
         <Input
           register={register}
@@ -91,6 +93,7 @@ const FormAdmins = () => {
           name="password"
           title="Password"
           required
+          error={errors.password?.message}
         />
       </Form>
       {isPending && <Loader />}
