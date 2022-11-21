@@ -34,7 +34,6 @@ const ProjectsForm = () => {
     mode: 'onChange',
     resolver: joiResolver(schema)
   });
-  console.log('errors', errors);
 
   const { fields, update, remove, prepend } = useFieldArray({
     control,
@@ -50,8 +49,8 @@ const ProjectsForm = () => {
           const MOCK_DATA = {
             name: res.data?.name,
             description: res.data?.description,
-            startDate: res.data?.startDate,
-            endDate: res.data?.endDate,
+            startDate: res.data?.startDate?.slice(0, 10),
+            endDate: res.data?.endDate?.slice(0, 10),
             clientName: res.data?.clientName,
             active: res.data?.active,
             employees: res.data?.employees
@@ -80,7 +79,6 @@ const ProjectsForm = () => {
       dispatch(postProject(data));
       setFeedbackModal(true);
     }
-    console.log('data form: ', data);
   };
 
   const handleModalClose = () => {
