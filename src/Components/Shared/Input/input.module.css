@@ -53,7 +53,7 @@
   }
 
   .input {
-    background-color: var(--primaryColorLight);
+    background-color: var(--primaryColor);
     border-color: var(--secondaryColor);
     color: var(--secondaryColor);
   }

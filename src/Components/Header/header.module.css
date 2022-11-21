@@ -109,7 +109,7 @@
 
 @media (prefers-color-scheme: dark) {
   .navbar {
-    background-color: var(--primaryColorLight);
+    background-color: var(--colorsBlendLight);
     border-color: var(--secondaryColor);
   }
 }

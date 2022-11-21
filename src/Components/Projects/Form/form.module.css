@@ -47,7 +47,7 @@
 
 @media (prefers-color-scheme: dark) {
   .employeesContainer {
-    background-color: var(--primaryColorLighter);
+    background-color: var(--primaryColor);
     border-color: var(--secondaryColor);
   }
 }

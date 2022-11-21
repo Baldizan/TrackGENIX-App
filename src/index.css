@@ -17,15 +17,19 @@ code {
   --secondaryColor: #aace9b;
   --errorAlertColor: #f13312;
   --successAlertColor: #49a37b;
+  --primaryColorDark: #1E1F38;
   --primaryColorLight: #37386766;
   --primaryColorLighter: #3738671a;
+  --secondaryColorDark: #2E382A;
   --secondaryColorLight: #aace9b66;
   --secondaryColorLighter: #aace9b0a;
+  --colorsBlendLight: #41466C;
+  --colorsBlendDark: #1E2031;
 }
 
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #FFFFFF20;
+    background-color: var(--colorsBlendDark);
   }
   h1,
   h2,

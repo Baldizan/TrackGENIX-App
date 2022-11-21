@@ -78,7 +78,7 @@
     border-color: var(--secondaryColor)
   }
   .thead {
-    background-color: var(--primaryColorLighter);
+    background-color: var(--primaryColor);
   }
   .page {
     color: var(--secondaryColor);
