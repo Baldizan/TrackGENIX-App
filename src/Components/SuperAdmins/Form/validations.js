@@ -3,21 +3,21 @@ import Joi from 'joi';
 export const schema = Joi.object({
   name: Joi.string()
     .min(3)
-    .max(50)
+    .max(20)
     .pattern(/^([^0-9]*)$/i)
     .messages({
       'string.pattern.base': 'Must contain only letters',
       'string.min': 'Must have at least 3 characters',
-      'string.max': 'Must contain less than 50 characters'
+      'string.max': 'Must contain less than 20 characters'
     }),
   lastName: Joi.string()
     .min(3)
-    .max(50)
+    .max(20)
     .pattern(/^([^0-9]*)$/i)
     .messages({
       'string.pattern.base': 'Must contain only letters',
       'string.min': 'Must have at least 3 characters',
-      'string.max': 'Must contain less than 50 characters'
+      'string.max': 'Must contain less than 20 characters'
     }),
   email: Joi.string()
     .email({ tlds: { allow: false } })
