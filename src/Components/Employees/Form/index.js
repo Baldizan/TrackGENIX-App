@@ -65,11 +65,6 @@ const EmployeesForm = () => {
     }
   };
 
-  const test = () => {
-    return joiResolver(schema);
-  };
-
-  console.log(test);
   return (
     <section className={styles.container}>
       <Form
