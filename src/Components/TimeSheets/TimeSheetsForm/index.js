@@ -30,7 +30,7 @@ const TimeSheetsForm = () => {
     handleSubmit,
     register,
     reset,
-    formState: { errors }
+    formState: { errors, isValid }
   } = useForm({
     mode: 'onChange',
     resolver: joiResolver(schema)
@@ -82,7 +82,12 @@ const TimeSheetsForm = () => {
       {isPending && <Loader />}
       {error && <Error text={error} />}
       {!isPending && !error && (
-        <Form onSubmit={handleSubmit(onSubmit)} title={titleForm} secondColumnIndex={3}>
+        <Form
+          onSubmit={handleSubmit(onSubmit)}
+          title={titleForm}
+          secondColumnIndex={3}
+          noValidate={!isValid}
+        >
           <Select
             register={register}
             name="project"
