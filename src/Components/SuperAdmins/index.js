@@ -22,18 +22,14 @@ const SuperAdmins = () => {
     dispatch(getSuperAdmins());
   }, []);
 
-  const deleteItem = (item) => {
+  const handleDelete = (item) => {
     setSelectedItem(item);
     setModalDisplay(true);
   };
 
-  const showSuccessModal = () => {
-    setSuccessModalDisplay(true);
-  };
-
-  const handleDelete = () => {
+  const deleteSuperAdmin = () => {
     dispatch(deleteSuperAdmins(selectedItem._id));
-    showSuccessModal(true);
+    setSuccessModalDisplay(true);
   };
 
   const handleEdit = (item) => {
@@ -48,7 +44,7 @@ const SuperAdmins = () => {
           headers={headers}
           data={superAdmins ?? []}
           editItem={handleEdit}
-          deleteItem={deleteItem}
+          deleteItem={handleDelete}
           title={'Super Admins'}
           addRedirectLink={'super-admins/form'}
           itemsPerPage={5}
@@ -68,14 +64,24 @@ const SuperAdmins = () => {
           setModalDisplay={setModalDisplay}
           theme={'confirm'}
         >
-          <Button
-            label="Confirm"
-            theme="tertiary"
-            onClick={() => {
-              handleDelete();
-              setModalDisplay(false);
-            }}
-          />
+          <p>This change can not be undone!</p>
+          <div className={styles.buttons}>
+            <Button
+              label={'Cancel'}
+              theme={'primary'}
+              onClick={() => {
+                setModalDisplay();
+              }}
+            />
+            <Button
+              label="Confirm"
+              theme="tertiary"
+              onClick={() => {
+                deleteSuperAdmin();
+                setModalDisplay(false);
+              }}
+            />
+          </div>
         </Modal>
       )}
     </section>

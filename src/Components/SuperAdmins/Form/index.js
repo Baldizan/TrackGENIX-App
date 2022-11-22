@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { postSuperAdmins, putSuperAdmins, getSuperAdmins } from 'redux/SuperAdmins/thunks';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
+import { postSuperAdmins, putSuperAdmins, getSuperAdmins } from 'redux/SuperAdmins/thunks';
 import styles from './form.module.css';
+import { schema } from './validations';
 import { Input } from 'Components/Shared/Input';
 import Form from 'Components/Shared/Form';
 import Modal from 'Components/Shared/Modal';
 import Loader from 'Components/Shared/Loader';
-import { schema } from './validations';
 
 const FormSuperAdmins = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { isPending, error } = useSelector((state) => state.superAdmins);
-  const [modal, setModal] = useState(false);
-  const [feedback, setFeedback] = useState({ name: '', lastName: '' });
+  const [isModal, setIsModal] = useState(false);
+  const [modalContent, setModalContent] = useState({ name: '', lastName: '' });
   const [selectedSuperAdmin] = useState(history.location.state);
   const {
     handleSubmit,
@@ -39,9 +39,9 @@ const FormSuperAdmins = () => {
       });
   }, []);
 
-  const handleCloseModal = () => {
+  const handleModalClose = () => {
     if (error) {
-      setModal(false);
+      setIsModal(false);
     } else {
       history.push(`/Super-admins`);
     }
@@ -50,12 +50,12 @@ const FormSuperAdmins = () => {
   const onSubmit = (data) => {
     if (selectedSuperAdmin) {
       dispatch(putSuperAdmins(selectedSuperAdmin._id, data));
-      setFeedback({ name: data.name, lastName: data.lastName });
-      setModal(true);
+      setModalContent({ name: data.name, lastName: data.lastName });
+      setIsModal(true);
     } else {
       dispatch(postSuperAdmins(data));
-      setFeedback({ name: data.name, lastName: data.lastName });
-      setModal(true);
+      setModalContent({ name: data.name, lastName: data.lastName });
+      setIsModal(true);
     }
   };
 
@@ -100,14 +100,14 @@ const FormSuperAdmins = () => {
         />
       </Form>
       {isPending && <Loader />}
-      {modal && (
+      {isModal && (
         <Modal
           heading={
             error
               ? error
-              : `Super Admin ${feedback.name} ${feedback.lastName} successfully submitted!`
+              : `Super Admin ${modalContent.name} ${modalContent.lastName} submitted successfully!`
           }
-          setModalDisplay={handleCloseModal}
+          setModalDisplay={handleModalClose}
           theme={error ? 'error' : 'success'}
         />
       )}
