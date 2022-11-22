@@ -8,17 +8,17 @@ export const schema = Joi.object({
     .messages({
       'string.empty': 'This field is required.',
       'string.min': 'Name must contain at least 3 letters.',
-      'string.max': 'Name cannot have over 40 letters.',
+      'string.max': 'Name cannot have over 20 letters.',
       'string.pattern.base': 'Name must contain only letters.'
     }),
   lastName: Joi.string()
     .min(3)
-    .max(50)
+    .max(20)
     .pattern(/^([^0-9]*)$/i, 'Only letters')
     .messages({
       'string.empty': 'This field is required.',
       'string.min': 'Last name must contain at least 3 letters.',
-      'string.max': 'Last name cannot have over 40 letters.',
+      'string.max': 'Last name cannot have over 20 letters.',
       'string.pattern': 'Last name must contain only letters.'
     }),
   email: Joi.string()
