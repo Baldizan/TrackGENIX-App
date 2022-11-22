@@ -70,7 +70,7 @@ const Projects = () => {
   const showEmployees = (employees) => {
     if (employees) {
       const projectEmployees = employees.map((employee) => ({
-        name: employee.id.name,
+        name: employee.id.name + ' ' + employee.id.lastName,
         role: employee.role,
         rate: employee.rate
       }));
