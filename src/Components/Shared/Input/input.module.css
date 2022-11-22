@@ -47,6 +47,16 @@
   cursor: not-allowed;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
 @media (prefers-color-scheme: dark) {
   .label {
     color: var(--secondaryColor);
@@ -64,10 +74,5 @@
 
   .input:focus {
     background-color: var(--primaryColorLighter);
-  }
-
-  .disabled {
-    border: 1px solid var(--secondaryColorLight);
-    color: var(--secondaryColorLight);
   }
 }

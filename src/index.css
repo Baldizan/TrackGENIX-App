@@ -17,14 +17,19 @@ code {
   --secondaryColor: #aace9b;
   --errorAlertColor: #f13312;
   --successAlertColor: #49a37b;
-  --primaryColorDark: #1E1F38;
+  --primaryColorDark: #1e1f38;
   --primaryColorLight: #37386766;
   --primaryColorLighter: #3738671a;
-  --secondaryColorDark: #2E382A;
+  --secondaryColorDark: #2e382a;
   --secondaryColorLight: #aace9b66;
   --secondaryColorLighter: #aace9b0a;
-  --colorsBlendLight: #41466C;
-  --colorsBlendDark: #1E2031;
+  --colorsBlendLight: #41466c;
+  --colorsBlendDark: #1e2031;
+}
+
+::selection {
+  background: var(--primaryColorLighter);
+  color: var(--primaryColor);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -38,5 +43,10 @@ code {
   a,
   p {
     color: var(--secondaryColor);
+  }
+
+  ::selection {
+    background: #C8C798;
+    color: var(--primaryColor);
   }
 }
