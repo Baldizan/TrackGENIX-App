@@ -25,7 +25,7 @@ const Projects = () => {
     description: 'Description',
     startDateFormat: 'Start date',
     endDateFormat: 'End date',
-    employees: 'Employees',
+    employeesCmp: 'Employees',
     status: 'Status'
   };
 
@@ -34,7 +34,26 @@ const Projects = () => {
   }, []);
 
   const handleEdit = (item) => {
-    history.push('/projects/form', { id: item._id });
+    // const f = projectsList.find((p) => p._id == item._id);
+    history.push('/projects/form', {
+      id: item._id,
+      project: {
+        name: item.name,
+        clientName: item.clientName,
+        description: item.description,
+        active: item.active,
+        startDate: item.startDate?.slice(0, 10),
+        endDate: item.endDate?.slice(0, 10),
+        employees: item.employees
+          ?.filter((e) => e.id && typeof e.id == 'object')
+          .map((e) => ({
+            employeeId: e.id._id,
+            role: e.role,
+            rate: e.rate
+          }))
+      }
+    });
+    // history.push('/projects/form', { employees: item.employees });
   };
 
   const handleDelete = (item) => {
@@ -69,7 +88,7 @@ const Projects = () => {
     status: row.active ? 'Active' : 'Inactive',
     startDateFormat: row.startDate.slice(0, 10),
     endDateFormat: row.endDate.slice(0, 10),
-    employees: (
+    employeesCmp: (
       <Button
         label="See employees"
         theme="primary"

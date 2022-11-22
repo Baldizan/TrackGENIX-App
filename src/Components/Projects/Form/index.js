@@ -16,7 +16,8 @@ import styles from './form.module.css';
 
 const ProjectsForm = () => {
   const history = useHistory();
-  const projectId = history.location.state?.id;
+  const projectId = history.location.state.id;
+  const project = history.location.state.project;
   const dispatch = useDispatch();
   const { isPending } = useSelector((state) => state.projects);
   const [displayForm, setDisplayForm] = useState(false);
@@ -42,32 +43,35 @@ const ProjectsForm = () => {
 
   useEffect(() => {
     dispatch(getEmployees());
-    if (projectId) {
-      fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`)
-        .then((res) => res.json())
-        .then((res) => {
-          const MOCK_DATA = {
-            name: res.data?.name,
-            description: res.data?.description,
-            startDate: res.data?.startDate?.slice(0, 10),
-            endDate: res.data?.endDate?.slice(0, 10),
-            clientName: res.data?.clientName,
-            active: res.data?.active,
-            employees: res.data?.employees
-              ?.filter((e) => e.id && typeof e.id == 'object')
-              .map((e) => ({
-                employeeId: e.id._id,
-                role: e.role,
-                rate: e.rate
-              }))
-          };
-          reset(MOCK_DATA);
-        });
+    if (project) {
+      // fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`)
+      //   .then((res) => res.json())
+      //   .then((res) => {
+      //     const MOCK_DATA = {
+      //       name: res.data?.name,
+      //       description: res.data?.description,
+      //       startDate: res.data?.startDate?.slice(0, 10),
+      //       endDate: res.data?.endDate?.slice(0, 10),
+      //       clientName: res.data?.clientName,
+      //       active: res.data?.active,
+      //       employees: res.data?.employees
+      //         ?.filter((e) => e.id && typeof e.id == 'object')
+      //         .map((e) => ({
+      //           employeeId: e.id._id,
+      //           role: e.role,
+      //           rate: e.rate
+      //         }))
+      //     };
+
+      //   });
+      reset(project);
     }
+    console.log(project);
   }, []);
 
+  console.log(project);
   const onSubmit = (data) => {
-    if (projectId) {
+    if (project) {
       data.employees = data.employees.map((e) => ({
         ...e,
         id: e.employeeId,
@@ -99,12 +103,12 @@ const ProjectsForm = () => {
     setDisplayForm(true);
     prepend();
   };
-
+  console.log(errors);
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
       <Form
-        title={projectId ? 'Edit project' : 'Add project'}
+        title={project ? 'Edit project' : 'Add project'}
         onSubmit={handleSubmit(onSubmit)}
         secondColumnIndex={6}
       >
@@ -141,7 +145,7 @@ const ProjectsForm = () => {
           title="End Date"
           name="endDate"
           type="date"
-          error={errors.startDate?.message}
+          error={errors.endDate?.message}
         />
         <Select
           title="Status"
@@ -158,12 +162,13 @@ const ProjectsForm = () => {
           <Table
             headers={{ name: 'Employee', role: 'Role', rate: 'Rate' }}
             data={
-              fields?.map((f) => ({
-                ...f,
-                name: employees.find((e) => e._id === f.employeeId)?.name
+              // fields
+              fields?.map((field) => ({
+                ...field,
+                name: employees.find((e) => e._id === field.employeeId)?.name
               })) ?? []
             }
-            deleteItem={({ id }) => remove(fields.findIndex((f) => f.id === id))}
+            deleteItem={(field) => remove(fields.findIndex((f) => f.id === field.id))}
           />
         </div>
         {!displayForm && (
@@ -220,7 +225,7 @@ const ProjectsForm = () => {
       {feedbackModal && (
         <Modal
           setModalDisplay={handleModalClose}
-          heading={projectId ? 'Project edited' : 'Project added'}
+          heading={project ? 'Project edited' : 'Project added'}
           theme={error ? 'error' : 'success'}
         ></Modal>
       )}
