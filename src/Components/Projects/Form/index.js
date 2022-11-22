@@ -3,6 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
+import { getEmployees } from 'redux/Employees/thunks';
+import { postProject, putProject } from 'redux/Projects/thunks';
+import styles from './form.module.css';
 import { schema } from './validations';
 import Button from 'Components/Shared/Button';
 import { Input, Select } from 'Components/Shared/Input';
@@ -10,15 +13,12 @@ import Form from 'Components/Shared/Form';
 import Table from 'Components/Shared/Table';
 import Modal from 'Components/Shared/Modal';
 import Loader from 'Components/Shared/Loader';
-import { getEmployees } from 'redux/Employees/thunks';
-import { postProject, putProject } from 'redux/Projects/thunks';
-import styles from './form.module.css';
 
 const ProjectsForm = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const projectId = history.location.state?.id;
   const project = history.location.state?.project;
-  const dispatch = useDispatch();
   const { isPending } = useSelector((state) => state.projects);
   const [displayForm, setDisplayForm] = useState(false);
   const { list: employees, error } = useSelector((state) => state.employees);
@@ -35,8 +35,7 @@ const ProjectsForm = () => {
     mode: 'all',
     resolver: joiResolver(schema)
   });
-
-  const { fields, update, remove, prepend } = useFieldArray({
+  const { fields, update, remove, append } = useFieldArray({
     control,
     name: 'employees'
   });
@@ -51,7 +50,7 @@ const ProjectsForm = () => {
   const handleModalClose = () => {
     if (!error) {
       setFeedbackModal(false);
-      history.push(`/projects`);
+      history.push('/projects');
     } else {
       setFeedbackModal(error);
     }
@@ -62,11 +61,12 @@ const ProjectsForm = () => {
     setDisplayForm(false);
   };
 
-  const handleAddEmployee = () => {
+  const handleAdd = () => {
     setDisplayForm(true);
-    prepend();
+    append({ employeeId: null, role: null, rate: 1 });
   };
-  const handleDeleteItem = (item) => {
+
+  const deleteProject = (item) => {
     remove(fields.findIndex((field) => item.id === field.id));
   };
 
@@ -98,6 +98,7 @@ const ProjectsForm = () => {
           title="Project Name"
           id="ProjectName"
           name="name"
+          placeholder="Project Name"
           error={errors.name?.message}
         />
         <Input
@@ -105,6 +106,7 @@ const ProjectsForm = () => {
           title="Client"
           id="client"
           name="clientName"
+          placeholder="Client name"
           error={errors.clientName?.message}
         />
         <Input
@@ -112,6 +114,7 @@ const ProjectsForm = () => {
           title="Description"
           id="description"
           name="description"
+          placeholder="Description"
           error={errors.description?.message}
         />
         <Input
@@ -119,6 +122,7 @@ const ProjectsForm = () => {
           title="Start Date"
           name="startDate"
           type="date"
+          placeholder="Start Date"
           error={errors.startDate?.message}
         />
         <Input
@@ -126,6 +130,7 @@ const ProjectsForm = () => {
           title="End Date"
           name="endDate"
           type="date"
+          placeholder="End Date"
           error={errors.endDate?.message}
         />
         <Select
@@ -143,12 +148,17 @@ const ProjectsForm = () => {
           <Table
             headers={{ name: 'Employee', role: 'Role', rate: 'Rate' }}
             data={
-              fields?.map((field) => ({
-                ...field,
-                name: employees.find((e) => e._id === field.employeeId)?.name
-              })) ?? []
+              fields
+                ?.map((field) => ({
+                  ...field,
+                  name:
+                    employees.find((e) => e._id === field.employeeId)?.name +
+                    ' ' +
+                    employees.find((e) => e._id === field.employeeId)?.lastName
+                }))
+                ?.filter((field) => field.employeeId) ?? []
             }
-            deleteItem={handleDeleteItem}
+            deleteItem={deleteProject}
           />
         </div>
         {!displayForm && (
@@ -156,15 +166,15 @@ const ProjectsForm = () => {
             theme="secondary"
             style={styles.btnAssign}
             label="Add new employee"
-            onClick={handleAddEmployee}
+            onClick={handleAdd}
           />
         )}
         {displayForm && (
           <>
             <Select
               title="Employee"
-              name={`employees[0].employeeId`}
-              placeholder="Name"
+              name={`employees[${fields.length - 1}].employeeId`}
+              placeholder="Select employee"
               arrayToMap={
                 employees.map((employee) => ({
                   id: employee._id,
@@ -175,8 +185,8 @@ const ProjectsForm = () => {
             />
             <Select
               title="Role"
-              name={`employees[0].role`}
-              placeholder="Role"
+              name={`employees[${fields.length - 1}].role`}
+              placeholder={'Role'}
               arrayToMap={roles.map((rol) => ({
                 id: rol,
                 label: rol
@@ -186,7 +196,7 @@ const ProjectsForm = () => {
             <div className={styles.btnContainer}>
               <Input
                 title="Rate"
-                name={`employees[0].rate`}
+                name={`employees[${fields.length - 1}].rate`}
                 placeholder="Rate"
                 type="number"
                 register={register}

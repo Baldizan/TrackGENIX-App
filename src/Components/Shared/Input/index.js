@@ -50,7 +50,7 @@ const Select = ({
         value={value}
         required={required}
       >
-        <option value="" hidden disabled>
+        <option value="" disabled hidden selected>
           {placeholder}
         </option>
         {arrayToMap.map((item, index) => {
