@@ -30,9 +30,9 @@ const TimeSheetsForm = () => {
     handleSubmit,
     register,
     reset,
-    formState: { errors, isValid }
+    formState: { errors /*, isValid*/ }
   } = useForm({
-    mode: 'onChange',
+    mode: 'all',
     resolver: joiResolver(schema)
   });
 
@@ -86,7 +86,7 @@ const TimeSheetsForm = () => {
           onSubmit={handleSubmit(onSubmit)}
           title={titleForm}
           secondColumnIndex={3}
-          noValidate={!isValid}
+          // noValidate={!isValid}
         >
           <Select
             register={register}
