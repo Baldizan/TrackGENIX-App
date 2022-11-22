@@ -43,7 +43,6 @@ const EmployeeProjects = () => {
       {!isPending && !error && (
         <Table headers={headers} data={projectsData()} title="My projects" itemsPerPage={5} />
       )}
-      {error && <p>{error}</p>}
     </section>
   );
 };
