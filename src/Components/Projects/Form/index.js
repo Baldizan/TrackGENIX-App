@@ -32,7 +32,7 @@ const ProjectsForm = () => {
     formState: { errors },
     reset
   } = useForm({
-    mode: 'onChange',
+    mode: 'all',
     resolver: joiResolver(schema)
   });
 
@@ -44,32 +44,10 @@ const ProjectsForm = () => {
   useEffect(() => {
     dispatch(getEmployees());
     if (project) {
-      // fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`)
-      //   .then((res) => res.json())
-      //   .then((res) => {
-      //     const MOCK_DATA = {
-      //       name: res.data?.name,
-      //       description: res.data?.description,
-      //       startDate: res.data?.startDate?.slice(0, 10),
-      //       endDate: res.data?.endDate?.slice(0, 10),
-      //       clientName: res.data?.clientName,
-      //       active: res.data?.active,
-      //       employees: res.data?.employees
-      //         ?.filter((e) => e.id && typeof e.id == 'object')
-      //         .map((e) => ({
-      //           employeeId: e.id._id,
-      //           role: e.role,
-      //           rate: e.rate
-      //         }))
-      //     };
-
-      //   });
       reset(project);
     }
-    console.log(project);
   }, []);
 
-  console.log(project);
   const onSubmit = (data) => {
     if (project) {
       data.employees = data.employees.map((e) => ({
@@ -103,7 +81,7 @@ const ProjectsForm = () => {
     setDisplayForm(true);
     prepend();
   };
-  console.log(errors);
+
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
@@ -162,7 +140,6 @@ const ProjectsForm = () => {
           <Table
             headers={{ name: 'Employee', role: 'Role', rate: 'Rate' }}
             data={
-              // fields
               fields?.map((field) => ({
                 ...field,
                 name: employees.find((e) => e._id === field.employeeId)?.name

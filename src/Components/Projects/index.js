@@ -34,7 +34,6 @@ const Projects = () => {
   }, []);
 
   const handleEdit = (item) => {
-    // const f = projectsList.find((p) => p._id == item._id);
     history.push('/projects/form', {
       id: item._id,
       project: {
@@ -53,7 +52,6 @@ const Projects = () => {
           }))
       }
     });
-    // history.push('/projects/form', { employees: item.employees });
   };
 
   const handleDelete = (item) => {

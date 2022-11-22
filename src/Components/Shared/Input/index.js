@@ -15,7 +15,6 @@ const Input = ({ name, title, id, type, register, placeholder, disabled, error }
           name={name}
           placeholder={placeholder}
           type={type}
-          // required={required}
         />
       </label>
       <p className={`${styles.error} ${!error && styles.hidden}`}>{error}</p>
