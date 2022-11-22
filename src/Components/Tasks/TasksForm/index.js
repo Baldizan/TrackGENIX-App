@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
-import { schema } from './validations';
-import styles from './tasksForm.module.css';
 import { postTask, putTask, getTasks } from 'redux/Tasks/thunks';
+import styles from './tasksForm.module.css';
+import { schema } from './validations';
 import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
 import Modal from 'Components/Shared/Modal';
@@ -17,12 +17,12 @@ const TasksForm = () => {
   const { isPending, error } = useSelector((state) => state.tasks);
   const [selectedTask] = useState(history.location.state);
   const titleForm = selectedTask ? 'Edit Task' : 'Add Task';
-  const [feedbackModal, setFeedbackModal] = useState(false);
+  const [isModal, setIsModal] = useState(false);
   const {
     handleSubmit,
     register,
     reset,
-    formState: { errors }
+    formState: { errors, isValid }
   } = useForm({
     mode: 'all',
     resolver: joiResolver(schema)
@@ -39,26 +39,26 @@ const TasksForm = () => {
   const onSubmit = (data) => {
     if (selectedTask) {
       dispatch(putTask(selectedTask._id, data));
-      setFeedbackModal(true);
+      setIsModal(true);
     } else {
       dispatch(postTask(data));
-      setFeedbackModal(true);
+      setIsModal(true);
     }
   };
 
-  const handleCloseModal = () => {
+  const handleModalClose = () => {
     if (!error) {
-      setFeedbackModal(false);
+      setIsModal(false);
       history.push(`/tasks`);
     } else {
-      setFeedbackModal(false);
+      setIsModal(false);
     }
   };
 
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
-      <Form onSubmit={handleSubmit(onSubmit)} title={titleForm}>
+      <Form onSubmit={handleSubmit(onSubmit)} title={titleForm} noValidate={!isValid}>
         <Input
           error={errors.description?.message}
           register={register}
@@ -68,10 +68,10 @@ const TasksForm = () => {
           required
         />
       </Form>
-      {feedbackModal ? (
+      {isModal ? (
         <Modal
-          setModalDisplay={handleCloseModal}
-          heading={error ? error : 'Task successfully submitted!'}
+          setModalDisplay={handleModalClose}
+          heading={error ? error : 'Task submitted successfully!'}
           theme={error ? 'error' : 'success'}
         ></Modal>
       ) : null}

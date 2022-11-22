@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import styles from './tasks.module.css';
 import { getTasks, deleteTask } from 'redux/Tasks/thunks';
+import styles from './tasks.module.css';
 import Button from 'Components/Shared/Button';
 import Table from 'Components/Shared/Table';
 import Modal from 'Components/Shared/Modal';
@@ -12,30 +12,33 @@ import Error from 'Components/Shared/Error';
 const Tasks = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { list, isPending, error } = useSelector((state) => state.tasks);
+  const { list: task, isPending, error } = useSelector((state) => state.tasks);
   const [selectedItem, setSelectedItem] = useState({});
-  const [modalDisplay, setModalDisplay] = useState(false);
+  const [isModal, setIsModal] = useState(false);
   const [feedbackModal, setFeedbackModal] = useState(false);
-  const [feedback, setFeedback] = useState({ heading: '', theme: '' });
+  const [modalContent, setModalContent] = useState({ heading: '', theme: '' });
   const headers = { description: 'Description' };
 
   useEffect(() => {
     dispatch(getTasks());
   }, []);
 
-  const deleteItem = async () => {
+  const deleteTasks = async () => {
     dispatch(deleteTask(selectedItem._id));
     if (error) {
-      setFeedback({ heading: `There was an error: ${error}`, theme: 'error' });
+      setModalContent({ heading: `There was an error: ${error}`, theme: 'error' });
     } else {
-      setFeedback({ heading: 'Task deleted', theme: 'success' });
+      setModalContent({
+        heading: `Task ${selectedItem.description} deleted successfully!`,
+        theme: 'success'
+      });
     }
     setFeedbackModal(true);
   };
 
   const handleDelete = (item) => {
     setSelectedItem(item);
-    setModalDisplay(true);
+    setIsModal(true);
   };
 
   const handleEdit = (item) => {
@@ -49,7 +52,7 @@ const Tasks = () => {
       {!isPending && !error && (
         <Table
           headers={headers}
-          data={list}
+          data={task}
           editItem={handleEdit}
           deleteItem={handleDelete}
           title="Tasks"
@@ -57,10 +60,10 @@ const Tasks = () => {
           itemsPerPage={5}
         />
       )}
-      {modalDisplay && (
+      {isModal && (
         <Modal
           heading={`Are you sure you want to delete task: "${selectedItem.description}"?`}
-          setModalDisplay={setModalDisplay}
+          setModalDisplay={setIsModal}
           theme="confirm"
         >
           <p>This change can not be undone!</p>
@@ -69,15 +72,15 @@ const Tasks = () => {
               label={'Cancel'}
               theme={'primary'}
               onClick={() => {
-                setModalDisplay();
+                setIsModal();
               }}
             />
             <Button
               label="Confirm"
               theme="tertiary"
               onClick={() => {
-                deleteItem();
-                setModalDisplay(false);
+                deleteTasks();
+                setIsModal(false);
               }}
             />
           </div>
@@ -86,8 +89,8 @@ const Tasks = () => {
       {feedbackModal && (
         <Modal
           setModalDisplay={setFeedbackModal}
-          heading={feedback.heading}
-          theme={feedback.theme}
+          heading={modalContent.heading}
+          theme={modalContent.theme}
         ></Modal>
       )}
     </section>
