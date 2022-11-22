@@ -27,7 +27,7 @@ const EmployeeTimesheetsForm = () => {
     reset,
     formState: { errors, isValid }
   } = useForm({
-    mode: 'onChange',
+    mode: 'all',
     resolver: joiResolver(schema)
   });
 
