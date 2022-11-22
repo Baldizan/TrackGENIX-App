@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { getTasks } from 'redux/Tasks/thunks';
-import { editTimeSheet } from 'redux/TimeSheets/thunks';
 import { joiResolver } from '@hookform/resolvers/joi';
+import { editTimeSheet } from 'redux/TimeSheets/thunks';
+import { getTasks } from 'redux/Tasks/thunks';
 import styles from './form.module.css';
 import { schema } from './validations';
 import Loader from 'Components/Shared/Loader';
@@ -14,13 +14,12 @@ import { Input } from 'Components/Shared/Input';
 import Modal from 'Components/Shared/Modal';
 
 const EmployeeTimesheetsForm = () => {
-  const dispatch = useDispatch();
   const history = useHistory();
+  const dispatch = useDispatch();
   const [selectedTimesheet] = useState(history.location.state);
   const { isPending, error } = useSelector((state) => state.timesheets);
 
-  const [modalDisplay, setModalDisplay] = useState(false);
-  const titleForm = 'Add Hours';
+  const [isModal, setIsModal] = useState(false);
   const {
     handleSubmit,
     register,
@@ -48,15 +47,15 @@ const EmployeeTimesheetsForm = () => {
         hours: selectedTimesheet?.hours + data.hours
       })
     );
-    setModalDisplay(true);
+    setIsModal(true);
   };
 
-  const handleCloseModal = () => {
+  const handleModalClose = () => {
     if (!error) {
-      setModalDisplay(false);
+      setIsModal(false);
       history.push(`/employee/time-sheets`);
     } else {
-      setModalDisplay(false);
+      setIsModal(false);
     }
   };
 
@@ -67,7 +66,7 @@ const EmployeeTimesheetsForm = () => {
       {!isPending && !error && (
         <Form
           onSubmit={handleSubmit(onSubmit)}
-          title={titleForm}
+          title="Add Hours"
           secondColumnIndex={3}
           noValidate={!isValid}
         >
@@ -114,10 +113,10 @@ const EmployeeTimesheetsForm = () => {
           />
         </Form>
       )}
-      {modalDisplay && (
+      {isModal && (
         <Modal
           heading={error ? error : `Hours successfully submitted!`}
-          setModalDisplay={handleCloseModal}
+          setModalDisplay={handleModalClose}
           theme={error ? 'error' : 'success'}
         />
       )}

@@ -56,7 +56,6 @@ const EmployeeTimesheets = () => {
           data={timeSheetData()}
           editItem={handleEdit}
           title="My timesheets"
-          addRedirectLink="/employee/time-sheets/form"
           itemsPerPage={5}
         />
       )}
