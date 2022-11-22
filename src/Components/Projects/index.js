@@ -43,13 +43,11 @@ const Projects = () => {
         active: item.active,
         startDate: item.startDate?.slice(0, 10),
         endDate: item.endDate?.slice(0, 10),
-        employees: item.employees
-          ?.filter((e) => e.id && typeof e.id == 'object')
-          .map((e) => ({
-            employeeId: e.id._id,
-            role: e.role,
-            rate: e.rate
-          }))
+        employees: item.employees?.map((e) => ({
+          employeeId: e.id._id,
+          role: e.role,
+          rate: e.rate
+        }))
       }
     });
   };

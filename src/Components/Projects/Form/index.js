@@ -16,8 +16,8 @@ import styles from './form.module.css';
 
 const ProjectsForm = () => {
   const history = useHistory();
-  const projectId = history.location.state.id;
-  const project = history.location.state.project;
+  const projectId = history.location.state?.id;
+  const project = history.location.state?.project;
   const dispatch = useDispatch();
   const { isPending } = useSelector((state) => state.projects);
   const [displayForm, setDisplayForm] = useState(false);
@@ -49,12 +49,12 @@ const ProjectsForm = () => {
   }, []);
 
   const onSubmit = (data) => {
+    data.employees = data.employees.map((e) => ({
+      ...e,
+      id: e.employeeId,
+      employeeId: undefined
+    }));
     if (project) {
-      data.employees = data.employees.map((e) => ({
-        ...e,
-        id: e.employeeId,
-        employeeId: undefined
-      }));
       dispatch(putProject(projectId, data));
       setFeedbackModal(true);
     } else {
