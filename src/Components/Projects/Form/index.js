@@ -81,6 +81,9 @@ const ProjectsForm = () => {
     setDisplayForm(true);
     prepend();
   };
+  const handleDeleteItem = (item) => {
+    remove(fields.findIndex((field) => item.id === field.id));
+  };
 
   return (
     <section className={styles.container}>
@@ -145,7 +148,7 @@ const ProjectsForm = () => {
                 name: employees.find((e) => e._id === field.employeeId)?.name
               })) ?? []
             }
-            deleteItem={(field) => remove(fields.findIndex((f) => f.id === field.id))}
+            deleteItem={handleDeleteItem}
           />
         </div>
         {!displayForm && (
