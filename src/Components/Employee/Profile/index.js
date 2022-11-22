@@ -10,10 +10,10 @@ const EmployeeProfile = () => {
   const dispatch = useDispatch();
   const EmployeeId = '636e639dfb8b4c835d213750';
   const EmployeeProfile = {
-    userName: 'Pedro',
+    name: 'Pedro',
     lastName: 'Diazz',
     phone: 1231231230,
-    email: 'test@radium.com',
+    mail: 'test@radium.com',
     password: '2022BaSP'
   };
 
@@ -34,22 +34,50 @@ const EmployeeProfile = () => {
   return (
     <section className={styles.container}>
       <Form title="My profile" onSubmit={handleSubmit(onSubmit)}>
-        <Input placeholder="Edit your name" name="name" title="Name" register={register} />
+        <Input
+          placeholder="Edit your name"
+          id="name"
+          name="name"
+          title="Name"
+          register={register}
+        />
         <Input
           placeholder="Edit your last name"
+          id="lastName"
           name="lastName"
           title="User name"
           register={register}
         />
-        <Input placeholder="Edit your phone" name="phone" title="Phone" register={register} />
-        <Input placeholder="Edit your email" name="mail" title="Mail" register={register} />
         <Input
-          placeholder="Edit your password"
-          name="password"
-          title="Password"
+          placeholder="Edit your phone"
+          id="phone"
+          name="phone"
+          title="Phone"
           register={register}
         />
-        <Input placeholder="Repeat password" name="repeatPassword" title="Repeat password" />
+        <Input
+          placeholder="Edit your email"
+          id="mail"
+          name="mail"
+          title="Mail"
+          register={register}
+        />
+        <Input
+          placeholder="Edit your password"
+          id="password"
+          name="password"
+          title="Password"
+          type="password"
+          register={register}
+        />
+        <Input
+          placeholder="Repeat password"
+          id="repeatPassword"
+          name="repeatPassword"
+          title="Repeat password"
+          type="password"
+          register={register}
+        />
       </Form>
     </section>
   );
