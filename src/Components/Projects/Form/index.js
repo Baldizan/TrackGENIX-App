@@ -48,21 +48,6 @@ const ProjectsForm = () => {
     }
   }, []);
 
-  const onSubmit = (data) => {
-    data.employees = data.employees.map((e) => ({
-      ...e,
-      id: e.employeeId,
-      employeeId: undefined
-    }));
-    if (project) {
-      dispatch(putProject(projectId, data));
-      setFeedbackModal(true);
-    } else {
-      dispatch(postProject(data));
-      setFeedbackModal(true);
-    }
-  };
-
   const handleModalClose = () => {
     if (!error) {
       setFeedbackModal(false);
@@ -83,6 +68,21 @@ const ProjectsForm = () => {
   };
   const handleDeleteItem = (item) => {
     remove(fields.findIndex((field) => item.id === field.id));
+  };
+
+  const onSubmit = (data) => {
+    data.employees = data.employees.map((e) => ({
+      ...e,
+      id: e.employeeId,
+      employeeId: undefined
+    }));
+    if (project) {
+      dispatch(putProject(projectId, data));
+      setFeedbackModal(true);
+    } else {
+      dispatch(postProject(data));
+      setFeedbackModal(true);
+    }
   };
 
   return (
