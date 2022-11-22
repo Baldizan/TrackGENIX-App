@@ -91,6 +91,13 @@ const Employees = () => {
         >
           <p>This change cannot be undone</p>
           <Button
+            label={'Cancel'}
+            theme={'primary'}
+            onClick={() => {
+              setModalDisplay();
+            }}
+          />
+          <Button
             label="Confirm"
             theme="tertiary"
             onClick={() => {

@@ -27,7 +27,7 @@ const EmployeesForm = () => {
     reset,
     formState: { errors, isValid }
   } = useForm({
-    mode: 'onChange',
+    mode: 'all',
     resolver: joiResolver(schema)
   });
   useEffect(() => {
