@@ -49,6 +49,7 @@
 }
 
 .error {
+  min-height: 12px;
   color: #f13312;
   font-size: 12px;
   font-weight: 300;

@@ -1,145 +1,161 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
 import { useSelector, useDispatch } from 'react-redux';
-import { postEmployee, putEmployee } from '../../../redux/Employees/thunks.js';
-import { getProjects } from '../../../redux/Projects/thunks.js';
+import { postEmployee, putEmployee } from 'redux/Employees/thunks.js';
+import { getProjects } from 'redux/Projects/thunks.js';
 import styles from './form.module.css';
-import Form from '../../Shared/Form/index';
-import { Input, Select } from '../../Shared/Input/index';
-import Modal from '../../Shared/Modal';
+import { schema } from './validations';
+import Form from 'Components/Shared/Form/index';
+import { Input, Select } from 'Components/Shared/Input/index';
+import Modal from 'Components/Shared/Modal';
+import Loader from 'Components/Shared/Loader';
 
 const EmployeesForm = () => {
-  let history = useHistory();
+  const history = useHistory();
   const dispatch = useDispatch();
   const [selectedEmployee] = useState(history.location.state);
-  const { list, isPending, error } = useSelector((state) => state.employees);
+  const { isPending, error } = useSelector((state) => state.employees);
   const { list: projectsList } = useSelector((state) => state.projects);
-  const [modalDisplay, setModalDisplay] = useState(false);
-  const [employeeInput, setEmployeeInput] = useState(
-    selectedEmployee ?? {
-      name: '',
-      lastName: '',
-      phone: '',
-      email: '',
-      password: '',
-      project: '',
-      active: false
-    }
-  );
+  const [isModal, setIsModal] = useState(false);
+  const [modalContent, setModalContent] = useState({ name: '', lastName: '' });
 
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors, isValid }
+  } = useForm({
+    mode: 'all',
+    resolver: joiResolver(schema)
+  });
   useEffect(() => {
-    if (selectedEmployee && list.length > 0) {
-      const newEmployee = list.find((l) => l._id === selectedEmployee._id);
-      setEmployeeInput(newEmployee);
-    }
     dispatch(getProjects());
-  }, [list]);
+    selectedEmployee &&
+      reset({
+        name: selectedEmployee?.name,
+        lastName: selectedEmployee?.lastName,
+        phone: selectedEmployee?.phone?.toString(),
+        email: selectedEmployee?.email,
+        password: selectedEmployee?.password,
+        project: selectedEmployee?.project,
+        active: selectedEmployee?.active
+      });
+  }, []);
 
-  const onChange = (e) => {
-    setEmployeeInput({ ...employeeInput, [e.target.name]: e.target.value });
-  };
-
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (data) => {
     if (selectedEmployee) {
-      if (typeof employeeInput.project != 'string') {
-        employeeInput.project = employeeInput.project._id;
-      }
-      dispatch(putEmployee(selectedEmployee._id, employeeInput));
-      setModalDisplay(true);
+      dispatch(putEmployee(selectedEmployee._id, data));
+      setModalContent({ name: data.name, lastName: data.lastName });
+      setIsModal(true);
     } else {
-      dispatch(postEmployee(employeeInput));
-      setModalDisplay(true);
+      dispatch(postEmployee(data));
+      setModalContent({ name: data.name, lastName: data.lastName });
+      setIsModal(true);
     }
   };
 
   const handleCloseModal = () => {
     if (!error) {
-      setModalDisplay(false);
+      setIsModal(false);
       history.push(`/employees`);
     } else {
-      setModalDisplay(false);
+      setIsModal(false);
     }
   };
 
   return (
     <section className={styles.container}>
-      <Form onSubmit={onSubmit}>
-        <Input
-          id="name"
-          name="name"
-          placeholder="Name"
-          required
-          value={employeeInput.name}
-          onChange={onChange}
-        />
-        <Input
-          id="lastName"
-          name="lastName"
-          placeholder="Last name"
-          required
-          value={employeeInput.lastName}
-          onChange={onChange}
-        />
-        <Input
-          id="phone"
-          name="phone"
-          placeholder="Phone"
-          required
-          value={employeeInput.phone}
-          onChange={onChange}
-        />
-        <Input
-          id="email"
-          name="email"
-          placeholder="Email"
-          required
-          value={employeeInput.email}
-          onChange={onChange}
-        />
-        <Input
-          id="password"
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          value={employeeInput.password}
-          onChange={onChange}
-        />
-        <Select
-          onChange={onChange}
-          title="Project"
-          placeholder="Project"
-          name="project"
-          value={employeeInput.project._id}
-          arrayToMap={projectsList.map((project) => ({
-            id: project._id,
-            label: project.name
-          }))}
-          required
-        />
-        {selectedEmployee ? (
-          <Select
-            onChange={onChange}
-            title="Active"
-            name="active"
-            value={employeeInput.active}
-            arrayToMap={[
-              { id: true, label: 'Active' },
-              { id: false, label: 'Inactive' }
-            ]}
-            placeholder="Status"
+      {!isPending ? (
+        <Form
+          onSubmit={handleSubmit(onSubmit)}
+          title={selectedEmployee ? 'Edit employee' : 'Add employee'}
+          secondColumnIndex={3}
+          noValidate={!isValid}
+        >
+          <Input
+            id="name"
+            name="name"
+            title="First Name"
+            placeholder="Name"
+            register={register}
+            error={errors.name?.message}
             required
           />
-        ) : null}
-      </Form>
-      {isPending && <p>Loading...</p>}
-      {modalDisplay && (
+          <Input
+            id="lastName"
+            name="lastName"
+            title="Last Name"
+            placeholder="Last name"
+            register={register}
+            error={errors.lastName?.message}
+            required
+          />
+          <Input
+            id="phone"
+            name="phone"
+            title="Phone Number"
+            placeholder="Phone number"
+            type="number"
+            register={register}
+            error={errors.phone?.message}
+            required
+          />
+          <Input
+            id="email"
+            name="email"
+            title="Email address"
+            placeholder="Email"
+            register={register}
+            error={errors.email?.message}
+            required
+          />
+          <Input
+            id="password"
+            type="password"
+            name="password"
+            title="Password"
+            placeholder="Password"
+            register={register}
+            error={errors.password?.message}
+            required
+          />
+          <Select
+            name="project"
+            title="Project"
+            placeholder="Select project"
+            arrayToMap={projectsList.map((project) => ({
+              id: project._id,
+              label: project.name
+            }))}
+            register={register}
+            error={errors.project?.message}
+            required
+          />
+          {selectedEmployee ? (
+            <Select
+              name="active"
+              title="Active"
+              placeholder="Select status"
+              arrayToMap={[
+                { id: true, label: 'Active' },
+                { id: false, label: 'Inactive' }
+              ]}
+              register={register}
+              error={errors.active?.message}
+              required
+            />
+          ) : null}
+        </Form>
+      ) : null}
+      {isPending && <Loader />}
+      {isModal && (
         <Modal
           heading={
             error
               ? error
-              : `Employee ${employeeInput.name} ${employeeInput.lastName} submited successfully!`
+              : `Employee ${modalContent.name} ${modalContent.lastName} successfully submitted!`
           }
           setModalDisplay={handleCloseModal}
           theme={error ? 'error' : 'success'}
