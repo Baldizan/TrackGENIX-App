@@ -14,9 +14,10 @@
 
 .input {
   width: 100%;
+  height: 30px;
   min-height: 44px;
   padding: 5px;
-  margin-block: 10px;
+  margin-block: 5px;
   box-sizing: border-box;
   border-radius: 5px;
   border: 1px solid var(--primaryColor);
@@ -33,6 +34,7 @@
 }
 
 .input:focus {
+  background-color: #fff;
   cursor: auto;
   outline: 1px solid var(--primaryColor);
   background-color: #fff;
@@ -45,6 +47,18 @@
 
 .disabled:hover {
   cursor: not-allowed;
+}
+
+.error {
+  min-height: 12px;
+  color: #f13312;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.hidden {
+  visibility: hidden;
 }
 
 input::-webkit-outer-spin-button,

@@ -1,22 +1,23 @@
-import React from 'react';
-import Home from '../Home/index';
-import Admins from '../Admins/index';
-import AdminsForm from '../Admins/Form';
-import Employees from '../Employees/index';
-import EmployeesForm from '../Employees/Form';
-import Projects from '../Projects';
-import ProjectsForm from '../Projects/Form/form.js';
-import SuperAdmins from '../SuperAdmins/index';
-import FormSuperAdmins from '../SuperAdmins/Form';
-import Tasks from '../Tasks/index';
-import TasksForm from '../Tasks/TasksForm';
-import TimeSheets from '../TimeSheets';
-import TimeSheetsForm from '../TimeSheets/TimeSheetsForm';
+import React, { lazy } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import EmployeeHome from '../Employee/Home';
-import EmployeeProjects from '../Employee/Projects';
-import EmployeeTimesheets from '../Employee/Timesheets';
-import EmployeeProfile from '../Employee/Profile';
+const Home = lazy(() => import('Components/Home'));
+const Admins = lazy(() => import('Components/Admins'));
+const AdminsForm = lazy(() => import('Components/Admins/Form'));
+const Employees = lazy(() => import('Components/Employees'));
+const EmployeesForm = lazy(() => import('Components/Employees/Form'));
+const Projects = lazy(() => import('Components/Projects'));
+const ProjectsForm = lazy(() => import('Components/Projects/Form'));
+const SuperAdmins = lazy(() => import('Components/SuperAdmins'));
+const FormSuperAdmins = lazy(() => import('Components/SuperAdmins/Form'));
+const Tasks = lazy(() => import('Components/Tasks'));
+const TasksForm = lazy(() => import('Components/Tasks/TasksForm'));
+const TimeSheets = lazy(() => import('Components/TimeSheets'));
+const TimeSheetsForm = lazy(() => import('Components/TimeSheets/TimeSheetsForm'));
+const EmployeeHome = lazy(() => import('Components/Employee/Home'));
+const EmployeeProjects = lazy(() => import('Components/Employee/Projects'));
+const EmployeeTimesheets = lazy(() => import('Components/Employee/Timesheets'));
+const EmployeeTimesheetsForm = lazy(() => import('Components/Employee/Timesheets/Form'));
+const EmployeeProfile = lazy(() => import('Components/Employee/Profile'));
 
 const Routes = () => {
   return (
@@ -33,8 +34,11 @@ const Routes = () => {
       <Route path="/employee/projects">
         <EmployeeProjects />
       </Route>
-      <Route path="/employee/time-sheets">
+      <Route exact path="/employee/time-sheets">
         <EmployeeTimesheets />
+      </Route>
+      <Route path="/employee/time-sheets/form">
+        <EmployeeTimesheetsForm />
       </Route>
       <Route path="/employee/profile">
         <EmployeeProfile />

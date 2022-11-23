@@ -32,6 +32,10 @@ code {
   color: var(--primaryColor);
 }
 
+a:active {
+  color: var(--primaryColorLight);
+}
+
 @media (prefers-color-scheme: dark) {
   body {
     background-color: var(--colorsBlendDark);
@@ -48,5 +52,9 @@ code {
   ::selection {
     background: #C8C798;
     color: var(--primaryColor);
+  }
+
+  a:active {
+    color: var(--secondaryColorLight);
   }
 }
