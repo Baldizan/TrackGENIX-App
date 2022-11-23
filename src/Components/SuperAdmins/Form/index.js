@@ -22,7 +22,7 @@ const FormSuperAdmins = () => {
     handleSubmit,
     register,
     reset,
-    formState: { errors }
+    formState: { errors, isValid }
   } = useForm({
     mode: 'all',
     resolver: joiResolver(schema)
@@ -64,6 +64,7 @@ const FormSuperAdmins = () => {
       <Form
         onSubmit={handleSubmit(onSubmit)}
         title={selectedSuperAdmin ? 'Edit Super Admin' : 'Add Super Admin'}
+        noValidate={!isValid}
       >
         <Input
           error={errors.name?.message}
@@ -105,7 +106,7 @@ const FormSuperAdmins = () => {
           heading={
             error
               ? error
-              : `Super Admin ${modalContent.name} ${modalContent.lastName} submitted successfully!`
+              : `Super Admin ${modalContent.name} ${modalContent.lastName} successfully submitted!`
           }
           setModalDisplay={handleModalClose}
           theme={error ? 'error' : 'success'}

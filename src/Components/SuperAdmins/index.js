@@ -10,9 +10,10 @@ import Error from 'Components/Shared/Error';
 import Loader from 'Components/Shared/Loader';
 
 const SuperAdmins = () => {
-  const [modalDisplay, setModalDisplay] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
-  const [successModalDisplay, setSuccessModalDisplay] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+  const [isFeedbackModal, setIsFeedbackModal] = useState(false);
+  const [modalContent, setModalContent] = useState({ message: '', theme: '' });
   const headers = { name: 'Name', lastName: 'Last Name', email: 'Email' };
   const history = useHistory();
   const dispatch = useDispatch();
@@ -24,12 +25,20 @@ const SuperAdmins = () => {
 
   const handleDelete = (item) => {
     setSelectedItem(item);
-    setModalDisplay(true);
+    setIsModal(true);
   };
 
   const deleteSuperAdmin = () => {
     dispatch(deleteSuperAdmins(selectedItem._id));
-    setSuccessModalDisplay(true);
+    if (error) {
+      setModalContent({ message: error.message, theme: 'error' });
+    } else {
+      setModalContent({
+        message: `${selectedItem.name} ${selectedItem.lastName} deleted successfully!`,
+        theme: 'success'
+      });
+      setIsFeedbackModal(true);
+    }
   };
 
   const handleEdit = (item) => {
@@ -51,17 +60,17 @@ const SuperAdmins = () => {
         />
       )}
       {error && <Error text={error} />}
-      {successModalDisplay && (
+      {isFeedbackModal && (
         <Modal
-          heading={`${selectedItem.name} ${selectedItem.lastName} deleted successfully!`}
-          setModalDisplay={setSuccessModalDisplay}
-          theme={'success'}
+          heading={modalContent.message}
+          setModalDisplay={setIsFeedbackModal}
+          theme={modalContent.theme}
         />
       )}
-      {modalDisplay && (
+      {isModal && (
         <Modal
           heading={`Are you sure you want to delete Super Admin: ${selectedItem.name} ${selectedItem.lastName}?`}
-          setModalDisplay={setModalDisplay}
+          setModalDisplay={setIsModal}
           theme={'confirm'}
         >
           <p>This change can not be undone!</p>
@@ -70,7 +79,7 @@ const SuperAdmins = () => {
               label={'Cancel'}
               theme={'primary'}
               onClick={() => {
-                setModalDisplay();
+                setIsModal();
               }}
             />
             <Button
@@ -78,7 +87,7 @@ const SuperAdmins = () => {
               theme="tertiary"
               onClick={() => {
                 deleteSuperAdmin();
-                setModalDisplay(false);
+                setIsModal(false);
               }}
             />
           </div>
