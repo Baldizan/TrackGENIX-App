@@ -67,86 +67,88 @@ const EmployeesForm = () => {
 
   return (
     <section className={styles.container}>
-      <Form
-        onSubmit={handleSubmit(onSubmit)}
-        title={selectedEmployee ? 'Edit employee' : 'Add employee'}
-        secondColumnIndex={3}
-        noValidate={!isValid}
-      >
-        <Input
-          id="name"
-          name="name"
-          title="First Name"
-          placeholder="Name"
-          register={register}
-          error={errors.name?.message}
-          required
-        />
-        <Input
-          id="lastName"
-          name="lastName"
-          title="Last Name"
-          placeholder="Last name"
-          register={register}
-          error={errors.lastName?.message}
-          required
-        />
-        <Input
-          id="phone"
-          name="phone"
-          title="Phone Number"
-          placeholder="Phone number"
-          type="number"
-          register={register}
-          error={errors.phone?.message}
-          required
-        />
-        <Input
-          id="email"
-          name="email"
-          title="Email address"
-          placeholder="Email"
-          register={register}
-          error={errors.email?.message}
-          required
-        />
-        <Input
-          id="password"
-          type="password"
-          name="password"
-          title="Password"
-          placeholder="Password"
-          register={register}
-          error={errors.password?.message}
-          required
-        />
-        <Select
-          name="project"
-          title="Project"
-          placeholder="Select project"
-          arrayToMap={projectsList.map((project) => ({
-            id: project._id,
-            label: project.name
-          }))}
-          register={register}
-          error={errors.project?.message}
-          required
-        />
-        {selectedEmployee ? (
-          <Select
-            name="active"
-            title="Active"
-            placeholder="Select status"
-            arrayToMap={[
-              { id: true, label: 'Active' },
-              { id: false, label: 'Inactive' }
-            ]}
+      {!isPending ? (
+        <Form
+          onSubmit={handleSubmit(onSubmit)}
+          title={selectedEmployee ? 'Edit employee' : 'Add employee'}
+          secondColumnIndex={3}
+          noValidate={!isValid}
+        >
+          <Input
+            id="name"
+            name="name"
+            title="First Name"
+            placeholder="Name"
             register={register}
-            error={errors.active?.message}
+            error={errors.name?.message}
             required
           />
-        ) : null}
-      </Form>
+          <Input
+            id="lastName"
+            name="lastName"
+            title="Last Name"
+            placeholder="Last name"
+            register={register}
+            error={errors.lastName?.message}
+            required
+          />
+          <Input
+            id="phone"
+            name="phone"
+            title="Phone Number"
+            placeholder="Phone number"
+            type="number"
+            register={register}
+            error={errors.phone?.message}
+            required
+          />
+          <Input
+            id="email"
+            name="email"
+            title="Email address"
+            placeholder="Email"
+            register={register}
+            error={errors.email?.message}
+            required
+          />
+          <Input
+            id="password"
+            type="password"
+            name="password"
+            title="Password"
+            placeholder="Password"
+            register={register}
+            error={errors.password?.message}
+            required
+          />
+          <Select
+            name="project"
+            title="Project"
+            placeholder="Select project"
+            arrayToMap={projectsList.map((project) => ({
+              id: project._id,
+              label: project.name
+            }))}
+            register={register}
+            error={errors.project?.message}
+            required
+          />
+          {selectedEmployee ? (
+            <Select
+              name="active"
+              title="Active"
+              placeholder="Select status"
+              arrayToMap={[
+                { id: true, label: 'Active' },
+                { id: false, label: 'Inactive' }
+              ]}
+              register={register}
+              error={errors.active?.message}
+              required
+            />
+          ) : null}
+        </Form>
+      ) : null}
       {isPending && <Loader />}
       {isModal && (
         <Modal
