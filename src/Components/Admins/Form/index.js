@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
-import { schema } from './validations';
 import { editAdmin, addAdmin } from 'redux/Admins/thunks';
+import { schema } from './validations';
 import styles from './form.module.css';
 import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
@@ -14,11 +14,11 @@ import Loader from 'Components/Shared/Loader';
 const FormAdmins = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [feedback, setFeedback] = useState({ name: '', lastName: '' });
+  const [isModal, setIsModal] = useState(false);
   const [selectedAdmin] = useState(history.location.state);
   const { isPending, error } = useSelector((state) => state.admins);
-  const [feedback, setFeedback] = useState({ name: '', lastName: '' });
   const titleForm = selectedAdmin ? 'Edit admin' : 'Add new admin';
-  const [modal, setModal] = useState(false);
   const {
     handleSubmit,
     register,
@@ -42,20 +42,20 @@ const FormAdmins = () => {
   const onSubmit = (data) => {
     if (selectedAdmin) {
       dispatch(editAdmin(selectedAdmin._id, data));
-      setModal(true);
+      setIsModal(true);
     } else {
       dispatch(addAdmin(data));
-      setModal(true);
+      setIsModal(true);
     }
     setFeedback({ name: data.name, lastName: data.lastName });
   };
 
-  const handleCloseModal = () => {
+  const handleModalClose = () => {
     if (!error) {
-      setModal(false);
+      setIsModal(false);
       history.push(`/admins`);
     } else {
-      setModal(false);
+      setIsModal(false);
     }
   };
 
@@ -97,12 +97,12 @@ const FormAdmins = () => {
         />
       </Form>
       {isPending && <Loader />}
-      {modal && (
+      {isModal && (
         <Modal
           heading={
             error ? error : `Admin ${feedback.name} ${feedback.lastName} submited successfully!`
           }
-          setModalDisplay={handleCloseModal}
+          setModalDisplay={handleModalClose}
           theme={error ? 'error' : 'success'}
         />
       )}
