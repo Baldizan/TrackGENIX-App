@@ -18,7 +18,6 @@ const EmployeeTimesheetsForm = () => {
   const dispatch = useDispatch();
   const [selectedTimesheet] = useState(history.location.state);
   const { isPending, error } = useSelector((state) => state.timesheets);
-
   const [isModal, setIsModal] = useState(false);
   const {
     handleSubmit,

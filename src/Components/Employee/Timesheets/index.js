@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTimeSheets } from 'redux/TimeSheets/thunks';
 import styles from './timesheets.module.css';
 import Table from 'Components/Shared/Table';
-import Modal from 'Components/Shared/Modal';
 import Loader from 'Components/Shared/Loader';
 import Error from 'Components/Shared/Error';
 
 const EmployeeTimesheets = () => {
-  const [successModalDisplay, setSuccessModalDisplay] = useState(false);
-  const [errorModalDisplay, setErrorModalDisplay] = useState(false);
   const { list: timesheetList, isPending, error } = useSelector((state) => state.timesheets);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -60,20 +57,6 @@ const EmployeeTimesheets = () => {
         />
       )}
       {error && <p>{error}</p>}
-      {successModalDisplay && (
-        <Modal
-          heading={'Timesheet deleted successfully!'}
-          setModalDisplay={setSuccessModalDisplay}
-          theme={'success'}
-        />
-      )}
-      {errorModalDisplay && (
-        <Modal
-          heading={`Could not delete Timesheet!`}
-          setModalDisplay={setErrorModalDisplay}
-          theme={'error'}
-        />
-      )}
     </section>
   );
 };
