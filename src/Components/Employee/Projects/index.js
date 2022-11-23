@@ -7,12 +7,10 @@ import Loader from 'Components/Shared/Loader';
 import Error from 'Components/Shared/Error';
 
 const EmployeeProjects = () => {
-  const { list: projectsList, isPending, error } = useSelector((state) => state.projects);
   const dispatch = useDispatch();
+  const { list: projectsList, isPending, error } = useSelector((state) => state.projects);
   const headers = {
     name: 'Project Name',
-    description: 'Description',
-    clientName: 'Client Name',
     startDate: 'Start Date',
     endDate: 'End Date'
   };
