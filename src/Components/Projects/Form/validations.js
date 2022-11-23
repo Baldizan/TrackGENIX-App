@@ -4,7 +4,7 @@ const employeesValidation = Joi.object({
   employeeId: Joi.string().required().messages({
     'string.empty': 'Select employee'
   }),
-  role: Joi.required().valid('DEV', 'QA', 'TL', 'PM').messages({
+  role: Joi.valid('DEV', 'QA', 'TL', 'PM').required().messages({
     'any.only': 'Select a role'
   }),
   rate: Joi.number().min(1).max(1000).required().messages({
@@ -20,7 +20,7 @@ export const schema = Joi.object({
   name: Joi.string()
     .min(3)
     .max(20)
-    .regex(/[a-zA-Z ]{2,254}/)
+    .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
     .required()
     .messages({
       'string.empty': 'Name required',
@@ -31,7 +31,7 @@ export const schema = Joi.object({
   clientName: Joi.string()
     .min(2)
     .max(30)
-    .regex(/[a-zA-Z ]{2,254}/)
+    .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
     .required()
     .messages({
       'string.empty': 'clientName required',

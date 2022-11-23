@@ -85,9 +85,6 @@ const ProjectsForm = () => {
     }
   };
 
-  console.log('fields', fields);
-  console.log('errors', errors);
-
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
