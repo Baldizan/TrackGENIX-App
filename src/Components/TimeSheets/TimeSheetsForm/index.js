@@ -24,13 +24,13 @@ const TimeSheetsForm = () => {
   const { list: tasks } = useSelector((state) => state.tasks);
   const { list: projects } = useSelector((state) => state.projects);
 
-  const [modalDisplay, setModalDisplay] = useState(false);
+  const [isModal, setIsModal] = useState(false);
   const titleForm = selectedTimesheet ? 'Edit Timesheet' : 'Add Timesheet';
   const {
     handleSubmit,
     register,
     reset,
-    formState: { errors /*, isValid*/ }
+    formState: { errors, isValid }
   } = useForm({
     mode: 'all',
     resolver: joiResolver(schema)
@@ -54,19 +54,19 @@ const TimeSheetsForm = () => {
   const onSubmit = (data) => {
     if (selectedTimesheet) {
       dispatch(editTimeSheet(selectedTimesheet._id, data));
-      setModalDisplay(true);
+      setIsModal(true);
     } else {
       dispatch(addTimeSheet(data));
-      setModalDisplay(true);
+      setIsModal(true);
     }
   };
 
-  const handleCloseModal = () => {
+  const handleModalClose = () => {
     if (!error) {
-      setModalDisplay(false);
+      setIsModal(false);
       history.push(`/time-sheets`);
     } else {
-      setModalDisplay(false);
+      setIsModal(false);
     }
   };
 
@@ -86,7 +86,7 @@ const TimeSheetsForm = () => {
           onSubmit={handleSubmit(onSubmit)}
           title={titleForm}
           secondColumnIndex={3}
-          // noValidate={!isValid}
+          noValidate={!isValid}
         >
           <Select
             register={register}
@@ -142,10 +142,10 @@ const TimeSheetsForm = () => {
           />
         </Form>
       )}
-      {modalDisplay && (
+      {isModal && (
         <Modal
           heading={error ? error : `Time Sheet successfully submitted!`}
-          setModalDisplay={handleCloseModal}
+          setModalDisplay={handleModalClose}
           theme={error ? 'error' : 'success'}
         />
       )}

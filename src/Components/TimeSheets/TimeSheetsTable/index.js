@@ -10,11 +10,11 @@ import Loader from 'Components/Shared/Loader';
 import Error from 'Components/Shared/Error';
 
 const List = () => {
-  const [deleteModalDisplay, setDeleteModalDisplay] = useState(false);
-  const [successModalDisplay, setSuccessModalDisplay] = useState(false);
-  const [errorModalDisplay, setErrorModalDisplay] = useState(false);
-  const [selectedItem, setSelectedItem] = useState({});
   const { list: timesheetList, isPending, error } = useSelector((state) => state.timesheets);
+  const [isModal, setIsModal] = useState(false);
+  const [isFeedbackModal, setIsFeedbackModal] = useState(false);
+  const [modalContent, setModalContent] = useState({ message: '', theme: '' });
+  const [selectedTimesheet, setSelectedTimesheet] = useState({});
   const dispatch = useDispatch();
   const history = useHistory();
   const headers = {
@@ -26,41 +26,44 @@ const List = () => {
     hours: 'Hours'
   };
 
-  const timeSheetData = () => {
-    return timesheetList.map((row) => {
-      return {
-        ...row,
-        date: row.date.slice(0, 10),
-        project: row.project?._id,
-        task: row.task?._id,
-        employee: row.employee?._id,
-        projectName: row.project?.name ?? 'N/A',
-        taskDescription: row.task?.description ?? 'N/A',
-        employeeFormat: row.employee ? `${row.employee?.name} ${row.employee?.lastName}` : 'N/A'
-      };
-    });
-  };
+  const timesheetsColumns = timesheetList.map((row) => ({
+    ...row,
+    date: row.date.slice(0, 10),
+    project: row.project?._id,
+    task: row.task?._id,
+    employee: row.employee?._id,
+    projectName: row.project?.name ?? 'N/A',
+    taskDescription: row.task?.description ?? 'N/A',
+    employeeFormat: row.employee ? `${row.employee?.name} ${row.employee?.lastName}` : 'N/A'
+  }));
 
   useEffect(() => {
     dispatch(getTimeSheets());
   }, []);
 
   const handleDelete = (item) => {
-    setSelectedItem(item);
-    setDeleteModalDisplay(true);
-  };
-
-  const showSuccessModal = () => {
-    setSuccessModalDisplay(true);
+    setSelectedTimesheet(item);
+    setIsModal(true);
   };
 
   const deleteItem = () => {
-    showSuccessModal(true);
-    dispatch(deleteTimeSheet(selectedItem._id));
+    if (selectedTimesheet) {
+      dispatch(deleteTimeSheet(selectedTimesheet._id));
+      if (!error) {
+        setModalContent({ message: 'Time-sheet deleted successfully', theme: 'success' });
+        setIsFeedbackModal(true);
+      } else {
+        setModalContent({
+          message: `The time-sheet could not be deleted. Status: ${error.status} ${error.statusText}`,
+          theme: 'error'
+        });
+        setIsFeedbackModal(true);
+      }
+    }
   };
 
   const handleEdit = (item) => {
-    setSelectedItem(item);
+    setSelectedTimesheet(item);
     history.push(`/time-sheets/form`, {
       ...item,
       project: item.project,
@@ -76,7 +79,7 @@ const List = () => {
       {!isPending && !error && (
         <Table
           headers={headers}
-          data={timeSheetData()}
+          data={timesheetsColumns}
           editItem={handleEdit}
           deleteItem={handleDelete}
           title="Timesheets"
@@ -85,10 +88,10 @@ const List = () => {
         />
       )}
       {error && <p>{error}</p>}
-      {deleteModalDisplay && (
+      {isModal && (
         <Modal
           heading={`Do you want to delete this Timesheet?`}
-          setModalDisplay={setDeleteModalDisplay}
+          setModalDisplay={setIsModal}
           theme={'confirm'}
         >
           <p>This change can not be undone!</p>
@@ -97,7 +100,7 @@ const List = () => {
               label={'Cancel'}
               theme={'primary'}
               onClick={() => {
-                setDeleteModalDisplay();
+                setIsModal();
               }}
             />
             <Button
@@ -105,24 +108,17 @@ const List = () => {
               theme={'tertiary'}
               onClick={() => {
                 deleteItem();
-                setDeleteModalDisplay(false);
+                setIsModal(false);
               }}
             />
           </div>
         </Modal>
       )}
-      {successModalDisplay && (
+      {isFeedbackModal && (
         <Modal
-          heading={'Timesheet deleted successfully!'}
-          setModalDisplay={setSuccessModalDisplay}
-          theme={'success'}
-        />
-      )}
-      {errorModalDisplay && (
-        <Modal
-          heading={`Could not delete Timesheet!`}
-          setModalDisplay={setErrorModalDisplay}
-          theme={'error'}
+          heading={modalContent.message}
+          setModalDisplay={setIsFeedbackModal}
+          theme={modalContent.theme}
         />
       )}
     </section>
