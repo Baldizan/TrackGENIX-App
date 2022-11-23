@@ -19,10 +19,10 @@ const ProjectsForm = () => {
   const dispatch = useDispatch();
   const projectId = history.location.state?.id;
   const project = history.location.state?.project;
-  const { isPending } = useSelector((state) => state.projects);
   const [displayForm, setDisplayForm] = useState(false);
-  const { list: employees, error } = useSelector((state) => state.employees);
   const [feedbackModal, setFeedbackModal] = useState(false);
+  const { isPending } = useSelector((state) => state.projects);
+  const { list: employees, error } = useSelector((state) => state.employees);
   const roles = ['DEV', 'TL', 'QA', 'PM'];
   const statusProject = ['Active', 'Inactive'];
   const {
@@ -84,6 +84,9 @@ const ProjectsForm = () => {
       setFeedbackModal(true);
     }
   };
+
+  console.log('fields', fields);
+  console.log('errors', errors);
 
   return (
     <section className={styles.container}>
@@ -181,6 +184,9 @@ const ProjectsForm = () => {
                   label: employee.name + ' ' + employee.lastName
                 })) ?? []
               }
+              error={
+                errors.employees ? errors.employees[fields.length - 1].employeeId?.message : ''
+              }
               register={register}
             />
             <Select
@@ -192,6 +198,7 @@ const ProjectsForm = () => {
                 label: rol
               }))}
               register={register}
+              error={errors.employees ? errors.employees[fields.length - 1].role?.message : ''}
             />
             <div className={styles.btnContainer}>
               <Input
@@ -200,6 +207,7 @@ const ProjectsForm = () => {
                 placeholder="Rate"
                 type="number"
                 register={register}
+                error={errors.employees ? errors.employees[fields.length - 1].rate?.message : ''}
               />
 
               <Button
@@ -207,6 +215,7 @@ const ProjectsForm = () => {
                 style={styles.btnAssign}
                 label="Assign"
                 onClick={assignEmployee}
+                disabled={errors.employees}
               />
             </div>
           </>
@@ -215,7 +224,9 @@ const ProjectsForm = () => {
       {feedbackModal && (
         <Modal
           setModalDisplay={handleModalClose}
-          heading={project ? 'Project edited' : 'Project added'}
+          heading={
+            project ? `${project.name} successfully edited` : `Project successfully submitted`
+          }
           theme={error ? 'error' : 'success'}
         ></Modal>
       )}

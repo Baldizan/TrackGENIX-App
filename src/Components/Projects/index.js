@@ -12,11 +12,11 @@ import { getProjects, deleteProject } from 'redux/Projects/thunks';
 const Projects = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { list: projectsList, isPending, error } = useSelector((state) => state.projects);
+  const { list: projectsArray, isPending, error } = useSelector((state) => state.projects);
   const [modal, setModal] = useState(false);
   const [modalEmployee, setModalEmployee] = useState(false);
   const [projectEmployees, setProjectEmployees] = useState([]);
-  const [feedbackModal, setFeedbackModal] = useState(false);
+  const [isModal, setFeedbackModal] = useState(false);
   const [feedback, setFeedback] = useState({ heading: '', theme: '' });
   const [itemToDelete, setItemToDelete] = useState({});
   const headers = {
@@ -32,6 +32,20 @@ const Projects = () => {
   useEffect(() => {
     dispatch(getProjects());
   }, []);
+
+  const projectColumns = projectsArray.map((row) => ({
+    ...row,
+    status: row.active ? 'Active' : 'Inactive',
+    startDateFormat: row.startDate.slice(0, 10),
+    endDateFormat: row.endDate.slice(0, 10),
+    employeesCmp: (
+      <Button
+        label="See employees"
+        theme="primary"
+        onClick={() => showEmployees(row.employees.filter((employee) => employee.id !== null))}
+      />
+    )
+  }));
 
   const handleEdit = (item) => {
     history.push('/projects/form', {
@@ -78,20 +92,6 @@ const Projects = () => {
       setModalEmployee(true);
     }
   };
-
-  const projectColumns = projectsList.map((row) => ({
-    ...row,
-    status: row.active ? 'Active' : 'Inactive',
-    startDateFormat: row.startDate.slice(0, 10),
-    endDateFormat: row.endDate.slice(0, 10),
-    employeesCmp: (
-      <Button
-        label="See employees"
-        theme="primary"
-        onClick={() => showEmployees(row.employees.filter((employee) => employee.id !== null))}
-      />
-    )
-  }));
 
   return (
     <section className={styles.container}>
@@ -142,7 +142,7 @@ const Projects = () => {
           />
         </Modal>
       )}
-      {feedbackModal && (
+      {isModal && (
         <Modal
           setModalDisplay={setFeedbackModal}
           heading={feedback.heading}
