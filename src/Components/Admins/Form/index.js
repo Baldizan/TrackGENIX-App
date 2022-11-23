@@ -23,7 +23,7 @@ const FormAdmins = () => {
     handleSubmit,
     register,
     reset,
-    formState: { errors }
+    formState: { errors, isValid }
   } = useForm({
     mode: 'all',
     resolver: joiResolver(schema)
@@ -61,7 +61,7 @@ const FormAdmins = () => {
 
   return (
     <section className={styles.container}>
-      <Form onSubmit={handleSubmit(onSubmit)} title={titleForm}>
+      <Form onSubmit={handleSubmit(onSubmit)} title={titleForm} noValidate={!isValid}>
         <Input
           register={register}
           placeholder={'Enter your name'}
