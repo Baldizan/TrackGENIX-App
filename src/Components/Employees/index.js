@@ -10,13 +10,13 @@ import Loader from 'Components/Shared/Loader/index.js';
 import Error from 'Components/Shared/Error/index.js';
 
 const Employees = () => {
-  const [modalDisplay, setModalDisplay] = useState(false);
-  const [selectedEmployee, setSelectedEmployee] = useState({});
-  const [feedbackModalDisplay, setFeedbackModalDisplay] = useState(false);
-  const { list: employeesList, isPending, error } = useSelector((state) => state.employees);
-  const dispatch = useDispatch();
-  const [modalContent, setModalContent] = useState({ message: '', theme: '' });
   const history = useHistory();
+  const dispatch = useDispatch();
+  const { list: employeesList, isPending, error } = useSelector((state) => state.employees);
+  const [selectedEmployee, setSelectedEmployee] = useState({});
+  const [isModal, setIsModal] = useState(false);
+  const [isFeedbackModal, setIsFeedbackModal] = useState(false);
+  const [modalContent, setModalContent] = useState({ message: '', theme: '' });
   const headers = {
     name: 'Name',
     lastName: 'Last Name',
@@ -36,28 +36,28 @@ const Employees = () => {
     project: row.project?.name ?? 'N/A'
   }));
 
-  const employeeDelete = (item) => {
+  const handleDelete = (item) => {
     setSelectedEmployee(item);
-    setModalDisplay(true);
+    setIsModal(true);
   };
 
-  const handleDelete = () => {
+  const deleteItem = () => {
     if (selectedEmployee) {
       dispatch(deleteEmployee(selectedEmployee._id));
       if (!error) {
         setModalContent({ message: 'Employee deleted successfully', theme: 'success' });
-        setFeedbackModalDisplay(true);
+        setIsFeedbackModal(true);
       } else {
         setModalContent({
           message: `The employee could not be deleted. Status: ${error.status} ${error.statusText}`,
           theme: 'error'
         });
-        setFeedbackModalDisplay(true);
+        setIsFeedbackModal(true);
       }
     }
   };
 
-  const employeeEdit = (item) => {
+  const handleEdit = (item) => {
     history.push('/employees/form', { ...item, project: item.project?._id });
   };
 
@@ -67,42 +67,42 @@ const Employees = () => {
         <Table
           data={employeesColumns}
           headers={headers}
-          editItem={employeeEdit}
-          deleteItem={employeeDelete}
+          editItem={handleEdit}
+          deleteItem={handleDelete}
           title="Employees"
           addRedirectLink={'/employees/form'}
           itemsPerPage={5}
         />
       )}
-      {feedbackModalDisplay && (
+      {isFeedbackModal && (
         <Modal
           heading={modalContent.message}
-          setModalDisplay={setFeedbackModalDisplay}
+          setModalDisplay={setIsFeedbackModal}
           theme={modalContent.theme}
         />
       )}
       {isPending && <Loader />}
       {error && <Error text={error} />}
-      {modalDisplay && (
+      {isModal && (
         <Modal
-          heading={`Are you sure you want to delete employee: ${selectedEmployee.name} ${selectedEmployee.lastName}?`}
-          setModalDisplay={setModalDisplay}
+          heading={`Are you sure you want to delete employee ${selectedEmployee.name} ${selectedEmployee.lastName}?`}
+          setModalDisplay={setIsModal}
           theme={'confirm'}
         >
-          <p>This change cannot be undone</p>
+          <p>This change cannot be undone!</p>
           <Button
             label={'Cancel'}
             theme={'primary'}
             onClick={() => {
-              setModalDisplay();
+              setIsModal();
             }}
           />
           <Button
             label="Confirm"
             theme="tertiary"
             onClick={() => {
-              handleDelete();
-              setModalDisplay(false);
+              deleteItem();
+              setIsModal(false);
             }}
           />
         </Modal>

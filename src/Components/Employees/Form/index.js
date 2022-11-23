@@ -18,8 +18,8 @@ const EmployeesForm = () => {
   const [selectedEmployee] = useState(history.location.state);
   const { isPending, error } = useSelector((state) => state.employees);
   const { list: projectsList } = useSelector((state) => state.projects);
-  const [modalDisplay, setModalDisplay] = useState(false);
-  const [feedback, setFeedback] = useState({ name: '', lastName: '' });
+  const [isModal, setIsModal] = useState(false);
+  const [modalContent, setModalContent] = useState({ name: '', lastName: '' });
 
   const {
     handleSubmit,
@@ -36,7 +36,7 @@ const EmployeesForm = () => {
       reset({
         name: selectedEmployee?.name,
         lastName: selectedEmployee?.lastName,
-        phone: selectedEmployee?.phone,
+        phone: selectedEmployee?.phone?.toString(),
         email: selectedEmployee?.email,
         password: selectedEmployee?.password,
         project: selectedEmployee?.project,
@@ -47,21 +47,21 @@ const EmployeesForm = () => {
   const onSubmit = (data) => {
     if (selectedEmployee) {
       dispatch(putEmployee(selectedEmployee._id, data));
-      setFeedback({ name: data.name, lastName: data.lastName });
-      setModalDisplay(true);
+      setModalContent({ name: data.name, lastName: data.lastName });
+      setIsModal(true);
     } else {
       dispatch(postEmployee(data));
-      setFeedback({ name: data.name, lastName: data.lastName });
-      setModalDisplay(true);
+      setModalContent({ name: data.name, lastName: data.lastName });
+      setIsModal(true);
     }
   };
 
   const handleCloseModal = () => {
     if (!error) {
-      setModalDisplay(false);
+      setIsModal(false);
       history.push(`/employees`);
     } else {
-      setModalDisplay(false);
+      setIsModal(false);
     }
   };
 
@@ -96,6 +96,7 @@ const EmployeesForm = () => {
           name="phone"
           title="Phone Number"
           placeholder="Phone number"
+          type="number"
           register={register}
           error={errors.phone?.message}
           required
@@ -147,10 +148,12 @@ const EmployeesForm = () => {
         ) : null}
       </Form>
       {isPending && <Loader />}
-      {modalDisplay && (
+      {isModal && (
         <Modal
           heading={
-            error ? error : `Employee ${feedback.name} ${feedback.lastName} successfully submitted!`
+            error
+              ? error
+              : `Employee ${modalContent.name} ${modalContent.lastName} successfully submitted!`
           }
           setModalDisplay={handleCloseModal}
           theme={error ? 'error' : 'success'}
