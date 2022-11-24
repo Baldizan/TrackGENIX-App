@@ -61,42 +61,44 @@ const FormAdmins = () => {
 
   return (
     <section className={styles.container}>
-      <Form onSubmit={handleSubmit(onSubmit)} title={titleForm} noValidate={!isValid}>
-        <Input
-          register={register}
-          placeholder={'Enter your name'}
-          name="name"
-          title="Name"
-          required
-          error={errors.name?.message}
-        />
-        <Input
-          register={register}
-          placeholder={'Enter your last name'}
-          name="lastName"
-          title="Last Name"
-          required
-          error={errors.lastName?.message}
-        />
-        <Input
-          register={register}
-          placeholder={'Enter a valid email address'}
-          name="email"
-          title="Email"
-          required
-          error={errors.email?.message}
-        />
-        <Input
-          register={register}
-          placeholder={'Enter a password'}
-          type="password"
-          name="password"
-          title="Password"
-          required
-          error={errors.password?.message}
-        />
-      </Form>
       {isPending && <Loader />}
+      {!isPending && (
+        <Form onSubmit={handleSubmit(onSubmit)} title={titleForm} noValidate={!isValid}>
+          <Input
+            register={register}
+            placeholder={'Enter your name'}
+            name="name"
+            title="Name"
+            required
+            error={errors.name?.message}
+          />
+          <Input
+            register={register}
+            placeholder={'Enter your last name'}
+            name="lastName"
+            title="Last Name"
+            required
+            error={errors.lastName?.message}
+          />
+          <Input
+            register={register}
+            placeholder={'Enter a valid email address'}
+            name="email"
+            title="Email"
+            required
+            error={errors.email?.message}
+          />
+          <Input
+            register={register}
+            placeholder={'Enter a password'}
+            type="password"
+            name="password"
+            title="Password"
+            required
+            error={errors.password?.message}
+          />
+        </Form>
+      )}
       {isModal && (
         <Modal
           heading={

@@ -6,6 +6,7 @@ import styles from './admins.module.css';
 import Modal from 'Components/Shared/Modal';
 import Table from 'Components/Shared/Table';
 import Button from 'Components/Shared/Button';
+import Loader from 'Components/Shared/Loader';
 
 const Admins = () => {
   const history = useHistory();
@@ -41,7 +42,7 @@ const Admins = () => {
 
   return (
     <section className={styles.container}>
-      {isPending && <p>...Loading</p>}
+      {isPending && <Loader />}
       {!isPending && !error && (
         <Table
           data={adminsArray}
