@@ -8,7 +8,6 @@ const Input = ({
   id,
   type,
   value,
-  onChange,
   placeholder,
   disabled,
   required,
@@ -29,7 +28,6 @@ const Input = ({
           type={type}
           value={value}
           required={required}
-          {...register(name)}
         />
       </label>
       <p className={`${styles.error} ${!error && styles.hidden}`}>{error}</p>
@@ -64,7 +62,6 @@ const Select = ({
         type={type}
         value={value}
         required={required}
-        {...register(name)}
       >
         <option value="" disabled hidden selected>
           {placeholder}
