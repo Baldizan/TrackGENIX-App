@@ -31,13 +31,13 @@ export const schema = Joi.object({
   clientName: Joi.string()
     .min(2)
     .max(30)
-    .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
+    .regex(/^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
     .required()
     .messages({
-      'string.empty': 'clientName required',
-
-      'string.min': 'clientName should have a minimum length of 2 characters',
-      'string.max': 'clientName should have a maximum length of 30 characters'
+      'string.empty': 'Client Name required',
+      'string.pattern.base': 'Name should be letters only',
+      'string.min': 'Client Name should have a minimum length of 2 characters',
+      'string.max': 'Client Name should have a maximum length of 30 characters'
     }),
   description: Joi.string().min(5).max(150).required().messages({
     'string.empty': 'Description required',
