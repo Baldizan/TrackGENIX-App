@@ -1,21 +1,22 @@
-import styles from './admins.module.css';
 import { useHistory } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAdmins, deleteAdmin } from '../../redux/Admins/thunks';
-import Modal from '../Shared/Modal';
-import Table from '../Shared/Table';
-import Button from '../Shared/Button';
+import { getAdmins, deleteAdmin } from 'redux/Admins/thunks';
+import styles from './admins.module.css';
+import Modal from 'Components/Shared/Modal';
+import Table from 'Components/Shared/Table';
+import Button from 'Components/Shared/Button';
+import Loader from 'Components/Shared/Loader';
 
 const Admins = () => {
-  const { list: adminsList, isPending, error } = useSelector((state) => state.admins);
-  const dispatch = useDispatch();
-  const [deleteModalDisplay, setDeleteModalDisplay] = useState(false);
-  const [successModalDisplay, setSuccessModalDisplay] = useState(false);
-  const [errorModalDisplay, setErrorModalDisplay] = useState(false);
-  const [selectedAdmin, setSelectedAdmin] = useState({});
-  const headers = { name: 'Name', lastName: 'Last Name', email: 'Email' };
   const history = useHistory();
+  const dispatch = useDispatch();
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [isSuccessModal, setIsSuccessModal] = useState(false);
+  const [isErrorModal, setIsErrorModal] = useState(false);
+  const [adminToDelete, setAdminToDelete] = useState({});
+  const { list: adminsArray, isPending, error } = useSelector((state) => state.admins);
+  const headers = { name: 'Name', lastName: 'Last Name', email: 'Email' };
 
   useEffect(() => {
     dispatch(getAdmins());
@@ -23,16 +24,16 @@ const Admins = () => {
 
   const adminDelete = () => {
     showSuccessModal(true);
-    dispatch(deleteAdmin(selectedAdmin._id));
+    dispatch(deleteAdmin(adminToDelete._id));
   };
 
-  const handleDeleteAdmin = (item) => {
-    setSelectedAdmin(item);
-    setDeleteModalDisplay(true);
+  const handleDelete = (item) => {
+    setAdminToDelete(item);
+    setIsDeleteModal(true);
   };
 
   const showSuccessModal = () => {
-    setSuccessModalDisplay(true);
+    setIsSuccessModal(true);
   };
 
   const addEditAdmin = (item) => {
@@ -41,23 +42,23 @@ const Admins = () => {
 
   return (
     <section className={styles.container}>
-      {isPending && <p>...Loading</p>}
+      {isPending && <Loader />}
       {!isPending && !error && (
         <Table
-          data={adminsList}
+          data={adminsArray}
           headers={headers}
           editItem={addEditAdmin}
-          deleteItem={handleDeleteAdmin}
+          deleteItem={handleDelete}
           title={'Admins'}
           addRedirectLink={'/admins/form'}
           itemsPerPage={5}
         />
       )}
       {error && <p>Admin not found</p>}
-      {deleteModalDisplay && (
+      {isDeleteModal && (
         <Modal
-          heading={`Do you want to delete admin ${selectedAdmin.name} ${selectedAdmin.lastName}?`}
-          setModalDisplay={setDeleteModalDisplay}
+          heading={`Do you want to delete admin ${adminToDelete.name} ${adminToDelete.lastName}?`}
+          setModalDisplay={setIsDeleteModal}
           theme={'confirm'}
         >
           <p>This change can not be undone!</p>
@@ -66,7 +67,7 @@ const Admins = () => {
               label={'Cancel'}
               theme={'primary'}
               onClick={() => {
-                setDeleteModalDisplay();
+                setIsDeleteModal();
               }}
             />
             <Button
@@ -74,23 +75,23 @@ const Admins = () => {
               theme={'tertiary'}
               onClick={() => {
                 adminDelete();
-                setDeleteModalDisplay(false);
+                setIsDeleteModal(false);
               }}
             />
           </div>
         </Modal>
       )}
-      {successModalDisplay && (
+      {isSuccessModal && (
         <Modal
-          heading={`Admin ${selectedAdmin.name} ${selectedAdmin.lastName} deleted successfully!`}
-          setModalDisplay={setSuccessModalDisplay}
+          heading={`Admin ${adminToDelete.name} ${adminToDelete.lastName} successfully deleted!`}
+          setModalDisplay={setIsSuccessModal}
           theme={'success'}
         />
       )}
-      {errorModalDisplay && (
+      {isErrorModal && (
         <Modal
-          heading={`Could not delete admin ${selectedAdmin.name} ${selectedAdmin.lastName}!`}
-          setModalDisplay={setErrorModalDisplay}
+          heading={`Could not delete admin ${adminToDelete.name} ${adminToDelete.lastName}!`}
+          setModalDisplay={setIsErrorModal}
           theme={'error'}
         />
       )}
