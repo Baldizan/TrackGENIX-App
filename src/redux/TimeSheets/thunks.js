@@ -82,7 +82,7 @@ export const addTimeSheet = (data) => {
   };
 };
 
-export const editTimeSheet = (data, id) => {
+export const editTimeSheet = (id, data) => {
   return async (dispatch) => {
     dispatch(putTimeSheetPending());
     try {

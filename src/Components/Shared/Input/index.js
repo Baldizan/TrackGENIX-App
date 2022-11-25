@@ -2,7 +2,18 @@ import styles from './input.module.css';
 
 import React from 'react';
 
-const Input = ({ name, title, id, type, register, placeholder, disabled, error }) => {
+const Input = ({
+  name,
+  title,
+  id,
+  type,
+  value,
+  placeholder,
+  disabled,
+  required,
+  error,
+  register = () => {}
+}) => {
   return (
     <>
       <label className={styles.label}>
@@ -15,6 +26,9 @@ const Input = ({ name, title, id, type, register, placeholder, disabled, error }
           name={name}
           placeholder={placeholder}
           type={type}
+          value={value}
+          required={required}
+          {...register(name)}
         />
       </label>
       <p className={`${styles.error} ${!error && styles.hidden}`}>{error}</p>
@@ -33,8 +47,8 @@ const Select = ({
   arrayToMap,
   disabled,
   required,
-  register,
-  error
+  error,
+  register = () => {}
 }) => {
   return (
     <label className={styles.label}>
@@ -49,8 +63,9 @@ const Select = ({
         type={type}
         value={value}
         required={required}
+        {...register(name)}
       >
-        <option value="" hidden disabled>
+        <option value="" disabled hidden selected>
           {placeholder}
         </option>
         {arrayToMap.map((item, index) => {
