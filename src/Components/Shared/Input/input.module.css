@@ -51,10 +51,11 @@
 
 .error {
   min-height: 12px;
-  color: #f13312;
+  color: var(--errorAlertColor);
   font-size: 12px;
-  font-weight: 300;
+  font-weight: 700;
   line-height: 1;
+  letter-spacing: 0.125rem;
 }
 
 .hidden {
@@ -88,5 +89,8 @@ input[type='number'] {
 
   .input:focus {
     background-color: var(--primaryColorLighter);
+  }
+  .error {
+    color: #fff;
   }
 }

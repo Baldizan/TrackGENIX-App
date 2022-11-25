@@ -15,23 +15,21 @@ const Input = ({
   register = () => {}
 }) => {
   return (
-    <>
-      <label className={styles.label}>
-        {title}
-        <input
-          {...register(name, { required: { value: true, message: 'error' } })}
-          className={`${disabled && styles.disabled} ${styles.input}`}
-          disabled={disabled}
-          id={id}
-          name={name}
-          placeholder={placeholder}
-          type={type}
-          value={value}
-          required={required}
-        />
-      </label>
+    <label className={styles.label}>
+      {title}
+      <input
+        {...register(name, { required: { value: true, message: 'error' } })}
+        className={`${disabled && styles.disabled} ${styles.input}`}
+        disabled={disabled}
+        id={id}
+        name={name}
+        placeholder={placeholder}
+        type={type}
+        value={value}
+        required={required}
+      />
       <p className={`${styles.error} ${!error && styles.hidden}`}>{error}</p>
-    </>
+    </label>
   );
 };
 
