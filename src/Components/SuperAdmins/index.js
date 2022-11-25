@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import styles from './super-admins.module.css';
-import Button from '../Shared/Button';
-import Table from '../Shared/Table';
-import Modal from '../Shared/Modal';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSuperAdmins, deleteSuperAdmins } from '../../redux/SuperAdmins/thunks';
+import { getSuperAdmins, deleteSuperAdmins } from 'redux/SuperAdmins/thunks';
+import styles from './super-admins.module.css';
+import Button from 'Components/Shared/Button';
+import Table from 'Components/Shared/Table';
+import Modal from 'Components/Shared/Modal';
+import Error from 'Components/Shared/Error';
+import Loader from 'Components/Shared/Loader';
 
 const SuperAdmins = () => {
-  const [modalDisplay, setModalDisplay] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
-  const [successModalDisplay, setSuccessModalDisplay] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+  const [isFeedbackModal, setIsFeedbackModal] = useState(false);
+  const [modalContent, setModalContent] = useState({ message: '', theme: '' });
   const headers = { name: 'Name', lastName: 'Last Name', email: 'Email' };
   const history = useHistory();
   const dispatch = useDispatch();
@@ -20,60 +23,74 @@ const SuperAdmins = () => {
     dispatch(getSuperAdmins());
   }, []);
 
-  const deleteItem = (item) => {
+  const handleDelete = (item) => {
     setSelectedItem(item);
-    setModalDisplay(true);
+    setIsModal(true);
   };
 
-  const showSuccessModal = () => {
-    setSuccessModalDisplay(true);
-  };
-
-  const handleDelete = () => {
+  const deleteSuperAdmin = () => {
     dispatch(deleteSuperAdmins(selectedItem._id));
-    showSuccessModal(true);
+    if (error) {
+      setModalContent({ message: error.message, theme: 'error' });
+    } else {
+      setModalContent({
+        message: `${selectedItem.name} ${selectedItem.lastName} deleted successfully!`,
+        theme: 'success'
+      });
+      setIsFeedbackModal(true);
+    }
   };
 
   const handleEdit = (item) => {
-    history.push('/super-admins/form', { id: item._id });
+    history.push('/super-admins/form', item);
   };
 
   return (
     <section className={styles.container}>
-      {isPending && <p>...loading</p>}
+      {isPending && <Loader />}
       {!isPending && !error && (
         <Table
           headers={headers}
           data={superAdmins ?? []}
           editItem={handleEdit}
-          deleteItem={deleteItem}
+          deleteItem={handleDelete}
           title={'Super Admins'}
           addRedirectLink={'super-admins/form'}
           itemsPerPage={5}
         />
       )}
-      {error && <p>{error}</p>}
-      {successModalDisplay && (
+      {error && <Error text={error} />}
+      {isFeedbackModal && (
         <Modal
-          heading={`${selectedItem.name} ${selectedItem.lastName} deleted successfully!`}
-          setModalDisplay={setSuccessModalDisplay}
-          theme={'success'}
+          heading={modalContent.message}
+          setModalDisplay={setIsFeedbackModal}
+          theme={modalContent.theme}
         />
       )}
-      {modalDisplay && (
+      {isModal && (
         <Modal
-          heading={'Are you sure you want to delete this Super-Admin?'}
-          setModalDisplay={setModalDisplay}
+          heading={`Are you sure you want to delete Super Admin: ${selectedItem.name} ${selectedItem.lastName}?`}
+          setModalDisplay={setIsModal}
           theme={'confirm'}
         >
-          <Button
-            label="Confirm"
-            theme="tertiary"
-            onClick={() => {
-              handleDelete();
-              setModalDisplay(false);
-            }}
-          />
+          <p>This change can not be undone!</p>
+          <div className={styles.buttons}>
+            <Button
+              label={'Cancel'}
+              theme={'primary'}
+              onClick={() => {
+                setIsModal();
+              }}
+            />
+            <Button
+              label="Confirm"
+              theme="tertiary"
+              onClick={() => {
+                deleteSuperAdmin();
+                setIsModal(false);
+              }}
+            />
+          </div>
         </Modal>
       )}
     </section>
