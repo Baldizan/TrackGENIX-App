@@ -75,7 +75,7 @@ const EmployeeProfile = () => {
           name="email"
           title="Email"
           register={register}
-          error={errors.mail?.message}
+          error={errors.email?.message}
         />
         <Input
           placeholder="Edit your password"
