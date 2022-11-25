@@ -4,7 +4,7 @@ export const schema = Joi.object({
   name: Joi.string()
     .min(3)
     .max(20)
-    .regex(/^([^0-9]*)$/i)
+    .pattern(/^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
     .messages({
       'string.empty': 'This field is required.',
       'string.min': 'Name must contain at least 3 letters.',
@@ -14,7 +14,7 @@ export const schema = Joi.object({
   lastName: Joi.string()
     .min(3)
     .max(20)
-    .pattern(/^([^0-9]*)$/i, 'Only letters')
+    .pattern(/^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
     .messages({
       'string.empty': 'This field is required.',
       'string.min': 'Last name must contain at least 3 letters.',
