@@ -4,7 +4,7 @@ export const schema = Joi.object({
   name: Joi.string()
     .min(3)
     .max(20)
-    .pattern(/^([^0-9]*)$/i)
+    .pattern(/^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
     .messages({
       'string.pattern.base': 'Must contain only letters',
       'string.min': 'Must have at least 3 characters',
@@ -14,7 +14,7 @@ export const schema = Joi.object({
   lastName: Joi.string()
     .min(3)
     .max(20)
-    .pattern(/^([^0-9]*)$/i)
+    .pattern(/^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
     .messages({
       'string.pattern.base': 'Must contain only letters',
       'string.min': 'Must have at least 3 characters',
