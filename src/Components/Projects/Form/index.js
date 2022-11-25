@@ -1,222 +1,232 @@
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import styles from './form.module.css';
-import Form from 'Components/Shared/Form';
-import Button from 'Components/Shared/Button';
-import { Input, Select } from 'Components/Shared/Input';
-import Table from 'Components/Shared/Table';
-import Modal from 'Components/Shared/Modal';
+import { useSelector, useDispatch } from 'react-redux';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
 import { getEmployees } from 'redux/Employees/thunks';
 import { postProject, putProject } from 'redux/Projects/thunks';
+import styles from './form.module.css';
+import { schema } from './validations';
+import Button from 'Components/Shared/Button';
+import { Input, Select } from 'Components/Shared/Input';
+import Form from 'Components/Shared/Form';
+import Table from 'Components/Shared/Table';
+import Modal from 'Components/Shared/Modal';
+import Loader from 'Components/Shared/Loader';
 
 const ProjectsForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { isPending, error } = useSelector((state) => state.projects);
-  const { list: employees } = useSelector((state) => state.employees);
   const projectId = history.location.state?.id;
-  const [employee, setEmployee] = useState({
-    id: '',
-    role: '',
-    rate: ''
-  });
-  const [project, setProject] = useState({
-    name: '',
-    description: '',
-    startDate: '',
-    endDate: '',
-    clientName: '',
-    active: false,
-    employees: []
-  });
+  const project = history.location.state?.project;
+  const [displayForm, setDisplayForm] = useState(false);
   const [feedbackModal, setFeedbackModal] = useState(false);
+  const { isPending } = useSelector((state) => state.projects);
+  const { list: employees, error } = useSelector((state) => state.employees);
   const roles = ['DEV', 'TL', 'QA', 'PM'];
   const statusProject = ['Active', 'Inactive'];
+  const {
+    control,
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset
+  } = useForm({
+    mode: 'all',
+    resolver: joiResolver(schema)
+  });
+  const { fields, update, remove, append } = useFieldArray({
+    control,
+    name: 'employees'
+  });
 
   useEffect(() => {
     dispatch(getEmployees());
-    if (projectId) {
-      fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`)
-        .then((res) => res.json())
-        .then((res) => {
-          setProject({
-            name: res.data?.name,
-            description: res.data?.description,
-            startDate: res.data?.startDate.slice(0, 10),
-            endDate: res.data?.endDate.slice(0, 10),
-            clientName: res.data?.clientName,
-            active: res.data?.active,
-            employees: res.data?.employees
-              .filter((e) => e.id && typeof e.id == 'object')
-              .map((e) => ({ id: e.id._id, role: e.role, rate: e.rate }))
-          });
-        });
+    if (project) {
+      reset(project);
     }
   }, []);
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (projectId) {
-      dispatch(putProject(projectId, project));
-      setFeedbackModal(true);
-    } else {
-      dispatch(postProject(project));
-      setFeedbackModal(true);
-    }
-  };
 
   const handleModalClose = () => {
     if (!error) {
       setFeedbackModal(false);
-      history.push(`/projects`);
+      history.push('/projects');
     } else {
-      setFeedbackModal(false);
+      setFeedbackModal(error);
     }
   };
 
-  const onChange = (e) => {
-    setProject({ ...project, [e.target.name]: e.target.value });
-  };
-
-  const onChangeEmployee = (e) => {
-    setEmployee({ ...employee, [e.target.name]: e.target.value });
-  };
-
-  const handleChangeEmployee = (e) => {
-    setEmployee({ ...employee, id: e.target.value });
-  };
-
   const assignEmployee = () => {
-    const newProject = { ...project };
-    newProject.employees?.push(employee);
-    setProject(newProject);
+    update();
+    setDisplayForm(false);
   };
 
-  const removeEmployee = (row) => {
-    const newEmployeesArray = project.employees.filter((e) => e !== row);
-    setProject({ ...project, employees: newEmployeesArray });
+  const handleAdd = () => {
+    setDisplayForm(true);
+    append({ employeeId: null, role: null, rate: 1 });
+  };
+
+  const deleteProject = (item) => {
+    remove(fields.findIndex((field) => item.id === field.id));
+  };
+
+  const onSubmit = (data) => {
+    data.employees = data.employees.map((e) => ({
+      ...e,
+      id: e.employeeId,
+      employeeId: undefined
+    }));
+    if (project) {
+      dispatch(putProject(projectId, data));
+      setFeedbackModal(true);
+    } else {
+      dispatch(postProject(data));
+      setFeedbackModal(true);
+    }
   };
 
   return (
     <section className={styles.container}>
-      {isPending && <p>Loading...</p>}
+      {isPending && <Loader />}
       <Form
-        title={projectId ? 'Edit project' : 'Add project'}
-        onSubmit={onSubmit}
+        title={project ? 'Edit project' : 'Add project'}
+        onSubmit={handleSubmit(onSubmit)}
         secondColumnIndex={6}
       >
         <Input
+          register={register}
           title="Project Name"
           id="ProjectName"
-          value={project.name}
           name="name"
-          onChange={onChange}
-          required
+          placeholder="Project Name"
+          error={errors.name?.message}
         />
         <Input
+          register={register}
           title="Client"
           id="client"
-          value={project.clientName}
           name="clientName"
-          onChange={onChange}
-          required
+          placeholder="Client name"
+          error={errors.clientName?.message}
         />
         <Input
+          register={register}
           title="Description"
           id="description"
-          value={project.description}
           name="description"
-          onChange={onChange}
-          required
+          placeholder="Description"
+          error={errors.description?.message}
         />
         <Input
+          register={register}
           title="Start Date"
-          value={project.startDate}
           name="startDate"
           type="date"
-          onChange={onChange}
-          required
+          placeholder="Start Date"
+          error={errors.startDate?.message}
         />
         <Input
+          register={register}
           title="End Date"
-          value={project.endDate}
           name="endDate"
           type="date"
-          onChange={onChange}
-          required
+          placeholder="End Date"
+          error={errors.endDate?.message}
         />
         <Select
           title="Status"
           name="active"
-          value={project.active}
           arrayToMap={statusProject.map((status) => ({
             id: status === 'Active',
             label: status
           }))}
-          placeholder={projectId ? 'Select status' : 'Inactive'}
           id="active"
-          onChange={onChange}
-          disabled={!projectId}
-          required={projectId}
+          error={errors.active?.message}
+          register={register}
         />
         <div className={`${styles.tableContainer} ${styles.employeesContainer}`}>
           <Table
-            headers={{ id: 'Employee ID', role: 'Role', rate: 'Rate' }}
-            data={project?.employees}
-            deleteItem={removeEmployee}
+            headers={{ name: 'Employee', role: 'Role', rate: 'Rate' }}
+            data={
+              fields
+                ?.map((field) => ({
+                  ...field,
+                  name:
+                    employees.find((e) => e._id === field.employeeId)?.name +
+                    ' ' +
+                    employees.find((e) => e._id === field.employeeId)?.lastName
+                }))
+                ?.filter((field) => field.employeeId) ?? []
+            }
+            deleteItem={deleteProject}
           />
         </div>
-        <Select
-          title="Employee"
-          name="name"
-          value={employee.id}
-          placeholder="Name"
-          arrayToMap={employees.map((employee) => ({
-            id: employee._id,
-            label: employee.name + ' ' + employee.lastName
-          }))}
-          onChange={handleChangeEmployee}
-          required={!projectId}
-        />
-        <Select
-          title="Role"
-          name="role"
-          value={employee.role}
-          placeholder="Role"
-          arrayToMap={roles.map((rol) => ({
-            id: rol,
-            label: rol
-          }))}
-          onChange={onChangeEmployee}
-          required={!projectId}
-        />
-        <div className={styles.btnContainer}>
-          <Input
-            title="Rate"
-            name="rate"
-            value={employee.rate}
-            placeholder="Rate"
-            type="number"
-            onChange={onChangeEmployee}
-            required={!projectId}
-          />
-
+        {!displayForm && (
           <Button
             theme="secondary"
             style={styles.btnAssign}
-            label="Assign"
-            onClick={assignEmployee}
+            label="Add new employee"
+            onClick={handleAdd}
           />
-        </div>
+        )}
+        {displayForm && (
+          <>
+            <Select
+              title="Employee"
+              name={`employees[${fields.length - 1}].employeeId`}
+              placeholder="Select employee"
+              arrayToMap={
+                employees.map((employee) => ({
+                  id: employee._id,
+                  label: employee.name + ' ' + employee.lastName
+                })) ?? []
+              }
+              error={
+                errors.employees ? errors.employees[fields.length - 1].employeeId?.message : ''
+              }
+              register={register}
+            />
+            <Select
+              title="Role"
+              name={`employees[${fields.length - 1}].role`}
+              placeholder={'Role'}
+              arrayToMap={roles.map((rol) => ({
+                id: rol,
+                label: rol
+              }))}
+              register={register}
+              error={errors.employees ? errors.employees[fields.length - 1].role?.message : ''}
+            />
+            <div className={styles.btnContainer}>
+              <Input
+                title="Rate"
+                name={`employees[${fields.length - 1}].rate`}
+                placeholder="Rate"
+                type="number"
+                register={register}
+                error={errors.employees ? errors.employees[fields.length - 1].rate?.message : ''}
+              />
+
+              <Button
+                theme="secondary"
+                style={styles.btnAssign}
+                label="Assign"
+                onClick={assignEmployee}
+                disabled={errors.employees}
+              />
+            </div>
+          </>
+        )}
       </Form>
-      {feedbackModal ? (
+      {feedbackModal && (
         <Modal
           setModalDisplay={handleModalClose}
-          heading={projectId ? (error ? error : 'Project edited') : error ? error : 'Project added'}
+          heading={
+            project ? `${project.name} successfully edited` : `Project successfully submitted`
+          }
           theme={error ? 'error' : 'success'}
         ></Modal>
-      ) : null}
+      )}
     </section>
   );
 };

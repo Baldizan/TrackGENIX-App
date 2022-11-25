@@ -8,7 +8,6 @@ const Input = ({
   id,
   type,
   value,
-  onChange,
   placeholder,
   disabled,
   required,
@@ -20,16 +19,15 @@ const Input = ({
       <label className={styles.label}>
         {title}
         <input
+          {...register(name, { required: { value: true, message: 'error' } })}
           className={`${disabled && styles.disabled} ${styles.input}`}
           disabled={disabled}
           id={id}
           name={name}
-          onChange={onChange}
           placeholder={placeholder}
           type={type}
           value={value}
           required={required}
-          {...register(name)}
         />
       </label>
       <p className={`${styles.error} ${!error && styles.hidden}`}>{error}</p>
@@ -55,6 +53,7 @@ const Select = ({
     <label className={styles.label}>
       {title}
       <select
+        {...register(name, { required: { value: true, message: 'error' } })}
         className={`${disabled && styles.disabled} ${styles.input}`}
         disabled={disabled}
         id={id}
@@ -63,9 +62,8 @@ const Select = ({
         type={type}
         value={value}
         required={required}
-        {...register(name)}
       >
-        <option value="" hidden disabled>
+        <option value="" disabled hidden selected>
           {placeholder}
         </option>
         {arrayToMap.map((item, index) => {
