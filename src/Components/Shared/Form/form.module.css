@@ -82,4 +82,8 @@
   .title {
     color: var(--secondaryColor);
   }
+
+  .legend {
+    color: var(--secondaryColor);
+  }
 }

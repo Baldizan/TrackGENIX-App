@@ -44,7 +44,13 @@ const EmployeeProfile = () => {
 
   return (
     <section className={styles.container}>
-      <Form title="My profile" onSubmit={handleSubmit(onSubmit)} noValidate={!isValid}>
+      <Form
+        title="My profile"
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate={!isValid}
+        secondColumnIndex={3}
+        legend={['Personal information', 'Authentication information']}
+      >
         <Input
           placeholder="Edit your name"
           id="name"
