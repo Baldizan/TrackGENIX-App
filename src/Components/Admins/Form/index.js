@@ -102,7 +102,7 @@ const FormAdmins = () => {
       {isModal && (
         <Modal
           heading={
-            error ? error : `Admin ${feedback.name} ${feedback.lastName} submited successfully!`
+            error ? error : `Admin ${feedback.name} ${feedback.lastName} successfully submitted!`
           }
           setModalDisplay={handleModalClose}
           theme={error ? 'error' : 'success'}

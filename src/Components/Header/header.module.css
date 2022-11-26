@@ -113,6 +113,9 @@
     background-color: var(--colorsBlendLight);
     border-color: var(--secondaryColor);
   }
+  .routes > li > a {
+    color: var(--secondaryColor);
+  }
   .routes > li > a::before {
     background-color: var(--secondaryColor);
   }
