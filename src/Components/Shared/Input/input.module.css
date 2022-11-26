@@ -23,7 +23,7 @@
   border: 1px solid var(--primaryColor);
   font-size: 16px;
   color: var(--primaryColor);
-  background-color: var(--backgroundBaseColor);;
+  background-color: var(--backgroundBaseColor);
   font-weight: 400;
   line-height: 2;
 }
@@ -89,7 +89,12 @@ input[type='number'] {
   .input:focus {
     background-color: var(--primaryColorLighter);
   }
+
   .error {
     color: var(--textBaseColor);
+  }
+
+  .input > option {
+    background-color: var(--primaryColor);
   }
 }

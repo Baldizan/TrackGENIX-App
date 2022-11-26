@@ -1,5 +1,6 @@
-import React, { lazy } from 'react';
+import React, { lazy, useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { tokenListener } from 'helpers/firebase';
 const Home = lazy(() => import('Components/Home'));
 const Admins = lazy(() => import('Components/Admins'));
 const AdminsForm = lazy(() => import('Components/Admins/Form'));
@@ -20,6 +21,10 @@ const EmployeeTimesheetsForm = lazy(() => import('Components/Employee/Timesheets
 const EmployeeProfile = lazy(() => import('Components/Employee/Profile'));
 
 const Routes = () => {
+  useEffect(() => {
+    tokenListener();
+  }, []);
+
   return (
     <Switch>
       <Route exact path="/">
