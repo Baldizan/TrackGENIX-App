@@ -1,54 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { getTasks, deleteTask } from '../../redux/Tasks/thunks';
+import { getTasks, deleteTask } from 'redux/Tasks/thunks';
 import styles from './tasks.module.css';
-import Button from '../Shared/Button';
-import Table from '../Shared/Table';
-import Modal from '../Shared/Modal';
+import Button from 'Components/Shared/Button';
+import Table from 'Components/Shared/Table';
+import Modal from 'Components/Shared/Modal';
+import Loader from 'Components/Shared/Loader';
+import Error from 'Components/Shared/Error';
 
 const Tasks = () => {
   const dispatch = useDispatch();
-  const { list, isPending, error } = useSelector((state) => state.tasks);
-  const [selectedItem, setSelectedItem] = useState({});
-  const [modalDisplay, setModalDisplay] = useState(false);
-  const [feedbackModal, setFeedbackModal] = useState(false);
-  const [feedback, setFeedback] = useState({ heading: '', theme: '' });
   const history = useHistory();
+  const { list: task, isPending, error } = useSelector((state) => state.tasks);
+  const [selectedItem, setSelectedItem] = useState({});
+  const [isModal, setIsModal] = useState(false);
+  const [feedbackModal, setFeedbackModal] = useState(false);
+  const [modalContent, setModalContent] = useState({ heading: '', theme: '' });
   const headers = { description: 'Description' };
 
   useEffect(() => {
     dispatch(getTasks());
   }, []);
 
-  const handleDelete = (item) => {
-    setSelectedItem(item._id);
-    setModalDisplay(true);
-  };
-
-  const deleteItem = async () => {
-    dispatch(deleteTask(selectedItem));
+  const deleteTasks = async () => {
+    dispatch(deleteTask(selectedItem._id));
     if (error) {
-      setFeedback({ heading: `There was an error: ${error}`, theme: 'error' });
+      setModalContent({ heading: `There was an error: ${error}`, theme: 'error' });
     } else {
-      setFeedback({ heading: 'Task deleted', theme: 'success' });
+      setModalContent({
+        heading: `Task ${selectedItem.description} deleted successfully!`,
+        theme: 'success'
+      });
     }
     setFeedbackModal(true);
   };
 
-  const handleEdit = (item) => {
+  const handleDelete = (item) => {
     setSelectedItem(item);
-    history.push(`/tasks/form`, { ...item });
+    setIsModal(true);
+  };
+
+  const handleEdit = (item) => {
+    history.push('/tasks/form', item);
   };
 
   return (
     <section className={styles.container}>
-      {isPending && <p>Loading...</p>}
-      {error && <p>There has been an error: {error}</p>}
+      {isPending && <Loader />}
+      {error && <Error text={error} />}
       {!isPending && !error && (
         <Table
           headers={headers}
-          data={list}
+          data={task}
           editItem={handleEdit}
           deleteItem={handleDelete}
           title="Tasks"
@@ -56,18 +60,26 @@ const Tasks = () => {
           itemsPerPage={5}
         />
       )}
-      {modalDisplay && (
+      {isModal && (
         <Modal
-          heading="Are you sure you want to delete this task?"
-          setModalDisplay={setModalDisplay}
+          heading={`Are you sure you want to delete task: "${selectedItem.description}"?`}
+          setModalDisplay={setIsModal}
           theme="confirm"
         >
+          <p>This change can not be undone!</p>
+          <Button
+            label={'Cancel'}
+            theme={'primary'}
+            onClick={() => {
+              setIsModal();
+            }}
+          />
           <Button
             label="Confirm"
             theme="tertiary"
             onClick={() => {
-              deleteItem();
-              setModalDisplay(false);
+              deleteTasks();
+              setIsModal(false);
             }}
           />
         </Modal>
@@ -75,8 +87,8 @@ const Tasks = () => {
       {feedbackModal && (
         <Modal
           setModalDisplay={setFeedbackModal}
-          heading={feedback.heading}
-          theme={feedback.theme}
+          heading={modalContent.heading}
+          theme={modalContent.theme}
         ></Modal>
       )}
     </section>
