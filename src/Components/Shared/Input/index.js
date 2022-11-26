@@ -60,6 +60,7 @@ const Select = ({
         type={type}
         value={value}
         required={required}
+        {...register(name)}
       >
         <option value="" disabled hidden selected>
           {placeholder}
