@@ -67,23 +67,21 @@ const Tasks = () => {
           theme="confirm"
         >
           <p>This change can not be undone!</p>
-          <div className={styles.buttons}>
-            <Button
-              label={'Cancel'}
-              theme={'primary'}
-              onClick={() => {
-                setIsModal();
-              }}
-            />
-            <Button
-              label="Confirm"
-              theme="tertiary"
-              onClick={() => {
-                deleteTasks();
-                setIsModal(false);
-              }}
-            />
-          </div>
+          <Button
+            label={'Cancel'}
+            theme={'primary'}
+            onClick={() => {
+              setIsModal();
+            }}
+          />
+          <Button
+            label="Confirm"
+            theme="tertiary"
+            onClick={() => {
+              deleteTasks();
+              setIsModal(false);
+            }}
+          />
         </Modal>
       )}
       {feedbackModal && (
