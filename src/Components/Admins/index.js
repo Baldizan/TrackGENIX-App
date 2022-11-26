@@ -62,23 +62,21 @@ const Admins = () => {
           theme={'confirm'}
         >
           <p>This change can not be undone!</p>
-          <div className={styles.buttons}>
-            <Button
-              label={'Cancel'}
-              theme={'primary'}
-              onClick={() => {
-                setIsDeleteModal();
-              }}
-            />
-            <Button
-              label={'Delete'}
-              theme={'tertiary'}
-              onClick={() => {
-                adminDelete();
-                setIsDeleteModal(false);
-              }}
-            />
-          </div>
+          <Button
+            label={'Cancel'}
+            theme={'primary'}
+            onClick={() => {
+              setIsDeleteModal();
+            }}
+          />
+          <Button
+            label={'Delete'}
+            theme={'tertiary'}
+            onClick={() => {
+              adminDelete();
+              setIsDeleteModal(false);
+            }}
+          />
         </Modal>
       )}
       {isSuccessModal && (
