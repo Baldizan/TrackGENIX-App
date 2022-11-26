@@ -16,10 +16,10 @@
   margin-block: 10px;
   box-sizing: border-box;
   border-radius: 5px;
-  border: 1px solid #373867;
+  border: 1px solid var(--primaryColor);
   font-size: 16px;
-  color: #373867;
-  background-color: #fff;
+  color: var(--primaryColor);
+  background-color: var(--backgroundBaseColor);
   font-weight: 400;
   line-height: 2;
 }
@@ -27,8 +27,8 @@
 .tableContainer {
   width: 100%;
   overflow-x: hidden;
-  height: 252px;
-  margin: 26px 0 34px 0;
+  height: 296px;
+  margin: 31px 0 51px 0;
   padding: 0;
 }
 
@@ -39,8 +39,22 @@
   width: 100%;
 }
 
+.btnAdd{
+  align-self: center;
+  margin-top: 34px;
+  width: 50%;
+}
+
 .btnAssign {
   width: 50%;
   height: 44px;
-  margin-top: 25px;
+  margin-top: 31px;
+  align-self: flex-start;
+}
+
+@media (prefers-color-scheme: dark) {
+  .employeesContainer {
+    background-color: var(--primaryColor);
+    border-color: var(--secondaryColor);
+  }
 }

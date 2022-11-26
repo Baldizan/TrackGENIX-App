@@ -5,8 +5,9 @@
   align-items: center;
   margin-block: 2%;
   width: clamp(300px, 60%, 90vw);
-  border: 1px solid #373867;
+  border: 1px solid var(--primaryColor);
   border-radius: 5px;
+  background-color: var(--secondaryColorLighter);
 }
 
 .navBack {
@@ -16,7 +17,7 @@
 }
 
 .title {
-  color: #373867;
+  color: var(--primaryColor);
   letter-spacing: 0.125em;
   font-size: 35px;
   line-height: 0.8;
@@ -51,7 +52,7 @@
 }
 
 .legend {
-  color: #373867;
+  color: var(--primaryColor);
   margin: 0 auto 2% 12%;
   font-size: 20px;
   line-height: 1.5;
@@ -66,4 +67,23 @@
   align-items: flex-end;
   width: 100%;
   margin: 0 10% 2% 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .form {
+    background-color: var(--primaryColorLight);
+    border-color: var(--secondaryColor);
+  }
+
+  .navBack {
+    margin: 20px 0 0 20px;
+  }
+
+  .title {
+    color: var(--secondaryColor);
+  }
+
+  .legend {
+    color: var(--secondaryColor);
+  }
 }

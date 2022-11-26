@@ -57,28 +57,26 @@ const Admins = () => {
       {error && <p>Admin not found</p>}
       {isDeleteModal && (
         <Modal
-          heading={`Do you want to delete admin ${adminToDelete.name} ${adminToDelete.lastName}?`}
+          heading={`Are you sure you want to delete admin ${adminToDelete.name} ${adminToDelete.lastName}?`}
           setModalDisplay={setIsDeleteModal}
           theme={'confirm'}
         >
-          <p>This change can not be undone!</p>
-          <div className={styles.buttons}>
-            <Button
-              label={'Cancel'}
-              theme={'primary'}
-              onClick={() => {
-                setIsDeleteModal();
-              }}
-            />
-            <Button
-              label={'Delete'}
-              theme={'tertiary'}
-              onClick={() => {
-                adminDelete();
-                setIsDeleteModal(false);
-              }}
-            />
-          </div>
+          <p>This change cannot be undone!</p>
+          <Button
+            label={'Cancel'}
+            theme={'primary'}
+            onClick={() => {
+              setIsDeleteModal();
+            }}
+          />
+          <Button
+            label={'Delete'}
+            theme={'tertiary'}
+            onClick={() => {
+              adminDelete();
+              setIsDeleteModal(false);
+            }}
+          />
         </Modal>
       )}
       {isSuccessModal && (

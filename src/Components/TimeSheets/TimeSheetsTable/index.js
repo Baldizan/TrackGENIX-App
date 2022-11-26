@@ -90,11 +90,11 @@ const List = () => {
       {error && <p>{error}</p>}
       {isModal && (
         <Modal
-          heading={`Do you want to delete this Timesheet?`}
+          heading="Are you sure you want to delete this Timesheet?"
           setModalDisplay={setIsModal}
           theme={'confirm'}
         >
-          <p>This change can not be undone!</p>
+          <p>This change cannot be undone!</p>
           <div className={styles.buttons}>
             <Button
               label={'Cancel'}

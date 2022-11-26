@@ -26,7 +26,7 @@ const Button = ({
       disabled={disabled}
       hidden={hidden}
     >
-      {icon ? <img className={`${styles.icon} ${styles.image}`} src={icon} /> : label}
+      {icon ? <img className={styles.img} src={icon} /> : label}
     </button>
   );
 };

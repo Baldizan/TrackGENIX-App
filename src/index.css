@@ -2,14 +2,58 @@
 
 body {
   margin: 0;
-  font-family: 'Roboto', BlinkMacSystemFont, 'Open Sans', 'Segoe UI', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Roboto', BlinkMacSystemFont, 'Open Sans', 'Segoe UI', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+:root {
+  --primaryColor: #373867;
+  --secondaryColor: #aace9b;
+  --errorAlertColor: #f13312;
+  --successAlertColor: #49a37b;
+  --primaryColorDark: #1e1f38;
+  --primaryColorLight: #37386766;
+  --primaryColorLighter: #3738671a;
+  --grayishPrimaryColor: #d7d7e1;
+  --secondaryColorDark: #2e382a;
+  --secondaryColorLight: #aace9b66;
+  --secondaryColorLighter: #aace9b0a;
+  --colorsBlendLight: #41466c;
+  --colorsBlendDark: #1e2031;
+  --backgroundBaseColor: #FFFFFF;
+  --textBaseColor: #FFFFFF;
+}
+
+::selection {
+  background: var(--primaryColorLighter);
+  color: var(--primaryColor);
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--colorsBlendDark);
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  a,
+  p {
+    color: var(--secondaryColor);
+  }
+
+  ::selection {
+    background: #C8C798;
+    color: var(--primaryColor);
+  }
+
+  a:active {
+    color: var(--secondaryColorLight);
+  }
 }

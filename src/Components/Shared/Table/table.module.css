@@ -4,39 +4,38 @@
   width: 100%;
 }
 
-.tableContainer{
+.tableContainer {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  min-height: 350px;
+  min-height: 460px;
   width: 100%;
 }
 
 .table {
-  border: 1px solid #d7d7e1;
+  border: 1px solid var(--grayishPrimaryColor);
   border-spacing: 0;
   border-collapse: collapse;
-  color: #373867;
+  color: var(--primaryColor);
   width: 100%;
 }
 
 .thead {
-  background-color: #3738671a;
-  line-height: 2.5;
+  background-color: #ebebf0;
+  line-height: 3;
   text-align: left;
   white-space: nowrap;
 }
 
 .th {
   padding-inline: 20px;
-  max-height: 42px;
+  min-height: 46px;
 }
 
 .tr {
   display: flex;
   padding: 10px 10px;
-  border: solid 0.5px #eeeeee;
   border-collapse: collapse;
   text-align: start;
 }
@@ -47,11 +46,12 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  color: #373867;
+  color: var(--primaryColor);
 }
 
 .addButton {
   align-self: flex-start;
+  margin-bottom: 20px
 }
 
 .nav {
@@ -61,7 +61,7 @@
 }
 
 .page {
-  color: #373867;
+  color: var(--primaryColor);
   margin: 0;
   padding-inline: 5px;
   user-select: none;
@@ -69,6 +69,18 @@
 
 .navButton {
   border-radius: 100vw;
-  background-color: #aace9b;
-  padding: 12px;
+  background-color: var(--secondaryColor);
+}
+
+@media (prefers-color-scheme: dark) {
+  .table {
+    color: var(--secondaryColor);
+    border-color: var(--secondaryColor)
+  }
+  .thead {
+    background-color: var(--primaryColor);
+  }
+  .page {
+    color: var(--secondaryColor);
+  }
 }
