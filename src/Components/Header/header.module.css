@@ -74,6 +74,7 @@
   text-decoration: none;
   text-transform: capitalize;
   user-select: none;
+  color: var(--primaryColor);
 }
 
 .routes > li > a::before {
