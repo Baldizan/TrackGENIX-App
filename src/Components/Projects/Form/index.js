@@ -164,7 +164,7 @@ const ProjectsForm = () => {
         {!displayForm && (
           <Button
             theme="secondary"
-            style={styles.btnAssign}
+            style={styles.btnAdd}
             label="Add new employee"
             onClick={handleAdd}
           />

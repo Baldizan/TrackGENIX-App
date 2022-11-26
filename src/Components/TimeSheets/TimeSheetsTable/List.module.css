@@ -11,7 +11,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  color: #373867;
+  color: var(--primaryColor);
 }
 
 .addButton {

@@ -67,12 +67,12 @@ const Projects = () => {
   };
 
   const handleDelete = (item) => {
-    setItemToDelete(item._id);
+    setItemToDelete(item);
     setModal(true);
   };
 
   const deleteItem = async () => {
-    dispatch(deleteProject(itemToDelete));
+    dispatch(deleteProject(itemToDelete._id));
     if (error) {
       setFeedback({ heading: `There was an error: ${error}`, theme: 'error' });
     } else {
@@ -122,9 +122,10 @@ const Projects = () => {
       {modal && (
         <Modal
           setModalDisplay={setModal}
-          heading="Are you sure you want to delete this project?"
+          heading={`Are you sure you want to delete project ${itemToDelete.name}?`}
           theme="confirm"
         >
+          <p>This change cannot be undone!</p>
           <Button
             label="Cancel"
             theme="primary"

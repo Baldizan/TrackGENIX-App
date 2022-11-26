@@ -12,37 +12,39 @@
 }
 
 .primary {
-  color: #373867;
-  border: 1px solid #373867;
-  background-color: #fff;
+  color: var(--primaryColor);
+  border: 1px solid var(--primaryColor);
+  background-color: var(--backgroundBaseColor);;
 }
 
 .primary:hover,
 .primary:focus {
   cursor: pointer;
   text-decoration: underline;
-  background-color: #37386720;
+  background-color: var(--primaryColorLighter);
   transition: all 0.05s ease-in-out;
 }
 
 .secondary {
-  color: #373867;
-  border: 1px solid #aace9b;
-  background-color: #aace9b;
+  color: var(--primaryColor);
+  border: 1px solid var(--secondaryColor);
+  background-color: var(--secondaryColor);
+  font-weight: 700;
+  letter-spacing: 0.05rem;
 }
 
 .secondary:hover,
 .secondary:focus {
   cursor: pointer;
   text-decoration: underline;
-  background-color: #aace9bcc;
+  background-color: var(--secondaryColorLight);
   transition: all 0.05s ease-in-out;
 }
 
 .tertiary {
-  color: #fff;
-  border: 1px solid #f13312;
-  background-color: #f13312;
+  color: var(--textBaseColor);
+  border: 1px solid var(--errorAlertColor);
+  background-color: var(--errorAlertColor);
 }
 
 .tertiary:hover,
@@ -63,15 +65,17 @@
 
 .icon {
   margin: 5px;
-  padding: 0;
-  width: 20px;
-  height: 20px;
+  padding: 15px;
+  width: 15px;
+  height: 15px;
   background-color: transparent;
   border: none;
 }
 
 .img {
   display: block;
+  width: 20px;
+  height: 20px;
 }
 
 .icon:hover,
@@ -83,4 +87,23 @@
 
 .hidden {
   visibility: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  .primary {
+    color: var(--secondaryColor);
+    border: 1px solid var(--secondaryColor);
+    background-color: var(--primaryColorLight);
+  }
+
+  .secondary:focus,
+  .secondary:hover {
+    color: var(--secondaryColor);
+    background-color: var(--primaryColor);
+  }
+
+  .icon {
+    background-color: var(--secondaryColor);
+    border-radius: 100vw;
+  }
 }

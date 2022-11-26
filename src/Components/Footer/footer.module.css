@@ -2,9 +2,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #373867;
-  border-top: 2px solid #aace9b;
+  background-color: var(--primaryColor);
+  border-top: 2px solid var(--secondaryColor);
   box-shadow: 0px -4px 4px 0px #00000040;
+  z-index: 3;
 }
 
 .main {
@@ -25,7 +26,7 @@
 .appName {
   font-size: 2rem;
   font-weight: bold;
-  color: #aace9b;
+  color: var(--secondaryColor);
   user-select: none;
 }
 
@@ -43,7 +44,7 @@
   font-weight: 600;
   text-decoration: none;
   text-transform: capitalize;
-  color: #aace9b;
+  color: var(--secondaryColor);
   user-select: none;
 }
 
@@ -55,7 +56,7 @@
   left: 0;
   content: '';
   border-radius: 4px;
-  background-color: #aace9b;
+  background-color: var(--secondaryColor);
   transform-origin: right;
   transform: scaleX(0);
   transition: transform 0.3s ease-in-out;
@@ -74,20 +75,27 @@
   height: 50px;
   width: 90%;
   padding: 0 20px;
-  border: 1px solid #aace9b;
+  border: 1px solid var(--secondaryColor);
   border-bottom: none;
   border-radius: 10px 10px 0 0;
-  background-color: #373867;
-  color: #aace9b;
+  background-color: var(--primaryColor);
+  color: var(--secondaryColor);
   user-select: none;
 }
 
 .copyright {
   font-size: 0.7rem;
   font-style: italic;
+  margin-right: 25px;
 }
 
 .socialIcon {
   margin-left: 5px;
   user-select: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .license {
+    background-color: var(--primaryColorDark);
+  }
 }

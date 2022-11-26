@@ -62,11 +62,11 @@ const Tasks = () => {
       )}
       {isModal && (
         <Modal
-          heading={`Are you sure you want to delete task: "${selectedItem.description}"?`}
+          heading="Are you sure you want to delete this Task?"
           setModalDisplay={setIsModal}
           theme="confirm"
         >
-          <p>This change can not be undone!</p>
+          <p>This change cannot be undone!</p>
           <Button
             label={'Cancel'}
             theme={'primary'}

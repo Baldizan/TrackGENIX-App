@@ -69,11 +69,11 @@ const SuperAdmins = () => {
       )}
       {isModal && (
         <Modal
-          heading={`Are you sure you want to delete Super Admin: ${selectedItem.name} ${selectedItem.lastName}?`}
+          heading={`Are you sure you want to delete super admin ${selectedItem.name} ${selectedItem.lastName}?`}
           setModalDisplay={setIsModal}
           theme={'confirm'}
         >
-          <p>This change can not be undone!</p>
+          <p>This change cannot be undone!</p>
           <div className={styles.buttons}>
             <Button
               label={'Cancel'}
