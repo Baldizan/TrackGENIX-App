@@ -24,7 +24,7 @@ const EmployeeProjects = () => {
     let employeeProjects = [];
     for (let i = 0; i < projectsList.length; i++) {
       for (let j = 0; j < projectsList[i].employees.length; j++) {
-        if (projectsList[i].employees[j].id._id === mockedEmployeeLogged) {
+        if (projectsList[i].employees[j]?.id?._id === mockedEmployeeLogged) {
           projectsList[i].startDate = projectsList[i].startDate.slice(0, 10);
           projectsList[i].endDate = projectsList[i].endDate.slice(0, 10);
           employeeProjects.push(projectsList[i]);
