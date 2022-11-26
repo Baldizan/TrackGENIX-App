@@ -39,6 +39,12 @@
   width: 100%;
 }
 
+.btnAdd{
+  align-self: center;
+  margin-top: 34px;
+  width: 50%;
+}
+
 .btnAssign {
   width: 50%;
   height: 44px;

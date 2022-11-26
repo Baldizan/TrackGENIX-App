@@ -30,7 +30,7 @@
   border: 1px solid var(--secondaryColor);
   background-color: var(--secondaryColor);
   font-weight: 700;
-  letter-spacing: 0.1rem;
+  letter-spacing: 0.05rem;
 }
 
 .secondary:hover,
@@ -99,6 +99,7 @@
   .secondary:focus,
   .secondary:hover {
     color: var(--secondaryColor);
+    background-color: var(--primaryColor);
   }
 
   .icon {
