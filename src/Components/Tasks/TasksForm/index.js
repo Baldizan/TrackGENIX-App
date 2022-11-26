@@ -1,68 +1,77 @@
-import React, { useState } from 'react';
-import { postTask, putTask } from '../../../redux/Tasks/thunks';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+import { postTask, putTask, getTasks } from 'redux/Tasks/thunks';
 import styles from './tasksForm.module.css';
-import Form from '../../Shared/Form';
-import { Input } from '../../Shared/Input';
-import Modal from '../../Shared/Modal';
+import { schema } from './validations';
+import Form from 'Components/Shared/Form';
+import { Input } from 'Components/Shared/Input';
+import Modal from 'Components/Shared/Modal';
+import Loader from 'Components/Shared/Loader';
 
 const TasksForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { isPending, error } = useSelector((state) => state.tasks);
   const [selectedTask] = useState(history.location.state);
-  const [taskInput, setTaskInput] = useState({ description: selectedTask?.description ?? '' });
-  const [invalid, setInvalid] = useState(true);
   const titleForm = selectedTask ? 'Edit Task' : 'Add Task';
-  const [feedbackModal, setFeedbackModal] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors, isValid }
+  } = useForm({
+    mode: 'all',
+    resolver: joiResolver(schema)
+  });
 
-  const validation = () => {
-    setInvalid(Object.values(taskInput).some((x) => x === ''));
-  };
+  useEffect(() => {
+    dispatch(getTasks());
+    selectedTask &&
+      reset({
+        description: selectedTask?.description
+      });
+  }, []);
 
-  const onChange = (e) => {
-    validation();
-    setTaskInput({ ...taskInput, [e.target.name]: e.target.value });
-  };
-
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (data) => {
     if (selectedTask) {
-      dispatch(putTask(selectedTask._id, taskInput));
-      setFeedbackModal(true);
+      dispatch(putTask(selectedTask._id, data));
+      setIsModal(true);
     } else {
-      dispatch(postTask(taskInput));
-      setFeedbackModal(true);
+      dispatch(postTask(data));
+      setIsModal(true);
     }
   };
 
-  const handleCloseModal = () => {
+  const handleModalClose = () => {
     if (!error) {
-      setFeedbackModal(false);
+      setIsModal(false);
       history.push(`/tasks`);
     } else {
-      setFeedbackModal(false);
+      setIsModal(false);
     }
   };
 
   return (
     <section className={styles.container}>
-      {isPending && <p>Loading...</p>}
-      <Form onSubmit={onSubmit} title={titleForm} noValidate={invalid}>
+      {isPending && <Loader />}
+      <Form onSubmit={handleSubmit(onSubmit)} title={titleForm} noValidate={!isValid}>
         <Input
-          onChange={onChange}
-          value={taskInput.description}
+          error={errors.description?.message}
+          register={register}
           name="description"
           title="Description"
           placeholder="Add a description"
           required
         />
       </Form>
-      {feedbackModal ? (
+      {isModal ? (
         <Modal
-          setModalDisplay={handleCloseModal}
-          heading={selectedTask ? (error ? error : 'Task edited') : error ? error : 'Task added'}
+          setModalDisplay={handleModalClose}
+          heading={error ? error : 'Task submitted successfully!'}
           theme={error ? 'error' : 'success'}
         ></Modal>
       ) : null}
