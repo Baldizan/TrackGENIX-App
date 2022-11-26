@@ -73,7 +73,7 @@ const SuperAdmins = () => {
           setModalDisplay={setIsModal}
           theme={'confirm'}
         >
-          <p>This change can not be undone!</p>
+          <p>This change cannot be undone!</p>
           <div className={styles.buttons}>
             <Button
               label={'Cancel'}

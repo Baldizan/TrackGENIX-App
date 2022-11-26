@@ -45,7 +45,7 @@
   background-color: #eee;
 }
 .form button:hover {
-  color: #fff;
+  color: var(--textBaseColor);
   background-color: #6b6b6b;
 }
 

@@ -125,6 +125,7 @@ const Projects = () => {
           heading="Are you sure you want to delete this project?"
           theme="confirm"
         >
+          <p>This change cannot be undone!</p>
           <Button
             label="Cancel"
             theme="primary"

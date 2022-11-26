@@ -61,7 +61,7 @@ const Admins = () => {
           setModalDisplay={setIsDeleteModal}
           theme={'confirm'}
         >
-          <p>This change can not be undone!</p>
+          <p>This change cannot be undone!</p>
           <Button
             label={'Cancel'}
             theme={'primary'}

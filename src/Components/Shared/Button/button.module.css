@@ -14,7 +14,7 @@
 .primary {
   color: var(--primaryColor);
   border: 1px solid var(--primaryColor);
-  background-color: #fff;
+  background-color: var(--backgroundBaseColor);;
 }
 
 .primary:hover,
@@ -42,7 +42,7 @@
 }
 
 .tertiary {
-  color: #fff;
+  color: var(--textBaseColor);
   border: 1px solid var(--errorAlertColor);
   background-color: var(--errorAlertColor);
 }

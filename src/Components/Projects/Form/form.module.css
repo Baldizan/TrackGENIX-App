@@ -19,7 +19,7 @@
   border: 1px solid var(--primaryColor);
   font-size: 16px;
   color: var(--primaryColor);
-  background-color: #fff;
+  background-color: var(--backgroundBaseColor);
   font-weight: 400;
   line-height: 2;
 }

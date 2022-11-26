@@ -20,11 +20,14 @@ code {
   --primaryColorDark: #1e1f38;
   --primaryColorLight: #37386766;
   --primaryColorLighter: #3738671a;
+  --grayishPrimaryColor: #d7d7e1;
   --secondaryColorDark: #2e382a;
   --secondaryColorLight: #aace9b66;
   --secondaryColorLighter: #aace9b0a;
   --colorsBlendLight: #41466c;
   --colorsBlendDark: #1e2031;
+  --backgroundBaseColor: #FFFFFF;
+  --textBaseColor: #FFFFFF;
 }
 
 ::selection {

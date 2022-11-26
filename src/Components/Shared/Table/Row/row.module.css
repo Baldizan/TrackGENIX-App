@@ -8,8 +8,8 @@
 
 .td {
   padding: 10px;
-  border-bottom: 1px solid #d7d7e1;
-  border-top: 1px solid #d7d7e1;
+  border-bottom: 1px solid var(--grayishPrimaryColor);
+  border-top: 1px solid var(--grayishPrimaryColor);
   max-width: 25ch;
   white-space: nowrap;
   overflow: hidden;
