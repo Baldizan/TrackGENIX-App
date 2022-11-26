@@ -57,7 +57,7 @@ const Admins = () => {
       {error && <p>Admin not found</p>}
       {isDeleteModal && (
         <Modal
-          heading={`Do you want to delete admin ${adminToDelete.name} ${adminToDelete.lastName}?`}
+          heading={`Are you sure you want to delete admin ${adminToDelete.name} ${adminToDelete.lastName}?`}
           setModalDisplay={setIsDeleteModal}
           theme={'confirm'}
         >

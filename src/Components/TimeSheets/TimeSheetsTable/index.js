@@ -90,7 +90,7 @@ const List = () => {
       {error && <p>{error}</p>}
       {isModal && (
         <Modal
-          heading={`Do you want to delete this Timesheet?`}
+          heading="Are you sure you want to delete this Timesheet?"
           setModalDisplay={setIsModal}
           theme={'confirm'}
         >
