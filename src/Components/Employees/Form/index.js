@@ -17,7 +17,6 @@ const EmployeesForm = () => {
   const dispatch = useDispatch();
   const [selectedEmployee] = useState(history.location.state);
   const { isPending, error } = useSelector((state) => state.employees);
-  const { list: projectsList } = useSelector((state) => state.projects);
   const [isModal, setIsModal] = useState(false);
   const [modalContent, setModalContent] = useState({ name: '', lastName: '' });
 
@@ -39,7 +38,6 @@ const EmployeesForm = () => {
         phone: selectedEmployee?.phone?.toString(),
         email: selectedEmployee?.email,
         password: selectedEmployee?.password,
-        project: selectedEmployee?.project,
         active: selectedEmployee?.active
       });
   }, []);
@@ -119,18 +117,6 @@ const EmployeesForm = () => {
             placeholder="Password"
             register={register}
             error={errors.password?.message}
-            required
-          />
-          <Select
-            name="project"
-            title="Project"
-            placeholder="Select project"
-            arrayToMap={projectsList.map((project) => ({
-              id: project._id,
-              label: project.name
-            }))}
-            register={register}
-            error={errors.project?.message}
             required
           />
           {selectedEmployee ? (

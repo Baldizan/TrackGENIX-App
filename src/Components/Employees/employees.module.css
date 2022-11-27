@@ -5,3 +5,10 @@
   align-items: center;
   margin: 2% 5%;
 }
+
+.projectsTableContainer {
+  width: 100%;
+  overflow-x: hidden;
+  height: 400px;
+  padding-inline: 30px;
+}

@@ -67,13 +67,13 @@ const ProjectsForm = () => {
   };
 
   const deleteProject = (item) => {
-    remove(fields.findIndex((field) => item.id === field.id));
+    remove(fields.findIndex((field) => item.employee === field.employee));
   };
 
   const onSubmit = (data) => {
     data.employees = data.employees.map((e) => ({
       ...e,
-      id: e.employeeId,
+      employee: e.employeeId,
       employeeId: undefined
     }));
     if (project) {
@@ -84,7 +84,7 @@ const ProjectsForm = () => {
       setFeedbackModal(true);
     }
   };
-
+  console.log(project);
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
@@ -182,7 +182,7 @@ const ProjectsForm = () => {
                 })) ?? []
               }
               error={
-                errors.employees ? errors.employees[fields.length - 1].employeeId?.message : ''
+                errors.employees ? errors.employees[fields.length - 1]?.employeeId?.message : ''
               }
               register={register}
             />
@@ -195,7 +195,7 @@ const ProjectsForm = () => {
                 label: rol
               }))}
               register={register}
-              error={errors.employees ? errors.employees[fields.length - 1].role?.message : ''}
+              error={errors.employees ? errors.employees[fields.length - 1]?.role?.message : ''}
             />
             <div className={styles.btnContainer}>
               <Input
@@ -204,7 +204,7 @@ const ProjectsForm = () => {
                 placeholder="Rate"
                 type="number"
                 register={register}
-                error={errors.employees ? errors.employees[fields.length - 1].rate?.message : ''}
+                error={errors.employees ? errors.employees[fields.length - 1]?.rate?.message : ''}
               />
 
               <Button

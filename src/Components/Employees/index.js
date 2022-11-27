@@ -13,8 +13,11 @@ const Employees = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { list: employeesList, isPending, error } = useSelector((state) => state.employees);
+  const { list: projectsList } = useSelector((state) => state.projects);
   const [selectedEmployee, setSelectedEmployee] = useState({});
   const [isModal, setIsModal] = useState(false);
+  const [modalProjects, setModalProjects] = useState(false);
+  const [employeeProjects, setEmployeeProjects] = useState(employeesList);
   const [isFeedbackModal, setIsFeedbackModal] = useState(false);
   const [modalContent, setModalContent] = useState({ message: '', theme: '' });
   const headers = {
@@ -23,6 +26,7 @@ const Employees = () => {
     phone: 'Phone',
     email: 'Email',
     project: 'Project',
+    projectsCmp: 'Projects',
     status: 'Status'
   };
 
@@ -33,8 +37,27 @@ const Employees = () => {
   const employeesColumns = employeesList.map((row) => ({
     ...row,
     status: row.active ? 'Active' : 'Inactive',
-    project: row.project?.name ?? 'N/A'
+    project: row.project?.name ?? 'N/A',
+    projectsCmp: (
+      <Button
+        label="See projects"
+        theme="primary"
+        onClick={() => showProjects(row.projects.filter((p) => p.project !== null))}
+      />
+    )
   }));
+
+  const showProjects = (projects) => {
+    if (projects) {
+      const employeeProjects = projectsList.map((project) => ({
+        name: project.name,
+        startDate: project.startDate?.slice(0, 10),
+        endDate: project.endDate?.slice(0, 10)
+      }));
+      setEmployeeProjects(employeeProjects);
+      setModalProjects(true);
+    }
+  };
 
   const handleDelete = (item) => {
     setSelectedEmployee(item);
@@ -58,7 +81,15 @@ const Employees = () => {
   };
 
   const handleEdit = (item) => {
-    history.push('/employees/form', { ...item, project: item.project?._id });
+    history.push('/employees/form', {
+      _id: item._id,
+      name: item.name,
+      lastName: item.lastName,
+      phone: item.phone,
+      email: item.email,
+      active: item.active,
+      password: item.password
+    });
   };
 
   return (
@@ -73,6 +104,17 @@ const Employees = () => {
           addRedirectLink={'/employees/form'}
           itemsPerPage={5}
         />
+      )}
+      {modalProjects && (
+        <Modal setModalDisplay={setModalProjects} theme="confirm">
+          <div className={styles.projectsTableContainer}>
+            <Table
+              data={employeeProjects}
+              headers={{ name: 'Project', startDate: 'Start date', endDate: 'End date' }}
+              title="Employee's projects"
+            />
+          </div>
+        </Modal>
       )}
       {isFeedbackModal && (
         <Modal

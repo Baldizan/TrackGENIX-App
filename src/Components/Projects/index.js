@@ -42,7 +42,7 @@ const Projects = () => {
       <Button
         label="See employees"
         theme="primary"
-        onClick={() => showEmployees(row.employees.filter((employee) => employee.id !== null))}
+        onClick={() => showEmployees(row.employees.filter((e) => e.employee !== null))}
       />
     )
   }));
@@ -58,7 +58,7 @@ const Projects = () => {
         startDate: item.startDate?.slice(0, 10),
         endDate: item.endDate?.slice(0, 10),
         employees: item.employees?.map((e) => ({
-          employeeId: e.id._id,
+          employeeId: e.employee?._id,
           role: e.role,
           rate: e.rate
         }))
@@ -84,7 +84,7 @@ const Projects = () => {
   const showEmployees = (employees) => {
     if (employees) {
       const projectEmployees = employees.map((employee) => ({
-        name: employee.id.name + ' ' + employee.id.lastName,
+        name: employee.employee.name + ' ' + employee.employee.lastName,
         role: employee.role,
         rate: employee.rate
       }));
