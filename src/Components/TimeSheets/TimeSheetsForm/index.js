@@ -69,9 +69,9 @@ const TimeSheetsForm = () => {
     }
   };
 
-  const projectsMap = projects.map((project) => ({ id: project._id, label: project.name }));
-  const tasksMap = tasks.map((task) => ({ id: task._id, label: task.description }));
-  const employeesMap = employees.map((employee) => ({
+  const projectsMap = projects?.map((project) => ({ id: project._id, label: project.name }));
+  const tasksMap = tasks?.map((task) => ({ id: task._id, label: task.description }));
+  const employeesMap = employees?.map((employee) => ({
     id: employee._id,
     label: `${employee.name} ${employee.lastName}`
   }));
