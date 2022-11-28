@@ -45,8 +45,6 @@ const Tasks = () => {
     history.push('/tasks/form', item);
   };
 
-  console.log(error);
-
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
