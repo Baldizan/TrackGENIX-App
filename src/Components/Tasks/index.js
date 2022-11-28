@@ -45,6 +45,8 @@ const Tasks = () => {
     history.push('/tasks/form', item);
   };
 
+  console.log(error);
+
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
@@ -60,7 +62,7 @@ const Tasks = () => {
           itemsPerPage={5}
         />
       )}
-      {isModal && (
+      {!isPending && isModal && (
         <Modal
           heading="Are you sure you want to delete this Task?"
           setModalDisplay={setIsModal}

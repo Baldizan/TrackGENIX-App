@@ -119,7 +119,7 @@ const Projects = () => {
           </div>
         </Modal>
       )}
-      {modal && (
+      {!isPending && modal && (
         <Modal
           setModalDisplay={setModal}
           heading={`Are you sure you want to delete project ${itemToDelete.name}?`}

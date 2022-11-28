@@ -83,7 +83,7 @@ const Employees = () => {
       )}
       {isPending && <Loader />}
       {error && <Error text={error} />}
-      {isModal && (
+      {!isPending && isModal && (
         <Modal
           heading={`Are you sure you want to delete employee ${selectedEmployee.name} ${selectedEmployee.lastName}?`}
           setModalDisplay={setIsModal}

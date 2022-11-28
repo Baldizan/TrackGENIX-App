@@ -141,7 +141,7 @@ const TimeSheetsForm = () => {
           />
         </Form>
       )}
-      {isModal && (
+      {!isPending && isModal && (
         <Modal
           heading={error ? error : `Time Sheet successfully submitted!`}
           setModalDisplay={handleModalClose}
