@@ -87,7 +87,6 @@ const List = () => {
           itemsPerPage={5}
         />
       )}
-      {error && <p>{error}</p>}
       {isModal && (
         <Modal
           heading="Are you sure you want to delete this Timesheet?"

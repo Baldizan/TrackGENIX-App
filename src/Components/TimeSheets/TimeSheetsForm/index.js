@@ -23,7 +23,6 @@ const TimeSheetsForm = () => {
   const { list: employees } = useSelector((state) => state.employees);
   const { list: tasks } = useSelector((state) => state.tasks);
   const { list: projects } = useSelector((state) => state.projects);
-
   const [isModal, setIsModal] = useState(false);
   const titleForm = selectedTimesheet ? 'Edit Timesheet' : 'Add Timesheet';
   const {
