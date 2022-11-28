@@ -33,7 +33,7 @@ const Projects = () => {
     dispatch(getProjects());
   }, []);
 
-  const projectColumns = projectsArray.map((row) => ({
+  const projectColumns = projectsArray?.map((row) => ({
     ...row,
     status: row.active ? 'Active' : 'Inactive',
     startDateFormat: row.startDate.slice(0, 10),

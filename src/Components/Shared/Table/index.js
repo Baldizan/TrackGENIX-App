@@ -13,7 +13,7 @@ const Table = ({ data, headers, editItem, deleteItem, addRedirectLink, title, it
   const history = useHistory();
   const navValidation = {
     back: displayRange.x === 0,
-    forward: data.slice(displayRange.x + itemsPerPage, displayRange.y + itemsPerPage).length === 0
+    forward: data?.slice(displayRange.x + itemsPerPage, displayRange.y + itemsPerPage).length === 0
   };
   const navOnClick = {
     back: () =>
@@ -57,21 +57,22 @@ const Table = ({ data, headers, editItem, deleteItem, addRedirectLink, title, it
             </tr>
           </thead>
           <tbody>
-            {data
-              .map((item, index) => (
-                <Row
-                  key={index}
-                  rowItem={item}
-                  headers={Object.keys(headers)}
-                  editItem={editItem ? () => editItem(item) : null}
-                  deleteItem={deleteItem ? () => deleteItem(item) : null}
-                />
-              ))
-              .slice(displayRange.x, displayRange.y)}
+            {data &&
+              data
+                .map((item, index) => (
+                  <Row
+                    key={index}
+                    rowItem={item}
+                    headers={Object.keys(headers)}
+                    editItem={editItem ? () => editItem(item) : null}
+                    deleteItem={deleteItem ? () => deleteItem(item) : null}
+                  />
+                ))
+                .slice(displayRange.x, displayRange.y)}
           </tbody>
         </table>
       </div>
-      {itemsPerPage ? (
+      {itemsPerPage && data ? (
         <div className={styles.nav}>
           <Button
             style={styles.navButton}

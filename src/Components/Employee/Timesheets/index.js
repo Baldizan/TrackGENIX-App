@@ -19,20 +19,22 @@ const EmployeeTimesheets = () => {
   };
   const mockedEmployeeLogged = '636e639dfb8b4c835d213750';
   const timeSheetData = () => {
-    return timesheetList
-      .map((row) => {
-        return {
-          ...row,
-          date: row.date.slice(0, 10),
-          project: row.project?._id,
-          task: row.task?._id,
-          employee: row.employee?._id,
-          projectName: row.project?.name ?? 'N/A',
-          taskDescription: row.task?.description ?? 'N/A',
-          employeeFormat: row.employee ? `${row.employee?.name} ${row.employee?.lastName}` : 'N/A'
-        };
-      })
-      .filter((t) => t.employee === mockedEmployeeLogged);
+    if (timesheetList) {
+      timesheetList
+        .map((row) => {
+          return {
+            ...row,
+            date: row.date.slice(0, 10),
+            project: row.project?._id,
+            task: row.task?._id,
+            employee: row.employee?._id,
+            projectName: row.project?.name ?? 'N/A',
+            taskDescription: row.task?.description ?? 'N/A',
+            employeeFormat: row.employee ? `${row.employee?.name} ${row.employee?.lastName}` : 'N/A'
+          };
+        })
+        .filter((t) => t.employee === mockedEmployeeLogged);
+    }
   };
 
   useEffect(() => {

@@ -30,7 +30,7 @@ const Employees = () => {
     dispatch(getEmployees());
   }, []);
 
-  const employeesColumns = employeesList.map((row) => ({
+  const employeesColumns = employeesList?.map((row) => ({
     ...row,
     status: row.active ? 'Active' : 'Inactive',
     project: row.project?.name ?? 'N/A'

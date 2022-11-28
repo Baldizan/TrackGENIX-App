@@ -26,7 +26,7 @@ const List = () => {
     hours: 'Hours'
   };
 
-  const timesheetsColumns = timesheetList.map((row) => ({
+  const timesheetsColumns = timesheetList?.map((row) => ({
     ...row,
     date: row.date.slice(0, 10),
     project: row.project?._id,
