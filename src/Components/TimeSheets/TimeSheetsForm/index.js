@@ -23,7 +23,6 @@ const TimeSheetsForm = () => {
   const { list: employees } = useSelector((state) => state.employees);
   const { list: tasks } = useSelector((state) => state.tasks);
   const { list: projects } = useSelector((state) => state.projects);
-
   const [isModal, setIsModal] = useState(false);
   const titleForm = selectedTimesheet ? 'Edit Timesheet' : 'Add Timesheet';
   const {
@@ -70,9 +69,9 @@ const TimeSheetsForm = () => {
     }
   };
 
-  const projectsMap = projects.map((project) => ({ id: project._id, label: project.name }));
-  const tasksMap = tasks.map((task) => ({ id: task._id, label: task.description }));
-  const employeesMap = employees.map((employee) => ({
+  const projectsMap = projects?.map((project) => ({ id: project._id, label: project.name }));
+  const tasksMap = tasks?.map((task) => ({ id: task._id, label: task.description }));
+  const employeesMap = employees?.map((employee) => ({
     id: employee._id,
     label: `${employee.name} ${employee.lastName}`
   }));
@@ -142,7 +141,7 @@ const TimeSheetsForm = () => {
           />
         </Form>
       )}
-      {isModal && (
+      {!isPending && isModal && (
         <Modal
           heading={error ? error : `Time Sheet successfully submitted!`}
           setModalDisplay={handleModalClose}

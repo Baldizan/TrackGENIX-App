@@ -58,16 +58,18 @@ const TasksForm = () => {
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
-      <Form onSubmit={handleSubmit(onSubmit)} title={titleForm} noValidate={!isValid}>
-        <Input
-          error={errors.description?.message}
-          register={register}
-          name="description"
-          title="Description"
-          placeholder="Add a description"
-          required
-        />
-      </Form>
+      {!isPending && !error && (
+        <Form onSubmit={handleSubmit(onSubmit)} title={titleForm} noValidate={!isValid}>
+          <Input
+            error={errors.description?.message}
+            register={register}
+            name="description"
+            title="Description"
+            placeholder="Add a description"
+            required
+          />
+        </Form>
+      )}
       {isModal ? (
         <Modal
           setModalDisplay={handleModalClose}

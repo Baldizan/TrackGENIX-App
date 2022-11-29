@@ -26,7 +26,7 @@ const List = () => {
     hours: 'Hours'
   };
 
-  const timesheetsColumns = timesheetList.map((row) => ({
+  const timesheetsColumns = timesheetList?.map((row) => ({
     ...row,
     date: row.date.slice(0, 10),
     project: row.project?._id,
@@ -87,8 +87,7 @@ const List = () => {
           itemsPerPage={5}
         />
       )}
-      {error && <p>{error}</p>}
-      {isModal && (
+      {!isPending && isModal && (
         <Modal
           heading="Are you sure you want to delete this Timesheet?"
           setModalDisplay={setIsModal}
