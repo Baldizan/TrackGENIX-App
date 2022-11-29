@@ -6,8 +6,8 @@ import {
   logoutError,
   logoutSuccess
 } from './actions';
-import { firebase, auth } from 'helper/firebase';
-import { signOut } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { auth } from 'helpers/firebase';
 
 export const login = (credentials) => {
   return (dispatch) => {
@@ -28,9 +28,7 @@ export const login = (credentials) => {
     };
 
     dispatch(loginPending());
-    return firebase
-      .auth()
-      .signInWithEmailAndPassword(credentials.email, credentials.password)
+    return signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(async (response) => {
         const token = await response.user.getIdToken();
         const {

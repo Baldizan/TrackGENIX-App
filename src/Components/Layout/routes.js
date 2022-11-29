@@ -19,6 +19,7 @@ const EmployeeProjects = lazy(() => import('Components/Employee/Projects'));
 const EmployeeTimesheets = lazy(() => import('Components/Employee/Timesheets'));
 const EmployeeTimesheetsForm = lazy(() => import('Components/Employee/Timesheets/Form'));
 const EmployeeProfile = lazy(() => import('Components/Employee/Profile'));
+const Login = lazy(() => import('Components/Auth/Login'));
 
 const Routes = () => {
   useEffect(() => {
@@ -32,6 +33,9 @@ const Routes = () => {
       </Route>
       <Route exact path="/home">
         <Home />
+      </Route>
+      <Route path="/login">
+        <Login />
       </Route>
       <Route exact path="/employee/home">
         <EmployeeHome />

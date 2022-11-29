@@ -31,7 +31,7 @@ code {
 }
 
 ::selection {
-  background: var(--primaryColorLighter);
+  background-color: var(--primaryColorLighter);
   color: var(--primaryColor);
 }
 
@@ -49,7 +49,7 @@ code {
   }
 
   ::selection {
-    background: #C8C798;
+    background-color: #C8C798;
     color: var(--primaryColor);
   }
 
