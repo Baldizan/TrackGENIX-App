@@ -101,7 +101,7 @@ const FormSuperAdmins = () => {
         />
       </Form>
       {isPending && <Loader />}
-      {isModal && (
+      {!isPending && isModal && (
         <Modal
           heading={
             error

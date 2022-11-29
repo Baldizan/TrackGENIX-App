@@ -6,6 +6,7 @@ import styles from './admins.module.css';
 import Modal from 'Components/Shared/Modal';
 import Table from 'Components/Shared/Table';
 import Button from 'Components/Shared/Button';
+import Error from 'Components/Shared/Error';
 import Loader from 'Components/Shared/Loader';
 
 const Admins = () => {
@@ -54,7 +55,7 @@ const Admins = () => {
           itemsPerPage={5}
         />
       )}
-      {error && <p>Admin not found</p>}
+      {error && <Error text={error} />}
       {isDeleteModal && (
         <Modal
           heading={`Are you sure you want to delete admin ${adminToDelete.name} ${adminToDelete.lastName}?`}

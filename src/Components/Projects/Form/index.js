@@ -39,6 +39,11 @@ const ProjectsForm = () => {
     control,
     name: 'employees'
   });
+  const employeesToMap =
+    employees?.map((employee) => ({
+      id: employee._id,
+      label: employee.name + ' ' + employee.lastName
+    })) ?? [];
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -152,9 +157,9 @@ const ProjectsForm = () => {
                 ?.map((field) => ({
                   ...field,
                   name:
-                    employees.find((e) => e._id === field.employeeId)?.name +
+                    employees?.find((e) => e._id === field.employeeId)?.name +
                     ' ' +
-                    employees.find((e) => e._id === field.employeeId)?.lastName
+                    employees?.find((e) => e._id === field.employeeId)?.lastName
                 }))
                 ?.filter((field) => field.employeeId) ?? []
             }
@@ -175,12 +180,7 @@ const ProjectsForm = () => {
               title="Employee"
               name={`employees[${fields.length - 1}].employeeId`}
               placeholder="Select employee"
-              arrayToMap={
-                employees.map((employee) => ({
-                  id: employee._id,
-                  label: employee.name + ' ' + employee.lastName
-                })) ?? []
-              }
+              arrayToMap={employeesToMap}
               error={
                 errors.employees ? errors.employees[fields.length - 1].employeeId?.message : ''
               }

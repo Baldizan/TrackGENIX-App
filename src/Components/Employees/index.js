@@ -30,7 +30,7 @@ const Employees = () => {
     dispatch(getEmployees());
   }, []);
 
-  const employeesColumns = employeesList.map((row) => ({
+  const employeesColumns = employeesList?.map((row) => ({
     ...row,
     status: row.active ? 'Active' : 'Inactive',
     project: row.project?.name ?? 'N/A'
@@ -83,7 +83,7 @@ const Employees = () => {
       )}
       {isPending && <Loader />}
       {error && <Error text={error} />}
-      {isModal && (
+      {!isPending && isModal && (
         <Modal
           heading={`Are you sure you want to delete employee ${selectedEmployee.name} ${selectedEmployee.lastName}?`}
           setModalDisplay={setIsModal}
