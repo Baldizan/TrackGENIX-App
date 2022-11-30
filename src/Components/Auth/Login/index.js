@@ -13,7 +13,7 @@ import Loader from 'Components/Shared/Loader';
 const Login = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { isPending, authenticated, error } = useSelector((state) => state.auth);
+  const { isPending, error } = useSelector((state) => state.auth);
 
   const {
     handleSubmit,
@@ -26,21 +26,8 @@ const Login = () => {
 
   const onSubmit = (inputData) => {
     if (isValid) {
-      dispatch(login(inputData)).then(() => {
-        if (authenticated.role) {
-          switch (authenticated.role) {
-            case 'SUPERADMIN':
-              return history.push('/super-admin');
-            case 'ADMIN':
-              return history.push('/admin');
-            case 'EMPLOYEE':
-              return history.push('/employee');
-            default:
-              history.push('/');
-              break;
-          }
-        }
-      });
+      dispatch(login(inputData));
+      history.push('/employee');
     }
   };
 
