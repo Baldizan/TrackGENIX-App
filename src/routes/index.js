@@ -20,6 +20,8 @@ const EmployeeProjects = lazy(() => import('Components/Entities/Employee/Project
 const EmployeeTimesheets = lazy(() => import('Components/Entities/Employee/Timesheets'));
 const EmployeeTimesheetsForm = lazy(() => import('Components/Entities/Employee/Timesheets/Form'));
 const EmployeeProfile = lazy(() => import('Components/Entities/Employee/Profile'));
+const Login = lazy(() => import('Components/Auth/Login'));
+const Register = lazy(() => import('Components/Auth/Register'));
 
 const Routes = () => {
   useEffect(() => {
@@ -34,7 +36,18 @@ const Routes = () => {
       <Route exact path="/home">
         <Home />
       </Route>
-
+      <Route path="/login">
+        <Login />
+      </Route>
+      <Route path="/register">
+        <Register />
+      </Route>
+      <Route exact path="/employee">
+        <Redirect to="/employee/home" />
+      </Route>
+      <Route exact path="/employee/home">
+        <EmployeeHome />
+      </Route>
       <PrivateRoute exact path="/employee/home" role="EMPLOYEE" component={EmployeeHome} />
       <PrivateRoute path="/employee/projects" role="EMPLOYEE" component={EmployeeProjects} />
       <PrivateRoute
