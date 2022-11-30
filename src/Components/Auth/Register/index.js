@@ -36,7 +36,7 @@ const Register = () => {
   const handleCloseModal = () => {
     if (!error) {
       setIsModal(false);
-      history.push(`/employees`);
+      history.push(`/login`);
     } else {
       setIsModal(false);
     }
@@ -50,6 +50,7 @@ const Register = () => {
           title="Register"
           secondColumnIndex={3}
           noValidate={!isValid}
+          legend={['Personal information', 'Authentication information']}
         >
           <Input
             id="name"
@@ -98,10 +99,20 @@ const Register = () => {
             error={errors.password?.message}
             required
           />
+          <Input
+            id="confirmPassword"
+            type="password"
+            name="confirmPassword"
+            title="Password confirmation"
+            placeholder="Confirm your password"
+            register={register}
+            error={errors.confirmPassword?.message}
+            required
+          />
         </Form>
       ) : null}
       {isPending && <Loader />}
-      {isModal && (
+      {!isPending && isModal && (
         <Modal
           heading={
             error

@@ -28,6 +28,8 @@ function Header() {
             label={'Register'}
             onClick={() => history.push('/register')}
             theme={'secondary'}
+            disabled={userLogged}
+            hidden={userLogged}
           />
           <Button
             label={userLogged ? 'Log out' : 'Log in'}

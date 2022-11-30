@@ -23,8 +23,8 @@
   text-transform: uppercase;
 }
 
-.authButtonsContainer{
-  display: flex
+.authButtonsContainer {
+  display: flex;
 }
 
 .socialIcon {

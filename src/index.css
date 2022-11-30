@@ -35,6 +35,10 @@ code {
   color: var(--primaryColor);
 }
 
+a {
+  text-decoration: none;
+}
+
 @media (prefers-color-scheme: dark) {
   body {
     background-color: var(--colorsBlendDark);

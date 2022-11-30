@@ -48,7 +48,12 @@ const Login = () => {
     <section className={styles.container}>
       {isPending && <Loader />}
       {!isPending && (
-        <Form onSubmit={handleSubmit(onSubmit)} title="Login" noValidate={!isValid}>
+        <Form
+          onSubmit={handleSubmit(onSubmit)}
+          title="Welcome to TrackGENIX!"
+          noValidate={!isValid}
+          legend="To log in, please enter your credentials below:"
+        >
           <Input
             error={errors.email?.message}
             register={register}
