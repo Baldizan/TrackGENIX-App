@@ -1,12 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, onIdTokenChanged, getIdTokenResult } from 'firebase/auth';
-import {
-  loginError,
-  logoutPending,
-  logoutSuccess,
-  logoutError,
-  loginSuccess
-} from 'redux/Auth/actions';
+import { cleanError, setAuthentication } from 'redux/Auth/actions';
 import store from 'redux/store';
 
 const firebaseConfig = {
@@ -39,18 +33,11 @@ export const tokenListener = () => {
           .then((res) => res.json())
           .then((json) => json.data);
         if (token) {
-          store.dispatch(loginSuccess({ role: role, token: token, data: userData[0] }));
+          store.dispatch(setAuthentication({ role: role, token: token, data: userData[0] }));
           sessionStorage.setItem('token', token);
         }
       } catch (error) {
-        store.dispatch(loginError(error));
-      }
-    } else {
-      store.dispatch(logoutPending());
-      try {
-        store.dispatch(logoutSuccess());
-      } catch (error) {
-        store.dispatch(logoutError(error));
+        store.dispatch(cleanError(error));
       }
     }
   });
