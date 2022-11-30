@@ -8,14 +8,14 @@ import Button from '../Shared/Button';
 function Header() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { authenticated } = useSelector((state) => state.auth);
+  const { authenticated, role } = useSelector((state) => state.auth);
   const [navbarDisplay, setNavBarDisplay] = useState(true);
   const userLogged = Boolean(authenticated.token);
   const onClickLogout = () => {
     dispatch(logout());
     history.push('/home');
   };
-
+  console.log(role);
   return (
     <header>
       <div className={styles.container}>
@@ -57,7 +57,7 @@ function Header() {
           </a>
         </div>
       </div>
-      {userLogged === 'EMPLOYEE' ? (
+      {userLogged ? (
         <nav className={`${styles.navbar} ${!navbarDisplay && styles.hidden}`}>
           <ul className={styles.routes}>
             <li>
