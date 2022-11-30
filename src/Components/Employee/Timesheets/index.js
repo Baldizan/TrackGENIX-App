@@ -9,6 +9,7 @@ import Error from 'Components/Shared/Error';
 
 const EmployeeTimesheets = () => {
   const { list: timesheetList, isPending, error } = useSelector((state) => state.timesheets);
+  const { data } = useSelector((state) => state.auth.authenticated);
   const dispatch = useDispatch();
   const history = useHistory();
   const headers = {
@@ -17,7 +18,6 @@ const EmployeeTimesheets = () => {
     description: 'Description',
     hours: 'Hours'
   };
-  const mockedEmployeeLogged = '636e639dfb8b4c835d213750';
   const timeSheetData = () => {
     if (timesheetList) {
       timesheetList
@@ -33,7 +33,7 @@ const EmployeeTimesheets = () => {
             employeeFormat: row.employee ? `${row.employee?.name} ${row.employee?.lastName}` : 'N/A'
           };
         })
-        .filter((t) => t.employee === mockedEmployeeLogged);
+        .filter((t) => t.employee === data._id);
     }
   };
 
