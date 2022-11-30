@@ -40,7 +40,7 @@ export const schema = Joi.object({
       'string.pattern.base': 'Password must contain both letters and numbers.'
     }),
   repeatPassword: Joi.any().valid(Joi.ref('password')).required().messages({
-    'any.only': 'The password has to be the same',
-    'any.required': 'Repeat Password is required'
+    'any.only': 'Passwords do not match',
+    'any.required': 'Password confirmation is required'
   })
 });
