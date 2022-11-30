@@ -1,8 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, onIdTokenChanged } from 'firebase/auth';
 import {
-  loginPending,
-  loginSuccess,
+  setAuthentication,
   loginError,
   logoutPending,
   logoutSuccess,
@@ -26,15 +25,14 @@ export const auth = getAuth(app);
 export const tokenListener = () => {
   onIdTokenChanged(auth, async (user) => {
     if (user) {
-      store.dispatch(loginPending());
       try {
         const {
           token,
           claims: { role, email }
         } = await user.getIdTokenResult();
         if (token) {
+          store.dispatch(setAuthentication({ role: role, email: email, token: token }));
           sessionStorage.setItem('token', token);
-          store.dispatch(loginSuccess(role, email));
         }
       } catch (error) {
         store.dispatch(loginError(error));

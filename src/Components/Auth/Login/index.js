@@ -24,48 +24,52 @@ const Login = () => {
     resolver: joiResolver(schema)
   });
 
-  const onSubmit = async (inputData) => {
-    if (Object.values(errors).length === 0) {
-      /*const role =*/ await dispatch(login(inputData));
-      if (authenticated.role) {
-        switch (authenticated.role) {
-          case 'SUPERADMIN':
-            history.push('/super-admin');
-            break;
-          case 'ADMIN':
-            history.push('/admin');
-            break;
-          case 'EMPLOYEE':
-            history.push('/employee');
-            break;
+  const onSubmit = (inputData) => {
+    if (isValid) {
+      dispatch(login(inputData)).then(() => {
+        if (authenticated.role) {
+          switch (authenticated.role) {
+            case 'SUPERADMIN':
+              return history.push('/super-admin');
+            case 'ADMIN':
+              return history.push('/admin');
+            case 'EMPLOYEE':
+              return history.push('/employee');
+            default:
+              history.push('/');
+              break;
+          }
         }
-      }
+      });
     }
   };
 
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
-      <Form onSubmit={handleSubmit(onSubmit)} title="Login" noValidate={!isValid}>
-        <Input
-          error={errors.description?.message}
-          register={register}
-          name="email"
-          title="Email Address"
-          placeholder="email@address.com"
-          required
-        />
-        <Input
-          error={errors.description?.message}
-          register={register}
-          name="password"
-          title="Password"
-          type="password"
-          placeholder="Enter your password"
-          required
-        />
-        <p className={styles.error}>{error ? 'Check your credentials' : ''}</p>
-      </Form>
+      {!isPending && (
+        <Form onSubmit={handleSubmit(onSubmit)} title="Login" noValidate={!isValid}>
+          <Input
+            error={errors.email?.message}
+            register={register}
+            name="email"
+            title="Email Address"
+            type="text"
+            placeholder="email@address.com"
+            required
+          />
+          <Input
+            error={errors.password?.message}
+            register={register}
+            name="password"
+            type="password"
+            title="Password"
+            placeholder="Enter your password"
+            required
+          />
+          <p className={styles.error}>{error ? 'Check your credentials' : ''}</p>
+        </Form>
+      )}
     </section>
   );
 };

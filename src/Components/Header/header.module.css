@@ -23,6 +23,10 @@
   text-transform: uppercase;
 }
 
+.authButtonsContainer{
+  display: flex
+}
+
 .socialIcon {
   margin-left: 15px;
   user-select: none;
