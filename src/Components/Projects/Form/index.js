@@ -79,7 +79,6 @@ const ProjectsForm = () => {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
     data.employees = data.employees?.map((e) => ({
       ...e,
       id: e.employeeId,
@@ -95,34 +94,37 @@ const ProjectsForm = () => {
   };
   const employeePM = watch('projectManager');
   const employeesSelected = watch('employees');
-  const employeesIds = employeesSelected?.map((e) => {
-    return e.employeeId;
-  });
+  const employeesIds =
+    employeesSelected?.map((e) => {
+      return e.employeeId;
+    }) ?? [];
+
+  const [employeeswiwithoutPM, setEmployeeswiwithoutPM] = useState();
   const [employeesFiltered, setEmployeesFiltered] = useState();
-
-  // useEffect(() => {
-  //   setEmployeesFiltered(
-  //     employees.filter((e) => {
-  //       return e._id !== employeePM;
-  //     })
-  //   );
-  // }, [employeePM]);
-
-  console.log('ids', employeesIds);
+  console.log(employees);
+  console.log('employeePM', employeePM);
+  useEffect(() => {
+    setEmployeesFiltered(employees);
+    setEmployeeswiwithoutPM(employees);
+  }, [employees]);
 
   useEffect(() => {
-    const employeesFiltered = employees
-      .filter((e) => {
-        return e._id !== employeePM;
-      })
+    const employeesFilterPM = employees.filter((e) => {
+      return e._id !== employeePM;
+    });
+    setEmployeeswiwithoutPM(employeesFilterPM);
+  }, [employeePM]);
+
+  useEffect(() => {
+    const employeesFilter = employees
       .filter((item) => {
         return !employeesIds.includes(item._id);
+      })
+      .filter((e) => {
+        return e._id !== employeePM;
       });
-
-    setEmployeesFiltered(employeesFiltered);
-  }, [employeesSelected, employeePM]);
-
-  console.log(watch('employees'));
+    setEmployeesFiltered(employeesFilter);
+  }, [employeesSelected]);
 
   return (
     <section className={styles.container}>
@@ -225,7 +227,7 @@ const ProjectsForm = () => {
               title="Employee"
               name={`employees[${fields.length - 1}].employeeId`}
               placeholder="Select employee"
-              arrayToMap={employeesFiltered.map((employee) => ({
+              arrayToMap={employeeswiwithoutPM?.map((employee) => ({
                 id: employee._id,
                 label: employee.name + ' ' + employee.lastName
               }))}
