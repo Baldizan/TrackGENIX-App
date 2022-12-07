@@ -23,7 +23,7 @@ const ProjectsForm = () => {
   const [feedbackModal, setFeedbackModal] = useState(false);
   const { isPending } = useSelector((state) => state.projects);
   const { list: employees, error } = useSelector((state) => state.employees);
-  const [filtredEmployees, setfiltredEmployees] = useState();
+  //const [filtredEmployeesPM, setfiltredEmployeesPM] = useState();
   const roles = ['DEV', 'TL', 'QA', 'PM'];
   const statusProject = ['Active', 'Inactive'];
   const {
@@ -42,11 +42,11 @@ const ProjectsForm = () => {
     name: 'employees'
   });
 
-  const employeesToMap =
-    employees?.map((employee) => ({
-      id: employee._id,
-      label: employee.name + ' ' + employee.lastName
-    })) ?? [];
+  // const employeesToMap =
+  //   employees?.map((employee) => ({
+  //     id: employee._id,
+  //     label: employee.name + ' ' + employee.lastName
+  //   })) ?? [];
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -80,7 +80,7 @@ const ProjectsForm = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    data.employees = data.employees.map((e) => ({
+    data.employees = data.employees?.map((e) => ({
       ...e,
       id: e.employeeId,
       employeeId: undefined
@@ -94,14 +94,35 @@ const ProjectsForm = () => {
     // }
   };
   const employeePM = watch('projectManager');
+  const employeesSelected = watch('employees');
+  const employeesIds = employeesSelected?.map((e) => {
+    return e.employeeId;
+  });
+  const [employeesFiltered, setEmployeesFiltered] = useState();
+
+  // useEffect(() => {
+  //   setEmployeesFiltered(
+  //     employees.filter((e) => {
+  //       return e._id !== employeePM;
+  //     })
+  //   );
+  // }, [employeePM]);
+
+  console.log('ids', employeesIds);
 
   useEffect(() => {
-    setfiltredEmployees(
-      employees.filter((e) => {
+    const employeesFiltered = employees
+      .filter((e) => {
         return e._id !== employeePM;
       })
-    );
-  }, [employeePM]);
+      .filter((item) => {
+        return !employeesIds.includes(item._id);
+      });
+
+    setEmployeesFiltered(employeesFiltered);
+  }, [employeesSelected, employeePM]);
+
+  console.log(watch('employees'));
 
   return (
     <section className={styles.container}>
@@ -167,9 +188,11 @@ const ProjectsForm = () => {
           name="projectManager"
           id="projectManager"
           placeholder="Select Project manager"
-          arrayToMap={employeesToMap}
+          arrayToMap={employeesFiltered?.map((employee) => ({
+            id: employee._id,
+            label: employee.name + ' ' + employee.lastName
+          }))}
           register={register}
-          // onChange={onChange}
         />
         <div className={`${styles.tableContainer} ${styles.employeesContainer}`}>
           <Table
@@ -202,7 +225,7 @@ const ProjectsForm = () => {
               title="Employee"
               name={`employees[${fields.length - 1}].employeeId`}
               placeholder="Select employee"
-              arrayToMap={filtredEmployees.map((employee) => ({
+              arrayToMap={employeesFiltered.map((employee) => ({
                 id: employee._id,
                 label: employee.name + ' ' + employee.lastName
               }))}
