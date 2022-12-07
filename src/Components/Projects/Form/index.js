@@ -41,6 +41,14 @@ const ProjectsForm = () => {
     control,
     name: 'employees'
   });
+  const employeePM = watch('projectManager');
+  const employeesSelected = watch('employees');
+  const employeesIds =
+    employeesSelected?.map((e) => {
+      return e.employeeId;
+    }) ?? [];
+  const [employeesWithoutPM, setListSelectEmployees] = useState();
+  const [employeesFiltered, setEmployeesFiltered] = useState();
 
   // const employeesToMap =
   //   employees?.map((employee) => ({
@@ -92,40 +100,36 @@ const ProjectsForm = () => {
     //   setFeedbackModal(true);
     // }
   };
-  const employeePM = watch('projectManager');
-  const employeesSelected = watch('employees');
-  const employeesIds =
-    employeesSelected?.map((e) => {
-      return e.employeeId;
-    }) ?? [];
 
-  const [employeeswiwithoutPM, setEmployeeswiwithoutPM] = useState();
-  const [employeesFiltered, setEmployeesFiltered] = useState();
-  console.log(employees);
-  console.log('employeePM', employeePM);
   useEffect(() => {
     setEmployeesFiltered(employees);
-    setEmployeeswiwithoutPM(employees);
+    setListSelectEmployees(employees);
   }, [employees]);
 
   useEffect(() => {
-    const employeesFilterPM = employees.filter((e) => {
-      return e._id !== employeePM;
-    });
-    setEmployeeswiwithoutPM(employeesFilterPM);
-  }, [employeePM]);
-
-  useEffect(() => {
-    const employeesFilter = employees
-      .filter((item) => {
-        return !employeesIds.includes(item._id);
-      })
+    const employeesFilterPM = employees
       .filter((e) => {
         return e._id !== employeePM;
+      })
+      .filter((item) => {
+        return !employeesIds.includes(item._id);
       });
-    setEmployeesFiltered(employeesFilter);
-  }, [employeesSelected]);
+    setListSelectEmployees(employeesFilterPM);
+  }, [employeePM]);
 
+  // useEffect(() => {
+  //   const employeesFilter = employees
+  //     .filter((item) => {
+  //       return !employeesIds.includes(item._id);
+  //     })
+  //     .filter((e) => {
+  //       return e._id !== employeePM;
+  //     });
+  //   console.log('filtro', employeesFilter);
+  //   setEmployeesFiltered(employeesFilter);
+  // }, [employeesSelected]);
+
+  console.log('listaemployees', employeesFiltered);
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
@@ -227,7 +231,7 @@ const ProjectsForm = () => {
               title="Employee"
               name={`employees[${fields.length - 1}].employeeId`}
               placeholder="Select employee"
-              arrayToMap={employeeswiwithoutPM?.map((employee) => ({
+              arrayToMap={employeesWithoutPM?.map((employee) => ({
                 id: employee._id,
                 label: employee.name + ' ' + employee.lastName
               }))}
