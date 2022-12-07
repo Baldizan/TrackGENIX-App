@@ -51,12 +51,12 @@ const Select = ({
     <label className={styles.label}>
       {title}
       <select
-        {...register(name, { required: { value: true, message: 'error' } })}
         className={`${disabled && styles.disabled} ${styles.input}`}
         disabled={disabled}
         id={id}
         name={name}
         onChange={onChange}
+        {...register(name, { required: { value: true, message: 'error' } })}
         type={type}
         value={value}
         required={required}

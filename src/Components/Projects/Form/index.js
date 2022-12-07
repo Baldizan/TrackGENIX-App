@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { getEmployees } from 'redux/Employees/thunks';
-import { postProject, putProject } from 'redux/Projects/thunks';
+//import { postProject, putProject } from 'redux/Projects/thunks';
 import styles from './form.module.css';
 import { schema } from './validations';
 import Button from 'Components/Shared/Button';
@@ -17,12 +17,13 @@ import Loader from 'Components/Shared/Loader';
 const ProjectsForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const projectId = history.location.state?.id;
+  //const projectId = history.location.state?.id;
   const project = history.location.state?.project;
   const [displayForm, setDisplayForm] = useState(false);
   const [feedbackModal, setFeedbackModal] = useState(false);
   const { isPending } = useSelector((state) => state.projects);
   const { list: employees, error } = useSelector((state) => state.employees);
+  const [filtredEmployees, setfiltredEmployees] = useState();
   const roles = ['DEV', 'TL', 'QA', 'PM'];
   const statusProject = ['Active', 'Inactive'];
   const {
@@ -30,7 +31,8 @@ const ProjectsForm = () => {
     handleSubmit,
     register,
     formState: { errors },
-    reset
+    reset,
+    watch
   } = useForm({
     mode: 'all',
     resolver: joiResolver(schema)
@@ -39,6 +41,7 @@ const ProjectsForm = () => {
     control,
     name: 'employees'
   });
+
   const employeesToMap =
     employees?.map((employee) => ({
       id: employee._id,
@@ -48,7 +51,7 @@ const ProjectsForm = () => {
   useEffect(() => {
     dispatch(getEmployees());
     if (project) {
-      reset(project);
+      reset({ ...project, projectManager: '' });
     }
   }, []);
 
@@ -76,19 +79,29 @@ const ProjectsForm = () => {
   };
 
   const onSubmit = (data) => {
+    console.log(data);
     data.employees = data.employees.map((e) => ({
       ...e,
       id: e.employeeId,
       employeeId: undefined
     }));
-    if (project) {
-      dispatch(putProject(projectId, data));
-      setFeedbackModal(true);
-    } else {
-      dispatch(postProject(data));
-      setFeedbackModal(true);
-    }
+    // if (project) {
+    //   dispatch(putProject(projectId, data));
+    //   setFeedbackModal(true);
+    // } else {
+    //   dispatch(postProject(data));
+    //   setFeedbackModal(true);
+    // }
   };
+  const employeePM = watch('projectManager');
+
+  useEffect(() => {
+    setfiltredEmployees(
+      employees.filter((e) => {
+        return e._id !== employeePM;
+      })
+    );
+  }, [employeePM]);
 
   return (
     <section className={styles.container}>
@@ -149,6 +162,15 @@ const ProjectsForm = () => {
           error={errors.active?.message}
           register={register}
         />
+        <Select
+          title="Project manager"
+          name="projectManager"
+          id="projectManager"
+          placeholder="Select Project manager"
+          arrayToMap={employeesToMap}
+          register={register}
+          // onChange={onChange}
+        />
         <div className={`${styles.tableContainer} ${styles.employeesContainer}`}>
           <Table
             headers={{ name: 'Employee', role: 'Role', rate: 'Rate' }}
@@ -180,7 +202,10 @@ const ProjectsForm = () => {
               title="Employee"
               name={`employees[${fields.length - 1}].employeeId`}
               placeholder="Select employee"
-              arrayToMap={employeesToMap}
+              arrayToMap={filtredEmployees.map((employee) => ({
+                id: employee._id,
+                label: employee.name + ' ' + employee.lastName
+              }))}
               error={
                 errors.employees ? errors.employees[fields.length - 1].employeeId?.message : ''
               }
