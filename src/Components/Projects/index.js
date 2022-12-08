@@ -25,6 +25,7 @@ const Projects = () => {
     description: 'Description',
     startDateFormat: 'Start date',
     endDateFormat: 'End date',
+    projectManager: 'Project Manager',
     employeesCmp: 'Employees',
     status: 'Status'
   };
@@ -38,6 +39,7 @@ const Projects = () => {
     status: row.active ? 'Active' : 'Inactive',
     startDateFormat: row.startDate.slice(0, 10),
     endDateFormat: row.endDate.slice(0, 10),
+    projectManager: row.projectManager?.name + row.projectManager?.lastName,
     employeesCmp: (
       <Button
         label="See employees"
@@ -56,6 +58,7 @@ const Projects = () => {
         description: item.description,
         active: item.active,
         startDate: item.startDate?.slice(0, 10),
+        projectManager: item.projectManager.name,
         endDate: item.endDate?.slice(0, 10),
         employees: item.employees?.map((e) => ({
           employeeId: e.id._id,
