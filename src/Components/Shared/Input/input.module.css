@@ -61,14 +61,24 @@
   visibility: hidden;
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
   -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
 
-input[type='number'] {
+.input[type='number'] {
   -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--primaryColor);
+  -webkit-box-shadow: 0 0 0px 40rem var(--backgroundBaseColor) inset;
+  box-shadow: 0 0 0px 40rem var(--backgroundBaseColor) inset;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -96,5 +106,13 @@ input[type='number'] {
 
   .input > option {
     background-color: var(--primaryColor);
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--secondaryColor);
+    -webkit-box-shadow: 0 0 0px 40rem var(--primaryColor) inset;
+    box-shadow: 0 0 0px 40rem var(--primaryColor) inset;
   }
 }

@@ -1,33 +1,34 @@
-import styles from './footer.module.css';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import styles from './footer.module.css';
 
 function Footer() {
+  const { authenticated } = useSelector((state) => state.auth);
   return (
     <footer className={styles.container}>
       <div className={styles.main}>
-        <div className={styles.appName}>
-          Track<span className={styles.capitalized}>genix</span>
-        </div>
-        <ul className={styles.routes}>
-          <li>
-            <Link to="/Admins">admins</Link>
-          </li>
-          <li>
-            <Link to="/Super-admins">super admins</Link>
-          </li>
-          <li>
-            <Link to="/Employees">employees</Link>
-          </li>
-          <li>
-            <Link to="/Projects">projects</Link>
-          </li>
-          <li>
-            <Link to="/Time-sheets">timesheets</Link>
-          </li>
-          <li>
-            <Link to="/Tasks">tasks</Link>
-          </li>
-        </ul>
+        <Link to="/">
+          <img
+            className={styles.logoTG}
+            src={`${process.env.PUBLIC_URL}/assets/images/logoTG.svg`}
+          />
+        </Link>
+        {authenticated.role === 'EMPLOYEE' ? (
+          <ul className={styles.routes}>
+            <li>
+              <Link to="/employee/home">Home</Link>
+            </li>
+            <li>
+              <Link to="/employee/projects">My projects</Link>
+            </li>
+            <li>
+              <Link to="/employee/time-sheets">My time-sheets</Link>
+            </li>
+            <li>
+              <Link to="/employee/profile">My profile</Link>
+            </li>
+          </ul>
+        ) : null}
       </div>
       <div className={styles.license}>
         <div className={styles.copyright}>

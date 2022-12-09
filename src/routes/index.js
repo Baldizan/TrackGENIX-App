@@ -15,11 +15,11 @@ const Tasks = lazy(() => import('Components/Tasks'));
 const TasksForm = lazy(() => import('Components/Tasks/TasksForm'));
 const TimeSheets = lazy(() => import('Components/TimeSheets'));
 const TimeSheetsForm = lazy(() => import('Components/TimeSheets/TimeSheetsForm'));
-const EmployeeHome = lazy(() => import('Components/Entities/Employee/Home'));
-const EmployeeProjects = lazy(() => import('Components/Entities/Employee/Projects'));
-const EmployeeTimesheets = lazy(() => import('Components/Entities/Employee/Timesheets'));
-const EmployeeTimesheetsForm = lazy(() => import('Components/Entities/Employee/Timesheets/Form'));
-const EmployeeProfile = lazy(() => import('Components/Entities/Employee/Profile'));
+const EmployeeHome = lazy(() => import('Components/Employee/Home'));
+const EmployeeProjects = lazy(() => import('Components/Employee/Projects'));
+const EmployeeTimesheets = lazy(() => import('Components/Employee/Timesheets'));
+const EmployeeTimesheetsForm = lazy(() => import('Components/Employee/Timesheets/Form'));
+const EmployeeProfile = lazy(() => import('Components/Employee/Profile'));
 const Login = lazy(() => import('Components/Auth/Login'));
 const Register = lazy(() => import('Components/Auth/Register'));
 

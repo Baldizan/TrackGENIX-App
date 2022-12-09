@@ -6,11 +6,13 @@ import {
   logoutError,
   logoutSuccess
 } from './actions';
-import { firebase, auth } from 'helper/firebase';
-import { signOut } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { auth } from 'helpers/firebase';
 
 export const login = (credentials) => {
+  const auth = getAuth();
   return (dispatch) => {
+    dispatch(loginPending());
     const fetchUser = async (role, userEmail) => {
       const URL = {
         SUPERADMIN: `${process.env.REACT_APP_API_URL}/super-admins`,
@@ -18,19 +20,15 @@ export const login = (credentials) => {
         EMPLOYEE: `${process.env.REACT_APP_API_URL}/employees`
       };
       try {
-        const response = await fetch(`${URL[role]}`);
-        const data = await response.json();
-        const user = data.data.filter((item) => item.email === userEmail);
+        const user = await fetch(`${URL[role]}/?email=${userEmail}`)
+          .then((res) => res.json())
+          .then((json) => json.data);
         return user[0];
       } catch (error) {
         dispatch(loginError(error.toString()));
       }
     };
-
-    dispatch(loginPending());
-    return firebase
-      .auth()
-      .signInWithEmailAndPassword(credentials.email, credentials.password)
+    return signInWithEmailAndPassword(auth, credentials.email, credentials.password)
       .then(async (response) => {
         const token = await response.user.getIdToken();
         const {
@@ -41,7 +39,7 @@ export const login = (credentials) => {
           loginSuccess({
             role,
             token,
-            data: userData || 'User not found'
+            data: userData ?? 'User not found'
           })
         );
       })

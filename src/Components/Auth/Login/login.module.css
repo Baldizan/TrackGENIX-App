@@ -1,0 +1,48 @@
+.container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2% 5%;
+}
+
+.loginContainer {
+  display: flex;
+  border: 1px solid var(--primaryColor);
+  border-radius: 5px;
+}
+
+.loginForm {
+  margin-top: 130px !important;
+  flex: 2;
+  text-align: center;
+  white-space: pre-line !important;
+  border: none !important;
+  color: var(--primaryColor);
+}
+
+.error{
+  min-height: 19px;
+  color: var(--errorAlertColor)
+}
+
+.loginImage {
+  flex: 2;
+  max-width: 50%;
+  margin: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  .error{
+    color: var(--textBaseColor)
+  }
+
+  .loginForm {
+    background-color: transparent !important;
+  }
+
+  .loginContainer {
+    border-color: var(--secondaryColor);
+    background-color: var(--primaryColorLight);
+  }
+}
