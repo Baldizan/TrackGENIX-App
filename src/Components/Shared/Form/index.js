@@ -11,23 +11,27 @@ const Form = ({
   onSubmit,
   legend,
   title,
-  secondColumnIndex
+  secondColumnIndex,
+  goBack = true,
+  style
 }) => {
   const history = useHistory();
   return (
     <form
-      className={styles.form}
+      className={`${style} ${styles.form}`}
       name={name}
       autoComplete={autoComplete}
       noValidate={noValidate}
       onSubmit={onSubmit}
     >
-      <div className={styles.navBack}>
-        <Button
-          onClick={() => history.goBack()}
-          icon={`${process.env.PUBLIC_URL}/assets/images/angle-left-solid.svg`}
-        />
-      </div>
+      {goBack ? (
+        <div className={styles.navBack}>
+          <Button
+            onClick={() => history.goBack()}
+            icon={`${process.env.PUBLIC_URL}/assets/images/angle-left-solid.svg`}
+          />
+        </div>
+      ) : null}
       {title ? <h2 className={styles.title}>{title}</h2> : null}
       <div className={secondColumnIndex ? styles.fieldsetColumns : styles.fieldsetContainer}>
         <fieldset className={styles.fieldset}>
@@ -46,10 +50,10 @@ const Form = ({
         ) : null}
       </div>
       <div className={styles.btnContainer}>
-        <Button label="Cancel" onClick={() => history.goBack()} />
+        <Button label="Home" onClick={() => history.push('/home')} />
         <Button
           type="submit"
-          label="Submit"
+          label="Login"
           disabled={noValidate}
           theme={noValidate ? 'disabled' : 'primary'}
         />

@@ -7,7 +7,7 @@
   width: clamp(300px, 60%, 90vw);
   border: 1px solid var(--primaryColor);
   border-radius: 5px;
-  background-color: var(--secondaryColorLighter);
+  background-color: var(--backgroundBaseColor);
 }
 
 .navBack {

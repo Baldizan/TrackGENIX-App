@@ -2,28 +2,29 @@ import Joi from 'joi';
 
 export const schema = Joi.object({
   name: Joi.string()
-    .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
     .min(3)
     .max(20)
+    .pattern(/^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
     .messages({
       'string.empty': 'First Name is required.',
-      'string.pattern.base': 'Name should be letters only',
       'string.min': 'First name must contain at least 3 letters.',
-      'string.max': 'First name cannot have over 40 letters.'
+      'string.max': 'First name cannot have over 40 letters.',
+      'string.pattern.base': 'First name must contain only letters.'
     }),
   lastName: Joi.string()
-    .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
     .min(3)
     .max(20)
+    .pattern(/^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
     .messages({
       'string.empty': 'Last Name is required.',
-      'string.pattern.base': 'Name should be letters only',
       'string.min': 'Last name must contain at least 3 letters.',
-      'string.max': 'Last name cannot have over 40 letters.'
+      'string.max': 'Last name cannot have over 40 letters.',
+      'string.pattern.base': 'Last name must contain only letters.'
     }),
   phone: Joi.string()
     .regex(/^[0-9]{10}$/)
-    .message('Phone number must be a 10 digits value.'),
+    .message('Phone number must be a 10 digits value.')
+    .required(),
   email: Joi.string()
     .email({ tlds: { allow: false } })
     .lowercase()
@@ -39,8 +40,7 @@ export const schema = Joi.object({
       'string.min': 'Password must contain at least 8 characters.',
       'string.pattern.base': 'Password must contain both letters and numbers.'
     }),
-  repeatPassword: Joi.any().valid(Joi.ref('password')).required().messages({
-    'any.only': 'Passwords do not match',
-    'any.required': 'Password confirmation is required'
-  })
+  confirmPassword: Joi.any()
+    .equal(Joi.ref('password'))
+    .messages({ 'any.only': 'Passwords do not match' })
 });

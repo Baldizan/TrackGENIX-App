@@ -7,7 +7,7 @@ import {
   LOGOUT_ERROR,
   CLEAN_ERROR,
   SET_AUTHENTICATION
-} from './constants';
+} from './types';
 
 const initialState = {
   isPending: false,
