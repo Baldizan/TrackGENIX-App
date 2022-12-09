@@ -5,7 +5,7 @@ import { logout } from 'redux/Auth/thunks.js';
 import styles from './header.module.css';
 import Button from '../Shared/Button';
 
-function Header() {
+const Header = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { authenticated } = useSelector((state) => state.auth);
@@ -31,11 +31,13 @@ function Header() {
             theme="primary"
             disabled={userLogged}
             hidden={userLogged}
+            style={styles.authButtons}
           />
           <Button
             label={userLogged ? 'Log out' : 'Log in'}
             onClick={userLogged ? () => onClickLogout() : () => history.push('/login')}
             theme="primary"
+            style={styles.authButtons}
           />
         </div>
         <div>
@@ -92,6 +94,6 @@ function Header() {
       </div>
     </header>
   );
-}
+};
 
 export default Header;
