@@ -58,10 +58,10 @@ const Projects = () => {
         description: item.description,
         active: item.active,
         startDate: item.startDate?.slice(0, 10),
-        projectManager: item.projectManager.name,
+        projectManager: item.projectManager,
         endDate: item.endDate?.slice(0, 10),
         employees: item.employees?.map((e) => ({
-          employeeId: e.id._id,
+          employeeId: e.id?._id,
           role: e.role,
           rate: e.rate
         }))

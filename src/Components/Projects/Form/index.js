@@ -52,7 +52,7 @@ const ProjectsForm = () => {
   useEffect(() => {
     dispatch(getEmployees());
     if (project) {
-      reset({ ...project, projectManager: '' });
+      reset({ ...project });
     }
   }, []);
 
@@ -183,12 +183,12 @@ const ProjectsForm = () => {
         <Select
           title="Project manager"
           name="projectManager"
-          id="projectManager"
           placeholder="Select Project manager"
           arrayToMap={employeesFiltered?.map((employee) => ({
             id: employee._id,
             label: employee.name + ' ' + employee.lastName
           }))}
+          id="projectManager"
           register={register}
           error={errors.projectManager?.message}
         />
