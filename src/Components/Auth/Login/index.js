@@ -13,8 +13,7 @@ import Loader from 'Components/Shared/Loader';
 const Login = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { isPending, error } = useSelector((state) => state.auth);
-
+  const { isPending, error, authenticated } = useSelector((state) => state.auth);
   const {
     handleSubmit,
     register,
@@ -27,40 +26,63 @@ const Login = () => {
   const onSubmit = (inputData) => {
     if (isValid) {
       dispatch(login(inputData));
-      history.push('/employee');
     }
   };
+
+  if (authenticated.role) {
+    switch (authenticated.role) {
+      case 'SUPER_ADMIN':
+        history.push('/super-admin');
+        break;
+      case 'ADMIN':
+        history.push('/admin');
+        break;
+      case 'EMPLOYEE':
+        history.push('/employee');
+        break;
+      default:
+        history.push('/login');
+    }
+  }
 
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
       {!isPending && (
-        <Form
-          onSubmit={handleSubmit(onSubmit)}
-          title="Welcome to TrackGENIX!"
-          noValidate={!isValid}
-          legend="To log in, please enter your credentials below:"
-        >
-          <Input
-            error={errors.email?.message}
-            register={register}
-            name="email"
-            title="Email Address"
-            type="text"
-            placeholder="email@address.com"
-            required
+        <div className={styles.loginContainer}>
+          <img
+            className={styles.loginImage}
+            src={`${process.env.PUBLIC_URL}/assets/images/login-image.png`}
           />
-          <Input
-            error={errors.password?.message}
-            register={register}
-            name="password"
-            type="password"
-            title="Password"
-            placeholder="Enter your password"
-            required
-          />
-          <p className={styles.error}>{error ? 'Check your credentials' : ''}</p>
-        </Form>
+          <Form
+            onSubmit={handleSubmit(onSubmit)}
+            title="Welcome to TrackGENIX!"
+            noValidate={!isValid}
+            goBack={false}
+            style={styles.loginForm}
+          >
+            <h2>Log in entering your credentials below:</h2>
+            <Input
+              error={errors.email?.message}
+              register={register}
+              name="email"
+              title="Email Address"
+              type="text"
+              placeholder="email@address.com"
+              required
+            />
+            <Input
+              error={errors.password?.message}
+              register={register}
+              name="password"
+              type="password"
+              title="Password"
+              placeholder="Enter your password"
+              required
+            />
+            <p className={styles.error}>{error ? 'Check your credentials' : ''}</p>
+          </Form>
+        </div>
       )}
     </section>
   );

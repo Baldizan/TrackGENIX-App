@@ -1,16 +1,26 @@
 import Joi from 'joi';
 
 export const schema = Joi.object({
-  name: Joi.string().min(3).max(20).messages({
-    'string.empty': 'First Name is required.',
-    'string.min': 'First name must contain at least 3 letters.',
-    'string.max': 'First name cannot have over 40 letters.'
-  }),
-  lastName: Joi.string().min(3).max(20).messages({
-    'string.empty': 'Last Name is required.',
-    'string.min': 'Last name must contain at least 3 letters.',
-    'string.max': 'Last name cannot have over 40 letters.'
-  }),
+  name: Joi.string()
+    .min(3)
+    .max(20)
+    .pattern(/^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
+    .messages({
+      'string.empty': 'First Name is required.',
+      'string.min': 'First name must contain at least 3 letters.',
+      'string.max': 'First name cannot have over 40 letters.',
+      'string.pattern.base': 'First name must contain only letters.'
+    }),
+  lastName: Joi.string()
+    .min(3)
+    .max(20)
+    .pattern(/^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
+    .messages({
+      'string.empty': 'Last Name is required.',
+      'string.min': 'Last name must contain at least 3 letters.',
+      'string.max': 'Last name cannot have over 40 letters.',
+      'string.pattern.base': 'Last name must contain only letters.'
+    }),
   phone: Joi.string()
     .regex(/^[0-9]{10}$/)
     .message('Phone number must be a 10 digits value.')

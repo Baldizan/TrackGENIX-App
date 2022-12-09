@@ -7,9 +7,12 @@ function Footer() {
   return (
     <footer className={styles.container}>
       <div className={styles.main}>
-        <div className={styles.appName}>
-          Track<span className={styles.capitalized}>genix</span>
-        </div>
+        <Link to="/">
+          <img
+            className={styles.logoTG}
+            src={`${process.env.PUBLIC_URL}/assets/images/logoTG.svg`}
+          />
+        </Link>
         {authenticated.role === 'EMPLOYEE' ? (
           <ul className={styles.routes}>
             <li>

@@ -18,23 +18,24 @@ function Header() {
   return (
     <header>
       <div className={styles.container}>
-        <p className={styles.brand}>
-          <Link to="/">
-            Track<span className={styles.capitalized}>genix</span>
-          </Link>
-        </p>
+        <Link to="/">
+          <img
+            className={styles.logoTG}
+            src={`${process.env.PUBLIC_URL}/assets/images/logoTG.svg`}
+          />
+        </Link>
         <div className={styles.authButtonsContainer}>
           <Button
             label={'Register'}
             onClick={() => history.push('/register')}
-            theme={'secondary'}
+            theme="primary"
             disabled={userLogged}
             hidden={userLogged}
           />
           <Button
             label={userLogged ? 'Log out' : 'Log in'}
             onClick={userLogged ? () => onClickLogout() : () => history.push('/login')}
-            theme={userLogged ? 'primary' : 'secondary'}
+            theme="primary"
           />
         </div>
         <div>
