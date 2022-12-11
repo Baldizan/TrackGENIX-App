@@ -5,22 +5,23 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { schema } from './validations';
 import styles from './profile.module.css';
 import { putEmployee } from 'redux/Employees/thunks';
+import { fetchUser } from 'redux/Auth/thunks';
 import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
 import Modal from 'Components/Shared/Modal';
 
 const EmployeeProfile = () => {
   const dispatch = useDispatch();
-  const { data } = useSelector((state) => state.auth.authenticated);
+  const { user, authenticated } = useSelector((state) => state.auth);
   const { isPending } = useSelector((state) => state.employees);
   const [isModal, setIsModal] = useState(false);
   const EmployeeProfile = {
-    name: data.name,
-    lastName: data.lastName,
-    phone: data.phone,
-    email: data.email,
-    password: data.password,
-    repeatPassword: data.repeatPassword
+    name: user.name,
+    lastName: user.lastName,
+    phone: user.phone,
+    email: user.email,
+    password: user.password,
+    repeatPassword: user.repeatPassword
   };
   const {
     handleSubmit,
@@ -34,6 +35,7 @@ const EmployeeProfile = () => {
 
   useEffect(() => {
     if (EmployeeProfile) {
+      dispatch(fetchUser(authenticated.role, authenticated.email, authenticated.token));
       reset(EmployeeProfile);
     }
   }, []);

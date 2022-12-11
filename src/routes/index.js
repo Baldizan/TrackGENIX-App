@@ -42,11 +42,8 @@ const Routes = () => {
       <Route path="/register">
         <Register />
       </Route>
-      <Route exact path="/employee">
+      <PrivateRoute exact path="/employee">
         <Redirect to="/employee/home" />
-      </Route>
-      <PrivateRoute exact path="/employee/home" role="EMPLOYEE">
-        <EmployeeHome />
       </PrivateRoute>
       <PrivateRoute exact path="/employee/home" role="EMPLOYEE" component={EmployeeHome} />
       <PrivateRoute path="/employee/projects" role="EMPLOYEE" component={EmployeeProjects} />

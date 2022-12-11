@@ -6,7 +6,10 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_ERROR,
   CLEAN_ERROR,
-  SET_AUTHENTICATION
+  SET_AUTHENTICATION,
+  GET_USER_PENDING,
+  GET_USER_SUCCESS,
+  GET_USER_ERROR
 } from './types';
 export const loginPending = () => {
   return {
@@ -57,5 +60,25 @@ export const setAuthentication = (user) => {
   return {
     type: SET_AUTHENTICATION,
     payload: user
+  };
+};
+
+export const getUserPending = () => {
+  return {
+    type: GET_USER_PENDING
+  };
+};
+
+export const getUserSuccess = (data) => {
+  return {
+    type: GET_USER_SUCCESS,
+    payload: data
+  };
+};
+
+export const getUserError = (error) => {
+  return {
+    type: GET_USER_ERROR,
+    payload: error
   };
 };

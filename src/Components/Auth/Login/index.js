@@ -13,7 +13,7 @@ import Loader from 'Components/Shared/Loader';
 const Login = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { isPending, error, authenticated } = useSelector((state) => state.auth);
+  const { isPending, error } = useSelector((state) => state.auth);
   const {
     handleSubmit,
     register,
@@ -23,28 +23,26 @@ const Login = () => {
     resolver: joiResolver(schema)
   });
 
-  const onSubmit = (inputData) => {
+  const onSubmit = async (inputData) => {
     if (isValid) {
-      dispatch(login(inputData));
+      const role = await dispatch(login(inputData));
+      if (role) {
+        switch (role) {
+          case 'SUPER_ADMIN':
+            history.push('/super-admin');
+            break;
+          case 'ADMIN':
+            history.push('/admin');
+            break;
+          case 'EMPLOYEE':
+            history.push('/employee');
+            break;
+          default:
+            history.push('/login');
+        }
+      }
     }
   };
-
-  if (authenticated.role) {
-    switch (authenticated.role) {
-      case 'SUPER_ADMIN':
-        history.push('/super-admin');
-        break;
-      case 'ADMIN':
-        history.push('/admin');
-        break;
-      case 'EMPLOYEE':
-        history.push('/employee');
-        break;
-      default:
-        history.push('/login');
-    }
-  }
-
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
