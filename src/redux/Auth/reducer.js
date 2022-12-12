@@ -14,7 +14,7 @@ import {
 
 const initialState = {
   isPending: false,
-  authenticated: { role: '', token: '' },
+  authenticated: { role: '' },
   error: '',
   user: {}
 };
@@ -66,6 +66,7 @@ export const authReducer = (state = initialState, action) => {
     }
     case SET_AUTHENTICATION: {
       return {
+        ...state,
         authenticated: action.payload,
         isPending: false
       };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { logout } from 'redux/Auth/thunks.js';
 import styles from './header.module.css';
@@ -8,7 +8,8 @@ import Button from '../Shared/Button';
 const Header = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { token: userLogged } = useSelector((state) => state.auth.authenticated);
+  const userLogged = sessionStorage.getItem('token');
+
   const [navbarDisplay, setNavBarDisplay] = useState(true);
   const onClickLogout = () => {
     dispatch(logout());

@@ -17,10 +17,9 @@ export const loginPending = () => {
   };
 };
 
-export const loginSuccess = (data) => {
+export const loginSuccess = () => {
   return {
-    type: LOGIN_SUCCESS,
-    payload: data
+    type: LOGIN_SUCCESS
   };
 };
 

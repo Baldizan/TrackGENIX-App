@@ -13,7 +13,7 @@ function Footer() {
             src={`${process.env.PUBLIC_URL}/assets/images/logoTG.svg`}
           />
         </Link>
-        {authenticated.role === 'EMPLOYEE' ? (
+        {authenticated && authenticated.role === 'EMPLOYEE' ? (
           <ul className={styles.routes}>
             <li>
               <Link to="/employee/home">Home</Link>

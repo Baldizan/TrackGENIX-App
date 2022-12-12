@@ -9,8 +9,8 @@ import Error from 'Components/Shared/Error';
 
 const EmployeeProjects = () => {
   const dispatch = useDispatch();
-  const { token, email } = useSelector((state) => state.auth.authenticated);
-
+  const { email } = useSelector((state) => state.auth.authenticated);
+  const token = sessionStorage.getItem('token');
   const { list: projectsList, isPending, error } = useSelector((state) => state.projects);
   const headers = {
     name: 'Project Name',
@@ -19,11 +19,15 @@ const EmployeeProjects = () => {
   };
 
   useEffect(() => {
-    dispatch(getProjects(token));
-    // dispatch(fetchUser(role, email, token));
+    if (token) {
+      dispatch(getProjects(token));
+    }
   }, []);
 
   const projectsData = () => {
+    // const employeeProjects = projectsList.filter((project) => {
+    //   return project.find((employees) => employees.id.email === email);
+    // });
     let employeeProjects = [];
     for (let i = 0; i < projectsList?.length; i++) {
       for (let j = 0; j < projectsList[i].employees.length; j++) {

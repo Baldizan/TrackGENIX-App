@@ -13,9 +13,9 @@ import Modal from 'Components/Shared/Modal';
 const EmployeeProfile = () => {
   const dispatch = useDispatch();
   const { user, authenticated } = useSelector((state) => state.auth);
+  const token = sessionStorage.getItem('token');
   const { isPending } = useSelector((state) => state.employees);
   const [isModal, setIsModal] = useState(false);
-
   const {
     handleSubmit,
     register,
@@ -27,11 +27,11 @@ const EmployeeProfile = () => {
   });
 
   useEffect(() => {
-    if (!user) {
-      dispatch(fetchUser(authenticated.role, authenticated.email, authenticated.token));
+    if (!user.email) {
+      dispatch(fetchUser(authenticated.role, authenticated.email, token));
     }
   }, []);
-
+  console.log('user', user);
   useEffect(() => {
     if (user) {
       const EmployeeProfile = {

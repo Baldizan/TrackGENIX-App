@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -13,7 +13,7 @@ import Loader from 'Components/Shared/Loader';
 const Login = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { isPending, error } = useSelector((state) => state.auth);
+  const { isPending, error, authenticated } = useSelector((state) => state.auth);
   const {
     handleSubmit,
     register,
@@ -22,27 +22,32 @@ const Login = () => {
     mode: 'all',
     resolver: joiResolver(schema)
   });
-
+  console.log('auth', authenticated);
   const onSubmit = async (inputData) => {
     if (isValid) {
-      const role = await dispatch(login(inputData));
-      if (role) {
-        switch (role) {
-          case 'SUPER_ADMIN':
-            history.push('/super-admin');
-            break;
-          case 'ADMIN':
-            history.push('/admin');
-            break;
-          case 'EMPLOYEE':
-            history.push('/employee');
-            break;
-          default:
-            history.push('/login');
-        }
-      }
+      dispatch(login(inputData));
+      console.log('log', authenticated.role);
     }
   };
+
+  useEffect(() => {
+    if (authenticated.role !== '') {
+      switch (authenticated.role) {
+        case 'SUPER_ADMIN':
+          history.push('/super-admin');
+          break;
+        case 'ADMIN':
+          history.push('/admin');
+          break;
+        case 'EMPLOYEE':
+          history.push('/employee');
+          break;
+        default:
+          history.push('/login');
+      }
+    }
+  }, [authenticated.role]);
+
   return (
     <section className={styles.container}>
       {isPending && <Loader />}

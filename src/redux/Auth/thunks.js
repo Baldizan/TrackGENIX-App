@@ -1,5 +1,6 @@
 import {
   loginPending,
+  loginSuccess,
   loginError,
   logoutPending,
   logoutError,
@@ -13,21 +14,20 @@ import { auth } from 'helpers/firebase';
 
 export const login = (inputData) => {
   return async (dispatch) => {
-    dispatch(loginPending());
+    await dispatch(loginPending());
     try {
       const userCredentials = await signInWithEmailAndPassword(
         auth,
         inputData.email,
         inputData.password
       );
-
       const {
         token,
         claims: { role }
       } = await userCredentials.user.getIdTokenResult();
-
       sessionStorage.setItem('token', token);
-
+      console.log(role);
+      dispatch(loginSuccess());
       return role;
     } catch {
       return dispatch(loginError());
@@ -36,8 +36,8 @@ export const login = (inputData) => {
 };
 
 export const logout = () => {
-  return (dispatch) => {
-    dispatch(logoutPending());
+  return async (dispatch) => {
+    await dispatch(logoutPending());
     return signOut(auth)
       .then(() => {
         sessionStorage.clear();
@@ -49,7 +49,7 @@ export const logout = () => {
   };
 };
 
-export const fetchUser = (userRole, userEmail, userToken) => {
+export const fetchUser = (role, email, token) => {
   return (dispatch) => {
     dispatch(getUserPending());
     const URL = {
@@ -57,10 +57,10 @@ export const fetchUser = (userRole, userEmail, userToken) => {
       ADMIN: `${process.env.REACT_APP_API_URL}/admins`,
       EMPLOYEE: `${process.env.REACT_APP_API_URL}/employees`
     };
-    return fetch(`${URL[userRole]}/?email=${userEmail}`, {
+    return fetch(`${URL[role]}/?email=${email}`, {
       method: 'GET',
       headers: {
-        token: userToken
+        token: token
       }
     })
       .then((response) => response.json())

@@ -26,14 +26,17 @@ export const tokenListener = () => {
           claims: { role, email }
         } = await getIdTokenResult(user);
         if (token) {
-          store.dispatch(setAuthentication({ role, email, token }));
+          store.dispatch(setAuthentication({ role, email }));
           sessionStorage.setItem('token', token);
+          console.log(role);
         }
       } catch (error) {
         console.log('error');
       }
     } else {
-      store.dispatch(logout());
+      if (sessionStorage.getItem('token')) {
+        store.dispatch(logout());
+      }
     }
   });
 };
