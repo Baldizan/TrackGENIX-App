@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, onIdTokenChanged, getIdTokenResult } from 'firebase/auth';
-import { setLoggedOut } from 'redux/Auth/actions';
-import { setAuthentication } from 'redux/Auth/thunks';
+import { setAuthentication } from 'redux/Auth/actions';
+import { logout } from 'redux/Auth/thunks';
 import store from 'redux/store';
 
 const firebaseConfig = {
@@ -33,7 +33,7 @@ export const tokenListener = () => {
         console.log('error');
       }
     } else {
-      store.dispatch(setLoggedOut());
+      store.dispatch(logout());
     }
   });
 };

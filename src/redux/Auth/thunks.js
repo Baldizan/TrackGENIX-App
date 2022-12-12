@@ -48,6 +48,7 @@ export const logout = () => {
       });
   };
 };
+
 export const fetchUser = (userRole, userEmail, userToken) => {
   return (dispatch) => {
     dispatch(getUserPending());

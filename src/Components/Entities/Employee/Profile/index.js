@@ -15,14 +15,7 @@ const EmployeeProfile = () => {
   const { user, authenticated } = useSelector((state) => state.auth);
   const { isPending } = useSelector((state) => state.employees);
   const [isModal, setIsModal] = useState(false);
-  const EmployeeProfile = {
-    name: user.name,
-    lastName: user.lastName,
-    phone: user.phone,
-    email: user.email,
-    password: user.password,
-    repeatPassword: user.repeatPassword
-  };
+
   const {
     handleSubmit,
     register,
@@ -34,11 +27,24 @@ const EmployeeProfile = () => {
   });
 
   useEffect(() => {
-    if (EmployeeProfile) {
+    if (!user) {
       dispatch(fetchUser(authenticated.role, authenticated.email, authenticated.token));
-      reset(EmployeeProfile);
     }
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      const EmployeeProfile = {
+        name: user.name,
+        lastName: user.lastName,
+        phone: user.phone,
+        email: user.email,
+        password: user.password,
+        repeatPassword: user.repeatPassword
+      };
+      reset(EmployeeProfile);
+    }
+  }, [user]);
 
   const onSubmit = (data) => {
     dispatch(putEmployee(data._id, data));
