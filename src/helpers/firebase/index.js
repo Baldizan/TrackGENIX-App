@@ -29,7 +29,7 @@ export const tokenListener = () => {
           sessionStorage.setItem('token', token);
         }
       } catch (error) {
-        console.log('error');
+        console.error(error);
       }
     }
   });

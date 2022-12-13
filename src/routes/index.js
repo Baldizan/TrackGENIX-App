@@ -22,11 +22,11 @@ const EmployeeTimesheetsForm = lazy(() => import('Components/Entities/Employee/T
 const EmployeeProfile = lazy(() => import('Components/Entities/Employee/Profile'));
 const Login = lazy(() => import('Components/Auth/Login'));
 const Register = lazy(() => import('Components/Auth/Register'));
-
+const token = sessionStorage.getItem('token');
 const Routes = () => {
   useEffect(() => {
     tokenListener();
-  }, []);
+  }, [token]);
 
   return (
     <Switch>
@@ -59,7 +59,6 @@ const Routes = () => {
         component={EmployeeTimesheetsForm}
       />
       <PrivateRoute path="/employee/profile" role="EMPLOYEE" component={EmployeeProfile} />
-
       <Route exact path="/admins">
         <Admins />
       </Route>
