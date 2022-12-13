@@ -61,6 +61,7 @@ const Login = () => {
             noValidate={!isValid}
             goBack={false}
             style={styles.loginForm}
+            customBtnLabel="Log in"
           >
             <h2>Log in entering your credentials below:</h2>
             <Input

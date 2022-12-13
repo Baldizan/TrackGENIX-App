@@ -13,7 +13,8 @@ const Form = ({
   title,
   secondColumnIndex,
   goBack = true,
-  style
+  style,
+  customBtnLabel
 }) => {
   const history = useHistory();
   return (
@@ -53,7 +54,7 @@ const Form = ({
         <Button label="Home" onClick={() => history.push('/home')} />
         <Button
           type="submit"
-          label="Login"
+          label={customBtnLabel ?? 'Submit'}
           disabled={noValidate}
           theme={noValidate ? 'disabled' : 'primary'}
         />

@@ -36,7 +36,7 @@ const EmployeeProfile = () => {
       const EmployeeProfile = {
         name: user.name,
         lastName: user.lastName,
-        phone: user.phone,
+        phone: user.phone?.toString(),
         email: user.email,
         password: user.password,
         repeatPassword: user.repeatPassword
