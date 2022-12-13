@@ -37,7 +37,7 @@ const Header = () => {
           {!userLogged && (
             <Button
               label={'Log in'}
-              onClick={history.push('/login')}
+              onClick={() => history.push('/login')}
               theme="primary"
               style={styles.authButtons}
             />
