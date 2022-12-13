@@ -31,7 +31,6 @@ const EmployeeProfile = () => {
       dispatch(fetchUser(authenticated.role, authenticated.email, token));
     }
   }, []);
-  console.log('user', user);
   useEffect(() => {
     if (user) {
       const EmployeeProfile = {

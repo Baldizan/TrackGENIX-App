@@ -22,11 +22,9 @@ const Login = () => {
     mode: 'all',
     resolver: joiResolver(schema)
   });
-  console.log('auth', authenticated);
   const onSubmit = async (inputData) => {
     if (isValid) {
       dispatch(login(inputData));
-      console.log('log', authenticated.role);
     }
   };
 

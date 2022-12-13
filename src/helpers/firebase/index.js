@@ -1,7 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, onIdTokenChanged, getIdTokenResult } from 'firebase/auth';
 import { setAuthentication } from 'redux/Auth/actions';
-import { logout } from 'redux/Auth/thunks';
 import store from 'redux/store';
 
 const firebaseConfig = {
@@ -28,14 +27,9 @@ export const tokenListener = () => {
         if (token) {
           store.dispatch(setAuthentication({ role, email }));
           sessionStorage.setItem('token', token);
-          console.log(role);
         }
       } catch (error) {
         console.log('error');
-      }
-    } else {
-      if (sessionStorage.getItem('token')) {
-        store.dispatch(logout());
       }
     }
   });

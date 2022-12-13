@@ -30,8 +30,7 @@ export const authReducer = (state = initialState, action) => {
     case LOGIN_SUCCESS: {
       return {
         ...state,
-        isPending: false,
-        authenticated: action.payload
+        isPending: false
       };
     }
     case LOGIN_ERROR: {
