@@ -51,23 +51,24 @@ const ProjectsForm = () => {
       return e.employeeId;
     }) ?? [];
 
-  const [employeesWithoutPM, setListSelectEmployees] = useState();
-  const [employeesFiltered, setEmployeesFiltered] = useState();
+  const [listForPM, setListForPM] = useState();
+  const [listForEmployees, setlistForEmployees] = useState();
   const projectWithPMId = { ...project, projectManager: projectManagerId };
-
-  // console.log('emplados filtrados', employeesFiltered);
-
-  // console.log('PM', employeePM);
-  // console.log('employeesIds', employeesIds);
 
   useEffect(() => {
     dispatch(getEmployees(token));
+  }, []);
 
+  useEffect(() => {
+    setlistForEmployees(employees);
+    setListForPM(employees);
+  }, [employees]);
+
+  useEffect(() => {
     if (project) {
-      console.log('projectWithPMId', projectWithPMId);
       reset(projectWithPMId);
     }
-  }, []);
+  }, [employees]);
 
   const handleModalClose = () => {
     if (!error) {
@@ -108,178 +109,168 @@ const ProjectsForm = () => {
   };
 
   useEffect(() => {
-    setEmployeesFiltered(employees);
-    setListSelectEmployees(employees);
-  }, [employees]);
-
-  useEffect(() => {
     const employeesFilterPM = employees
       .filter((e) => {
-        return e.name + e.lastName !== employeePM;
+        return e._id !== employeePM;
       })
       .filter((item) => {
         return !employeesIds.includes(item._id);
       });
-    setListSelectEmployees(employeesFilterPM);
-  }, [employeePM]);
+    setListForPM(employeesFilterPM);
+  }, [employees, employeePM, employeesSelected]);
 
   useEffect(() => {
-    const employeesFilter = employees
-      .filter((item) => {
-        return !employeesIds.includes(item._id);
-      })
-      .filter((e) => {
-        return e._id !== employeePM;
-      });
-    setEmployeesFiltered(employeesFilter);
+    const employeesFilter = employees.filter((item) => {
+      return !employeesIds.includes(item._id);
+    });
+    setlistForEmployees(employeesFilter);
   }, [employeesSelected]);
 
-  // console.log('sin empleadoPM2', employeesWithoutPM);
-  // console.log('emplados filtrados2', employeesFiltered);
-  //console.log('project2', project);
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
-      <Form
-        title={project ? 'Edit project' : 'Add project'}
-        onSubmit={handleSubmit(onSubmit)}
-        secondColumnIndex={6}
-      >
-        <Input
-          register={register}
-          title="Project Name"
-          id="ProjectName"
-          name="name"
-          placeholder="Project Name"
-          error={errors.name?.message}
-        />
-        <Input
-          register={register}
-          title="Client"
-          id="client"
-          name="clientName"
-          placeholder="Client name"
-          error={errors.clientName?.message}
-        />
-        <Input
-          register={register}
-          title="Description"
-          id="description"
-          name="description"
-          placeholder="Description"
-          error={errors.description?.message}
-        />
-        <Input
-          register={register}
-          title="Start Date"
-          name="startDate"
-          type="date"
-          placeholder="Start Date"
-          error={errors.startDate?.message}
-        />
-        <Input
-          register={register}
-          title="End Date"
-          name="endDate"
-          type="date"
-          placeholder="End Date"
-          error={errors.endDate?.message}
-        />
-        <Select
-          title="Status"
-          name="active"
-          arrayToMap={statusProject.map((status) => ({
-            id: status === 'Active',
-            label: status
-          }))}
-          id="active"
-          register={register}
-          error={errors.active?.message}
-        />
-        <Select
-          title="Project manager"
-          name="projectManager"
-          placeholder="Select Project manager"
-          arrayToMap={employeesFiltered?.map((employee) => ({
-            id: employee._id,
-            label: employee.name + ' ' + employee.lastName
-          }))}
-          id="projectManager"
-          register={register}
-          error={errors.projectManager?.message}
-        />
-        <div className={`${styles.tableContainer} ${styles.employeesContainer}`}>
-          <Table
-            headers={{ name: 'Employee', role: 'Role', rate: 'Rate' }}
-            data={
-              fields
-                ?.map((field) => ({
-                  ...field,
-                  name:
-                    employees?.find((e) => e._id === field.employeeId)?.name +
-                    ' ' +
-                    employees?.find((e) => e._id === field.employeeId)?.lastName
-                }))
-                ?.filter((field) => field.employeeId) ?? []
-            }
-            deleteItem={deleteProject}
+      {!isPending && (
+        <Form
+          title={project ? 'Edit project' : 'Add project'}
+          onSubmit={handleSubmit(onSubmit)}
+          secondColumnIndex={6}
+        >
+          <Input
+            register={register}
+            title="Project Name"
+            id="ProjectName"
+            name="name"
+            placeholder="Project Name"
+            error={errors.name?.message}
           />
-        </div>
-        {!displayForm && (
-          <Button
-            theme="secondary"
-            style={styles.btnAdd}
-            label="Add new employee"
-            onClick={handleAdd}
+          <Input
+            register={register}
+            title="Client"
+            id="client"
+            name="clientName"
+            placeholder="Client name"
+            error={errors.clientName?.message}
           />
-        )}
-        {displayForm && (
-          <>
-            <Select
-              title="Employee"
-              name={`employees[${fields.length - 1}].employeeId`}
-              placeholder="Select employee"
-              arrayToMap={employeesWithoutPM?.map((employee) => ({
-                id: employee._id,
-                label: employee.name + ' ' + employee.lastName
-              }))}
-              error={
-                errors.employees ? errors.employees[fields.length - 1].employeeId?.message : ''
+          <Input
+            register={register}
+            title="Description"
+            id="description"
+            name="description"
+            placeholder="Description"
+            error={errors.description?.message}
+          />
+          <Input
+            register={register}
+            title="Start Date"
+            name="startDate"
+            type="date"
+            placeholder="Start Date"
+            error={errors.startDate?.message}
+          />
+          <Input
+            register={register}
+            title="End Date"
+            name="endDate"
+            type="date"
+            placeholder="End Date"
+            error={errors.endDate?.message}
+          />
+          <Select
+            title="Status"
+            name="active"
+            arrayToMap={statusProject.map((status) => ({
+              id: status === 'Active',
+              label: status
+            }))}
+            id="active"
+            register={register}
+            error={errors.active?.message}
+          />
+          <Select
+            title="Project manager"
+            name="projectManager"
+            placeholder="Select Project manager"
+            arrayToMap={listForEmployees?.map((employee) => ({
+              id: employee._id,
+              label: employee.name + ' ' + employee.lastName
+            }))}
+            id="projectManager"
+            register={register}
+            error={errors.projectManager?.message}
+          />
+          <div className={`${styles.tableContainer} ${styles.employeesContainer}`}>
+            <Table
+              headers={{ name: 'Employee', role: 'Role', rate: 'Rate' }}
+              data={
+                fields
+                  ?.map((field) => ({
+                    ...field,
+                    name:
+                      employees?.find((e) => e._id === field.employeeId)?.name +
+                      ' ' +
+                      employees?.find((e) => e._id === field.employeeId)?.lastName
+                  }))
+                  ?.filter((field) => field.employeeId) ?? []
               }
-              register={register}
+              deleteItem={deleteProject}
             />
-            <Select
-              title="Role"
-              name={`employees[${fields.length - 1}].role`}
-              placeholder={'Role'}
-              arrayToMap={roles.map((rol) => ({
-                id: rol,
-                label: rol
-              }))}
-              register={register}
-              error={errors.employees ? errors.employees[fields.length - 1].role?.message : ''}
+          </div>
+          {!displayForm && (
+            <Button
+              theme="secondary"
+              style={styles.btnAdd}
+              label="Add new employee"
+              onClick={handleAdd}
             />
-            <div className={styles.btnContainer}>
-              <Input
-                title="Rate"
-                name={`employees[${fields.length - 1}].rate`}
-                placeholder="Rate"
-                type="number"
+          )}
+          {displayForm && (
+            <>
+              <Select
+                title="Employee"
+                name={`employees[${fields.length - 1}].employeeId`}
+                placeholder="Select employee"
+                arrayToMap={listForPM?.map((employee) => ({
+                  id: employee._id,
+                  label: employee.name + ' ' + employee.lastName
+                }))}
+                error={
+                  errors.employees ? errors.employees[fields.length - 1].employeeId?.message : ''
+                }
                 register={register}
-                error={errors.employees ? errors.employees[fields.length - 1].rate?.message : ''}
               />
+              <Select
+                title="Role"
+                name={`employees[${fields.length - 1}].role`}
+                placeholder={'Role'}
+                arrayToMap={roles.map((rol) => ({
+                  id: rol,
+                  label: rol
+                }))}
+                register={register}
+                error={errors.employees ? errors.employees[fields.length - 1].role?.message : ''}
+              />
+              <div className={styles.btnContainer}>
+                <Input
+                  title="Rate"
+                  name={`employees[${fields.length - 1}].rate`}
+                  placeholder="Rate"
+                  type="number"
+                  register={register}
+                  error={errors.employees ? errors.employees[fields.length - 1].rate?.message : ''}
+                />
 
-              <Button
-                theme="secondary"
-                style={styles.btnAssign}
-                label="Assign"
-                onClick={assignEmployee}
-                disabled={errors.employees}
-              />
-            </div>
-          </>
-        )}
-      </Form>
+                <Button
+                  theme="secondary"
+                  style={styles.btnAssign}
+                  label="Assign"
+                  onClick={assignEmployee}
+                  disabled={errors.employees}
+                />
+              </div>
+            </>
+          )}
+        </Form>
+      )}
       {feedbackModal && (
         <Modal
           setModalDisplay={handleModalClose}

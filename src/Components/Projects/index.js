@@ -98,7 +98,7 @@ const Projects = () => {
       setModalEmployee(true);
     }
   };
-  console.log('project', projectsArray);
+
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
