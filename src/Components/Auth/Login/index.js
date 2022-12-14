@@ -32,7 +32,7 @@ const Login = () => {
       if (user.error) {
         setIsModal(true);
       }
-      if (user.role !== '') {
+      if (user.role) {
         switch (user.role) {
           case 'SUPER_ADMIN':
             history.push('/super-admin');
