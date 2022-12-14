@@ -13,11 +13,15 @@ import {
   putTimeSheetSuccess
 } from './actions';
 
-export const getTimeSheets = () => {
+export const getTimeSheets = (token) => {
   return async (dispatch) => {
     dispatch(getTimeSheetsPending());
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/timesheets`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/timesheets`, {
+        headers: {
+          token: token
+        }
+      });
       const json = await response.json();
       if (json.error) {
         throw new Error(json.message);

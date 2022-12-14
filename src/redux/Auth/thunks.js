@@ -4,54 +4,39 @@ import {
   loginError,
   logoutPending,
   logoutError,
-  logoutSuccess
+  logoutSuccess,
+  getUserPending,
+  getUserSuccess,
+  getUserError
 } from './actions';
-import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from 'helpers/firebase';
 
-export const login = (credentials) => {
-  const auth = getAuth();
-  return (dispatch) => {
-    dispatch(loginPending());
-    const fetchUser = async (role, userEmail) => {
-      const URL = {
-        SUPERADMIN: `${process.env.REACT_APP_API_URL}/super-admins`,
-        ADMIN: `${process.env.REACT_APP_API_URL}/admins`,
-        EMPLOYEE: `${process.env.REACT_APP_API_URL}/employees`
-      };
-      try {
-        const user = await fetch(`${URL[role]}/?email=${userEmail}`)
-          .then((res) => res.json())
-          .then((json) => json.data);
-        return user[0];
-      } catch (error) {
-        dispatch(loginError(error.toString()));
-      }
-    };
-    return signInWithEmailAndPassword(auth, credentials.email, credentials.password)
-      .then(async (response) => {
-        const token = await response.user.getIdToken();
-        const {
-          claims: { role }
-        } = await response.user.getIdTokenResult();
-        const userData = await fetchUser(role, credentials.email);
-        return dispatch(
-          loginSuccess({
-            role,
-            token,
-            data: userData ?? 'User not found'
-          })
-        );
-      })
-      .catch((error) => {
-        return dispatch(loginError(error.toString()));
-      });
+export const login = (inputData) => {
+  return async (dispatch) => {
+    await dispatch(loginPending());
+    try {
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        inputData.email,
+        inputData.password
+      );
+      const {
+        token,
+        claims: { role }
+      } = await userCredentials.user.getIdTokenResult();
+      sessionStorage.setItem('token', token);
+      dispatch(loginSuccess());
+      return role;
+    } catch {
+      return dispatch(loginError());
+    }
   };
 };
 
 export const logout = () => {
-  return (dispatch) => {
-    dispatch(logoutPending());
+  return async (dispatch) => {
+    await dispatch(logoutPending());
     return signOut(auth)
       .then(() => {
         sessionStorage.clear();
@@ -59,6 +44,30 @@ export const logout = () => {
       })
       .catch((error) => {
         return dispatch(logoutError(error.toString()));
+      });
+  };
+};
+
+export const fetchUser = (role, email, token) => {
+  return (dispatch) => {
+    dispatch(getUserPending());
+    const URL = {
+      SUPERADMIN: `${process.env.REACT_APP_API_URL}/super-admins`,
+      ADMIN: `${process.env.REACT_APP_API_URL}/admins`,
+      EMPLOYEE: `${process.env.REACT_APP_API_URL}/employees`
+    };
+    return fetch(`${URL[role]}/?email=${email}`, {
+      method: 'GET',
+      headers: {
+        token: token
+      }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        return dispatch(getUserSuccess(response.data[0]));
+      })
+      .catch((error) => {
+        return dispatch(getUserError(error.toString()));
       });
   };
 };

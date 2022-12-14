@@ -9,6 +9,7 @@ import Error from 'Components/Shared/Error';
 
 const EmployeeTimesheets = () => {
   const { list: timesheetList, isPending, error } = useSelector((state) => state.timesheets);
+  const token = sessionStorage.getItem('token');
   const { data } = useSelector((state) => state.auth.authenticated);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -18,6 +19,7 @@ const EmployeeTimesheets = () => {
     description: 'Description',
     hours: 'Hours'
   };
+
   const timeSheetData = () => {
     if (timesheetList) {
       timesheetList
@@ -33,12 +35,12 @@ const EmployeeTimesheets = () => {
             employeeFormat: row.employee ? `${row.employee?.name} ${row.employee?.lastName}` : 'N/A'
           };
         })
-        .filter((t) => t.employee === data._id);
+        .filter((t) => t.employee === data?._id);
     }
   };
 
   useEffect(() => {
-    dispatch(getTimeSheets());
+    dispatch(getTimeSheets(token));
   }, []);
 
   const handleEdit = (item) => {

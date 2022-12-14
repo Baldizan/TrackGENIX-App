@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -22,28 +22,29 @@ const Login = () => {
     mode: 'all',
     resolver: joiResolver(schema)
   });
-
-  const onSubmit = (inputData) => {
+  const onSubmit = async (inputData) => {
     if (isValid) {
       dispatch(login(inputData));
     }
   };
 
-  if (authenticated.role) {
-    switch (authenticated.role) {
-      case 'SUPER_ADMIN':
-        history.push('/super-admin');
-        break;
-      case 'ADMIN':
-        history.push('/admin');
-        break;
-      case 'EMPLOYEE':
-        history.push('/employee');
-        break;
-      default:
-        history.push('/login');
+  useEffect(() => {
+    if (authenticated.role !== '') {
+      switch (authenticated.role) {
+        case 'SUPER_ADMIN':
+          history.push('/super-admin');
+          break;
+        case 'ADMIN':
+          history.push('/admin');
+          break;
+        case 'EMPLOYEE':
+          history.push('/employee');
+          break;
+        default:
+          history.push('/login');
+      }
     }
-  }
+  }, [authenticated.role]);
 
   return (
     <section className={styles.container}>
@@ -60,6 +61,7 @@ const Login = () => {
             noValidate={!isValid}
             goBack={false}
             style={styles.loginForm}
+            customBtnLabel="Log in"
           >
             <h2>Log in entering your credentials below:</h2>
             <Input

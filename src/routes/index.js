@@ -22,7 +22,6 @@ const EmployeeTimesheetsForm = lazy(() => import('Components/Entities/Employee/T
 const EmployeeProfile = lazy(() => import('Components/Entities/Employee/Profile'));
 const Login = lazy(() => import('Components/Auth/Login'));
 const Register = lazy(() => import('Components/Auth/Register'));
-
 const Routes = () => {
   useEffect(() => {
     tokenListener();
@@ -42,11 +41,8 @@ const Routes = () => {
       <Route path="/register">
         <Register />
       </Route>
-      <Route exact path="/employee">
+      <PrivateRoute exact path="/employee">
         <Redirect to="/employee/home" />
-      </Route>
-      <PrivateRoute exact path="/employee/home" role="EMPLOYEE">
-        <EmployeeHome />
       </PrivateRoute>
       <PrivateRoute exact path="/employee/home" role="EMPLOYEE" component={EmployeeHome} />
       <PrivateRoute path="/employee/projects" role="EMPLOYEE" component={EmployeeProjects} />
@@ -62,7 +58,6 @@ const Routes = () => {
         component={EmployeeTimesheetsForm}
       />
       <PrivateRoute path="/employee/profile" role="EMPLOYEE" component={EmployeeProfile} />
-
       <Route exact path="/admins">
         <Admins />
       </Route>

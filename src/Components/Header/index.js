@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { logout } from 'redux/Auth/thunks.js';
 import styles from './header.module.css';
@@ -8,13 +8,14 @@ import Button from '../Shared/Button';
 const Header = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { authenticated } = useSelector((state) => state.auth);
+  const userLogged = useSelector((state) => state.auth.authenticated.role);
   const [navbarDisplay, setNavBarDisplay] = useState(true);
-  const userLogged = Boolean(authenticated.token);
   const onClickLogout = () => {
     dispatch(logout());
     history.push('/home');
+    sessionStorage.clear();
   };
+
   return (
     <header>
       <div className={styles.container}>
@@ -33,12 +34,22 @@ const Header = () => {
             hidden={userLogged}
             style={styles.authButtons}
           />
-          <Button
-            label={userLogged ? 'Log out' : 'Log in'}
-            onClick={userLogged ? () => onClickLogout() : () => history.push('/login')}
-            theme="primary"
-            style={styles.authButtons}
-          />
+          {!userLogged && (
+            <Button
+              label={'Log in'}
+              onClick={() => history.push('/login')}
+              theme="primary"
+              style={styles.authButtons}
+            />
+          )}
+          {userLogged && (
+            <Button
+              label={'Log out'}
+              onClick={onClickLogout}
+              theme="primary"
+              style={styles.authButtons}
+            />
+          )}
         </div>
         <div>
           <a href={'https://www.facebook.com/radiumrocket'} target={'_blank'} rel="noreferrer">

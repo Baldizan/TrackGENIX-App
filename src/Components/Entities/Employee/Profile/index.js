@@ -5,23 +5,17 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { schema } from './validations';
 import styles from './profile.module.css';
 import { putEmployee } from 'redux/Employees/thunks';
+import { fetchUser } from 'redux/Auth/thunks';
 import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
 import Modal from 'Components/Shared/Modal';
 
 const EmployeeProfile = () => {
   const dispatch = useDispatch();
-  const { data } = useSelector((state) => state.auth.authenticated);
+  const { user, authenticated } = useSelector((state) => state.auth);
+  const token = sessionStorage.getItem('token');
   const { isPending } = useSelector((state) => state.employees);
   const [isModal, setIsModal] = useState(false);
-  const EmployeeProfile = {
-    name: data.name,
-    lastName: data.lastName,
-    phone: data.phone,
-    email: data.email,
-    password: data.password,
-    repeatPassword: data.repeatPassword
-  };
   const {
     handleSubmit,
     register,
@@ -33,10 +27,23 @@ const EmployeeProfile = () => {
   });
 
   useEffect(() => {
-    if (EmployeeProfile) {
-      reset(EmployeeProfile);
+    if (!user.email) {
+      dispatch(fetchUser(authenticated.role, authenticated.email, token));
     }
   }, []);
+  useEffect(() => {
+    if (user) {
+      const EmployeeProfile = {
+        name: user.name,
+        lastName: user.lastName,
+        phone: user.phone?.toString(),
+        email: user.email,
+        password: user.password,
+        repeatPassword: user.repeatPassword
+      };
+      reset(EmployeeProfile);
+    }
+  }, [user]);
 
   const onSubmit = (data) => {
     dispatch(putEmployee(data._id, data));

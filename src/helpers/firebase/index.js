@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, onIdTokenChanged, getIdTokenResult } from 'firebase/auth';
-import { cleanError, setAuthentication } from 'redux/Auth/actions';
+import { setAuthentication } from 'redux/Auth/actions';
 import store from 'redux/store';
 
 const firebaseConfig = {
@@ -19,25 +19,17 @@ export const auth = getAuth(app);
 export const tokenListener = () => {
   onIdTokenChanged(auth, async (user) => {
     if (user) {
-      const URL = {
-        SUPERADMIN: `${process.env.REACT_APP_API_URL}/super-admins`,
-        ADMIN: `${process.env.REACT_APP_API_URL}/admins`,
-        EMPLOYEE: `${process.env.REACT_APP_API_URL}/employees`
-      };
       try {
         const {
           token,
           claims: { role, email }
         } = await getIdTokenResult(user);
-        const userData = await fetch(`${URL[role]}/?email=${email}`)
-          .then((res) => res.json())
-          .then((json) => json.data);
         if (token) {
-          store.dispatch(setAuthentication({ role: role, token: token, data: userData[0] }));
+          store.dispatch(setAuthentication({ role, email }));
           sessionStorage.setItem('token', token);
         }
       } catch (error) {
-        store.dispatch(cleanError(error));
+        console.error(error);
       }
     }
   });
