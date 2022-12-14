@@ -23,11 +23,17 @@ export const login = (inputData) => {
       );
       const {
         token,
-        claims: { role }
+        claims: { role, email }
       } = await userCredentials.user.getIdTokenResult();
-      sessionStorage.setItem('token', token);
-      dispatch(loginSuccess());
-      return role;
+      const userData = await dispatch(fetchUser(role, email, token));
+      if (userData?.payload?.active) {
+        sessionStorage.setItem('token', token);
+        await dispatch(loginSuccess());
+        return { error: false, role: role, message: 'Logged in succesfully' };
+      } else {
+        dispatch(logout());
+        return { error: true, role: null, message: 'Inactive account' };
+      }
     } catch {
       return dispatch(loginError());
     }

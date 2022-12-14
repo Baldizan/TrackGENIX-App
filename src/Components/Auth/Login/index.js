@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -9,11 +9,14 @@ import { schema } from './validations';
 import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
 import Loader from 'Components/Shared/Loader';
+import Modal from 'Components/Shared/Modal';
+import Button from 'Components/Shared/Button';
 
 const Login = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { isPending, error, authenticated } = useSelector((state) => state.auth);
+  const { isPending, error } = useSelector((state) => state.auth);
+  const [isModal, setIsModal] = useState(false);
   const {
     handleSubmit,
     register,
@@ -22,29 +25,30 @@ const Login = () => {
     mode: 'all',
     resolver: joiResolver(schema)
   });
+
   const onSubmit = async (inputData) => {
     if (isValid) {
-      dispatch(login(inputData));
-    }
-  };
-
-  useEffect(() => {
-    if (authenticated.role !== '') {
-      switch (authenticated.role) {
-        case 'SUPER_ADMIN':
-          history.push('/super-admin');
-          break;
-        case 'ADMIN':
-          history.push('/admin');
-          break;
-        case 'EMPLOYEE':
-          history.push('/employee');
-          break;
-        default:
-          history.push('/login');
+      const user = await dispatch(login(inputData));
+      if (user.error) {
+        setIsModal(true);
+      }
+      if (user.role !== '') {
+        switch (user.role) {
+          case 'SUPER_ADMIN':
+            history.push('/super-admin');
+            break;
+          case 'ADMIN':
+            history.push('/admin');
+            break;
+          case 'EMPLOYEE':
+            history.push('/employee');
+            break;
+          default:
+            history.push('/login');
+        }
       }
     }
-  }, [authenticated.role]);
+  };
 
   return (
     <section className={styles.container}>
@@ -86,6 +90,14 @@ const Login = () => {
           </Form>
         </div>
       )}
+      {!isPending && isModal ? (
+        <Modal heading="Inactive account" theme="confirm" setModalDisplay={setIsModal}>
+          <div className={styles.errorModal}>
+            <p>Please contact your system administrator.</p>
+            <Button label="Dismiss" onClick={() => setIsModal(false)}></Button>
+          </div>
+        </Modal>
+      ) : null}
     </section>
   );
 };

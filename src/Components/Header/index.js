@@ -25,52 +25,28 @@ const Header = () => {
             src={`${process.env.PUBLIC_URL}/assets/images/logoTG.svg`}
           />
         </Link>
-        <div className={styles.authButtonsContainer}>
-          <Button
-            label={'Register'}
-            onClick={() => history.push('/register')}
-            theme="primary"
-            disabled={userLogged}
-            hidden={userLogged}
-            style={styles.authButtons}
-          />
-          {!userLogged && (
+        {!userLogged && (
+          <div className={styles.authButtonsContainer}>
             <Button
               label={'Log in'}
               onClick={() => history.push('/login')}
-              theme="primary"
-              style={styles.authButtons}
+              theme="noBorderSecondary"
             />
-          )}
-          {userLogged && (
             <Button
-              label={'Log out'}
-              onClick={onClickLogout}
-              theme="primary"
-              style={styles.authButtons}
+              label={'Register'}
+              onClick={() => history.push('/register')}
+              theme="noBorderSecondary"
             />
-          )}
-        </div>
-        <div>
-          <a href={'https://www.facebook.com/radiumrocket'} target={'_blank'} rel="noreferrer">
-            <img
-              className={styles.socialIcon}
-              src={`${process.env.PUBLIC_URL}/assets/images/facebook.svg`}
-            />
-          </a>
-          <a href={'https://twitter.com/radiumrocket'} target={'_blank'} rel="noreferrer">
-            <img
-              className={styles.socialIcon}
-              src={`${process.env.PUBLIC_URL}/assets/images/twitter.svg`}
-            />
-          </a>
-          <a href={'https://www.instagram.com/radium.rocket/'} target={'_blank'} rel="noreferrer">
-            <img
-              className={styles.socialIcon}
-              src={`${process.env.PUBLIC_URL}/assets/images/instagram.svg`}
-            />
-          </a>
-        </div>
+          </div>
+        )}
+        {userLogged && (
+          <Button
+            label={'Log out'}
+            onClick={onClickLogout}
+            theme="primary"
+            style={styles.authButtons}
+          />
+        )}
       </div>
       {userLogged ? (
         <nav className={`${styles.navbar} ${!navbarDisplay && styles.hidden}`}>
