@@ -13,11 +13,15 @@ import {
   postAdminSuccess
 } from './actions';
 
-export const getAdmins = () => {
+export const getAdmins = (token) => {
   return async (dispatch) => {
     dispatch(getAdminsPending());
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`, {
+        headers: {
+          token: token
+        }
+      });
       const json = await response.json();
       if (json.error) {
         throw new Error(json.message);
@@ -78,14 +82,15 @@ export const editAdmin = (id, data) => {
   };
 };
 
-export const addAdmin = (data) => {
+export const addAdmin = (data, token) => {
   return async (dispatch) => {
     dispatch(postAdminPending());
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          token: token
         },
         body: JSON.stringify(data)
       });

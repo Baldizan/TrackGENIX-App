@@ -72,7 +72,7 @@ const Header = () => {
           </a>
         </div>
       </div>
-      {userLogged ? (
+      {userLogged === 'EMPLOYEE' ? (
         <nav className={`${styles.navbar} ${!navbarDisplay && styles.hidden}`}>
           <ul className={styles.routes}>
             <li>
@@ -86,6 +86,21 @@ const Header = () => {
             </li>
             <li>
               <Link to="/employee/profile">My profile</Link>
+            </li>
+          </ul>
+        </nav>
+      ) : null}
+      {userLogged === 'SUPER_ADMIN' ? (
+        <nav className={`${styles.navbar} ${!navbarDisplay && styles.hidden}`}>
+          <ul className={styles.routes}>
+            <li>
+              <Link to="/super-admin/home">Home</Link>
+            </li>
+            <li>
+              <Link to="/super-admin/admins">Admins</Link>
+            </li>
+            <li>
+              <Link to="/super-admin/profile">My profile</Link>
             </li>
           </ul>
         </nav>

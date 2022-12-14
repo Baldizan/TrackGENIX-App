@@ -14,7 +14,8 @@ const Form = ({
   secondColumnIndex,
   goBack = true,
   style,
-  customBtnLabel
+  customBtnLabel,
+  redirectLink = '/home'
 }) => {
   const history = useHistory();
   return (
@@ -51,7 +52,7 @@ const Form = ({
         ) : null}
       </div>
       <div className={styles.btnContainer}>
-        <Button label="Home" onClick={() => history.push('/home')} />
+        <Button label="Home" onClick={() => history.push(redirectLink)} />
         <Button
           type="submit"
           label={customBtnLabel ?? 'Submit'}

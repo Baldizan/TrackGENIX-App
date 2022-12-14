@@ -18,9 +18,10 @@ const Admins = () => {
   const [adminToDelete, setAdminToDelete] = useState({});
   const { list: adminsArray, isPending, error } = useSelector((state) => state.admins);
   const headers = { name: 'Name', lastName: 'Last Name', email: 'Email' };
+  const token = sessionStorage.getItem('token');
 
   useEffect(() => {
-    dispatch(getAdmins());
+    dispatch(getAdmins(token));
   }, []);
 
   const adminDelete = () => {
@@ -38,7 +39,7 @@ const Admins = () => {
   };
 
   const addEditAdmin = (item) => {
-    history.push(`/admins/form`, item);
+    history.push(`/super-admin/admins/form`, item);
   };
 
   return (
@@ -51,7 +52,7 @@ const Admins = () => {
           editItem={addEditAdmin}
           deleteItem={handleDelete}
           title={'Admins'}
-          addRedirectLink={'/admins/form'}
+          addRedirectLink={'/super-admin/admins/form'}
           itemsPerPage={5}
         />
       )}

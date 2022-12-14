@@ -53,7 +53,7 @@ const FormAdmins = () => {
   const handleModalClose = () => {
     if (!error) {
       setIsModal(false);
-      history.push(`/admins`);
+      history.push(`/super-admin/home`);
     } else {
       setIsModal(false);
     }
@@ -63,7 +63,12 @@ const FormAdmins = () => {
     <section className={styles.container}>
       {isPending && <Loader />}
       {!isPending && (
-        <Form onSubmit={handleSubmit(onSubmit)} title={titleForm} noValidate={!isValid}>
+        <Form
+          onSubmit={handleSubmit(onSubmit)}
+          title={titleForm}
+          noValidate={!isValid}
+          redirectLink={'/super-admin/home'}
+        >
           <Input
             register={register}
             placeholder={'Enter your name'}
