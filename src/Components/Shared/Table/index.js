@@ -3,18 +3,38 @@ import { useHistory } from 'react-router-dom';
 import styles from './table.module.css';
 import Row from './Row';
 import Button from '../Button';
+import { Input } from '../Input';
 
-const Table = ({ data, headers, editItem, deleteItem, addRedirectLink, title, itemsPerPage }) => {
+const Table = ({
+  data,
+  headers,
+  editItem,
+  deleteItem,
+  addRedirectLink,
+  title,
+  itemsPerPage,
+  isSearchEnabled
+}) => {
+  const history = useHistory();
+  const [query, setQuery] = useState('');
   const [displayRange, setDisplayRange] = useState({
     x: 0,
     y: itemsPerPage,
     z: 1
   });
-  const history = useHistory();
+  const headersKeys = Object.keys(headers);
+  const headersValues = Object.values(headers);
+  const displayData = !isSearchEnabled
+    ? data
+    : data?.filter((item) =>
+        headersKeys.some((key) => item[key].toString().toLowerCase().includes(query.toLowerCase()))
+      );
   const navValidation = {
     back: displayRange.x === 0,
-    forward: data?.slice(displayRange.x + itemsPerPage, displayRange.y + itemsPerPage).length === 0
+    forward:
+      displayData?.slice(displayRange.x + itemsPerPage, displayRange.y + itemsPerPage).length === 0
   };
+
   const navOnClick = {
     back: () =>
       setDisplayRange({
@@ -35,12 +55,23 @@ const Table = ({ data, headers, editItem, deleteItem, addRedirectLink, title, it
       {title || addRedirectLink ? (
         <header className={styles.header}>
           {title ? <h2>{title}</h2> : null}
-          {addRedirectLink ? (
-            <Button
-              style={styles.addButton}
-              label="Add new +"
-              onClick={() => history.push(addRedirectLink)}
-            />
+          {addRedirectLink || isSearchEnabled ? (
+            <div className={styles.utilities}>
+              {addRedirectLink ? (
+                <Button
+                  style={styles.addButton}
+                  label="Add new +"
+                  onClick={() => history.push(addRedirectLink)}
+                />
+              ) : null}
+              {isSearchEnabled ? (
+                <Input
+                  type="search"
+                  placeholder="Search..."
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+              ) : null}
+            </div>
           ) : null}
         </header>
       ) : null}
@@ -48,7 +79,7 @@ const Table = ({ data, headers, editItem, deleteItem, addRedirectLink, title, it
         <table className={styles.table}>
           <thead className={styles.thead}>
             <tr>
-              {Object.values(headers).map((header, index) => (
+              {headersValues.map((header, index) => (
                 <th key={index} className={styles.th}>
                   {header}
                 </th>
@@ -58,12 +89,12 @@ const Table = ({ data, headers, editItem, deleteItem, addRedirectLink, title, it
           </thead>
           <tbody>
             {data &&
-              data
+              displayData
                 .map((item, index) => (
                   <Row
                     key={index}
                     rowItem={item}
-                    headers={Object.keys(headers)}
+                    headers={headersKeys}
                     editItem={editItem ? () => editItem(item) : null}
                     deleteItem={deleteItem ? () => deleteItem(item) : null}
                   />
@@ -71,8 +102,10 @@ const Table = ({ data, headers, editItem, deleteItem, addRedirectLink, title, it
                 .slice(displayRange.x, displayRange.y)}
           </tbody>
         </table>
+        {!data && <p className={styles.noDataMsg}>No data found</p>}
+        {displayData && !displayData.length && <p className={styles.noDataMsg}>No results found</p>}
       </div>
-      {itemsPerPage && data ? (
+      {itemsPerPage && displayData ? (
         <div className={styles.nav}>
           <Button
             style={styles.navButton}
@@ -81,7 +114,9 @@ const Table = ({ data, headers, editItem, deleteItem, addRedirectLink, title, it
             hidden={navValidation.back}
             disabled={navValidation.back}
           />
-          {data.length > itemsPerPage ? <p className={styles.page}>{displayRange.z}</p> : null}
+          {displayData.length > itemsPerPage ? (
+            <p className={styles.page}>{displayRange.z}</p>
+          ) : null}
           <Button
             style={styles.navButton}
             onClick={navOnClick.forward}

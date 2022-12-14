@@ -94,23 +94,21 @@ const List = () => {
           theme={'confirm'}
         >
           <p>This change cannot be undone!</p>
-          <div className={styles.buttons}>
-            <Button
-              label={'Cancel'}
-              theme={'primary'}
-              onClick={() => {
-                setIsModal();
-              }}
-            />
-            <Button
-              label={'Delete'}
-              theme={'tertiary'}
-              onClick={() => {
-                deleteItem();
-                setIsModal(false);
-              }}
-            />
-          </div>
+          <Button
+            label={'Cancel'}
+            theme={'primary'}
+            onClick={() => {
+              setIsModal();
+            }}
+          />
+          <Button
+            label={'Delete'}
+            theme={'tertiary'}
+            onClick={() => {
+              deleteItem();
+              setIsModal(false);
+            }}
+          />
         </Modal>
       )}
       {isFeedbackModal && (

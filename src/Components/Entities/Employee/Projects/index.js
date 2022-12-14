@@ -8,29 +8,31 @@ import Error from 'Components/Shared/Error';
 
 const EmployeeProjects = () => {
   const dispatch = useDispatch();
+  const email = useSelector((state) => state.auth.authenticated.email);
+  const token = sessionStorage.getItem('token');
   const { list: projectsList, isPending, error } = useSelector((state) => state.projects);
   const headers = {
     name: 'Project Name',
+    role: 'Role',
     startDate: 'Start Date',
     endDate: 'End Date'
   };
 
   useEffect(() => {
-    dispatch(getProjects());
+    if (token) {
+      dispatch(getProjects(token));
+    }
   }, []);
 
-  const mockedEmployeeLogged = '63756ccf76cb20ad5433fa22';
   const projectsData = () => {
-    let employeeProjects = [];
-    for (let i = 0; i < projectsList?.length; i++) {
-      for (let j = 0; j < projectsList[i].employees?.length; j++) {
-        if (projectsList[i].employees[j]?.id?._id === mockedEmployeeLogged) {
-          projectsList[i].startDate = projectsList[i].startDate.slice(0, 10);
-          projectsList[i].endDate = projectsList[i].endDate.slice(0, 10);
-          employeeProjects.push(projectsList[i]);
-        }
-      }
-    }
+    const employeeProjects = projectsList.filter((project) => {
+      return project.employees.find((e) => e.id?.email === email);
+    });
+    employeeProjects.map((project) => {
+      project.startDate = project.startDate.slice(0, 10);
+      project.endDate = project.endDate.slice(0, 10);
+      project.role = project.employees.find((e) => e.id?.email === email).role;
+    });
     return employeeProjects;
   };
 

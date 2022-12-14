@@ -74,23 +74,21 @@ const SuperAdmins = () => {
           theme={'confirm'}
         >
           <p>This change cannot be undone!</p>
-          <div className={styles.buttons}>
-            <Button
-              label={'Cancel'}
-              theme={'primary'}
-              onClick={() => {
-                setIsModal();
-              }}
-            />
-            <Button
-              label="Confirm"
-              theme="tertiary"
-              onClick={() => {
-                deleteSuperAdmin();
-                setIsModal(false);
-              }}
-            />
-          </div>
+          <Button
+            label={'Cancel'}
+            theme={'primary'}
+            onClick={() => {
+              setIsModal();
+            }}
+          />
+          <Button
+            label="Confirm"
+            theme="tertiary"
+            onClick={() => {
+              deleteSuperAdmin();
+              setIsModal(false);
+            }}
+          />
         </Modal>
       )}
     </section>

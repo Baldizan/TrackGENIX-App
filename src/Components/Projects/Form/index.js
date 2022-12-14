@@ -19,9 +19,11 @@ const ProjectsForm = () => {
   const dispatch = useDispatch();
   const projectId = history.location.state?.id;
   const project = history.location.state?.project;
+  const projectManagerId = history.location.state?.project.projectManagerId;
   const [displayForm, setDisplayForm] = useState(false);
   const [feedbackModal, setFeedbackModal] = useState(false);
   const { isPending } = useSelector((state) => state.projects);
+  const token = sessionStorage.getItem('token');
   const { list: employees, error } = useSelector((state) => state.employees);
   const roles = ['DEV', 'TL', 'QA'];
   const statusProject = ['Active', 'Inactive'];
@@ -40,19 +42,30 @@ const ProjectsForm = () => {
     control,
     name: 'employees'
   });
+
   const employeePM = watch('projectManager');
   const employeesSelected = watch('employees');
+
   const employeesIds =
     employeesSelected?.map((e) => {
       return e.employeeId;
     }) ?? [];
+
   const [employeesWithoutPM, setListSelectEmployees] = useState();
   const [employeesFiltered, setEmployeesFiltered] = useState();
+  const projectWithPMId = { ...project, projectManager: projectManagerId };
+
+  // console.log('emplados filtrados', employeesFiltered);
+
+  // console.log('PM', employeePM);
+  // console.log('employeesIds', employeesIds);
 
   useEffect(() => {
-    dispatch(getEmployees());
+    dispatch(getEmployees(token));
+
     if (project) {
-      reset({ ...project });
+      console.log('projectWithPMId', projectWithPMId);
+      reset(projectWithPMId);
     }
   }, []);
 
@@ -102,7 +115,7 @@ const ProjectsForm = () => {
   useEffect(() => {
     const employeesFilterPM = employees
       .filter((e) => {
-        return e._id !== employeePM;
+        return e.name + e.lastName !== employeePM;
       })
       .filter((item) => {
         return !employeesIds.includes(item._id);
@@ -121,6 +134,9 @@ const ProjectsForm = () => {
     setEmployeesFiltered(employeesFilter);
   }, [employeesSelected]);
 
+  // console.log('sin empleadoPM2', employeesWithoutPM);
+  // console.log('emplados filtrados2', employeesFiltered);
+  //console.log('project2', project);
   return (
     <section className={styles.container}>
       {isPending && <Loader />}

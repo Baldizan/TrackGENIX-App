@@ -6,13 +6,17 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_ERROR,
   CLEAN_ERROR,
-  SET_AUTHENTICATION
-} from './constants';
+  SET_AUTHENTICATION,
+  GET_USER_PENDING,
+  GET_USER_SUCCESS,
+  GET_USER_ERROR
+} from './types';
 
 const initialState = {
   isPending: false,
-  authenticated: { role: '', token: '', data: {} },
-  error: ''
+  authenticated: { role: '' },
+  error: '',
+  user: {}
 };
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -26,8 +30,7 @@ export const authReducer = (state = initialState, action) => {
     case LOGIN_SUCCESS: {
       return {
         ...state,
-        isPending: false,
-        authenticated: action.payload
+        isPending: false
       };
     }
     case LOGIN_ERROR: {
@@ -64,6 +67,28 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         authenticated: action.payload,
+        isPending: false
+      };
+    }
+    case GET_USER_PENDING: {
+      return {
+        ...state,
+        isPending: true,
+        error: false
+      };
+    }
+    case GET_USER_SUCCESS: {
+      return {
+        ...state,
+        user: action.payload,
+        isPending: false,
+        error: false
+      };
+    }
+    case GET_USER_ERROR: {
+      return {
+        ...state,
+        error: action.payload,
         isPending: false
       };
     }

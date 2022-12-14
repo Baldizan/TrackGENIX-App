@@ -39,6 +39,13 @@
   outline: 1px solid var(--primaryColor);
 }
 
+.input[type="search"] {
+  background-position: right 15px center;
+  background-image: url('./magnifying-glass-solid-light.svg');
+  background-repeat: no-repeat;
+  background-size: 18px;
+}
+
 .disabled {
   border: 1px solid var(--primaryColorLight);
   color: var(--primaryColorLight);
@@ -61,14 +68,24 @@
   visibility: hidden;
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
   -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
 
-input[type='number'] {
+.input[type='number'] {
   -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--primaryColor);
+  -webkit-box-shadow: 0 0 0px 40rem var(--backgroundBaseColor) inset;
+  box-shadow: 0 0 0px 40rem var(--backgroundBaseColor) inset;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -90,11 +107,23 @@ input[type='number'] {
     background-color: var(--primaryColorLighter);
   }
 
+  .input[type="search"] {
+    background-image: url('./magnifying-glass-solid-dark.svg');
+  }
+
   .error {
     color: var(--textBaseColor);
   }
 
   .input > option {
     background-color: var(--primaryColor);
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--secondaryColor);
+    -webkit-box-shadow: 0 0 0px 40rem var(--primaryColor) inset;
+    box-shadow: 0 0 0px 40rem var(--primaryColor) inset;
   }
 }

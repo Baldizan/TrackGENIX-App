@@ -49,9 +49,23 @@
   color: var(--primaryColor);
 }
 
+.utilities {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.utilities label {
+  width: 20%;
+}
+
 .addButton {
-  align-self: flex-start;
-  margin-bottom: 20px
+  margin: 15px 0;
+}
+
+.noDataMsg {
+  color: var(--primaryColor);
 }
 
 .nav {
@@ -79,6 +93,9 @@
   }
   .thead {
     background-color: var(--primaryColor);
+  }
+  .noDataMsg {
+  color: var(--secondaryColor)
   }
   .page {
     color: var(--secondaryColor);
