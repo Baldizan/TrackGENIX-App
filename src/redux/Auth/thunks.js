@@ -55,14 +55,14 @@ export const logout = () => {
 };
 
 export const fetchUser = (role, email, token) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(getUserPending());
     const URL = {
       SUPERADMIN: `${process.env.REACT_APP_API_URL}/super-admins`,
       ADMIN: `${process.env.REACT_APP_API_URL}/admins`,
       EMPLOYEE: `${process.env.REACT_APP_API_URL}/employees`
     };
-    return fetch(`${URL[role]}/?email=${email}`, {
+    return await fetch(`${URL[role]}/?email=${email}`, {
       method: 'GET',
       headers: {
         token: token

@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 
 const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
-  const { isPending, authenticated } = useSelector((state) => state.auth);
+  const { isPending } = useSelector((state) => state.auth);
+  const role = sessionStorage.getItem('role');
 
   return (
     <Route
@@ -12,7 +13,7 @@ const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
         if (isPending) {
           return <></>;
         }
-        if (authenticated?.role === rest?.role) {
+        if (!isPending && role === rest.role) {
           return <RouteComponent {...routeProps} />;
         }
         return <Redirect to={'/login'} />;
