@@ -18,6 +18,7 @@ const EmployeeTimesheetsForm = () => {
   const dispatch = useDispatch();
   const [selectedTimesheet] = useState(history.location.state);
   const { isPending, error } = useSelector((state) => state.timesheets);
+  const token = sessionStorage.getItem('token');
   const [isModal, setIsModal] = useState(false);
   const {
     handleSubmit,
@@ -41,10 +42,14 @@ const EmployeeTimesheetsForm = () => {
 
   const onSubmit = (data) => {
     dispatch(
-      editTimeSheet(selectedTimesheet._id, {
-        ...data,
-        hours: selectedTimesheet?.hours + data.hours
-      })
+      editTimeSheet(
+        selectedTimesheet._id,
+        {
+          ...data,
+          hours: selectedTimesheet?.hours + data.hours
+        },
+        token
+      )
     );
     setIsModal(true);
   };

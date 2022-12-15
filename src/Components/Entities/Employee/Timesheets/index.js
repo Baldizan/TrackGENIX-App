@@ -20,7 +20,7 @@ const EmployeeTimesheets = () => {
     hours: 'Hours'
   };
 
-  const timesheetListFiltered = timesheetList.filter((t) => t.employee?.email === email);
+  const timesheetListFiltered = timesheetList.filter((t) => t?.employee?.email === email);
 
   const timeSheetData = timesheetListFiltered.map((row) => ({
     ...row,
