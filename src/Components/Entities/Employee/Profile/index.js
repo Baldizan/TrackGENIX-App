@@ -130,7 +130,12 @@ const EmployeeProfile = () => {
       )}
       {formPass && (
         <Modal theme="confirm" setModalDisplay={setFormPass}>
-          <Form noValidate={!isValidPass} hiddenCancel onSubmit={handleSubmitPass(onSubmitPass)}>
+          <Form
+            noValidate={!isValidPass}
+            hiddenCancel
+            onSubmit={handleSubmitPass(onSubmitPass)}
+            legend="Change your password"
+          >
             <Input
               placeholder="Edit your password"
               id="password"
