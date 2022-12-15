@@ -54,6 +54,8 @@ export const schema = Joi.object({
     'boolean.empty': 'Active required',
     'string.pattern.base': 'Active should be true or false'
   }),
-
+  projectManager: Joi.string().required().messages({
+    'string.empty': 'Select Project Manager'
+  }),
   employees: Joi.array().items(employeesValidation)
 });

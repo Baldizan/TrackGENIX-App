@@ -17,6 +17,7 @@ const Projects = () => {
   const [modalEmployee, setModalEmployee] = useState(false);
   const [projectEmployees, setProjectEmployees] = useState([]);
   const [isModal, setFeedbackModal] = useState(false);
+  const token = sessionStorage.getItem('token');
   const [feedback, setFeedback] = useState({ heading: '', theme: '' });
   const [itemToDelete, setItemToDelete] = useState({});
   const headers = {
@@ -25,12 +26,13 @@ const Projects = () => {
     description: 'Description',
     startDateFormat: 'Start date',
     endDateFormat: 'End date',
+    projectManager: 'Project Manager',
     employeesCmp: 'Employees',
     status: 'Status'
   };
 
   useEffect(() => {
-    dispatch(getProjects());
+    dispatch(getProjects(token));
   }, []);
 
   const projectColumns = projectsArray?.map((row) => ({
@@ -38,6 +40,8 @@ const Projects = () => {
     status: row.active ? 'Active' : 'Inactive',
     startDateFormat: row.startDate.slice(0, 10),
     endDateFormat: row.endDate.slice(0, 10),
+    projectManager: row.projectManager?.name + row.projectManager?.lastName,
+    projectManagerId: row.projectManager?._id,
     employeesCmp: (
       <Button
         label="See employees"
@@ -56,9 +60,11 @@ const Projects = () => {
         description: item.description,
         active: item.active,
         startDate: item.startDate?.slice(0, 10),
+        projectManager: item.projectManager,
+        projectManagerId: item.projectManagerId,
         endDate: item.endDate?.slice(0, 10),
         employees: item.employees?.map((e) => ({
-          employeeId: e.id._id,
+          employeeId: e.id?._id,
           role: e.role,
           rate: e.rate
         }))
