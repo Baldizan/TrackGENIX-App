@@ -27,6 +27,7 @@ export const tokenListener = () => {
         if (token) {
           store.dispatch(setAuthentication({ role, email }));
           sessionStorage.setItem('token', token);
+          sessionStorage.setItem('role', role);
         }
       } catch (error) {
         console.error(error);

@@ -25,12 +25,6 @@
   display: flex;
 }
 
-.authButtons {
-  background-color: transparent;
-  border: none;
-  color: var(--secondaryColor);
-}
-
 .socialIcon {
   margin-left: 15px;
   user-select: none;

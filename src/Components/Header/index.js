@@ -8,7 +8,8 @@ import Button from '../Shared/Button';
 const Header = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const userLogged = useSelector((state) => state.auth.authenticated.role);
+  const { role } = useSelector((state) => state.auth.authenticated);
+  const userLogged = Boolean(role);
   const [navbarDisplay, setNavBarDisplay] = useState(true);
   const onClickLogout = () => {
     dispatch(logout());
@@ -25,84 +26,100 @@ const Header = () => {
             src={`${process.env.PUBLIC_URL}/assets/images/logoTG.svg`}
           />
         </Link>
-        <div className={styles.authButtonsContainer}>
-          <Button
-            label={'Register'}
-            onClick={() => history.push('/register')}
-            theme="primary"
-            disabled={userLogged}
-            hidden={userLogged}
-            style={styles.authButtons}
-          />
-          {!userLogged && (
-            <Button
-              label={'Log in'}
-              onClick={() => history.push('/login')}
-              theme="primary"
-              style={styles.authButtons}
-            />
-          )}
-          {userLogged && (
-            <Button
-              label={'Log out'}
-              onClick={onClickLogout}
-              theme="primary"
-              style={styles.authButtons}
-            />
-          )}
-        </div>
-        <div>
-          <a href={'https://www.facebook.com/radiumrocket'} target={'_blank'} rel="noreferrer">
-            <img
-              className={styles.socialIcon}
-              src={`${process.env.PUBLIC_URL}/assets/images/facebook.svg`}
-            />
-          </a>
-          <a href={'https://twitter.com/radiumrocket'} target={'_blank'} rel="noreferrer">
-            <img
-              className={styles.socialIcon}
-              src={`${process.env.PUBLIC_URL}/assets/images/twitter.svg`}
-            />
-          </a>
-          <a href={'https://www.instagram.com/radium.rocket/'} target={'_blank'} rel="noreferrer">
-            <img
-              className={styles.socialIcon}
-              src={`${process.env.PUBLIC_URL}/assets/images/instagram.svg`}
-            />
-          </a>
-        </div>
-      </div>
-      {userLogged ? (
-        <nav className={`${styles.navbar} ${!navbarDisplay && styles.hidden}`}>
-          <ul className={styles.routes}>
-            <li>
-              <Link to="/employee/home">Home</Link>
-            </li>
-            <li>
-              <Link to="/employee/projects">My projects</Link>
-            </li>
-            <li>
-              <Link to="/employee/time-sheets">My time-sheets</Link>
-            </li>
-            <li>
-              <Link to="/employee/profile">My profile</Link>
-            </li>
-          </ul>
-        </nav>
-      ) : null}
-      <div className={styles.buttonContainer}>
         <Button
-          icon={
-            navbarDisplay
-              ? `${process.env.PUBLIC_URL}/assets/images/angle-up-solid.svg`
-              : `${process.env.PUBLIC_URL}/assets/images/angle-down-solid.svg`
-          }
-          style={styles.navButton}
-          onClick={() => setNavBarDisplay(!navbarDisplay)}
-          hidden={Boolean(!userLogged)}
-          disabled={Boolean(!userLogged)}
+          label="Log out"
+          onClick={onClickLogout}
+          theme="noBorderSecondary"
+          disabled={!userLogged}
+          hidden={!userLogged}
         />
+        {!userLogged && (
+          <div className={styles.authButtonsContainer}>
+            <Button
+              label="Log in"
+              onClick={() => history.push('/login')}
+              theme="noBorderSecondary"
+            />
+            <Button
+              label="Register"
+              onClick={() => history.push('/register')}
+              theme="noBorderSecondary"
+            />
+          </div>
+        )}
       </div>
+      {userLogged && !location.pathname !== '/login' ? (
+        <>
+          <nav className={`${styles.navbar} ${!navbarDisplay && styles.hidden}`}>
+            <ul className={styles.routes}>
+              {role === 'EMPLOYEE' && (
+                <>
+                  <li>
+                    <Link to="/employee/home">Home</Link>
+                  </li>
+                  <li>
+                    <Link to="/employee/projects">My projects</Link>
+                  </li>
+                  <li>
+                    <Link to="/employee/time-sheets">My time-sheets</Link>
+                  </li>
+                  <li>
+                    <Link to="/employee/profile">My profile</Link>
+                  </li>
+                </>
+              )}
+              {role === 'ADMIN' && (
+                <>
+                  <li>
+                    <Link to="/admin/home">Home</Link>
+                  </li>
+                  <li>
+                    <Link to="/admin/employees">Employees</Link>
+                  </li>
+                  <li>
+                    <Link to="/admin/projects">Projects</Link>
+                  </li>
+                  <li>
+                    <Link to="/admin/time-sheets">Time-sheets</Link>
+                  </li>
+                  <li>
+                    <Link to="/admin/tasks">Tasks</Link>
+                  </li>
+                  <li>
+                    <Link to="/admin/profile">My profile</Link>
+                  </li>
+                </>
+              )}
+              {role === 'SUPERADMIN' && (
+                <>
+                  <li>
+                    <Link to="/superadmin/home">Home</Link>
+                  </li>
+                  <li>
+                    <Link to="/superadmin/admins">Admins</Link>
+                  </li>
+                  <li>
+                    <Link to="/superadmin/profile">My profile</Link>
+                  </li>
+                </>
+              )}
+            </ul>
+          </nav>
+          <div className={styles.buttonContainer}>
+            <Button
+              icon={
+                navbarDisplay
+                  ? `${process.env.PUBLIC_URL}/assets/images/angle-up-solid.svg`
+                  : `${process.env.PUBLIC_URL}/assets/images/angle-down-solid.svg`
+              }
+              style={styles.navButton}
+              onClick={() => setNavBarDisplay(!navbarDisplay)}
+              hidden={!userLogged}
+              disabled={!userLogged}
+            />
+          </div>
+        </>
+      ) : null}
     </header>
   );
 };
