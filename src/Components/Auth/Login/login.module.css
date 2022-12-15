@@ -26,6 +26,11 @@
   color: var(--errorAlertColor)
 }
 
+.errorModal {
+  display: flex;
+  flex-direction: column;
+}
+
 .loginImage {
   flex: 2;
   max-width: 50%;

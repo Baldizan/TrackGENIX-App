@@ -13,10 +13,14 @@ import {
   postEmployeeError
 } from './actions';
 
-export const getEmployees = () => {
+export const getEmployees = (token) => {
   return (dispatch) => {
     dispatch(getEmployeesPending());
-    return fetch(`${process.env.REACT_APP_API_URL}/employees`)
+    return fetch(`${process.env.REACT_APP_API_URL}/employees`, {
+      headers: {
+        token: token
+      }
+    })
       .then((response) => response.json())
       .then((response) => {
         dispatch(getEmployeesSuccess(response.data));

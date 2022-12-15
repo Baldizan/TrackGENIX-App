@@ -16,6 +16,7 @@ const Employees = () => {
   const [selectedEmployee, setSelectedEmployee] = useState({});
   const [isModal, setIsModal] = useState(false);
   const [isFeedbackModal, setIsFeedbackModal] = useState(false);
+  const token = sessionStorage.getItem('token');
   const [modalContent, setModalContent] = useState({ message: '', theme: '' });
   const headers = {
     name: 'Name',
@@ -27,7 +28,7 @@ const Employees = () => {
   };
 
   useEffect(() => {
-    dispatch(getEmployees());
+    dispatch(getEmployees(token));
   }, []);
 
   const employeesColumns = employeesList?.map((row) => ({
