@@ -14,7 +14,7 @@
 .primary {
   color: var(--primaryColor);
   border: 1px solid var(--primaryColor);
-  background-color: var(--backgroundBaseColor);;
+  background-color: var(--backgroundBaseColor);
 }
 
 .primary:hover,
@@ -53,6 +53,30 @@
   text-decoration: underline;
   background-color: #f13312f0;
   transition: all 0.05s ease-in-out;
+}
+
+.noBorderPrimary {
+  background-color: transparent;
+  color: var(--primaryColor);
+  border: none;
+}
+
+.noBorderPrimary:hover,
+.noBorderPrimary:focus {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.noBorderSecondary {
+  background-color: transparent;
+  color: var(--secondaryColor);
+  border: none;
+}
+
+.noBorderSecondary:hover,
+.noBorderSecondary:focus {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .disabled {

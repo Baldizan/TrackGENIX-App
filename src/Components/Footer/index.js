@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import styles from './footer.module.css';
 
 function Footer() {
-  const { authenticated } = useSelector((state) => state.auth);
+  const { role } = useSelector((state) => state.auth.authenticated);
+  const userLogged = Boolean(role);
+
   return (
     <footer className={styles.container}>
       <div className={styles.main}>
@@ -13,20 +15,59 @@ function Footer() {
             src={`${process.env.PUBLIC_URL}/assets/images/logoTG.svg`}
           />
         </Link>
-        {authenticated && authenticated.role === 'EMPLOYEE' ? (
+        {userLogged && !location.pathname !== '/login' ? (
           <ul className={styles.routes}>
-            <li>
-              <Link to="/employee/home">Home</Link>
-            </li>
-            <li>
-              <Link to="/employee/projects">My projects</Link>
-            </li>
-            <li>
-              <Link to="/employee/time-sheets">My time-sheets</Link>
-            </li>
-            <li>
-              <Link to="/employee/profile">My profile</Link>
-            </li>
+            {role === 'EMPLOYEE' && (
+              <>
+                <li>
+                  <Link to="/employee/home">Home</Link>
+                </li>
+                <li>
+                  <Link to="/employee/projects">My projects</Link>
+                </li>
+                <li>
+                  <Link to="/employee/time-sheets">My time-sheets</Link>
+                </li>
+                <li>
+                  <Link to="/employee/profile">My profile</Link>
+                </li>
+              </>
+            )}
+            {role === 'ADMIN' && (
+              <>
+                <li>
+                  <Link to="/admin/home">Home</Link>
+                </li>
+                <li>
+                  <Link to="/admin/employees">Employees</Link>
+                </li>
+                <li>
+                  <Link to="/admin/projects">Projects</Link>
+                </li>
+                <li>
+                  <Link to="/admin/time-sheets">Time-sheets</Link>
+                </li>
+                <li>
+                  <Link to="/admin/tasks">Tasks</Link>
+                </li>
+                <li>
+                  <Link to="/admin/profile">My profile</Link>
+                </li>
+              </>
+            )}
+            {role === 'SUPERADMIN' && (
+              <>
+                <li>
+                  <Link to="/superadmin/home">Home</Link>
+                </li>
+                <li>
+                  <Link to="/superadmin/admins">Admins</Link>
+                </li>
+                <li>
+                  <Link to="/superadmin/profile">My profile</Link>
+                </li>
+              </>
+            )}
           </ul>
         ) : null}
       </div>

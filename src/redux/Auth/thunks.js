@@ -23,11 +23,17 @@ export const login = (inputData) => {
       );
       const {
         token,
-        claims: { role }
+        claims: { role, email }
       } = await userCredentials.user.getIdTokenResult();
-      sessionStorage.setItem('token', token);
-      dispatch(loginSuccess());
-      return role;
+      const userData = await dispatch(fetchUser(role, email, token));
+      if (userData?.payload?.active) {
+        sessionStorage.setItem('token', token);
+        await dispatch(loginSuccess());
+        return { error: false, role: role, message: 'Logged in succesfully' };
+      } else {
+        dispatch(logout());
+        return { error: true, role: null, message: 'Inactive account' };
+      }
     } catch {
       return dispatch(loginError());
     }
@@ -49,14 +55,14 @@ export const logout = () => {
 };
 
 export const fetchUser = (role, email, token) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(getUserPending());
     const URL = {
       SUPERADMIN: `${process.env.REACT_APP_API_URL}/super-admins`,
       ADMIN: `${process.env.REACT_APP_API_URL}/admins`,
       EMPLOYEE: `${process.env.REACT_APP_API_URL}/employees`
     };
-    return fetch(`${URL[role]}/?email=${email}`, {
+    return await fetch(`${URL[role]}/?email=${email}`, {
       method: 'GET',
       headers: {
         token: token
