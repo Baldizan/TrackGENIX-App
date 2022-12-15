@@ -31,6 +31,7 @@ const SuperAdminProfile = () => {
       dispatch(fetchUser(authenticated.role, authenticated.email, token));
     }
   }, []);
+
   useEffect(() => {
     if (user) {
       const SuperAdminProfile = {
@@ -45,7 +46,7 @@ const SuperAdminProfile = () => {
   }, [user]);
 
   const onSubmit = (data) => {
-    dispatch(putSuperAdmins(data._id, data));
+    dispatch(putSuperAdmins(data._id, data, token));
     setIsModal(true);
   };
 

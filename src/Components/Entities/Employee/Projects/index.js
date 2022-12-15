@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProjects } from 'redux/Projects/thunks';
-// import { fetchUser } from 'redux/Auth/thunks';
 import styles from './projects.module.css';
 import Table from 'Components/Shared/Table';
 import Loader from 'Components/Shared/Loader';
@@ -24,7 +23,7 @@ const EmployeeProjects = () => {
       dispatch(getProjects(token));
     }
   }, []);
-  console.log(projectsList);
+
   const projectsData = () => {
     const employeeProjects = projectsList.filter((project) => {
       return project.employees.find((e) => e.id?.email === email);

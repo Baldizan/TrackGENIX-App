@@ -14,6 +14,7 @@ import Loader from 'Components/Shared/Loader';
 const FormAdmins = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const token = sessionStorage.getItem('token');
   const [feedback, setFeedback] = useState({ name: '', lastName: '' });
   const [isModal, setIsModal] = useState(false);
   const [selectedAdmin] = useState(history.location.state);
@@ -41,10 +42,10 @@ const FormAdmins = () => {
 
   const onSubmit = (data) => {
     if (selectedAdmin) {
-      dispatch(editAdmin(selectedAdmin._id, data));
+      dispatch(editAdmin(selectedAdmin._id, data, token));
       setIsModal(true);
     } else {
-      dispatch(addAdmin(data));
+      dispatch(addAdmin(data, token));
       setIsModal(true);
     }
     setFeedback({ name: data.name, lastName: data.lastName });

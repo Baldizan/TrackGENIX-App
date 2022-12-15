@@ -18,6 +18,7 @@ export const getAdmins = (token) => {
     dispatch(getAdminsPending());
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`, {
+        method: 'GET',
         headers: {
           token: token
         }
@@ -54,13 +55,14 @@ export const deleteAdmin = (id) => {
   };
 };
 
-export const editAdmin = (id, data) => {
+export const editAdmin = (id, data, token) => {
   return async (dispatch) => {
     dispatch(putAdminPending());
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`, {
         method: 'PUT',
         headers: {
+          token: token,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -89,8 +91,8 @@ export const addAdmin = (data, token) => {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          token: token
+          token: token,
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
       });
