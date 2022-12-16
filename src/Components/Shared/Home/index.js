@@ -28,6 +28,7 @@ const Home = () => {
         />
       </div>
       <section className={styles.buttonsContainer}>
+        <h3 className={styles.buttonsTitle}>What would you like to do today?</h3>
         {authenticated.role === 'EMPLOYEE' && (
           <>
             <Button
