@@ -62,14 +62,15 @@ export const editAdmin = (id, data, token) => {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`, {
         method: 'PUT',
         headers: {
-          token: token,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          token: token
         },
         body: JSON.stringify({
           name: data.name,
           lastName: data.lastName,
           email: data.email,
-          password: data.password
+          password: data.password,
+          active: data.active
         })
       });
       const json = await response.json();
@@ -91,8 +92,8 @@ export const addAdmin = (data, token) => {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`, {
         method: 'POST',
         headers: {
-          token: token,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          token: token
         },
         body: JSON.stringify(data)
       });
