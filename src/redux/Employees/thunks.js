@@ -53,13 +53,14 @@ export const deleteEmployee = (id) => {
   };
 };
 
-export const putEmployee = (id, data) => {
+export const putEmployee = (id, data, token) => {
   return (dispatch) => {
     dispatch(putEmployeePending());
     return fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
       method: 'put',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        token: token
       },
       body: JSON.stringify({
         name: data.name,
@@ -77,7 +78,7 @@ export const putEmployee = (id, data) => {
           dispatch(putEmployeeError(json.message));
         } else {
           dispatch(putEmployeeSuccess());
-          dispatch(getEmployees());
+          dispatch(getEmployees(token));
         }
       })
       .catch((error) => {
