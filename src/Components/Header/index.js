@@ -14,7 +14,6 @@ const Header = () => {
   const onClickLogout = () => {
     dispatch(logout());
     history.push('/home');
-    sessionStorage.clear();
   };
 
   return (
@@ -32,6 +31,7 @@ const Header = () => {
           theme="noBorderSecondary"
           disabled={!userLogged}
           hidden={!userLogged}
+          style={styles.authButtons}
         />
         {!userLogged && (
           <div className={styles.authButtonsContainer}>
@@ -39,11 +39,13 @@ const Header = () => {
               label="Log in"
               onClick={() => history.push('/login')}
               theme="noBorderSecondary"
+              style={styles.authButtons}
             />
             <Button
               label="Register"
               onClick={() => history.push('/register')}
               theme="noBorderSecondary"
+              style={styles.authButtons}
             />
           </div>
         )}

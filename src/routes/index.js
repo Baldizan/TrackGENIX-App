@@ -2,7 +2,7 @@ import React, { lazy, useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { tokenListener } from 'helpers/firebase';
 import PrivateRoute from './PrivateRoute';
-const Home = lazy(() => import('Components/Home'));
+const Landing = lazy(() => import('Components/Landing'));
 const Admins = lazy(() => import('Components/Admins'));
 const AdminsForm = lazy(() => import('Components/Admins/Form'));
 const Employees = lazy(() => import('Components/Employees'));
@@ -30,10 +30,7 @@ const Routes = () => {
   return (
     <Switch>
       <Route exact path="/">
-        <Redirect to="/home" />
-      </Route>
-      <Route exact path="/home">
-        <Home />
+        <Landing />
       </Route>
       <Route path="/login">
         <Login />

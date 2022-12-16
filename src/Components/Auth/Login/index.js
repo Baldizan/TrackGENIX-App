@@ -34,17 +34,12 @@ const Login = () => {
       }
       if (user.role) {
         switch (user.role) {
-          case 'SUPER_ADMIN':
-            history.push('/super-admin');
-            break;
+          case 'SUPERADMIN':
+            return history.push('/super-admin');
           case 'ADMIN':
-            history.push('/admin');
-            break;
+            return history.push('/admin');
           case 'EMPLOYEE':
-            history.push('/employee');
-            break;
-          default:
-            history.push('/login');
+            return history.push('/employee');
         }
       }
     }

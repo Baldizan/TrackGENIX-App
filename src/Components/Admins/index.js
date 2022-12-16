@@ -53,6 +53,7 @@ const Admins = () => {
           title={'Admins'}
           addRedirectLink={'/admins/form'}
           itemsPerPage={5}
+          isSearchEnabled={true}
         />
       )}
       {error && <Error text={error} />}

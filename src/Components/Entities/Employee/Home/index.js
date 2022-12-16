@@ -1,11 +1,7 @@
-import styles from './home.module.css';
+import Home from 'Components/Shared/Home';
 
 const EmployeeHome = () => {
-  return (
-    <section className={styles.container}>
-      <h2>Home employee</h2>
-    </section>
-  );
+  return <Home></Home>;
 };
 
 export default EmployeeHome;
