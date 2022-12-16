@@ -10,7 +10,7 @@ import Error from 'Components/Shared/Error';
 const EmployeeTimesheets = () => {
   const { list: timesheetList, isPending, error } = useSelector((state) => state.timesheets);
   const token = sessionStorage.getItem('token');
-  const { data } = useSelector((state) => state.auth.authenticated);
+  const email = useSelector((state) => state.auth.authenticated.email);
   const dispatch = useDispatch();
   const history = useHistory();
   const headers = {
@@ -20,24 +20,18 @@ const EmployeeTimesheets = () => {
     hours: 'Hours'
   };
 
-  const timeSheetData = () => {
-    if (timesheetList) {
-      timesheetList
-        .map((row) => {
-          return {
-            ...row,
-            date: row.date.slice(0, 10),
-            project: row.project?._id,
-            task: row.task?._id,
-            employee: row.employee?._id,
-            projectName: row.project?.name ?? 'N/A',
-            taskDescription: row.task?.description ?? 'N/A',
-            employeeFormat: row.employee ? `${row.employee?.name} ${row.employee?.lastName}` : 'N/A'
-          };
-        })
-        .filter((t) => t.employee === data?._id);
-    }
-  };
+  const timesheetListFiltered = timesheetList.filter((t) => t?.employee?.email === email);
+
+  const timeSheetData = timesheetListFiltered.map((row) => ({
+    ...row,
+    date: row.date.slice(0, 10),
+    project: row.project?._id,
+    task: row.task?._id,
+    employee: row.employee?._id,
+    projectName: row.project?.name ?? 'N/A',
+    taskDescription: row.task?.description ?? 'N/A',
+    employeeFormat: row.employee ? `${row.employee?.name} ${row.employee?.lastName}` : 'N/A'
+  }));
 
   useEffect(() => {
     dispatch(getTimeSheets(token));
@@ -54,7 +48,7 @@ const EmployeeTimesheets = () => {
       {!isPending && !error && (
         <Table
           headers={headers}
-          data={timeSheetData()}
+          data={timeSheetData}
           editItem={handleEdit}
           title="My timesheets"
           itemsPerPage={5}

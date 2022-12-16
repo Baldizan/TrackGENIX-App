@@ -86,14 +86,15 @@ export const addTimeSheet = (data) => {
   };
 };
 
-export const editTimeSheet = (id, data) => {
+export const editTimeSheet = (id, data, token) => {
   return async (dispatch) => {
     dispatch(putTimeSheetPending());
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/timesheets/${id}`, {
         method: 'PUT',
         headers: {
-          'Content-type': 'application/json'
+          'Content-type': 'application/json',
+          token: token
         },
         body: JSON.stringify({
           project: data.project,
