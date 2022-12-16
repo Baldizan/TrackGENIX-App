@@ -60,13 +60,13 @@ const Routes = () => {
         component={EmployeeTimesheetsForm}
       />
       <PrivateRoute path="/employee/profile" role="EMPLOYEE" component={EmployeeProfile} />
-      <PrivateRoute exact path="/super-admins">
-        <Redirect to="/super-admin/home" />
+      <PrivateRoute exact path="/superadmin">
+        <Redirect to="/superadmin/home" />
       </PrivateRoute>
-      <PrivateRoute exact path="/super-admin/home" role="SUPER_ADMIN" component={SuperAdminHome} />
-      <PrivateRoute exact path="/super-admin/admins" role="SUPER_ADMIN" component={Admins} />
-      <PrivateRoute path="/super-admin/admins/form" role="SUPER_ADMIN" component={AdminsForm} />
-      <PrivateRoute path="/super-admin/profile" role="SUPER_ADMIN" component={SuperAdminProfile} />
+      <PrivateRoute exact path="/superadmin/home" role="SUPERADMIN" component={SuperAdminHome} />
+      <PrivateRoute exact path="/superadmin/admins" role="SUPERADMIN" component={Admins} />
+      <PrivateRoute path="/superadmin/admins/form" role="SUPERADMIN" component={AdminsForm} />
+      <PrivateRoute path="/superadmin/profile" role="SUPERADMIN" component={SuperAdminProfile} />
       <Route path="/super-admins/form">
         <FormSuperAdmins />
       </Route>

@@ -7,7 +7,7 @@ import { editAdmin, addAdmin } from 'redux/Admins/thunks';
 import { schema } from './validations';
 import styles from './form.module.css';
 import Form from 'Components/Shared/Form';
-import { Input } from 'Components/Shared/Input';
+import { Input, Select } from 'Components/Shared/Input';
 import Modal from 'Components/Shared/Modal';
 import Loader from 'Components/Shared/Loader';
 
@@ -36,7 +36,8 @@ const FormAdmins = () => {
         name: selectedAdmin?.name,
         lastName: selectedAdmin?.lastName,
         email: selectedAdmin?.email,
-        password: selectedAdmin?.password
+        password: selectedAdmin?.password,
+        active: selectedAdmin?.active
       });
   }, []);
 
@@ -54,7 +55,7 @@ const FormAdmins = () => {
   const handleModalClose = () => {
     if (!error) {
       setIsModal(false);
-      history.push(`/super-admin/home`);
+      history.push(`/superadmin/admins`);
     } else {
       setIsModal(false);
     }
@@ -68,7 +69,7 @@ const FormAdmins = () => {
           onSubmit={handleSubmit(onSubmit)}
           title={titleForm}
           noValidate={!isValid}
-          redirectLink={'/super-admin/home'}
+          redirectLink={'/superadmin/home'}
         >
           <Input
             register={register}
@@ -94,14 +95,28 @@ const FormAdmins = () => {
             required
             error={errors.email?.message}
           />
-          <Input
+          {!selectedAdmin && (
+            <Input
+              register={register}
+              placeholder={'Enter a password'}
+              type="password"
+              name="password"
+              title="Password"
+              required
+              error={errors.password?.message}
+            />
+          )}
+          <Select
+            name="active"
+            title="Active"
+            placeholder="Select status"
+            arrayToMap={[
+              { id: true, label: 'Active' },
+              { id: false, label: 'Inactive' }
+            ]}
             register={register}
-            placeholder={'Enter a password'}
-            type="password"
-            name="password"
-            title="Password"
+            error={errors.active?.message}
             required
-            error={errors.password?.message}
           />
         </Form>
       )}
