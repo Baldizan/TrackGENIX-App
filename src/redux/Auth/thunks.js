@@ -34,8 +34,8 @@ export const login = (inputData) => {
         dispatch(logout());
         return { error: true, role: null, message: 'Inactive account' };
       }
-    } catch {
-      return dispatch(loginError());
+    } catch (error) {
+      return dispatch(loginError(error));
     }
   };
 };

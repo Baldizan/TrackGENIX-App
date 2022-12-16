@@ -52,6 +52,7 @@ const EmployeeTimesheets = () => {
           editItem={handleEdit}
           title="My timesheets"
           itemsPerPage={5}
+          isSearchEnabled={true}
         />
       )}
       {error && <p>{error}</p>}

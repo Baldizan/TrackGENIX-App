@@ -25,9 +25,8 @@
   display: flex;
 }
 
-.socialIcon {
-  margin-left: 15px;
-  user-select: none;
+.authButtons {
+  font-size: 16px !important;
 }
 
 .navbar {
