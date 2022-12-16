@@ -20,6 +20,13 @@ const EmployeeProjects = lazy(() => import('Components/Entities/Employee/Project
 const EmployeeTimesheets = lazy(() => import('Components/Entities/Employee/Timesheets'));
 const EmployeeTimesheetsForm = lazy(() => import('Components/Entities/Employee/Timesheets/Form'));
 const EmployeeProfile = lazy(() => import('Components/Entities/Employee/Profile'));
+const AdminHome = lazy(() => import('Components/Entities/Admin/Home'));
+const AdminProjects = lazy(() => import('Components/Entities/Admin/Projects'));
+const AdminProjectsForm = lazy(() => import('Components/Entities/Admin/Projects/Form'));
+const AdminTimesheets = lazy(() => import('Components/Entities/Admin/TimeSheets'));
+const AdminTasks = lazy(() => import('Components/Entities/Admin/Tasks'));
+const AdminTasksForm = lazy(() => import('Components/Entities/Admin/Tasks/TasksForm'));
+const AdminProfile = lazy(() => import('Components/Entities/Admin/Profile'));
 const Login = lazy(() => import('Components/Auth/Login'));
 const Register = lazy(() => import('Components/Auth/Register'));
 const Routes = () => {
@@ -58,6 +65,16 @@ const Routes = () => {
         component={EmployeeTimesheetsForm}
       />
       <PrivateRoute path="/employee/profile" role="EMPLOYEE" component={EmployeeProfile} />
+      <PrivateRoute exact path="/admin">
+        <Redirect to="/admin/home" />
+      </PrivateRoute>
+      <PrivateRoute exact path="/admin/home" role="ADMIN" component={AdminHome} />
+      <PrivateRoute exact path="/admin/projects" role="ADMIN" component={AdminProjects} />
+      <PrivateRoute path="/admin/projects/form" role="ADMIN" component={AdminProjectsForm} />
+      <PrivateRoute path="/admin/time-sheets" role="ADMIN" component={AdminTimesheets} />
+      <PrivateRoute exact path="/admin/tasks" role="ADMIN" component={AdminTasks} />
+      <PrivateRoute path="/admin/tasks/form" role="ADMIN" component={AdminTasksForm} />
+      <PrivateRoute path="/admin/profile" role="ADMIN" component={AdminProfile} />
       <Route exact path="/admins">
         <Admins />
       </Route>
