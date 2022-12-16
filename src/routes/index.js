@@ -60,8 +60,17 @@ const Routes = () => {
         <Redirect to="/superadmin/home" />
       </PrivateRoute>
       <PrivateRoute exact path="/superadmin/home" role="SUPERADMIN" component={SuperAdminHome} />
-      <PrivateRoute exact path="/superadmin/admins" role="SUPERADMIN" component={SuperAdminAdmins} />
-      <PrivateRoute path="/superadmin/admins/form" role="SUPERADMIN" component={SuperAdminAdminsForm} />
+      <PrivateRoute
+        exact
+        path="/superadmin/admins"
+        role="SUPERADMIN"
+        component={SuperAdminAdmins}
+      />
+      <PrivateRoute
+        path="/superadmin/admins/form"
+        role="SUPERADMIN"
+        component={SuperAdminAdminsForm}
+      />
       <PrivateRoute path="/superadmin/profile" role="SUPERADMIN" component={SuperAdminProfile} />
       <Route path="/super-admins/form">
         <FormSuperAdmins />
