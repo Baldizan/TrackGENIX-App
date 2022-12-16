@@ -20,7 +20,7 @@
   font-size: 16px;
   color: #333;
   background-color: #eee;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Montserrat', monospace;
   font-weight: 400;
 }
 .form label {
@@ -29,7 +29,7 @@
   margin: 0 0 10px 10px;
   font-size: 16px;
   color: #333;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Montserrat', monospace;
   font-weight: 400;
 }
 .form button {
@@ -37,7 +37,7 @@
   padding: 10px 20px;
   font-size: 16px;
   color: #333;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Montserrat', monospace;
   font-weight: 400;
   border-radius: 10px;
   border: 1px solid #6b6b6b;

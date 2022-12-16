@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  justify-content:space-around;
+  width: 90vw;
+  align-self: center;
+}
+
+.welcome {
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.welcomeTitle {
+  color: var(--primaryColor);
+  font-size: 35px;
+}
+
+.buttonsTitle {
+  color: var(--primaryColor);
+}
+
+.homeImage {
+  max-width: 100%;
+  max-height: 350px;
+  flex: 2;
+  margin-block-end: 60px;
+  align-self: flex-start;
+  border-radius: 15px;
+}
+
+.buttonsContainer {
+  margin-block-start: 55px;
+}
+
+.homeButtons {
+  margin-block: 30px;
+  width: 20vw;
+  min-height: 6vw;
+  border: none;
+  border-radius: 10px 10px 10px 10px;
+  background-color: var(--colorsBlendLight);
+  color: var(--secondaryColor);
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.homeButtons:hover,
+.homeButtons:focus {
+  background-color: var(--secondaryColor);
+  color: var(--primaryColor);
+  text-decoration: none;
+  font-size: 25px;
+  text-shadow: 1px 1px var(--primaryColorLight);
+  box-shadow: 1px 3px 3px #000000;
+  transform: scale(1.02);
+  transition: all 0.1s ease-in-out;
+}
+
+@media (prefers-color-scheme: dark) {
+  .welcomeTitle {
+    color: var(--secondaryColor);
+  }
+  .buttonsTitle {
+    color: var(--secondaryColor);
+  }
+}

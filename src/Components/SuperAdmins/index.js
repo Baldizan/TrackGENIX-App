@@ -57,6 +57,7 @@ const SuperAdmins = () => {
           title={'Super Admins'}
           addRedirectLink={'super-admins/form'}
           itemsPerPage={5}
+          isSearchEnabled={true}
         />
       )}
       {error && <Error text={error} />}

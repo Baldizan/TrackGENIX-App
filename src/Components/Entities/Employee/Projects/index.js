@@ -41,7 +41,13 @@ const EmployeeProjects = () => {
       {isPending && <Loader />}
       {error && <Error text={error} />}
       {!isPending && !error && (
-        <Table headers={headers} data={projectsData()} title="My projects" itemsPerPage={5} />
+        <Table
+          headers={headers}
+          data={projectsData()}
+          title="My projects"
+          itemsPerPage={5}
+          isSearchEnabled={true}
+        />
       )}
     </section>
   );
