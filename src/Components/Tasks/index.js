@@ -58,6 +58,7 @@ const Tasks = () => {
           title="Tasks"
           addRedirectLink="/tasks/form"
           itemsPerPage={5}
+          isSearchEnabled={true}
         />
       )}
       {!isPending && isModal && (

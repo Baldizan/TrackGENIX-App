@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  justify-content: space-evenly;
+  max-width: 100vw;
+  text-align: start;
+  align-self: center;
+}
+
+.welcome {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+}
+
+.welcomeTitle {
+  color: var(--primaryColor);
+  font-size: 35px;
+}
+
+.buttonsContainer {
+  margin-block-start: 180px;
+  width: 20vw;
+}
+
+.homeImage {
+  width: 90%;
+  flex: 2;
+  margin-block-end: 60px;
+  align-self: flex-end;
+  border-radius: 15px;
+}
+
+.homeButtons {
+  margin-block: 30px;
+  width: 20vw;
+  min-height: 10vw;
+  border: none;
+  border-radius: 10px 10px 10px 10px;
+  background-color: var(--colorsBlendLight);
+  color: var(--secondaryColor);
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.homeButtons:hover,
+.homeButtons:focus {
+  background-color: var(--secondaryColor);
+  color: var(--primaryColor);
+  text-decoration: none;
+  font-size: 25.5px;
+  text-shadow: 1px 1px var(--primaryColorLight);
+  box-shadow: 1px 3px 3px #000000;
+  transform: scale(1.02);
+  transition: all 0.1s ease-in-out;
+}
+
+@media (prefers-color-scheme: dark) {
+  .welcomeTitle {
+    color: var(--secondaryColor);
+  }
+}

@@ -73,6 +73,7 @@ const Employees = () => {
           title="Employees"
           addRedirectLink={'/employees/form'}
           itemsPerPage={5}
+          isSearchEnabled={true}
         />
       )}
       {isFeedbackModal && (
