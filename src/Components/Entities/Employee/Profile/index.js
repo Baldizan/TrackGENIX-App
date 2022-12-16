@@ -14,9 +14,8 @@ import Button from 'Components/Shared/Button';
 
 const EmployeeProfile = () => {
   const dispatch = useDispatch();
-  const { user, authenticated } = useSelector((state) => state.auth);
+  const { user, authenticated, isPending } = useSelector((state) => state.auth);
   const token = sessionStorage.getItem('token');
-  const { list: employees, isPending } = useSelector((state) => state.employees);
   const [isModal, setIsModal] = useState(false);
   const [formPass, setFormPass] = useState(false);
   const {
@@ -55,19 +54,25 @@ const EmployeeProfile = () => {
       reset(EmployeeProfile);
     }
   }, [user]);
-
+  console.log(user);
   const onSubmit = (data) => {
-    const employeesFilteredId = employees.find((e) => e.email === authenticated?.email)._id;
-    dispatch(putEmployee(employeesFilteredId, data, token));
+    dispatch(putEmployee(user._id, data, token));
     setIsModal(true);
+
+    const EmployeeProfile = {
+      name: user.name,
+      lastName: user.lastName,
+      phone: user.phone?.toString(),
+      email: user.email
+    };
+    reset(EmployeeProfile);
   };
 
   const handleAdd = () => {
     setFormPass(true);
   };
   const onSubmitPass = (data) => {
-    const employeesFilteredId = employees.find((e) => e.email === authenticated?.email)._id;
-    dispatch(putEmployee(employeesFilteredId, data, token));
+    dispatch(putEmployee(user._id, data, token));
     setIsModal(true);
     setFormPass(false);
   };
