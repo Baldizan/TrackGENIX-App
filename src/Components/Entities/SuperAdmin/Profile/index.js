@@ -3,11 +3,13 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { schema } from './validations';
+import { schemaPass } from './validationsPass';
 import styles from './profile.module.css';
 import { putSuperAdmins } from 'redux/SuperAdmins/thunks';
 import { fetchUser } from 'redux/Auth/thunks';
 import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
+import Button from 'Components/Shared/Button';
 import Modal from 'Components/Shared/Modal';
 
 const SuperAdminProfile = () => {
@@ -16,6 +18,7 @@ const SuperAdminProfile = () => {
   const token = sessionStorage.getItem('token');
   const { isPending } = useSelector((state) => state.superAdmins);
   const [isModal, setIsModal] = useState(false);
+  const [formPass, setFormPass] = useState(false);
   const {
     handleSubmit,
     register,
@@ -25,6 +28,24 @@ const SuperAdminProfile = () => {
     mode: 'all',
     resolver: joiResolver(schema)
   });
+
+  const {
+    handleSubmit: handleSubmitPass,
+    register: registerPass,
+    formState: { errors: errorPass, isValid: isValidPass }
+  } = useForm({
+    mode: 'all',
+    resolver: joiResolver(schemaPass)
+  });
+
+  const handleAdd = () => {
+    setFormPass(true);
+  };
+  const onSubmitPass = (data) => {
+    dispatch(putSuperAdmins(user._id, data, token));
+    setIsModal(true);
+    setFormPass(false);
+  };
 
   useEffect(() => {
     if (!user.email) {
@@ -37,9 +58,7 @@ const SuperAdminProfile = () => {
       const SuperAdminProfile = {
         name: user.name,
         lastName: user.lastName,
-        email: user.email,
-        password: user.password,
-        repeatPassword: user.repeatPassword
+        email: user.email
       };
       reset(SuperAdminProfile);
     }
@@ -57,8 +76,9 @@ const SuperAdminProfile = () => {
           title="My profile"
           onSubmit={handleSubmit(onSubmit)}
           noValidate={!isValid}
-          secondColumnIndex={3}
+          secondColumnIndex={2}
           legend={['Personal information', 'Authentication information']}
+          linktoRedirect="/profile"
         >
           <Input
             placeholder="Edit your name"
@@ -83,29 +103,51 @@ const SuperAdminProfile = () => {
             title="Email"
             register={register}
             error={errors.email?.message}
+            disabled
           />
-          <Input
-            placeholder="Edit your password"
-            id="password"
-            name="password"
-            title="Password"
-            type="password"
-            register={register}
-            error={errors.password?.message}
-          />
-          <Input
-            placeholder="Repeat password"
-            id="repeatPassword"
-            name="repeatPassword"
-            title="Repeat password"
-            type="password"
-            register={register}
-            error={errors.repeatPassword?.message}
-          />
+          {!formPass && (
+            <Button
+              theme="primary"
+              style={styles.btnChangePwd}
+              label="Change your password"
+              onClick={handleAdd}
+            />
+          )}
         </Form>
       )}
       {isModal && (
         <Modal heading="user edited successfully" theme="success" setModalDisplay={setIsModal} />
+      )}
+      {formPass && (
+        <Modal theme="confirm" setModalDisplay={setFormPass}>
+          <Form
+            noValidate={!isValidPass}
+            hiddenCancel
+            onSubmit={handleSubmitPass(onSubmitPass)}
+            title="Change your password"
+            style={styles.passForm}
+            goBack={false}
+          >
+            <Input
+              placeholder="Edit your password"
+              id="password"
+              name="password"
+              title="Password"
+              type="password"
+              register={registerPass}
+              error={errorPass.password?.message}
+            />
+            <Input
+              placeholder="Repeat password"
+              id="repeatPassword"
+              name="repeatPassword"
+              title="Repeat password"
+              type="password"
+              register={registerPass}
+              error={errorPass.repeatPassword?.message}
+            />
+          </Form>
+        </Modal>
       )}
     </section>
   );
