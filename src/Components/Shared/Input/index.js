@@ -13,6 +13,7 @@ const Input = ({
   required,
   error,
   onChange,
+  min,
   register = () => {}
 }) => {
   return (
@@ -29,6 +30,7 @@ const Input = ({
         value={value}
         required={required}
         onChange={onChange}
+        min={min}
       />
       {type !== 'search' ? (
         <p className={`${styles.error} ${!error && styles.hidden}`}>{error}</p>

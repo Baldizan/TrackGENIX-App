@@ -15,7 +15,9 @@ const Form = ({
   goBack = true,
   style,
   customBtnLabel,
-  redirectLink = '/home'
+  linktoRedirect = '/home',
+  cancelBtn = 'Cancel',
+  hiddenCancel
 }) => {
   const history = useHistory();
   return (
@@ -52,7 +54,7 @@ const Form = ({
         ) : null}
       </div>
       <div className={styles.btnContainer}>
-        <Button label="Home" onClick={() => history.push(redirectLink)} />
+        {!hiddenCancel && <Button label={cancelBtn} onClick={() => history.push(linktoRedirect)} />}
         <Button
           type="submit"
           label={customBtnLabel ?? 'Submit'}
