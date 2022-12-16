@@ -44,6 +44,7 @@ const Employees = () => {
           editItem={handleEdit}
           title="Employees"
           itemsPerPage={5}
+          isSearchEnabled
         />
       )}
       {isPending && <Loader />}

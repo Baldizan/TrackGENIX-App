@@ -1,11 +1,7 @@
-import styles from './home.module.css';
+import Home from 'Components/Shared/Home';
 
 const AdminHome = () => {
-  return (
-    <section className={styles.container}>
-      <h2>Home admin</h2>
-    </section>
-  );
+  return <Home></Home>;
 };
 
 export default AdminHome;

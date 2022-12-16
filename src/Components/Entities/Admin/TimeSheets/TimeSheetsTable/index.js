@@ -85,6 +85,7 @@ const List = () => {
           title="Timesheets"
           addRedirectLink="/time-sheets/form"
           itemsPerPage={5}
+          isSearchEnabled
         />
       )}
       {!isPending && isModal && (

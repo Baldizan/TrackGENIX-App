@@ -86,7 +86,7 @@ const EmployeeProfile = () => {
           noValidate={!isValid}
           secondColumnIndex={3}
           legend={['Personal information', 'Authentication information']}
-          linktoRedirect="/profile"
+          linktoRedirect="/employee/home"
         >
           <Input
             placeholder="Edit your name"

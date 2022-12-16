@@ -112,6 +112,7 @@ const Projects = () => {
           editItem={handleEdit}
           deleteItem={handleDelete}
           itemsPerPage={5}
+          isSearchEnabled
         />
       ) : null}
       {modalEmployee && (
