@@ -54,7 +54,7 @@ const EmployeeProfile = () => {
       reset(EmployeeProfile);
     }
   }, [user]);
-  console.log(user);
+
   const onSubmit = (data) => {
     dispatch(putEmployee(user._id, data, token));
     setIsModal(true);
