@@ -118,7 +118,7 @@ const EmployeeProfile = () => {
           {!formPass && (
             <Button
               theme="primary"
-              style={styles.btnAdd}
+              style={styles.btnChangePwd}
               label="Change your password"
               onClick={handleAdd}
             />
@@ -134,7 +134,9 @@ const EmployeeProfile = () => {
             noValidate={!isValidPass}
             hiddenCancel
             onSubmit={handleSubmitPass(onSubmitPass)}
-            legend="Change your password"
+            title="Change your password"
+            style={styles.passForm}
+            goBack={false}
           >
             <Input
               placeholder="Edit your password"
