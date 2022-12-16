@@ -110,6 +110,7 @@ const EmployeeTimesheetsForm = () => {
             register={register}
             name="hours"
             type="number"
+            min="0"
             title="Hours"
             placeholder="Add hours"
             error={errors.hours?.message}
