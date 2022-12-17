@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 export const schema = Joi.object({
   name: Joi.string()
-    .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
+    .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$/)
     .min(3)
     .max(20)
     .messages({
@@ -12,7 +12,7 @@ export const schema = Joi.object({
       'string.max': 'First name cannot have over 40 letters.'
     }),
   lastName: Joi.string()
-    .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
+    .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$/)
     .min(3)
     .max(20)
     .messages({

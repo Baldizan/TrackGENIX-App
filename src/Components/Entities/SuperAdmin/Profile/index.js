@@ -65,7 +65,7 @@ const SuperAdminProfile = () => {
   }, [user]);
 
   const onSubmit = (data) => {
-    dispatch(putSuperAdmins(data._id, data, token));
+    dispatch(putSuperAdmins(user._id, data, token));
     setIsModal(true);
   };
 
@@ -78,7 +78,7 @@ const SuperAdminProfile = () => {
           noValidate={!isValid}
           secondColumnIndex={2}
           legend={['Personal information', 'Authentication information']}
-          linktoRedirect="/profile"
+          linktoRedirect="/superadmin"
         >
           <Input
             placeholder="Edit your name"

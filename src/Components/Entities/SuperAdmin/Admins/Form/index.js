@@ -69,7 +69,7 @@ const FormAdmins = () => {
           onSubmit={handleSubmit(onSubmit)}
           title={titleForm}
           noValidate={!isValid}
-          redirectLink={'/superadmin/home'}
+          linktoRedirect="/superadmin/admins"
         >
           <Input
             register={register}
