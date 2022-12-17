@@ -1,6 +1,33 @@
 .container {
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-family: 'Montserrat';
+}
+
+.welcomeContainer {
+  text-align: center;
+}
+
+.logoContainer {
+  display: flex;
+}
+
+.welcomeTitle {
+  font-weight: 300;
+  font-size: 40px;
+}
+
+.logoLanding {
+  width: 400px;
+}
+
+.welcomeSubTitle {
+  font-weight: 300;
+}
+
+.welcomeParagraph {
+  width: 60ch;
 }
