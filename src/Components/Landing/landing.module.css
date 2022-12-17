@@ -7,8 +7,25 @@
   font-family: 'Montserrat';
 }
 
+.sectionContainer {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  align-items: center;
+  width: 80%;
+  height: 50vh;
+  background: rgb(75, 76, 125);
+  background: linear-gradient(0deg, rgba(75, 76, 125, 1) 24%, rgba(55, 56, 103, 1) 64%);
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .welcomeContainer {
-  text-align: center;
+  display: flex;
 }
 
 .logoContainer {
@@ -25,9 +42,14 @@
 }
 
 .welcomeSubTitle {
+  display: inline;
   font-weight: 300;
 }
 
 .welcomeParagraph {
   width: 60ch;
+}
+
+.initialSectionImage {
+  width: 10vw;
 }

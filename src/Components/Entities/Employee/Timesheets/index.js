@@ -10,7 +10,7 @@ import Error from 'Components/Shared/Error';
 const EmployeeTimesheets = () => {
   const { list: timesheetList, isPending, error } = useSelector((state) => state.timesheets);
   const token = sessionStorage.getItem('token');
-  const email = useSelector((state) => state.auth.authenticated.email);
+  const { email } = useSelector((state) => state.auth.authenticated);
   const dispatch = useDispatch();
   const history = useHistory();
   const headers = {
@@ -55,7 +55,6 @@ const EmployeeTimesheets = () => {
           isSearchEnabled={true}
         />
       )}
-      {error && <p>{error}</p>}
     </section>
   );
 };
