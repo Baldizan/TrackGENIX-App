@@ -5,7 +5,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { schema } from './validations';
 import { schemaPass } from './validationsPass';
 import styles from './profile.module.css';
-import { getEmployees, putEmployee } from 'redux/Employees/thunks';
+import { putEmployee } from 'redux/Employees/thunks';
 import { fetchUser } from 'redux/Auth/thunks';
 import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
@@ -14,8 +14,10 @@ import Button from 'Components/Shared/Button';
 
 const EmployeeProfile = () => {
   const dispatch = useDispatch();
-  const { user, authenticated, isPending } = useSelector((state) => state.auth);
+  const { user, isPending } = useSelector((state) => state.auth);
   const token = sessionStorage.getItem('token');
+  const email = sessionStorage.getItem('email');
+  const role = sessionStorage.getItem('role');
   const [isModal, setIsModal] = useState(false);
   const [formPass, setFormPass] = useState(false);
   const {
@@ -38,9 +40,8 @@ const EmployeeProfile = () => {
 
   useEffect(() => {
     if (!user.email) {
-      dispatch(fetchUser(authenticated.role, authenticated.email, token));
+      dispatch(fetchUser(role, email, token));
     }
-    dispatch(getEmployees(token));
   }, []);
 
   useEffect(() => {

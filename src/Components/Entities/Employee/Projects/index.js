@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProjects } from 'redux/Projects/thunks';
+import { fetchUser } from 'redux/Auth/thunks';
 import styles from './projects.module.css';
 import Table from 'Components/Shared/Table';
 import Loader from 'Components/Shared/Loader';
@@ -8,9 +9,11 @@ import Error from 'Components/Shared/Error';
 
 const EmployeeProjects = () => {
   const dispatch = useDispatch();
-  const email = useSelector((state) => state.auth.authenticated.email);
+  const role = sessionStorage.getItem('role');
+  const email = sessionStorage.getItem('email');
   const token = sessionStorage.getItem('token');
   const { list: projectsList, isPending, error } = useSelector((state) => state.projects);
+  const { user } = useSelector((state) => state.auth);
   const headers = {
     name: 'Project Name',
     role: 'Role',
@@ -19,22 +22,20 @@ const EmployeeProjects = () => {
   };
 
   useEffect(() => {
-    if (token) {
-      dispatch(getProjects(token));
+    if (!user._id) {
+      dispatch(fetchUser(role, email, token));
+    }
+    if (user._id) {
+      dispatch(getProjects(token, 'employees.id', user._id));
     }
   }, []);
 
-  const projectsData = () => {
-    const employeeProjects = projectsList.filter((project) => {
-      return project.employees.find((e) => e.id?.email === email);
-    });
-    employeeProjects.map((project) => {
-      project.startDate = project.startDate.slice(0, 10);
-      project.endDate = project.endDate.slice(0, 10);
-      project.role = project.employees.find((e) => e.id?.email === email).role;
-    });
-    return employeeProjects;
-  };
+  const projectsData = projectsList.map((project) => ({
+    name: project.name,
+    startDate: project.startDate.slice(0, 10),
+    endDate: project.endDate.slice(0, 10),
+    role: project.employees.map((e) => e.role)
+  }));
 
   return (
     <section className={styles.container}>
@@ -43,7 +44,7 @@ const EmployeeProjects = () => {
       {!isPending && !error && (
         <Table
           headers={headers}
-          data={projectsData()}
+          data={projectsData}
           title="My projects"
           itemsPerPage={5}
           isSearchEnabled={true}
