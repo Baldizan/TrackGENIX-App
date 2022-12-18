@@ -7,23 +7,19 @@ const Landing = () => {
         <div className={styles.logoContainer}>
           <h2 className={styles.welcomeTitle}>Welcome to</h2>
           <img
+            alt="TrackGENIX"
             className={styles.logoLanding}
             src={`${process.env.PUBLIC_URL}/assets/images/logoTG.svg`}
           />
         </div>
+        <h3 className={styles.welcomeSubTitle}>
+          Fueled by <span className={styles.creditsSpan}>GigaTech Software Solutions SA</span>
+        </h3>
       </section>
       <section className={styles.infoContainer}>
-        <h3 className={styles.welcomeSubTitle}>Fueled by developers’ nightmares</h3>
         <p className={styles.welcomeParagraph}>
-          GigaTech Software Solutions SA is an IT services, consulting and business solutions
-          organization that has been partnering with many of the world’s largest businesses during
-          their digital transformation; assisting, across a vast ecosystem of expertise, to drive
-          real growth, drawing on the combined power of experience and contextual knowledge.
+          Unify all your teams — drive growth and productivity across your business.
         </p>
-        <img
-          className={styles.initialSectionImage}
-          src={`${process.env.PUBLIC_URL}/assets/images/welcome-landing.png`}
-        />
       </section>
     </section>
   );

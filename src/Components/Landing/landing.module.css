@@ -8,24 +8,44 @@
 }
 
 .sectionContainer {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-self: center;
   align-items: center;
   width: 80%;
-  height: 50vh;
-  background: rgb(75, 76, 125);
-  background: linear-gradient(0deg, rgba(75, 76, 125, 1) 24%, rgba(55, 56, 103, 1) 64%);
-}
-
-.infoContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin: 2rem;
+  border-radius: 25% 10% / 50% 70%;
+  padding: 4rem 0;
+  background: linear-gradient(0deg, #49a37b 24%, #aace9b 83%);
+  box-shadow: 1px 3px 3px var(--primaryColorDark);
 }
 
 .welcomeContainer {
   display: flex;
+  flex-direction: column;
+  margin-block: 1.25rem;
+  padding: 1rem 10rem 4rem 10rem;
+  color: var(--textBaseColor);
+  background-color: #00000054;
+  border: #00000088;
+  border-radius: 50px;
+  box-shadow: 0.5px 1px 1px var(--primaryColorDark);
+}
+
+.infoContainer {
+  position: absolute;
+  bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5%;
+  padding: 1rem;
+  text-align: center;
+  color: var(--primaryColorDark);
+  border: 1px solid var(--primaryColorDark);
+  border-radius: 25px;
+  background: var(--secondaryColor);
 }
 
 .logoContainer {
@@ -34,7 +54,8 @@
 
 .welcomeTitle {
   font-weight: 300;
-  font-size: 40px;
+  font-size: 48px;
+  letter-spacing: 1.5px;
 }
 
 .logoLanding {
@@ -42,8 +63,27 @@
 }
 
 .welcomeSubTitle {
-  display: inline;
+  width: 100%;
+  padding-top: 1rem;
+  border-top: 2px solid var(--secondaryColor);
+  text-align: center;
   font-weight: 300;
+  margin-bottom: 0;
+}
+
+.creditsSpan {
+  font-weight: 400;
+  color: var(--secondaryColor);
+  text-shadow: 1px 1px var(--primaryColorDark);
+}
+
+.titleDreams {
+  align-self: flex-end;
+  margin-inline-end: 14.5rem;
+  font-size: 18px;
+  font-weight: 300;
+  margin-top: 0;
+  margin-bottom: 3rem;
 }
 
 .welcomeParagraph {
@@ -52,4 +92,29 @@
 
 .initialSectionImage {
   width: 10vw;
+}
+
+@media (prefers-color-scheme: dark) {
+  .sectionContainer {
+    border: 1px solid var(--secondaryColor);
+    background: rgb(75, 76, 125);
+    background: linear-gradient(0deg, #4b4c7d 24%, #373867 64%);
+  }
+
+  .welcomeContainer {
+    background-color: rgba(0, 0, 0, 0.117);
+    border: rgba(0, 0, 0, 0.737);
+    box-shadow: 0.5px 1px 1px var(--primaryColorDark);
+  }
+
+  .infoContainer {
+    box-shadow: 1px 3px 3px var(--primaryColorDark);
+    border: 1px solid var(--secondaryColor);
+
+    background: radial-gradient(circle, #1e2031 0%, #212143 100%);
+  }
+
+  .welcomeSubTitle {
+    border-top: 2px solid var(--secondaryColor);
+  }
 }
