@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSuperAdmins, deleteSuperAdmins } from 'redux/SuperAdmins/thunks';
 import styles from './super-admins.module.css';
-import Button from 'Components/Shared/Button';
 import Table from 'Components/Shared/Table';
 import Modal from 'Components/Shared/Modal';
 import Error from 'Components/Shared/Error';
@@ -73,24 +72,9 @@ const SuperAdmins = () => {
           heading={`Are you sure you want to delete super admin ${selectedItem.name} ${selectedItem.lastName}?`}
           setModalDisplay={setIsModal}
           theme={'confirm'}
-        >
-          <p>This change cannot be undone!</p>
-          <Button
-            label={'Cancel'}
-            theme={'primary'}
-            onClick={() => {
-              setIsModal();
-            }}
-          />
-          <Button
-            label="Confirm"
-            theme="tertiary"
-            onClick={() => {
-              deleteSuperAdmin();
-              setIsModal(false);
-            }}
-          />
-        </Modal>
+          message="This change cannot be undone!"
+          confirmFunction={deleteSuperAdmin()}
+        />
       )}
     </section>
   );

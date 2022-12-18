@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTimeSheets, deleteTimeSheet } from 'redux/TimeSheets/thunks';
 import styles from './List.module.css';
-import Button from 'Components/Shared/Button';
 import Table from 'Components/Shared/Table';
 import Modal from 'Components/Shared/Modal';
 import Loader from 'Components/Shared/Loader';
@@ -92,25 +91,10 @@ const List = () => {
         <Modal
           heading="Are you sure you want to delete this Timesheet?"
           setModalDisplay={setIsModal}
-          theme={'confirm'}
-        >
-          <p>This change cannot be undone!</p>
-          <Button
-            label={'Cancel'}
-            theme={'primary'}
-            onClick={() => {
-              setIsModal();
-            }}
-          />
-          <Button
-            label={'Delete'}
-            theme={'tertiary'}
-            onClick={() => {
-              deleteItem();
-              setIsModal(false);
-            }}
-          />
-        </Modal>
+          theme="confirm"
+          message="This change cannot be undone!"
+          confirmFunction={deleteItem()}
+        />
       )}
       {isFeedbackModal && (
         <Modal

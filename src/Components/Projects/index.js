@@ -116,7 +116,7 @@ const Projects = () => {
         />
       ) : null}
       {modalEmployee && (
-        <Modal setModalDisplay={setModalEmployee} theme="confirm">
+        <Modal setModalDisplay={setModalEmployee}>
           <div className={styles.employeesTableContainer}>
             <Table
               data={projectEmployees}
@@ -131,24 +131,9 @@ const Projects = () => {
           setModalDisplay={setModal}
           heading={`Are you sure you want to delete project ${itemToDelete.name}?`}
           theme="confirm"
-        >
-          <p>This change cannot be undone!</p>
-          <Button
-            label="Cancel"
-            theme="primary"
-            onClick={() => {
-              setModal(false);
-            }}
-          />
-          <Button
-            label="Delete"
-            theme="tertiary"
-            onClick={() => {
-              deleteItem();
-              setModal(false);
-            }}
-          />
-        </Modal>
+          message="This change cannot be undone!"
+          confirmFunction={deleteItem()}
+        />
       )}
       {isModal && (
         <Modal

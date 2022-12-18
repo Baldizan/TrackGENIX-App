@@ -100,7 +100,7 @@ const EmployeeProjects = () => {
         />
       )}
       {modalEmployee && (
-        <Modal setModalDisplay={setModalEmployee} theme="confirm" heading="Project Employees">
+        <Modal setModalDisplay={setModalEmployee} heading="Project Employees">
           <div className={styles.employeesTableContainer}>
             <Table
               data={projectEmployees}

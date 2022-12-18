@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { getTasks, deleteTask } from 'redux/Tasks/thunks';
 import styles from './tasks.module.css';
-import Button from 'Components/Shared/Button';
 import Table from 'Components/Shared/Table';
 import Modal from 'Components/Shared/Modal';
 import Loader from 'Components/Shared/Loader';
@@ -66,31 +65,16 @@ const Tasks = () => {
           heading="Are you sure you want to delete this Task?"
           setModalDisplay={setIsModal}
           theme="confirm"
-        >
-          <p>This change cannot be undone!</p>
-          <Button
-            label={'Cancel'}
-            theme={'primary'}
-            onClick={() => {
-              setIsModal();
-            }}
-          />
-          <Button
-            label="Confirm"
-            theme="tertiary"
-            onClick={() => {
-              deleteTasks();
-              setIsModal(false);
-            }}
-          />
-        </Modal>
+          message="This change cannot be undone!"
+          confirmFunction={deleteTasks()}
+        />
       )}
       {feedbackModal && (
         <Modal
           setModalDisplay={setFeedbackModal}
           heading={modalContent.heading}
           theme={modalContent.theme}
-        ></Modal>
+        />
       )}
     </section>
   );

@@ -5,7 +5,6 @@ import { getAdmins, deleteAdmin } from 'redux/Admins/thunks';
 import styles from './admins.module.css';
 import Modal from 'Components/Shared/Modal';
 import Table from 'Components/Shared/Table';
-import Button from 'Components/Shared/Button';
 import Error from 'Components/Shared/Error';
 import Loader from 'Components/Shared/Loader';
 
@@ -61,25 +60,10 @@ const Admins = () => {
         <Modal
           heading={`Are you sure you want to delete admin ${adminToDelete.name} ${adminToDelete.lastName}?`}
           setModalDisplay={setIsDeleteModal}
-          theme={'confirm'}
-        >
-          <p>This change cannot be undone!</p>
-          <Button
-            label={'Cancel'}
-            theme={'primary'}
-            onClick={() => {
-              setIsDeleteModal();
-            }}
-          />
-          <Button
-            label={'Delete'}
-            theme={'tertiary'}
-            onClick={() => {
-              adminDelete();
-              setIsDeleteModal(false);
-            }}
-          />
-        </Modal>
+          theme="confirm"
+          message="This change cannot be undone!"
+          confirmFunction={adminDelete()}
+        />
       )}
       {isSuccessModal && (
         <Modal

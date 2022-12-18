@@ -11,10 +11,11 @@ import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
+import Error from 'Components/Shared/Error';
 
 const EmployeeProfile = () => {
   const dispatch = useDispatch();
-  const { user, isPending } = useSelector((state) => state.auth);
+  const { user, isPending, error } = useSelector((state) => state.auth);
   const token = sessionStorage.getItem('token');
   const email = sessionStorage.getItem('email');
   const role = sessionStorage.getItem('role');
@@ -80,6 +81,7 @@ const EmployeeProfile = () => {
 
   return (
     <section className={styles.container}>
+      {error && <Error text={error} />}
       {!isPending && (
         <Form
           title="My profile"
@@ -132,15 +134,19 @@ const EmployeeProfile = () => {
         </Form>
       )}
       {isModal && (
-        <Modal heading="user edited successfully" theme="success" setModalDisplay={setIsModal} />
+        <Modal
+          heading="Success!"
+          message="Your profile was successfully edited."
+          theme="success"
+          setModalDisplay={setIsModal}
+        />
       )}
       {formPass && (
-        <Modal theme="confirm" setModalDisplay={setFormPass}>
+        <Modal setModalDisplay={setFormPass} heading="Change your password">
           <Form
             noValidate={!isValidPass}
             hiddenCancel
             onSubmit={handleSubmitPass(onSubmitPass)}
-            title="Change your password"
             style={styles.passForm}
             goBack={false}
           >
