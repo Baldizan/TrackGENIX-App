@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProjects } from 'redux/Projects/thunks';
 import { fetchUser } from 'redux/Auth/thunks';
@@ -12,9 +12,9 @@ const EmployeeProjects = () => {
   const role = sessionStorage.getItem('role');
   const email = sessionStorage.getItem('email');
   const token = sessionStorage.getItem('token');
+  const isProjectManager = sessionStorage.getItem('isProjectManager');
   const { list: projectsList, isPending, error } = useSelector((state) => state.projects);
   const { user } = useSelector((state) => state.auth);
-  const [isProjectManager, setIsProjectManager] = useState(false);
   const headers = {
     name: 'Project Name',
     role: 'Role',
@@ -26,10 +26,11 @@ const EmployeeProjects = () => {
     if (!user._id) {
       dispatch(fetchUser(role, email, token));
     }
-    if (projectsList.length) {
-      setIsProjectManager(true);
-    }
     if (user._id) {
+      dispatch(getProjects(token, 'projectManager', user._id));
+      if (projectsList.length) {
+        sessionStorage.setItem('isProjectManager', true);
+      }
       dispatch(getProjects(token, 'employees.id', user._id));
     }
   }, []);
