@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { getEmployees } from 'redux/Employees/thunks';
-import { postProject, putProject } from 'redux/Projects/thunks';
+import { putProject } from 'redux/Projects/thunks';
 import styles from './form.module.css';
 import { schema } from './validations';
 import Button from 'Components/Shared/Button';
@@ -30,7 +30,7 @@ const ProjectsForm = () => {
     control,
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
     watch
   } = useForm({
@@ -61,9 +61,7 @@ const ProjectsForm = () => {
   }, [employees]);
 
   useEffect(() => {
-    if (selectedProject) {
-      reset(selectedProject);
-    }
+    reset(selectedProject);
   }, [employees]);
 
   const handleModalClose = () => {
@@ -95,13 +93,8 @@ const ProjectsForm = () => {
       id: e.employeeId,
       employeeId: undefined
     }));
-    if (selectedProject) {
-      dispatch(putProject(projectId, data));
-      setFeedbackModal(true);
-    } else {
-      dispatch(postProject(data));
-      setFeedbackModal(true);
-    }
+    dispatch(putProject(projectId, data));
+    setFeedbackModal(true);
   };
 
   useEffect(() => {
@@ -120,9 +113,10 @@ const ProjectsForm = () => {
       {isPending && <Loader />}
       {!isPending && (
         <Form
-          title={selectedProject ? 'Edit project' : 'Add project'}
+          title={'Edit project'}
           onSubmit={handleSubmit(onSubmit)}
           secondColumnIndex={6}
+          noValidate={!isValid}
         >
           <Input
             register={register}
@@ -255,11 +249,7 @@ const ProjectsForm = () => {
       {feedbackModal && (
         <Modal
           setModalDisplay={handleModalClose}
-          heading={
-            selectedProject
-              ? `${selectedProject.name} successfully edited`
-              : `Project successfully submitted`
-          }
+          heading={`${selectedProject.name} successfully edited`}
           theme={error ? 'error' : 'success'}
         ></Modal>
       )}
