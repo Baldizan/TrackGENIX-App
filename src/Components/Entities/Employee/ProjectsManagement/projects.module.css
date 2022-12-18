@@ -5,3 +5,11 @@
     align-items: center;
     margin: 2% 5%;
   }
+
+  .employeesTableContainer {
+    width: 100%;
+    padding-top: 15px;
+    overflow-x: hidden;
+    height: 400px;
+    padding-inline: 30px;
+  }
