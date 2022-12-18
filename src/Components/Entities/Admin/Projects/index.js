@@ -7,7 +7,7 @@ import Table from 'Components/Shared/Table';
 import Modal from 'Components/Shared/Modal';
 import Loader from 'Components/Shared/Loader';
 import Error from 'Components/Shared/Error';
-import { getProjects, deleteProject } from 'redux/Projects/thunks';
+import { getProjects, putProject } from 'redux/Projects/thunks';
 
 const Projects = () => {
   const history = useHistory();
@@ -19,7 +19,7 @@ const Projects = () => {
   const [isModal, setFeedbackModal] = useState(false);
   const token = sessionStorage.getItem('token');
   const [feedback, setFeedback] = useState({ heading: '', theme: '' });
-  const [itemToDelete, setItemToDelete] = useState({});
+  const [itemToDeactivate, setItemToDeactivate] = useState({});
   const headers = {
     name: 'Name',
     clientName: 'Client name',
@@ -72,19 +72,25 @@ const Projects = () => {
     });
   };
 
-  const handleDelete = (item) => {
-    setItemToDelete(item);
+  const handleActive = (item) => {
+    setItemToDeactivate(item);
     setModal(true);
   };
 
-  const deleteItem = async () => {
-    dispatch(deleteProject(itemToDelete._id));
-    if (error) {
-      setFeedback({ heading: `There was an error: ${error}`, theme: 'error' });
-    } else {
-      setFeedback({ heading: 'Project deleted', theme: 'success' });
+  const deactivateItem = () => {
+    if (itemToDeactivate) {
+      dispatch(putProject(itemToDeactivate._id, { active: !itemToDeactivate.active }, token));
+      if (error) {
+        setFeedback({ heading: `There was an error: ${error}`, theme: 'error' });
+        setFeedbackModal(true);
+      } else {
+        setFeedback({
+          heading: `Project ${itemToDeactivate.active ? 'deactivated' : 'activated'} successfully`,
+          theme: 'success'
+        });
+        setFeedbackModal(true);
+      }
     }
-    setFeedbackModal(true);
   };
 
   const showEmployees = (employees) => {
@@ -110,7 +116,7 @@ const Projects = () => {
           title="Projects"
           addRedirectLink="projects/form"
           editItem={handleEdit}
-          deleteItem={handleDelete}
+          deleteItem={handleActive}
           itemsPerPage={5}
           isSearchEnabled
         />
@@ -129,10 +135,11 @@ const Projects = () => {
       {!isPending && modal && (
         <Modal
           setModalDisplay={setModal}
-          heading={`Are you sure you want to delete project ${itemToDelete.name}?`}
+          heading={`Are you sure you want to ${
+            itemToDeactivate.active ? 'deactivate' : 'activate'
+          } project ${itemToDeactivate.name}?`}
           theme="confirm"
         >
-          <p>This change cannot be undone!</p>
           <Button
             label="Cancel"
             theme="primary"
@@ -141,10 +148,10 @@ const Projects = () => {
             }}
           />
           <Button
-            label="Delete"
+            label="Confirm"
             theme="tertiary"
             onClick={() => {
-              deleteItem();
+              deactivateItem();
               setModal(false);
             }}
           />
