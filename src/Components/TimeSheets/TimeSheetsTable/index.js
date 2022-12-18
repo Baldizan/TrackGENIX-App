@@ -83,7 +83,7 @@ const List = () => {
           editItem={handleEdit}
           deleteItem={handleDelete}
           title="Timesheets"
-          addRedirectLink="/time-sheets/form"
+          redirectLink="/time-sheets/form"
           itemsPerPage={5}
           isSearchEnabled={true}
         />

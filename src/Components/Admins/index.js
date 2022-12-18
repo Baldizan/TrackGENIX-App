@@ -51,7 +51,7 @@ const Admins = () => {
           editItem={addEditAdmin}
           deleteItem={handleDelete}
           title={'Admins'}
-          addRedirectLink={'/admins/form'}
+          redirectLink={'/admins/form'}
           itemsPerPage={5}
           isSearchEnabled={true}
         />

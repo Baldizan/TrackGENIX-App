@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProjects } from 'redux/Projects/thunks';
 import { fetchUser } from 'redux/Auth/thunks';
@@ -14,31 +14,28 @@ const EmployeeProjects = () => {
   const token = sessionStorage.getItem('token');
   const { list: projectsList, isPending, error } = useSelector((state) => state.projects);
   const { user } = useSelector((state) => state.auth);
-  const [isProjectManager, setIsProjectManager] = useState(false);
   const headers = {
     name: 'Project Name',
-    role: 'Role',
+    clientName: 'Client',
     startDate: 'Start Date',
-    endDate: 'End Date'
+    endDate: 'End Date',
+    employees: 'Employees'
   };
 
   useEffect(async () => {
     if (!user._id) {
       dispatch(fetchUser(role, email, token));
     }
-    if (projectsList.length) {
-      setIsProjectManager(true);
-    }
     if (user._id) {
-      dispatch(getProjects(token, 'employees.id', user._id));
+      dispatch(getProjects(token, 'projectManager', user._id));
     }
   }, []);
 
   const projectsData = projectsList.map((project) => ({
-    name: project.name,
-    startDate: project.startDate.slice(0, 10),
-    endDate: project.endDate.slice(0, 10),
-    role: project.employees.map((e) => e.role)
+    ...project,
+    startDate: project.startDate?.slice(0, 10),
+    endDate: project.endDate?.slice(0, 10),
+    employees: project.employees?.length
   }));
 
   return (
@@ -49,11 +46,12 @@ const EmployeeProjects = () => {
         <Table
           headers={headers}
           data={projectsData}
-          title="My projects"
+          title="Project Management"
           itemsPerPage={5}
           isSearchEnabled={true}
-          redirectLink={isProjectManager && '/employee/projects/management'}
-          redirectLabel="Manage Projects"
+          redirectLink="/employee/projects"
+          redirectLabel="Back to My Projects"
+          editItem={true}
         />
       )}
     </section>

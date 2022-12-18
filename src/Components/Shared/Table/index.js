@@ -10,7 +10,8 @@ const Table = ({
   headers,
   editItem,
   deleteItem,
-  addRedirectLink,
+  redirectLink,
+  redirectLabel = 'Add new +',
   title,
   itemsPerPage,
   isSearchEnabled
@@ -52,16 +53,16 @@ const Table = ({
 
   return (
     <div className={styles.container}>
-      {title || addRedirectLink ? (
+      {title || redirectLink ? (
         <header className={styles.header}>
           {title ? <h2>{title}</h2> : null}
-          {addRedirectLink || isSearchEnabled ? (
+          {redirectLink || isSearchEnabled ? (
             <div className={styles.utilities}>
-              {addRedirectLink ? (
+              {redirectLink ? (
                 <Button
                   style={styles.addButton}
-                  label="Add new +"
-                  onClick={() => history.push(addRedirectLink)}
+                  label={redirectLabel}
+                  onClick={() => history.push(redirectLink)}
                 />
               ) : null}
               {isSearchEnabled ? (

@@ -71,7 +71,7 @@ const Employees = () => {
           editItem={handleEdit}
           deleteItem={handleDelete}
           title="Employees"
-          addRedirectLink={'/employees/form'}
+          redirectLink={'/employees/form'}
           itemsPerPage={5}
           isSearchEnabled={true}
         />

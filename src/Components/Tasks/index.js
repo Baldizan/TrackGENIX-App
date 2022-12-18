@@ -56,7 +56,7 @@ const Tasks = () => {
           editItem={handleEdit}
           deleteItem={handleDelete}
           title="Tasks"
-          addRedirectLink="/tasks/form"
+          redirectLink="/tasks/form"
           itemsPerPage={5}
           isSearchEnabled={true}
         />

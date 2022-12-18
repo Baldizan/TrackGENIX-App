@@ -55,7 +55,7 @@ const SuperAdmins = () => {
           editItem={handleEdit}
           deleteItem={handleDelete}
           title={'Super Admins'}
-          addRedirectLink={'super-admins/form'}
+          redirectLink={'super-admins/form'}
           itemsPerPage={5}
           isSearchEnabled={true}
         />

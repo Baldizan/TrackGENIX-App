@@ -108,7 +108,7 @@ const Projects = () => {
           data={projectColumns}
           headers={headers}
           title="Projects"
-          addRedirectLink="projects/form"
+          redirectLink="projects/form"
           editItem={handleEdit}
           deleteItem={handleDelete}
           itemsPerPage={5}
