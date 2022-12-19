@@ -19,7 +19,6 @@ const ProjectsForm = () => {
   const dispatch = useDispatch();
   const projectId = history.location.state?.id;
   const project = history.location.state?.project;
-  const projectManagerId = history.location.state?.project.projectManagerId;
   const [displayForm, setDisplayForm] = useState(false);
   const [feedbackModal, setFeedbackModal] = useState(false);
   const { isPending } = useSelector((state) => state.projects);
@@ -53,8 +52,7 @@ const ProjectsForm = () => {
 
   const [listForPM, setListForPM] = useState();
   const [listForEmployees, setlistForEmployees] = useState();
-  const projectWithPMId = { ...project, projectManager: projectManagerId };
-
+  console.log(employeePM);
   useEffect(() => {
     dispatch(getEmployees(token));
   }, []);
@@ -66,14 +64,14 @@ const ProjectsForm = () => {
 
   useEffect(() => {
     if (project) {
-      reset(projectWithPMId);
+      reset(project);
     }
   }, [employees]);
 
   const handleModalClose = () => {
     if (!error) {
       setFeedbackModal(false);
-      history.push('/projects');
+      history.push('/admin/projects');
     } else {
       setFeedbackModal(error);
     }
@@ -99,6 +97,7 @@ const ProjectsForm = () => {
       id: e.employeeId,
       employeeId: undefined
     }));
+    console.log('data', data);
     if (project) {
       dispatch(putProject(projectId, data, token));
       setFeedbackModal(true);
@@ -125,7 +124,7 @@ const ProjectsForm = () => {
     });
     setlistForEmployees(employeesFilter);
   }, [employeesSelected]);
-
+  console.log(fields);
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
@@ -234,7 +233,7 @@ const ProjectsForm = () => {
                   label: employee.name + ' ' + employee.lastName
                 }))}
                 error={
-                  errors.employees ? errors.employees[fields.length - 1].employeeId?.message : ''
+                  errors.employees ? errors.employees[fields.length - 1]?.employeeId?.message : ''
                 }
                 register={register}
               />
