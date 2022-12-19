@@ -5,17 +5,18 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { schema } from './validations';
 import { schemaPass } from './validationsPass';
 import styles from './profile.module.css';
-import { getEmployees, putEmployee } from 'redux/Employees/thunks';
+import { editAdmin } from 'redux/Admins/thunks';
 import { fetchUser } from 'redux/Auth/thunks';
 import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
 
-const EmployeeProfile = () => {
+const AdminProfile = () => {
   const dispatch = useDispatch();
-  const { user, authenticated, isPending } = useSelector((state) => state.auth);
+  const { user, authenticated } = useSelector((state) => state.auth);
   const token = sessionStorage.getItem('token');
+  const { isPending } = useSelector((state) => state.admins);
   const [isModal, setIsModal] = useState(false);
   const [formPass, setFormPass] = useState(false);
   const {
@@ -40,39 +41,33 @@ const EmployeeProfile = () => {
     if (!user.email) {
       dispatch(fetchUser(authenticated.role, authenticated.email, token));
     }
-    dispatch(getEmployees(token));
   }, []);
 
   useEffect(() => {
     if (user) {
-      const EmployeeProfile = {
+      const AdminProfile = {
         name: user.name,
         lastName: user.lastName,
         phone: user.phone?.toString(),
-        email: user.email
+        email: user.email,
+        password: user.password,
+        repeatPassword: user.repeatPassword
       };
-      reset(EmployeeProfile);
+      reset(AdminProfile);
     }
   }, [user]);
 
   const onSubmit = (data) => {
-    dispatch(putEmployee(user._id, data, token));
+    dispatch(editAdmin(data._id, data));
     setIsModal(true);
-
-    const EmployeeProfile = {
-      name: user.name,
-      lastName: user.lastName,
-      phone: user.phone?.toString(),
-      email: user.email
-    };
-    reset(EmployeeProfile);
   };
 
   const handleAdd = () => {
     setFormPass(true);
   };
+
   const onSubmitPass = (data) => {
-    dispatch(putEmployee(user._id, data, token));
+    dispatch(editAdmin(user._id, data, token));
     setIsModal(true);
     setFormPass(false);
   };
@@ -86,7 +81,7 @@ const EmployeeProfile = () => {
           noValidate={!isValid}
           secondColumnIndex={3}
           legend={['Personal information', 'Authentication information']}
-          linktoRedirect="/employee/home"
+          linktoRedirect="/admin/home"
         >
           <Input
             placeholder="Edit your name"
@@ -118,6 +113,7 @@ const EmployeeProfile = () => {
             name="email"
             title="Email"
             register={register}
+            error={errors.email?.message}
             disabled
           />
           {!formPass && (
@@ -168,4 +164,4 @@ const EmployeeProfile = () => {
   );
 };
 
-export default EmployeeProfile;
+export default AdminProfile;

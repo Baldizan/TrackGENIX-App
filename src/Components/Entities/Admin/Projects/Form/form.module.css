@@ -1,0 +1,60 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.divContainer {
+  width: 100%;
+}
+
+.employeesContainer {
+  width: 100%;
+  min-height: 50%;
+  padding: 5px;
+  margin-block: 10px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid var(--primaryColor);
+  font-size: 16px;
+  color: var(--primaryColor);
+  background-color: var(--backgroundBaseColor);
+  font-weight: 400;
+  line-height: 2;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow-x: hidden;
+  height: 296px;
+  margin: 31px 0 51px 0;
+  padding: 0;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.btnAdd{
+  align-self: center;
+  margin-top: 34px;
+  width: 50%;
+}
+
+.btnAssign {
+  width: 50%;
+  height: 44px;
+  margin-top: 31px;
+  align-self: flex-start;
+}
+
+@media (prefers-color-scheme: dark) {
+  .employeesContainer {
+    background-color: var(--primaryColor);
+    border-color: var(--secondaryColor);
+  }
+}

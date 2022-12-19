@@ -15,7 +15,7 @@ const Form = ({
   goBack = true,
   style,
   customBtnLabel,
-  linktoRedirect = '/home',
+  linktoRedirect = '/',
   cancelBtn = 'Cancel',
   hiddenCancel
 }) => {

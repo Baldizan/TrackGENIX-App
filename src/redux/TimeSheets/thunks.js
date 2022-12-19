@@ -34,14 +34,15 @@ export const getTimeSheets = (token) => {
   };
 };
 
-export const deleteTimeSheet = (id) => {
+export const deleteTimeSheet = (id, token) => {
   return async (dispatch) => {
     dispatch(deleteTimeSheetPending());
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/timesheets/${id}`, {
         method: 'DELETE',
         headers: {
-          'Content-type': 'application/json'
+          'Content-type': 'application/json',
+          token: token
         }
       });
       const json = await response.json();
@@ -56,14 +57,15 @@ export const deleteTimeSheet = (id) => {
   };
 };
 
-export const addTimeSheet = (data) => {
+export const addTimeSheet = (data, token) => {
   return async (dispatch) => {
     dispatch(postTimeSheetPending());
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/timesheets`, {
         method: 'POST',
         headers: {
-          'Content-type': 'application/json'
+          'Content-type': 'application/json',
+          token: token
         },
         body: JSON.stringify({
           project: data.project,

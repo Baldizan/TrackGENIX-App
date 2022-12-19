@@ -78,7 +78,7 @@ export const editAdmin = (id, data, token) => {
         throw new Error(json.message);
       }
       dispatch(putAdminSuccess(json.data, json.message));
-      dispatch(getAdmins());
+      dispatch(getAdmins(token));
     } catch (error) {
       dispatch(putAdminError(error.toString()));
     }
@@ -102,7 +102,7 @@ export const addAdmin = (data, token) => {
         throw new Error(json.message);
       }
       dispatch(postAdminSuccess(json.data, json.message));
-      dispatch(getAdmins());
+      dispatch(getAdmins(token));
     } catch (error) {
       dispatch(postAdminError(error.toString()));
     }

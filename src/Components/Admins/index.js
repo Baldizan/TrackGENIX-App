@@ -18,9 +18,10 @@ const Admins = () => {
   const [adminToDelete, setAdminToDelete] = useState({});
   const { list: adminsArray, isPending, error } = useSelector((state) => state.admins);
   const headers = { name: 'Name', lastName: 'Last Name', email: 'Email' };
+  const token = sessionStorage.getItem('token');
 
   useEffect(() => {
-    dispatch(getAdmins());
+    dispatch(getAdmins(token));
   }, []);
 
   const adminDelete = () => {
