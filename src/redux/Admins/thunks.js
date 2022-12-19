@@ -13,11 +13,16 @@ import {
   postAdminSuccess
 } from './actions';
 
-export const getAdmins = () => {
+export const getAdmins = (token) => {
   return async (dispatch) => {
     dispatch(getAdminsPending());
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`, {
+        method: 'GET',
+        headers: {
+          token: token
+        }
+      });
       const json = await response.json();
       if (json.error) {
         throw new Error(json.message);
@@ -50,20 +55,22 @@ export const deleteAdmin = (id) => {
   };
 };
 
-export const editAdmin = (id, data) => {
+export const editAdmin = (id, data, token) => {
   return async (dispatch) => {
     dispatch(putAdminPending());
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          token: token
         },
         body: JSON.stringify({
           name: data.name,
           lastName: data.lastName,
           email: data.email,
-          password: data.password
+          password: data.password,
+          active: data.active
         })
       });
       const json = await response.json();
@@ -71,21 +78,22 @@ export const editAdmin = (id, data) => {
         throw new Error(json.message);
       }
       dispatch(putAdminSuccess(json.data, json.message));
-      dispatch(getAdmins());
+      dispatch(getAdmins(token));
     } catch (error) {
       dispatch(putAdminError(error.toString()));
     }
   };
 };
 
-export const addAdmin = (data) => {
+export const addAdmin = (data, token) => {
   return async (dispatch) => {
     dispatch(postAdminPending());
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          token: token
         },
         body: JSON.stringify(data)
       });
@@ -94,7 +102,7 @@ export const addAdmin = (data) => {
         throw new Error(json.message);
       }
       dispatch(postAdminSuccess(json.data, json.message));
-      dispatch(getAdmins());
+      dispatch(getAdmins(token));
     } catch (error) {
       dispatch(postAdminError(error.toString()));
     }

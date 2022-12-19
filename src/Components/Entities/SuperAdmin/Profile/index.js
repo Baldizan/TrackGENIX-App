@@ -5,20 +5,18 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { schema } from './validations';
 import { schemaPass } from './validationsPass';
 import styles from './profile.module.css';
-import { putEmployee } from 'redux/Employees/thunks';
+import { putSuperAdmins } from 'redux/SuperAdmins/thunks';
 import { fetchUser } from 'redux/Auth/thunks';
 import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
-import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
-import Error from 'Components/Shared/Error';
+import Modal from 'Components/Shared/Modal';
 
-const EmployeeProfile = () => {
+const SuperAdminProfile = () => {
   const dispatch = useDispatch();
-  const { user, isPending, error } = useSelector((state) => state.auth);
+  const { user, authenticated } = useSelector((state) => state.auth);
   const token = sessionStorage.getItem('token');
-  const email = sessionStorage.getItem('email');
-  const role = sessionStorage.getItem('role');
+  const { isPending } = useSelector((state) => state.superAdmins);
   const [isModal, setIsModal] = useState(false);
   const [formPass, setFormPass] = useState(false);
   const {
@@ -30,6 +28,7 @@ const EmployeeProfile = () => {
     mode: 'all',
     resolver: joiResolver(schema)
   });
+
   const {
     handleSubmit: handleSubmitPass,
     register: registerPass,
@@ -39,57 +38,47 @@ const EmployeeProfile = () => {
     resolver: joiResolver(schemaPass)
   });
 
+  const handleAdd = () => {
+    setFormPass(true);
+  };
+  const onSubmitPass = (data) => {
+    dispatch(putSuperAdmins(user._id, data, token));
+    setIsModal(true);
+    setFormPass(false);
+  };
+
   useEffect(() => {
     if (!user.email) {
-      dispatch(fetchUser(role, email, token));
+      dispatch(fetchUser(authenticated.role, authenticated.email, token));
     }
   }, []);
 
   useEffect(() => {
     if (user) {
-      const EmployeeProfile = {
+      const SuperAdminProfile = {
         name: user.name,
         lastName: user.lastName,
-        phone: user.phone?.toString(),
         email: user.email
       };
-      reset(EmployeeProfile);
+      reset(SuperAdminProfile);
     }
   }, [user]);
 
   const onSubmit = (data) => {
-    dispatch(putEmployee(user._id, data, token));
+    dispatch(putSuperAdmins(user._id, data, token));
     setIsModal(true);
-
-    const EmployeeProfile = {
-      name: user.name,
-      lastName: user.lastName,
-      phone: user.phone?.toString(),
-      email: user.email
-    };
-    reset(EmployeeProfile);
-  };
-
-  const handleAdd = () => {
-    setFormPass(true);
-  };
-  const onSubmitPass = (data) => {
-    dispatch(putEmployee(user._id, data, token));
-    setIsModal(true);
-    setFormPass(false);
   };
 
   return (
     <section className={styles.container}>
-      {error && <Error text={error} />}
       {!isPending && (
         <Form
           title="My profile"
           onSubmit={handleSubmit(onSubmit)}
           noValidate={!isValid}
-          secondColumnIndex={3}
+          secondColumnIndex={2}
           legend={['Personal information', 'Authentication information']}
-          linktoRedirect="/employee/home"
+          linktoRedirect="/superadmin"
         >
           <Input
             placeholder="Edit your name"
@@ -108,19 +97,12 @@ const EmployeeProfile = () => {
             error={errors.lastName?.message}
           />
           <Input
-            placeholder="Edit your phone"
-            id="phone"
-            name="phone"
-            title="Phone"
-            register={register}
-            error={errors.phone?.message}
-          />
-          <Input
             placeholder="Edit your email"
             id="email"
             name="email"
             title="Email"
             register={register}
+            error={errors.email?.message}
             disabled
           />
           {!formPass && (
@@ -134,19 +116,15 @@ const EmployeeProfile = () => {
         </Form>
       )}
       {isModal && (
-        <Modal
-          heading="Success!"
-          message="Your profile was successfully edited."
-          theme="success"
-          setModalDisplay={setIsModal}
-        />
+        <Modal heading="user edited successfully" theme="success" setModalDisplay={setIsModal} />
       )}
       {formPass && (
-        <Modal setModalDisplay={setFormPass} heading="Change your password">
+        <Modal theme="confirm" setModalDisplay={setFormPass}>
           <Form
             noValidate={!isValidPass}
             hiddenCancel
             onSubmit={handleSubmitPass(onSubmitPass)}
+            title="Change your password"
             style={styles.passForm}
             goBack={false}
           >
@@ -175,4 +153,4 @@ const EmployeeProfile = () => {
   );
 };
 
-export default EmployeeProfile;
+export default SuperAdminProfile;

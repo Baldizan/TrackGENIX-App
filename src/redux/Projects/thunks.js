@@ -40,13 +40,14 @@ const getProjects = (token, queryKey, queryValue) => {
   };
 };
 
-const postProject = (project) => {
+const postProject = (project, token) => {
   return (dispatch) => {
     dispatch(postProjectPending());
     return fetch(`${process.env.REACT_APP_API_URL}/projects`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        token: token
       },
       body: JSON.stringify({
         name: project.name,
@@ -89,13 +90,16 @@ const deleteProject = (projectId) => {
   };
 };
 
-const putProject = (projectId, project, token) => {
+const putProject = (projectId, data, token) => {
   return (dispatch) => {
     dispatch(putProjectPending());
     return fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json', token: token },
-      body: JSON.stringify(project)
+      headers: {
+        'Content-Type': 'application/json',
+        token: token
+      },
+      body: JSON.stringify(data)
     })
       .then((res) => res.json())
       .then((json) => {
@@ -103,6 +107,7 @@ const putProject = (projectId, project, token) => {
           dispatch(putProjectError(json.message));
         } else {
           dispatch(putProjectSuccess(json.data));
+          dispatch(getProjects(token));
         }
       })
       .catch((error) => {

@@ -34,7 +34,7 @@ const Login = () => {
       if (user.role) {
         switch (user.role) {
           case 'SUPERADMIN':
-            return history.push('/super-admin');
+            return history.push('/superadmin');
           case 'ADMIN':
             return history.push('/admin');
           case 'EMPLOYEE':
