@@ -32,5 +32,6 @@ export const schema = Joi.object({
     .messages({
       'string.empty': 'This field is required.',
       'string.pattern.base': 'Password must contain letters, numbers and at least 8 characters'
-    })
+    }),
+  active: Joi.boolean()
 });

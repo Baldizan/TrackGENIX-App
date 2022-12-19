@@ -7,13 +7,14 @@ import { editAdmin, addAdmin } from 'redux/Admins/thunks';
 import { schema } from './validations';
 import styles from './form.module.css';
 import Form from 'Components/Shared/Form';
-import { Input } from 'Components/Shared/Input';
+import { Input, Select } from 'Components/Shared/Input';
 import Modal from 'Components/Shared/Modal';
 import Loader from 'Components/Shared/Loader';
 
 const FormAdmins = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const token = sessionStorage.getItem('token');
   const [feedback, setFeedback] = useState({ name: '', lastName: '' });
   const [isModal, setIsModal] = useState(false);
   const [selectedAdmin] = useState(history.location.state);
@@ -35,16 +36,17 @@ const FormAdmins = () => {
         name: selectedAdmin?.name,
         lastName: selectedAdmin?.lastName,
         email: selectedAdmin?.email,
-        password: selectedAdmin?.password
+        password: selectedAdmin?.password,
+        active: selectedAdmin?.active
       });
   }, []);
 
   const onSubmit = (data) => {
     if (selectedAdmin) {
-      dispatch(editAdmin(selectedAdmin._id, data));
+      dispatch(editAdmin(selectedAdmin._id, data, token));
       setIsModal(true);
     } else {
-      dispatch(addAdmin(data));
+      dispatch(addAdmin(data, token));
       setIsModal(true);
     }
     setFeedback({ name: data.name, lastName: data.lastName });
@@ -53,7 +55,7 @@ const FormAdmins = () => {
   const handleModalClose = () => {
     if (!error) {
       setIsModal(false);
-      history.push(`/admins`);
+      history.push(`/superadmin/admins`);
     } else {
       setIsModal(false);
     }
@@ -63,7 +65,12 @@ const FormAdmins = () => {
     <section className={styles.container}>
       {isPending && <Loader />}
       {!isPending && (
-        <Form onSubmit={handleSubmit(onSubmit)} title={titleForm} noValidate={!isValid}>
+        <Form
+          onSubmit={handleSubmit(onSubmit)}
+          title={titleForm}
+          noValidate={!isValid}
+          linktoRedirect="/superadmin/admins"
+        >
           <Input
             register={register}
             placeholder={'Enter your name'}
@@ -88,14 +95,28 @@ const FormAdmins = () => {
             required
             error={errors.email?.message}
           />
-          <Input
+          {!selectedAdmin && (
+            <Input
+              register={register}
+              placeholder={'Enter a password'}
+              type="password"
+              name="password"
+              title="Password"
+              required
+              error={errors.password?.message}
+            />
+          )}
+          <Select
+            name="active"
+            title="Active"
+            placeholder="Select status"
+            arrayToMap={[
+              { id: true, label: 'Active' },
+              { id: false, label: 'Inactive' }
+            ]}
             register={register}
-            placeholder={'Enter a password'}
-            type="password"
-            name="password"
-            title="Password"
+            error={errors.active?.message}
             required
-            error={errors.password?.message}
           />
         </Form>
       )}
