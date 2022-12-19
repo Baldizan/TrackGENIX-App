@@ -114,6 +114,7 @@ const AdminProfile = () => {
             title="Email"
             register={register}
             error={errors.email?.message}
+            disabled
           />
           {!formPass && (
             <Button
