@@ -89,12 +89,12 @@ const deleteProject = (projectId) => {
   };
 };
 
-const putProject = (projectId, project) => {
+const putProject = (projectId, project, token) => {
   return (dispatch) => {
     dispatch(putProjectPending());
     return fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', token: token },
       body: JSON.stringify(project)
     })
       .then((res) => res.json())

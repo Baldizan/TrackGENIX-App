@@ -13,7 +13,7 @@ const Header = () => {
   const [navbarDisplay, setNavBarDisplay] = useState(true);
   const onClickLogout = () => {
     dispatch(logout());
-    history.push('/home');
+    history.push('/');
   };
 
   return (

@@ -18,9 +18,6 @@ const TimeSheetsForm = lazy(() => import('Components/TimeSheets/TimeSheetsForm')
 const EmployeeHome = lazy(() => import('Components/Entities/Employee/Home'));
 const EmployeeProjects = lazy(() => import('Components/Entities/Employee/Projects'));
 const ManagerProjects = lazy(() => import('Components/Entities/Employee/ProjectsManagement'));
-const ManagerProjectsForm = lazy(() =>
-  import('Components/Entities/Employee/ProjectsManagement/Form')
-);
 const EmployeeTimesheets = lazy(() => import('Components/Entities/Employee/Timesheets'));
 const EmployeeTimesheetsForm = lazy(() => import('Components/Entities/Employee/Timesheets/Form'));
 const EmployeeProfile = lazy(() => import('Components/Entities/Employee/Profile'));
@@ -52,11 +49,6 @@ const Routes = () => {
         path="/employee/projects/management"
         role="EMPLOYEE"
         component={ManagerProjects}
-      />
-      <PrivateRoute
-        path="/employee/projects/management/form"
-        role="EMPLOYEE"
-        component={ManagerProjectsForm}
       />
       <PrivateRoute
         exact

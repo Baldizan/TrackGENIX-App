@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProjects } from 'redux/Projects/thunks';
 import { fetchUser } from 'redux/Auth/thunks';
@@ -12,7 +11,6 @@ import Modal from 'Components/Shared/Modal';
 
 const EmployeeProjects = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
   const role = sessionStorage.getItem('role');
   const email = sessionStorage.getItem('email');
   const token = sessionStorage.getItem('token');
@@ -38,21 +36,6 @@ const EmployeeProjects = () => {
       dispatch(getProjects(token, 'projectManager', user._id));
     }
   }, []);
-
-  const handleEdit = (item) => {
-    history.push('/employee/projects/management/form', {
-      id: item._id,
-      project: {
-        ...item,
-        employeesButton: '',
-        employees: item.employees?.map((e) => ({
-          employeeId: e.id?._id,
-          role: e.role,
-          rate: e.rate
-        }))
-      }
-    });
-  };
 
   const projectsData = projectsList.map((project) => ({
     ...project,
@@ -96,7 +79,6 @@ const EmployeeProjects = () => {
           isSearchEnabled={true}
           redirectLink="/employee/projects"
           redirectLabel="Back to My Projects"
-          editItem={handleEdit}
         />
       )}
       {modalEmployee && (
