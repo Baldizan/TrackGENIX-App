@@ -35,13 +35,14 @@ const getProjects = (token) => {
   };
 };
 
-const postProject = (project) => {
+const postProject = (project, token) => {
   return (dispatch) => {
     dispatch(postProjectPending());
     return fetch(`${process.env.REACT_APP_API_URL}/projects`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        token: token
       },
       body: JSON.stringify({
         name: project.name,

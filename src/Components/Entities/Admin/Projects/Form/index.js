@@ -100,10 +100,10 @@ const ProjectsForm = () => {
       employeeId: undefined
     }));
     if (project) {
-      dispatch(putProject(projectId, data));
+      dispatch(putProject(projectId, data, token));
       setFeedbackModal(true);
     } else {
-      dispatch(postProject(data));
+      dispatch(postProject(data, token));
       setFeedbackModal(true);
     }
   };

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { useSelector, useDispatch } from 'react-redux';
-import { postEmployee, putEmployee } from 'redux/Employees/thunks.js';
+import { putEmployee } from 'redux/Employees/thunks.js';
 import { getProjects } from 'redux/Projects/thunks.js';
 import styles from './form.module.css';
 import { schema } from './validations';
@@ -19,6 +19,7 @@ const EmployeesForm = () => {
   const { isPending, error } = useSelector((state) => state.employees);
   const { list: projectsList } = useSelector((state) => state.projects);
   const [isModal, setIsModal] = useState(false);
+  const token = sessionStorage.getItem('token');
   const [modalContent, setModalContent] = useState({ name: '', lastName: '' });
 
   const {
@@ -31,7 +32,7 @@ const EmployeesForm = () => {
     resolver: joiResolver(schema)
   });
   useEffect(() => {
-    dispatch(getProjects());
+    dispatch(getProjects(token));
     selectedEmployee &&
       reset({
         name: selectedEmployee?.name,
@@ -46,11 +47,7 @@ const EmployeesForm = () => {
 
   const onSubmit = (data) => {
     if (selectedEmployee) {
-      dispatch(putEmployee(selectedEmployee._id, data));
-      setModalContent({ name: data.name, lastName: data.lastName });
-      setIsModal(true);
-    } else {
-      dispatch(postEmployee(data));
+      dispatch(putEmployee(selectedEmployee._id, data, token));
       setModalContent({ name: data.name, lastName: data.lastName });
       setIsModal(true);
     }
@@ -59,7 +56,7 @@ const EmployeesForm = () => {
   const handleCloseModal = () => {
     if (!error) {
       setIsModal(false);
-      history.push(`/employees`);
+      history.push(`/admin/employees`);
     } else {
       setIsModal(false);
     }
@@ -109,16 +106,6 @@ const EmployeesForm = () => {
             placeholder="Email"
             register={register}
             error={errors.email?.message}
-            required
-          />
-          <Input
-            id="password"
-            type="password"
-            name="password"
-            title="Password"
-            placeholder="Password"
-            register={register}
-            error={errors.password?.message}
             required
           />
           <Select

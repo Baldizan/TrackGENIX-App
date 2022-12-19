@@ -16,6 +16,7 @@ const TasksForm = () => {
   const dispatch = useDispatch();
   const { isPending, error } = useSelector((state) => state.tasks);
   const [selectedTask] = useState(history.location.state);
+  const token = sessionStorage.getItem('token');
   const titleForm = selectedTask ? 'Edit Task' : 'Add Task';
   const [isModal, setIsModal] = useState(false);
   const {
@@ -29,7 +30,7 @@ const TasksForm = () => {
   });
 
   useEffect(() => {
-    dispatch(getTasks());
+    dispatch(getTasks(token));
     selectedTask &&
       reset({
         description: selectedTask?.description
@@ -38,10 +39,10 @@ const TasksForm = () => {
 
   const onSubmit = (data) => {
     if (selectedTask) {
-      dispatch(putTask(selectedTask._id, data));
+      dispatch(putTask(selectedTask._id, data, token));
       setIsModal(true);
     } else {
-      dispatch(postTask(data));
+      dispatch(postTask(data, token));
       setIsModal(true);
     }
   };
@@ -49,7 +50,7 @@ const TasksForm = () => {
   const handleModalClose = () => {
     if (!error) {
       setIsModal(false);
-      history.push(`/tasks`);
+      history.push(`/admin/tasks`);
     } else {
       setIsModal(false);
     }

@@ -24,6 +24,7 @@ const TimeSheetsForm = () => {
   const { list: tasks } = useSelector((state) => state.tasks);
   const { list: projects } = useSelector((state) => state.projects);
   const [isModal, setIsModal] = useState(false);
+  const token = sessionStorage.getItem('token');
   const titleForm = selectedTimesheet ? 'Edit Timesheet' : 'Add Timesheet';
   const {
     handleSubmit,
@@ -36,9 +37,9 @@ const TimeSheetsForm = () => {
   });
 
   useEffect(() => {
-    dispatch(getProjects());
-    dispatch(getEmployees());
-    dispatch(getTasks());
+    dispatch(getProjects(token));
+    dispatch(getEmployees(token));
+    dispatch(getTasks(token));
     selectedTimesheet &&
       reset({
         project: selectedTimesheet?.project,
@@ -52,10 +53,10 @@ const TimeSheetsForm = () => {
 
   const onSubmit = (data) => {
     if (selectedTimesheet) {
-      dispatch(editTimeSheet(selectedTimesheet._id, data));
+      dispatch(editTimeSheet(selectedTimesheet._id, data, token));
       setIsModal(true);
     } else {
-      dispatch(addTimeSheet(data));
+      dispatch(addTimeSheet(data, token));
       setIsModal(true);
     }
   };
@@ -63,7 +64,7 @@ const TimeSheetsForm = () => {
   const handleModalClose = () => {
     if (!error) {
       setIsModal(false);
-      history.push(`/time-sheets`);
+      history.push(`/admin/time-sheets`);
     } else {
       setIsModal(false);
     }

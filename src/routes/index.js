@@ -6,7 +6,7 @@ const Landing = lazy(() => import('Components/Landing'));
 const Admins = lazy(() => import('Components/Admins'));
 const AdminsForm = lazy(() => import('Components/Admins/Form'));
 const Employees = lazy(() => import('Components/Employees'));
-const EmployeesForm = lazy(() => import('Components/Employees/Form'));
+const EmployeesForm = lazy(() => import('Components/Entities/Admin/Employees/Form'));
 const Projects = lazy(() => import('Components/Projects'));
 const ProjectsForm = lazy(() => import('Components/Projects/Form'));
 const SuperAdmins = lazy(() => import('Components/SuperAdmins'));
@@ -22,9 +22,13 @@ const EmployeeTimesheetsForm = lazy(() => import('Components/Entities/Employee/T
 const EmployeeProfile = lazy(() => import('Components/Entities/Employee/Profile'));
 const AdminHome = lazy(() => import('Components/Entities/Admin/Home'));
 const AdminEmployees = lazy(() => import('Components/Entities/Admin/Employees'));
+const AdminEmployeesForm = lazy(() => import('Components/Entities/Admin/Employees/Form'));
 const AdminProjects = lazy(() => import('Components/Entities/Admin/Projects'));
 const AdminProjectsForm = lazy(() => import('Components/Entities/Admin/Projects/Form'));
 const AdminTimesheets = lazy(() => import('Components/Entities/Admin/TimeSheets'));
+const AdminTimesheetsForm = lazy(() =>
+  import('Components/Entities/Admin/TimeSheets/TimeSheetsForm')
+);
 const AdminTasks = lazy(() => import('Components/Entities/Admin/Tasks'));
 const AdminTasksForm = lazy(() => import('Components/Entities/Admin/Tasks/TasksForm'));
 const AdminProfile = lazy(() => import('Components/Entities/Admin/Profile'));
@@ -67,10 +71,12 @@ const Routes = () => {
         <Redirect to="/admin/home" />
       </PrivateRoute>
       <PrivateRoute exact path="/admin/home" role="ADMIN" component={AdminHome} />
-      <PrivateRoute path="/admin/employees" role="ADMIN" component={AdminEmployees} />
+      <PrivateRoute exact path="/admin/employees" role="ADMIN" component={AdminEmployees} />
+      <PrivateRoute path="/admin/employees/form" role="ADMIN" component={AdminEmployeesForm} />
       <PrivateRoute exact path="/admin/projects" role="ADMIN" component={AdminProjects} />
       <PrivateRoute path="/admin/projects/form" role="ADMIN" component={AdminProjectsForm} />
-      <PrivateRoute path="/admin/time-sheets" role="ADMIN" component={AdminTimesheets} />
+      <PrivateRoute exact path="/admin/time-sheets" role="ADMIN" component={AdminTimesheets} />
+      <PrivateRoute path="/admin/time-sheets/form" role="ADMIN" component={AdminTimesheetsForm} />
       <PrivateRoute exact path="/admin/tasks" role="ADMIN" component={AdminTasks} />
       <PrivateRoute path="/admin/tasks/form" role="ADMIN" component={AdminTasksForm} />
       <PrivateRoute path="/admin/profile" role="ADMIN" component={AdminProfile} />

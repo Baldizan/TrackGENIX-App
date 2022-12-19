@@ -15,6 +15,7 @@ const List = () => {
   const [isFeedbackModal, setIsFeedbackModal] = useState(false);
   const [modalContent, setModalContent] = useState({ message: '', theme: '' });
   const [selectedTimesheet, setSelectedTimesheet] = useState({});
+  const token = sessionStorage.getItem('token');
   const dispatch = useDispatch();
   const history = useHistory();
   const headers = {
@@ -38,7 +39,7 @@ const List = () => {
   }));
 
   useEffect(() => {
-    dispatch(getTimeSheets());
+    dispatch(getTimeSheets(token));
   }, []);
 
   const handleDelete = (item) => {
@@ -48,7 +49,7 @@ const List = () => {
 
   const deleteItem = () => {
     if (selectedTimesheet) {
-      dispatch(deleteTimeSheet(selectedTimesheet._id));
+      dispatch(deleteTimeSheet(selectedTimesheet._id, token));
       if (!error) {
         setModalContent({ message: 'Time-sheet deleted successfully', theme: 'success' });
         setIsFeedbackModal(true);
@@ -64,7 +65,7 @@ const List = () => {
 
   const handleEdit = (item) => {
     setSelectedTimesheet(item);
-    history.push(`/time-sheets/form`, {
+    history.push(`/admin/time-sheets/form`, {
       ...item,
       project: item.project,
       task: item.task,
@@ -83,7 +84,7 @@ const List = () => {
           editItem={handleEdit}
           deleteItem={handleDelete}
           title="Timesheets"
-          addRedirectLink="/time-sheets/form"
+          addRedirectLink="/admin/time-sheets/form"
           itemsPerPage={5}
           isSearchEnabled
         />

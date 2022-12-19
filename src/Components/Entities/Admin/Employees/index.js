@@ -23,7 +23,7 @@ const Employees = () => {
     lastName: 'Last Name',
     phone: 'Phone',
     email: 'Email',
-    project: 'Project',
+    projectName: 'Project',
     status: 'Status'
   };
 
@@ -60,11 +60,11 @@ const Employees = () => {
   const employeesColumns = employeesList?.map((row) => ({
     ...row,
     status: row.active ? 'Active' : 'Inactive',
-    project: row.project?.name ?? 'N/A'
+    projectName: row.project?.name ?? 'N/A'
   }));
 
   const handleEdit = (item) => {
-    history.push('/employees/form', { ...item, project: item.project?._id });
+    history.push('/admin/employees/form', { ...item, project: item.project?._id });
   };
 
   return (

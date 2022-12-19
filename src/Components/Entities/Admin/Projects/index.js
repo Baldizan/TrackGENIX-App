@@ -52,7 +52,7 @@ const Projects = () => {
   }));
 
   const handleEdit = (item) => {
-    history.push('/projects/form', {
+    history.push('/admin/projects/form', {
       id: item._id,
       project: {
         name: item.name,

@@ -14,17 +14,18 @@ const Tasks = () => {
   const history = useHistory();
   const { list: task, isPending, error } = useSelector((state) => state.tasks);
   const [selectedItem, setSelectedItem] = useState({});
+  const token = sessionStorage.getItem('token');
   const [isModal, setIsModal] = useState(false);
   const [feedbackModal, setFeedbackModal] = useState(false);
   const [modalContent, setModalContent] = useState({ heading: '', theme: '' });
   const headers = { description: 'Description' };
 
   useEffect(() => {
-    dispatch(getTasks());
+    dispatch(getTasks(token));
   }, []);
 
   const deleteTasks = async () => {
-    dispatch(deleteTask(selectedItem._id));
+    dispatch(deleteTask(selectedItem._id, token));
     if (error) {
       setModalContent({ heading: `There was an error: ${error}`, theme: 'error' });
     } else {
@@ -42,7 +43,7 @@ const Tasks = () => {
   };
 
   const handleEdit = (item) => {
-    history.push('/tasks/form', item);
+    history.push('/admin/tasks/form', item);
   };
 
   return (
@@ -56,7 +57,7 @@ const Tasks = () => {
           editItem={handleEdit}
           deleteItem={handleDelete}
           title="Tasks"
-          addRedirectLink="/tasks/form"
+          addRedirectLink="/admin/tasks/form"
           itemsPerPage={5}
           isSearchEnabled
         />
