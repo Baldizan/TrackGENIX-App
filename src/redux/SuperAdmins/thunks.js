@@ -74,12 +74,13 @@ export const deleteSuperAdmins = (id) => {
   };
 };
 
-export const putSuperAdmins = (id, data) => {
+export const putSuperAdmins = (id, data, token) => {
   return (dispatch) => {
     dispatch(putSuperAdminsPending());
     return fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`, {
       method: 'put',
       headers: {
+        token,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
