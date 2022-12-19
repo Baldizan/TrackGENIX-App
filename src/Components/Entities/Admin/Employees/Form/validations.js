@@ -30,6 +30,5 @@ export const schema = Joi.object({
       'string.min': 'Password must contain at least 8 characters.',
       'string.pattern.base': 'Password must contain both letters and numbers.'
     }),
-  project: Joi.string().length(24),
   active: Joi.boolean()
 });
