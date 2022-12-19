@@ -94,6 +94,22 @@
   width: 10vw;
 }
 
+.horizontalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sectionImages {
+  width: 170px;
+  min-height: 160px;
+  margin: 30px;
+  padding: 10px;
+  border-radius: 15% 85% 15% 85% / 78% 18% 82% 22%;
+  border: 3px solid var(--primaryColor);
+  box-shadow: 1px 4px 4px var(--primaryColorLight);
+}
+
 @media (prefers-color-scheme: dark) {
   .sectionContainer {
     border: 1px solid var(--secondaryColor);
@@ -116,5 +132,10 @@
 
   .welcomeSubTitle {
     border-top: 2px solid var(--secondaryColor);
+  }
+
+  .sectionImages {
+    border: 3px solid var(--secondaryColor);
+  box-shadow: 1px 4px 4px rgba(0, 0, 0, 0.718);
   }
 }

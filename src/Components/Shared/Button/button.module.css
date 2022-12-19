@@ -128,7 +128,6 @@
   }
 
   .icon {
-    background-color: var(--secondaryColor);
-    border-radius: 100vw;
+    background-color: transparent;
   }
 }
