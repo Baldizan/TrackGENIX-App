@@ -7,10 +7,12 @@ const Modal = ({
   setModalDisplay,
   theme,
   message,
-  confirmFunction = () => {}
+  confirmFunction = () => {},
+  onOpen,
+  onClose
 }) => {
   return (
-    <dialog className={`${styles.container} ${styles[theme]}`}>
+    <dialog className={`${styles.container} ${styles[theme]}`} onOpen={onOpen} onClose={onClose}>
       <header className={theme === 'success' ? styles.headerSuccess : styles.header}>
         <h2 className={styles.title}>{heading}</h2>
         <Button

@@ -11,14 +11,14 @@ import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
+import Error from 'Components/Shared/Error';
 
 const AdminProfile = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user, isPending, error } = useSelector((state) => state.auth);
   const token = sessionStorage.getItem('token');
   const role = sessionStorage.getItem('role');
   const email = sessionStorage.getItem('email');
-  const { isPending } = useSelector((state) => state.admins);
   const [isModal, setIsModal] = useState(false);
   const [formPass, setFormPass] = useState(false);
   const {
@@ -57,7 +57,7 @@ const AdminProfile = () => {
   }, [user]);
 
   const onSubmit = (data) => {
-    dispatch(editAdmin(data._id, data));
+    dispatch(editAdmin(user._id, data, token));
     setIsModal(true);
   };
 
@@ -73,6 +73,7 @@ const AdminProfile = () => {
 
   return (
     <section className={styles.container}>
+      {error && <Error text={error} />}
       {!isPending && (
         <Form
           title="My profile"
@@ -119,10 +120,13 @@ const AdminProfile = () => {
       )}
       {isModal && (
         <Modal
-          heading="Success!"
-          message="Your profile was successfully edited"
+          heading={error ? 'There was an error!' : 'Success!'}
+          message={error ? error : 'Your profile was successfully edited.'}
           theme="success"
           setModalDisplay={setIsModal}
+          onClose={() => {
+            dispatch(fetchUser(role, email, token));
+          }}
         />
       )}
       {formPass && (

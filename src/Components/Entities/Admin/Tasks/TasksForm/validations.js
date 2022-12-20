@@ -4,7 +4,7 @@ export const schema = Joi.object({
   description: Joi.string()
     .min(5)
     .max(50)
-    .pattern(/[A-Za-z]{5}([A-Za-z]+ ?)*/)
+    .pattern(/^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/)
     .required()
     .messages({
       'string.min': 'Description must contain at least 5 letters.',

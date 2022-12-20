@@ -54,7 +54,7 @@ const postProject = (project, token) => {
         description: project.description,
         startDate: project.startDate,
         endDate: project.endDate,
-        projectManager: project.projectManager.id,
+        projectManager: project.projectManager,
         clientName: project.clientName,
         active: project.active,
         employees: project.employees
