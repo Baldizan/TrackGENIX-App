@@ -273,11 +273,12 @@ const ProjectsForm = () => {
       {feedbackModal && (
         <Modal
           setModalDisplay={handleModalClose}
-          heading={
-            project ? `${project.name} successfully edited` : `Project successfully submitted`
-          }
+          heading={error ? 'There was an error!' : 'Success!'}
+          message={`The project ${project ? `"${project.name}"` : null} was successfully ${
+            project ? 'edited' : 'submitted'
+          }.`}
           theme={error ? 'error' : 'success'}
-        ></Modal>
+        />
       )}
     </section>
   );

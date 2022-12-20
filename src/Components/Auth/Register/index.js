@@ -16,7 +16,6 @@ const Register = () => {
   const dispatch = useDispatch();
   const { isPending, error } = useSelector((state) => state.employees);
   const [isModal, setIsModal] = useState(false);
-  const [modalContent, setModalContent] = useState({ name: '', lastName: '' });
 
   const {
     handleSubmit,
@@ -29,7 +28,6 @@ const Register = () => {
 
   const onSubmit = (data) => {
     dispatch(postEmployee(data));
-    setModalContent({ name: data.name, lastName: data.lastName });
     setIsModal(true);
   };
 
@@ -114,11 +112,8 @@ const Register = () => {
       {isPending && <Loader />}
       {!isPending && isModal && (
         <Modal
-          heading={
-            error
-              ? error
-              : `Employee ${modalContent.name} ${modalContent.lastName} successfully submitted!`
-          }
+          heading={error ? 'An error ocurred!' : `Your account was successfully created!`}
+          message={error ? error : 'To log in, please contact your system administrator.'}
           setModalDisplay={handleCloseModal}
           theme={error ? 'error' : 'success'}
         />

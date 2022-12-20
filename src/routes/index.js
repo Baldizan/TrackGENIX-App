@@ -9,6 +9,7 @@ const SuperAdminProfile = lazy(() => import('Components/Entities/SuperAdmin/Prof
 const SuperAdminAdminsForm = lazy(() => import('Components/Entities/SuperAdmin/Admins/Form'));
 const EmployeeHome = lazy(() => import('Components/Entities/Employee/Home'));
 const EmployeeProjects = lazy(() => import('Components/Entities/Employee/Projects'));
+const ManagerProjects = lazy(() => import('Components/Entities/Employee/ProjectsManagement'));
 const EmployeeTimesheets = lazy(() => import('Components/Entities/Employee/Timesheets'));
 const EmployeeTimesheetsForm = lazy(() => import('Components/Entities/Employee/Timesheets/Form'));
 const EmployeeProfile = lazy(() => import('Components/Entities/Employee/Profile'));
@@ -46,7 +47,13 @@ const Routes = () => {
         <Redirect to="/employee/home" />
       </PrivateRoute>
       <PrivateRoute exact path="/employee/home" role="EMPLOYEE" component={EmployeeHome} />
-      <PrivateRoute path="/employee/projects" role="EMPLOYEE" component={EmployeeProjects} />
+      <PrivateRoute exact path="/employee/projects" role="EMPLOYEE" component={EmployeeProjects} />
+      <PrivateRoute
+        exact
+        path="/employee/projects/management"
+        role="EMPLOYEE"
+        component={ManagerProjects}
+      />
       <PrivateRoute
         exact
         path="/employee/time-sheets"

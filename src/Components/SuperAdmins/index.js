@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSuperAdmins, deleteSuperAdmins } from 'redux/SuperAdmins/thunks';
 import styles from './super-admins.module.css';
-import Button from 'Components/Shared/Button';
 import Table from 'Components/Shared/Table';
 import Modal from 'Components/Shared/Modal';
 import Error from 'Components/Shared/Error';
@@ -13,7 +12,7 @@ const SuperAdmins = () => {
   const [selectedItem, setSelectedItem] = useState({});
   const [isModal, setIsModal] = useState(false);
   const [isFeedbackModal, setIsFeedbackModal] = useState(false);
-  const [modalContent, setModalContent] = useState({ message: '', theme: '' });
+  const [modalContent, setModalContent] = useState({ heading: '', message: '', theme: '' });
   const headers = { name: 'Name', lastName: 'Last Name', email: 'Email' };
   const history = useHistory();
   const dispatch = useDispatch();
@@ -31,10 +30,11 @@ const SuperAdmins = () => {
   const deleteSuperAdmin = () => {
     dispatch(deleteSuperAdmins(selectedItem._id));
     if (error) {
-      setModalContent({ message: error.message, theme: 'error' });
+      setModalContent({ heading: 'There was an error!', message: error.message, theme: 'error' });
     } else {
       setModalContent({
-        message: `${selectedItem.name} ${selectedItem.lastName} deleted successfully!`,
+        heading: 'Success!',
+        message: `The super admin "${selectedItem.name} ${selectedItem.lastName}" was successfully deleted.`,
         theme: 'success'
       });
       setIsFeedbackModal(true);
@@ -55,7 +55,7 @@ const SuperAdmins = () => {
           editItem={handleEdit}
           deleteItem={handleDelete}
           title={'Super Admins'}
-          addRedirectLink={'super-admins/form'}
+          redirectLink={'super-admins/form'}
           itemsPerPage={5}
           isSearchEnabled={true}
         />
@@ -63,7 +63,8 @@ const SuperAdmins = () => {
       {error && <Error text={error} />}
       {isFeedbackModal && (
         <Modal
-          heading={modalContent.message}
+          heading={modalContent.heading}
+          message={modalContent.message}
           setModalDisplay={setIsFeedbackModal}
           theme={modalContent.theme}
         />
@@ -73,24 +74,9 @@ const SuperAdmins = () => {
           heading={`Are you sure you want to delete super admin ${selectedItem.name} ${selectedItem.lastName}?`}
           setModalDisplay={setIsModal}
           theme={'confirm'}
-        >
-          <p>This change cannot be undone!</p>
-          <Button
-            label={'Cancel'}
-            theme={'primary'}
-            onClick={() => {
-              setIsModal();
-            }}
-          />
-          <Button
-            label="Confirm"
-            theme="tertiary"
-            onClick={() => {
-              deleteSuperAdmin();
-              setIsModal(false);
-            }}
-          />
-        </Modal>
+          message="This change cannot be undone!"
+          confirmFunction={deleteSuperAdmin}
+        />
       )}
     </section>
   );

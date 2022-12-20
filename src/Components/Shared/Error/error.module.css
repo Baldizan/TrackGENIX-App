@@ -20,10 +20,3 @@
   letter-spacing: 0.1em;
   line-height: 25px;
 }
-
-@media (prefers-color-scheme: dark) {
-  .img {
-    background-color: var(--secondaryColor);
-    border-radius: 100vw;
-  }
-}

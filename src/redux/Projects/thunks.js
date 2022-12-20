@@ -13,14 +13,19 @@ import {
   putProjectError
 } from './actions';
 
-const getProjects = (token) => {
+const getProjects = (token, queryKey, queryValue) => {
   return (dispatch) => {
     dispatch(getProjectsPending());
-    return fetch(`${process.env.REACT_APP_API_URL}/projects`, {
-      headers: {
-        token: token
+    return fetch(
+      `${process.env.REACT_APP_API_URL}/projects${
+        queryKey && queryValue ? `/?${queryKey}=${queryValue}` : ''
+      }`,
+      {
+        headers: {
+          token: token
+        }
       }
-    })
+    )
       .then((response) => response.json())
       .then((json) => {
         if (json.error) {

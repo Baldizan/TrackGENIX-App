@@ -18,7 +18,7 @@ const Projects = () => {
   const [projectEmployees, setProjectEmployees] = useState([]);
   const [isModal, setFeedbackModal] = useState(false);
   const token = sessionStorage.getItem('token');
-  const [feedback, setFeedback] = useState({ heading: '', theme: '' });
+  const [feedback, setFeedback] = useState({ heading: '', message: '', theme: '' });
   const [itemToDeactivate, setItemToDeactivate] = useState({});
   const headers = {
     name: 'Name',
@@ -80,11 +80,14 @@ const Projects = () => {
     if (itemToDeactivate) {
       dispatch(putProject(itemToDeactivate._id, { active: !itemToDeactivate.active }, token));
       if (error) {
-        setFeedback({ heading: `There was an error: ${error}`, theme: 'error' });
+        setFeedback({ heading: 'There was an error', message: error, theme: 'error' });
         setFeedbackModal(true);
       } else {
         setFeedback({
-          heading: `Project ${itemToDeactivate.active ? 'deactivated' : 'activated'} successfully`,
+          heading: 'Success!',
+          message: `The project "${itemToDeactivate.name}" was successfully ${
+            itemToDeactivate.active ? 'deactivated' : 'activated'
+          }.`,
           theme: 'success'
         });
         setFeedbackModal(true);
@@ -95,7 +98,7 @@ const Projects = () => {
   const showEmployees = (employees) => {
     if (employees) {
       const projectEmployees = employees.map((employee) => ({
-        name: employee.id.name + ' ' + employee.id.lastName,
+        name: `${employee.id.name} ${employee.id.lastName}`,
         role: employee.role,
         rate: employee.rate
       }));
@@ -113,20 +116,19 @@ const Projects = () => {
           data={projectColumns}
           headers={headers}
           title="Projects"
-          addRedirectLink="projects/form"
+          redirectLink="projects/form"
           editItem={handleEdit}
-          deleteItem={handleActive}
+          editStatus={handleActive}
           itemsPerPage={5}
           isSearchEnabled
         />
       ) : null}
       {modalEmployee && (
-        <Modal setModalDisplay={setModalEmployee} theme="confirm">
+        <Modal setModalDisplay={setModalEmployee} heading="Project employees">
           <div className={styles.employeesTableContainer}>
             <Table
               data={projectEmployees}
               headers={{ name: 'Employee', role: 'Role', rate: 'Rate' }}
-              title="Project employees"
             />
           </div>
         </Modal>
@@ -134,34 +136,21 @@ const Projects = () => {
       {!isPending && modal && (
         <Modal
           setModalDisplay={setModal}
-          heading={`Are you sure you want to ${
-            itemToDeactivate.active ? 'deactivate' : 'activate'
-          } project ${itemToDeactivate.name}?`}
+          heading="Confirmation required"
           theme="confirm"
-        >
-          <Button
-            label="Cancel"
-            theme="primary"
-            onClick={() => {
-              setModal(false);
-            }}
-          />
-          <Button
-            label="Confirm"
-            theme="tertiary"
-            onClick={() => {
-              deactivateItem();
-              setModal(false);
-            }}
-          />
-        </Modal>
+          message={`Are you sure you want to ${
+            itemToDeactivate.active ? 'deactivate' : 'activate'
+          } the project "${itemToDeactivate.name}"?`}
+          confirmFunction={deactivateItem}
+        />
       )}
       {isModal && (
         <Modal
           setModalDisplay={setFeedbackModal}
           heading={feedback.heading}
+          message={feedback.message}
           theme={feedback.theme}
-        ></Modal>
+        />
       )}
     </section>
   );

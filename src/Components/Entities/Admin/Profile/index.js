@@ -14,8 +14,10 @@ import Button from 'Components/Shared/Button';
 
 const AdminProfile = () => {
   const dispatch = useDispatch();
-  const { user, authenticated } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const token = sessionStorage.getItem('token');
+  const role = sessionStorage.getItem('role');
+  const email = sessionStorage.getItem('email');
   const { isPending } = useSelector((state) => state.admins);
   const [isModal, setIsModal] = useState(false);
   const [formPass, setFormPass] = useState(false);
@@ -39,7 +41,7 @@ const AdminProfile = () => {
 
   useEffect(() => {
     if (!user.email) {
-      dispatch(fetchUser(authenticated.role, authenticated.email, token));
+      dispatch(fetchUser(role, email, token));
     }
   }, []);
 
@@ -48,10 +50,7 @@ const AdminProfile = () => {
       const AdminProfile = {
         name: user.name,
         lastName: user.lastName,
-        phone: user.phone?.toString(),
-        email: user.email,
-        password: user.password,
-        repeatPassword: user.repeatPassword
+        email: user.email
       };
       reset(AdminProfile);
     }
@@ -79,7 +78,7 @@ const AdminProfile = () => {
           title="My profile"
           onSubmit={handleSubmit(onSubmit)}
           noValidate={!isValid}
-          secondColumnIndex={3}
+          secondColumnIndex={2}
           legend={['Personal information', 'Authentication information']}
           linktoRedirect="/admin/home"
         >
@@ -98,14 +97,6 @@ const AdminProfile = () => {
             title="Last Name"
             register={register}
             error={errors.lastName?.message}
-          />
-          <Input
-            placeholder="Edit your phone"
-            id="phone"
-            name="phone"
-            title="Phone"
-            register={register}
-            error={errors.phone?.message}
           />
           <Input
             placeholder="Edit your email"
@@ -127,15 +118,19 @@ const AdminProfile = () => {
         </Form>
       )}
       {isModal && (
-        <Modal heading="user edited successfully" theme="success" setModalDisplay={setIsModal} />
+        <Modal
+          heading="Success!"
+          message="Your profile was successfully edited"
+          theme="success"
+          setModalDisplay={setIsModal}
+        />
       )}
       {formPass && (
-        <Modal theme="confirm" setModalDisplay={setFormPass}>
+        <Modal heading="Change your password" setModalDisplay={setFormPass}>
           <Form
             noValidate={!isValidPass}
             hiddenCancel
             onSubmit={handleSubmitPass(onSubmitPass)}
-            title="Change your password"
             style={styles.passForm}
             goBack={false}
           >

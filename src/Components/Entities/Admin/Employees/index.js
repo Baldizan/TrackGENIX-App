@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getEmployees, putEmployee } from 'redux/Employees/thunks.js';
 import styles from './employees.module.css';
-import Button from 'Components/Shared/Button';
 import Modal from 'Components/Shared/Modal';
 import Table from 'Components/Shared/Table';
 import Loader from 'Components/Shared/Loader/index.js';
@@ -17,7 +16,7 @@ const Employees = () => {
   const [isFeedbackModal, setIsFeedbackModal] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState({});
   const token = sessionStorage.getItem('token');
-  const [modalContent, setModalContent] = useState({ message: '', theme: '' });
+  const [modalContent, setModalContent] = useState({ heading: '', message: '', theme: '' });
   const headers = {
     name: 'Name',
     lastName: 'Last Name',
@@ -40,12 +39,16 @@ const Employees = () => {
       dispatch(putEmployee(selectedEmployee._id, { active: !selectedEmployee.active }, token));
       if (!error) {
         setModalContent({
-          message: `Employee ${selectedEmployee.active ? 'deactivated' : 'activated'} successfully`,
+          heading: 'Success!',
+          message: `Employee successfully ${
+            selectedEmployee.active ? 'deactivated' : 'activated'
+          }.`,
           theme: 'success'
         });
         setIsFeedbackModal(true);
       } else {
         setModalContent({
+          heading: 'There was an error!',
           message: `The employee could not be ${
             selectedEmployee.active ? 'deactivated' : 'activated'
           }. Status: ${error.status} ${error.statusText}`,
@@ -72,7 +75,7 @@ const Employees = () => {
           data={employeesColumns}
           headers={headers}
           editItem={handleEdit}
-          deleteItem={handleActive}
+          editStatus={handleActive}
           title="Employees"
           itemsPerPage={5}
           isSearchEnabled
@@ -80,7 +83,8 @@ const Employees = () => {
       )}
       {isFeedbackModal && (
         <Modal
-          heading={modalContent.message}
+          heading={modalContent.heading}
+          message={modalContent.message}
           setModalDisplay={setIsFeedbackModal}
           theme={modalContent.theme}
         />
@@ -89,28 +93,14 @@ const Employees = () => {
       {error && <Error text={error} />}
       {!isPending && isModal && (
         <Modal
-          heading={`Are you sure you want to ${
-            selectedEmployee.active ? 'deactivate' : 'activate'
-          } employee ${selectedEmployee.name} ${selectedEmployee.lastName}?`}
+          heading="Confirmation required"
           setModalDisplay={setIsModal}
-          theme={'confirm'}
-        >
-          <Button
-            label={'Cancel'}
-            theme={'primary'}
-            onClick={() => {
-              setIsModal();
-            }}
-          />
-          <Button
-            label="Confirm"
-            theme="tertiary"
-            onClick={() => {
-              deactivateItem();
-              setIsModal(false);
-            }}
-          />
-        </Modal>
+          theme="confirm"
+          message={`Are you sure you want to ${
+            selectedEmployee.active ? 'deactivate' : 'activate'
+          } ${selectedEmployee.name} ${selectedEmployee.lastName}'s account?`}
+          confirmFunction={deactivateItem}
+        />
       )}
     </section>
   );
