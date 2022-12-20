@@ -60,19 +60,12 @@ const EmployeeProfile = () => {
   const onSubmit = (data) => {
     dispatch(putEmployee(user._id, data, token));
     setIsModal(true);
-
-    const EmployeeProfile = {
-      name: user.name,
-      lastName: user.lastName,
-      phone: user.phone?.toString(),
-      email: user.email
-    };
-    reset(EmployeeProfile);
   };
 
   const handleAdd = () => {
     setFormPass(true);
   };
+
   const onSubmitPass = (data) => {
     dispatch(putEmployee(user._id, data, token));
     setIsModal(true);
@@ -135,10 +128,13 @@ const EmployeeProfile = () => {
       )}
       {isModal && (
         <Modal
-          heading="Success!"
-          message="Your profile was successfully edited."
+          heading={error ? 'There was an error!' : 'Success!'}
+          message={error ? error : 'Your profile was successfully edited.'}
           theme="success"
           setModalDisplay={setIsModal}
+          onClose={() => {
+            dispatch(fetchUser(role, email, token));
+          }}
         />
       )}
       {formPass && (

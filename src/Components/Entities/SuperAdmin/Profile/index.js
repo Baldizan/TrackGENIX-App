@@ -11,14 +11,14 @@ import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
 import Button from 'Components/Shared/Button';
 import Modal from 'Components/Shared/Modal';
+import Error from 'Components/Shared/Error';
 
 const SuperAdminProfile = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user, isPending, error } = useSelector((state) => state.auth);
   const token = sessionStorage.getItem('token');
   const role = sessionStorage.getItem('role');
   const email = sessionStorage.getItem('email');
-  const { isPending, error } = useSelector((state) => state.superAdmins);
   const [isModal, setIsModal] = useState(false);
   const [formPass, setFormPass] = useState(false);
   const {
@@ -39,15 +39,6 @@ const SuperAdminProfile = () => {
     mode: 'all',
     resolver: joiResolver(schemaPass)
   });
-
-  const handleAdd = () => {
-    setFormPass(true);
-  };
-  const onSubmitPass = (data) => {
-    dispatch(putSuperAdmins(user._id, data, token));
-    setIsModal(true);
-    setFormPass(false);
-  };
 
   useEffect(() => {
     if (!user.email) {
@@ -71,8 +62,19 @@ const SuperAdminProfile = () => {
     setIsModal(true);
   };
 
+  const handleAdd = () => {
+    setFormPass(true);
+  };
+
+  const onSubmitPass = (data) => {
+    dispatch(putSuperAdmins(user._id, data, token));
+    setIsModal(true);
+    setFormPass(false);
+  };
+
   return (
     <section className={styles.container}>
+      {error && <Error text={error} />}
       {!isPending && (
         <Form
           title="My profile"
@@ -120,9 +122,12 @@ const SuperAdminProfile = () => {
       {isModal && (
         <Modal
           heading={error ? 'There was an error!' : 'Success!'}
-          message={error ?? 'Your profile was successfully edited.'}
+          message={error ? error : 'Your profile was successfully edited.'}
           theme="success"
           setModalDisplay={setIsModal}
+          onClose={() => {
+            dispatch(fetchUser(role, email, token));
+          }}
         />
       )}
       {formPass && (
