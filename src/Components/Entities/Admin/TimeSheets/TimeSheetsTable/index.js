@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTimeSheets, deleteTimeSheet } from 'redux/TimeSheets/thunks';
 import styles from './List.module.css';
-import Button from 'Components/Shared/Button';
 import Table from 'Components/Shared/Table';
 import Modal from 'Components/Shared/Modal';
 import Loader from 'Components/Shared/Loader';
@@ -13,7 +12,7 @@ const List = () => {
   const { list: timesheetList, isPending, error } = useSelector((state) => state.timesheets);
   const [isModal, setIsModal] = useState(false);
   const [isFeedbackModal, setIsFeedbackModal] = useState(false);
-  const [modalContent, setModalContent] = useState({ message: '', theme: '' });
+  const [modalContent, setModalContent] = useState({ heading: '', message: '', theme: '' });
   const [selectedTimesheet, setSelectedTimesheet] = useState({});
   const token = sessionStorage.getItem('token');
   const dispatch = useDispatch();
@@ -51,11 +50,16 @@ const List = () => {
     if (selectedTimesheet) {
       dispatch(deleteTimeSheet(selectedTimesheet._id, token));
       if (!error) {
-        setModalContent({ message: 'Time-sheet deleted successfully', theme: 'success' });
+        setModalContent({
+          heading: 'Success!',
+          message: 'Time sheet successfully deleted',
+          theme: 'success'
+        });
         setIsFeedbackModal(true);
       } else {
         setModalContent({
-          message: `The time-sheet could not be deleted. Status: ${error.status} ${error.statusText}`,
+          heading: 'There was an error!',
+          message: `The time sheet could not be deleted. Status: ${error.status} ${error.statusText}`,
           theme: 'error'
         });
         setIsFeedbackModal(true);
@@ -84,38 +88,24 @@ const List = () => {
           editItem={handleEdit}
           deleteItem={handleDelete}
           title="Timesheets"
-          addRedirectLink="/admin/time-sheets/form"
+          redirectLink="/admin/time-sheets/form"
           itemsPerPage={5}
           isSearchEnabled
         />
       )}
       {!isPending && isModal && (
         <Modal
-          heading="Are you sure you want to delete this Timesheet?"
+          heading="Confirmation required!"
+          message="Are you sure you want to delete this Timesheet?"
           setModalDisplay={setIsModal}
-          theme={'confirm'}
-        >
-          <p>This change cannot be undone!</p>
-          <Button
-            label={'Cancel'}
-            theme={'primary'}
-            onClick={() => {
-              setIsModal();
-            }}
-          />
-          <Button
-            label={'Delete'}
-            theme={'tertiary'}
-            onClick={() => {
-              deleteItem();
-              setIsModal(false);
-            }}
-          />
-        </Modal>
+          theme="confirm"
+          confirmFunction={deleteItem}
+        />
       )}
       {isFeedbackModal && (
         <Modal
-          heading={modalContent.message}
+          heading={modalContent.heading}
+          message={modalContent.message}
           setModalDisplay={setIsFeedbackModal}
           theme={modalContent.theme}
         />

@@ -36,7 +36,7 @@ const Admins = () => {
           headers={headers}
           editItem={addEditAdmin}
           title={'Admins'}
-          addRedirectLink={'/superadmin/admins/form'}
+          redirectLink={'/superadmin/admins/form'}
           itemsPerPage={5}
           isSearchEnabled={true}
         />

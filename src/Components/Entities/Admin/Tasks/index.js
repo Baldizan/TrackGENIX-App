@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { getTasks, deleteTask } from 'redux/Tasks/thunks';
 import styles from './tasks.module.css';
-import Button from 'Components/Shared/Button';
 import Table from 'Components/Shared/Table';
 import Modal from 'Components/Shared/Modal';
 import Loader from 'Components/Shared/Loader';
@@ -17,7 +16,7 @@ const Tasks = () => {
   const token = sessionStorage.getItem('token');
   const [isModal, setIsModal] = useState(false);
   const [feedbackModal, setFeedbackModal] = useState(false);
-  const [modalContent, setModalContent] = useState({ heading: '', theme: '' });
+  const [modalContent, setModalContent] = useState({ heading: '', message: '', theme: '' });
   const headers = { description: 'Description' };
 
   useEffect(() => {
@@ -27,10 +26,11 @@ const Tasks = () => {
   const deleteTasks = async () => {
     dispatch(deleteTask(selectedItem._id, token));
     if (error) {
-      setModalContent({ heading: `There was an error: ${error}`, theme: 'error' });
+      setModalContent({ heading: 'There was an error', message: error, theme: 'error' });
     } else {
       setModalContent({
-        heading: `Task ${selectedItem.description} deleted successfully!`,
+        heading: 'Success!',
+        message: 'The task was successfully deleted!',
         theme: 'success'
       });
     }
@@ -57,41 +57,26 @@ const Tasks = () => {
           editItem={handleEdit}
           deleteItem={handleDelete}
           title="Tasks"
-          addRedirectLink="/admin/tasks/form"
+          redirectLink="/admin/tasks/form"
           itemsPerPage={5}
           isSearchEnabled
         />
       )}
       {!isPending && isModal && (
         <Modal
-          heading="Are you sure you want to delete this Task?"
+          heading="Confirmation required"
           setModalDisplay={setIsModal}
-          theme="confirm"
-        >
-          <p>This change cannot be undone!</p>
-          <Button
-            label={'Cancel'}
-            theme={'primary'}
-            onClick={() => {
-              setIsModal();
-            }}
-          />
-          <Button
-            label="Confirm"
-            theme="tertiary"
-            onClick={() => {
-              deleteTasks();
-              setIsModal(false);
-            }}
-          />
-        </Modal>
+          message="Are you sure you want to delete this Task?"
+          confirmFunction={deleteTasks}
+        />
       )}
       {feedbackModal && (
         <Modal
           setModalDisplay={setFeedbackModal}
           heading={modalContent.heading}
+          message={modalContent.message}
           theme={modalContent.theme}
-        ></Modal>
+        />
       )}
     </section>
   );
