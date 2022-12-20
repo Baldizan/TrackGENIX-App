@@ -57,7 +57,7 @@ const AdminProfile = () => {
   }, [user]);
 
   const onSubmit = (data) => {
-    dispatch(editAdmin(data._id, data));
+    dispatch(editAdmin(user._id, data));
     setIsModal(true);
   };
 
@@ -123,6 +123,7 @@ const AdminProfile = () => {
           message="Your profile was successfully edited"
           theme="success"
           setModalDisplay={setIsModal}
+          onClose={() => dispatch(fetchUser(role, email, token))}
         />
       )}
       {formPass && (
