@@ -10,6 +10,7 @@ const Table = ({
   headers,
   editItem,
   deleteItem,
+  editStatus,
   redirectLink,
   redirectLabel = 'Add new +',
   title,
@@ -98,6 +99,7 @@ const Table = ({
                     headers={headersKeys}
                     editItem={editItem ? () => editItem(item) : null}
                     deleteItem={deleteItem ? () => deleteItem(item) : null}
+                    editStatus={editStatus ? () => editStatus(item) : null}
                   />
                 ))
                 .slice(displayRange.x, displayRange.y)}

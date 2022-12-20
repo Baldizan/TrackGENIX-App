@@ -12,7 +12,7 @@ const SuperAdmins = () => {
   const [selectedItem, setSelectedItem] = useState({});
   const [isModal, setIsModal] = useState(false);
   const [isFeedbackModal, setIsFeedbackModal] = useState(false);
-  const [modalContent, setModalContent] = useState({ message: '', theme: '' });
+  const [modalContent, setModalContent] = useState({ heading: '', message: '', theme: '' });
   const headers = { name: 'Name', lastName: 'Last Name', email: 'Email' };
   const history = useHistory();
   const dispatch = useDispatch();
@@ -30,10 +30,11 @@ const SuperAdmins = () => {
   const deleteSuperAdmin = () => {
     dispatch(deleteSuperAdmins(selectedItem._id));
     if (error) {
-      setModalContent({ message: error.message, theme: 'error' });
+      setModalContent({ heading: 'There was an error!', message: error.message, theme: 'error' });
     } else {
       setModalContent({
-        message: `${selectedItem.name} ${selectedItem.lastName} deleted successfully!`,
+        heading: 'Success!',
+        message: `The super admin "${selectedItem.name} ${selectedItem.lastName}" was successfully deleted.`,
         theme: 'success'
       });
       setIsFeedbackModal(true);
@@ -62,7 +63,8 @@ const SuperAdmins = () => {
       {error && <Error text={error} />}
       {isFeedbackModal && (
         <Modal
-          heading={modalContent.message}
+          heading={modalContent.heading}
+          message={modalContent.message}
           setModalDisplay={setIsFeedbackModal}
           theme={modalContent.theme}
         />
@@ -73,7 +75,7 @@ const SuperAdmins = () => {
           setModalDisplay={setIsModal}
           theme={'confirm'}
           message="This change cannot be undone!"
-          confirmFunction={deleteSuperAdmin()}
+          confirmFunction={deleteSuperAdmin}
         />
       )}
     </section>

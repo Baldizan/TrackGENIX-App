@@ -14,9 +14,11 @@ import Modal from 'Components/Shared/Modal';
 
 const SuperAdminProfile = () => {
   const dispatch = useDispatch();
-  const { user, authenticated } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const token = sessionStorage.getItem('token');
-  const { isPending } = useSelector((state) => state.superAdmins);
+  const role = sessionStorage.getItem('role');
+  const email = sessionStorage.getItem('email');
+  const { isPending, error } = useSelector((state) => state.superAdmins);
   const [isModal, setIsModal] = useState(false);
   const [formPass, setFormPass] = useState(false);
   const {
@@ -49,7 +51,7 @@ const SuperAdminProfile = () => {
 
   useEffect(() => {
     if (!user.email) {
-      dispatch(fetchUser(authenticated.role, authenticated.email, token));
+      dispatch(fetchUser(role, email, token));
     }
   }, []);
 
@@ -116,15 +118,19 @@ const SuperAdminProfile = () => {
         </Form>
       )}
       {isModal && (
-        <Modal heading="user edited successfully" theme="success" setModalDisplay={setIsModal} />
+        <Modal
+          heading={error ? 'There was an error!' : 'Success!'}
+          message={error ?? 'Your profile was successfully edited.'}
+          theme="success"
+          setModalDisplay={setIsModal}
+        />
       )}
       {formPass && (
-        <Modal theme="confirm" setModalDisplay={setFormPass}>
+        <Modal heading="Change your password" setModalDisplay={setFormPass}>
           <Form
             noValidate={!isValidPass}
             hiddenCancel
             onSubmit={handleSubmitPass(onSubmitPass)}
-            title="Change your password"
             style={styles.passForm}
             goBack={false}
           >

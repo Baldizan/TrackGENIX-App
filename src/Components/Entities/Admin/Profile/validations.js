@@ -21,9 +21,6 @@ export const schema = Joi.object({
       'string.min': 'Last name must contain at least 3 letters.',
       'string.max': 'Last name cannot have over 40 letters.'
     }),
-  phone: Joi.string()
-    .regex(/^[0-9]{10}$/)
-    .message('Phone number must be a 10 digits value.'),
   email: Joi.string()
     .email({ tlds: { allow: false } })
     .lowercase()

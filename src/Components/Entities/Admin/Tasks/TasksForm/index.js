@@ -74,7 +74,8 @@ const TasksForm = () => {
       {isModal ? (
         <Modal
           setModalDisplay={handleModalClose}
-          heading={error ? error : 'Task submitted successfully!'}
+          heading={error ? 'There was an error!' : 'Success!'}
+          message={error ? error : 'The task was successfully submitted.'}
           theme={error ? 'error' : 'success'}
         ></Modal>
       ) : null}

@@ -84,7 +84,6 @@
 
 .navButton {
   border-radius: 100vw;
-  background-color: var(--secondaryColor);
 }
 
 @media (prefers-color-scheme: dark) {

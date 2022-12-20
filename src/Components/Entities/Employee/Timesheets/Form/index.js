@@ -121,7 +121,7 @@ const EmployeeTimesheetsForm = () => {
       {isModal && (
         <Modal
           heading={error ? 'There has been an error!' : `Success!`}
-          message={error ? error : 'Hours successfully added.'}
+          message={error ?? 'Hours successfully added.'}
           setModalDisplay={handleModalClose}
           theme={error ? 'error' : 'success'}
         />

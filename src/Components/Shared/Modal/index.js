@@ -1,7 +1,14 @@
 import styles from './modal.module.css';
 import Button from '../Button';
 
-const Modal = ({ heading, children, setModalDisplay, theme, message, confirmFunction }) => {
+const Modal = ({
+  heading,
+  children,
+  setModalDisplay,
+  theme,
+  message,
+  confirmFunction = () => {}
+}) => {
   return (
     <dialog className={`${styles.container} ${styles[theme]}`}>
       <header className={theme === 'success' ? styles.headerSuccess : styles.header}>
@@ -28,9 +35,7 @@ const Modal = ({ heading, children, setModalDisplay, theme, message, confirmFunc
               label="Confirm"
               theme="secondary"
               onClick={() => {
-                {
-                  confirmFunction;
-                }
+                confirmFunction();
                 setModalDisplay(false);
               }}
             />
