@@ -13,10 +13,15 @@ import {
   putTaskError
 } from './actions';
 
-export const getTasks = () => {
+export const getTasks = (token) => {
   return (dispatch) => {
     dispatch(getTasksPending());
-    return fetch(`${process.env.REACT_APP_API_URL}/tasks`)
+    return fetch(`${process.env.REACT_APP_API_URL}/tasks`, {
+      method: 'GET',
+      headers: {
+        token: token
+      }
+    })
       .then((res) => res.json())
       .then((json) => {
         if (json.error) {
@@ -31,13 +36,14 @@ export const getTasks = () => {
   };
 };
 
-export const postTask = (task) => {
+export const postTask = (task, token) => {
   return (dispatch) => {
     dispatch(postTaskPending());
     return fetch(`${process.env.REACT_APP_API_URL}/tasks`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        token: token
       },
       body: JSON.stringify({
         description: task.description
@@ -57,15 +63,19 @@ export const postTask = (task) => {
   };
 };
 
-export const deleteTask = (taskId) => {
+export const deleteTask = (taskId, token) => {
   return (dispatch) => {
     dispatch(deleteTaskPending());
     return fetch(`${process.env.REACT_APP_API_URL}/tasks/${taskId}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        token: token
+      }
     })
       .then((res) => {
         dispatch(deleteTaskSuccess(res.data));
-        dispatch(getTasks());
+        dispatch(getTasks(token));
       })
       .catch((error) => {
         dispatch(deleteTaskError(error.message));
@@ -73,12 +83,12 @@ export const deleteTask = (taskId) => {
   };
 };
 
-export const putTask = (taskId, task) => {
+export const putTask = (taskId, task, token) => {
   return (dispatch) => {
     dispatch(putTaskPending());
     return fetch(`${process.env.REACT_APP_API_URL}/tasks/${taskId}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', token: token },
       body: JSON.stringify(task)
     })
       .then((res) => res.json())
@@ -87,6 +97,7 @@ export const putTask = (taskId, task) => {
           dispatch(putTaskError(json.message));
         } else {
           dispatch(putTaskSuccess(json.data));
+          dispatch(getTasks(token));
         }
       })
       .catch((error) => {

@@ -103,10 +103,10 @@ const FormSuperAdmins = () => {
       {isPending && <Loader />}
       {!isPending && isModal && (
         <Modal
-          heading={
-            error
-              ? error
-              : `Super Admin ${modalContent.name} ${modalContent.lastName} successfully submitted!`
+          heading={error ? 'There was an error!' : 'Success!'}
+          message={
+            error ??
+            `The super admin "${modalContent.name} ${modalContent.lastName}" was successfully submitted!`
           }
           setModalDisplay={handleModalClose}
           theme={error ? 'error' : 'success'}

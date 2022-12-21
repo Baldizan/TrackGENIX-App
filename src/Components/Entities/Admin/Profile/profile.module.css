@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.passForm {
+  width: 600px;
+}
+
+.btnChangePwd {
+  margin-top: 34px;
+}

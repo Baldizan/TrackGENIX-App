@@ -5,17 +5,20 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { schema } from './validations';
 import { schemaPass } from './validationsPass';
 import styles from './profile.module.css';
-import { getEmployees, putEmployee } from 'redux/Employees/thunks';
+import { putEmployee } from 'redux/Employees/thunks';
 import { fetchUser } from 'redux/Auth/thunks';
 import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
+import Error from 'Components/Shared/Error';
 
 const EmployeeProfile = () => {
   const dispatch = useDispatch();
-  const { user, authenticated, isPending } = useSelector((state) => state.auth);
+  const { user, isPending, error } = useSelector((state) => state.auth);
   const token = sessionStorage.getItem('token');
+  const email = sessionStorage.getItem('email');
+  const role = sessionStorage.getItem('role');
   const [isModal, setIsModal] = useState(false);
   const [formPass, setFormPass] = useState(false);
   const {
@@ -38,9 +41,8 @@ const EmployeeProfile = () => {
 
   useEffect(() => {
     if (!user.email) {
-      dispatch(fetchUser(authenticated.role, authenticated.email, token));
+      dispatch(fetchUser(role, email, token));
     }
-    dispatch(getEmployees(token));
   }, []);
 
   useEffect(() => {
@@ -58,19 +60,12 @@ const EmployeeProfile = () => {
   const onSubmit = (data) => {
     dispatch(putEmployee(user._id, data, token));
     setIsModal(true);
-
-    const EmployeeProfile = {
-      name: user.name,
-      lastName: user.lastName,
-      phone: user.phone?.toString(),
-      email: user.email
-    };
-    reset(EmployeeProfile);
   };
 
   const handleAdd = () => {
     setFormPass(true);
   };
+
   const onSubmitPass = (data) => {
     dispatch(putEmployee(user._id, data, token));
     setIsModal(true);
@@ -79,6 +74,7 @@ const EmployeeProfile = () => {
 
   return (
     <section className={styles.container}>
+      {error && <Error text={error} />}
       {!isPending && (
         <Form
           title="My profile"
@@ -86,7 +82,7 @@ const EmployeeProfile = () => {
           noValidate={!isValid}
           secondColumnIndex={3}
           legend={['Personal information', 'Authentication information']}
-          linktoRedirect="/profile"
+          linktoRedirect="/employee/home"
         >
           <Input
             placeholder="Edit your name"
@@ -131,15 +127,22 @@ const EmployeeProfile = () => {
         </Form>
       )}
       {isModal && (
-        <Modal heading="user edited successfully" theme="success" setModalDisplay={setIsModal} />
+        <Modal
+          heading={error ? 'There was an error!' : 'Success!'}
+          message={error ? error : 'Your profile was successfully edited.'}
+          theme="success"
+          setModalDisplay={setIsModal}
+          onClose={() => {
+            dispatch(fetchUser(role, email, token));
+          }}
+        />
       )}
       {formPass && (
-        <Modal theme="confirm" setModalDisplay={setFormPass}>
+        <Modal setModalDisplay={setFormPass} heading="Change your password">
           <Form
             noValidate={!isValidPass}
             hiddenCancel
             onSubmit={handleSubmitPass(onSubmitPass)}
-            title="Change your password"
             style={styles.passForm}
             goBack={false}
           >

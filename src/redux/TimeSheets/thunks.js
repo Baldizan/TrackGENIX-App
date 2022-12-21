@@ -13,15 +13,18 @@ import {
   putTimeSheetSuccess
 } from './actions';
 
-export const getTimeSheets = (token) => {
+export const getTimeSheets = (token, userId) => {
   return async (dispatch) => {
     dispatch(getTimeSheetsPending());
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/timesheets`, {
-        headers: {
-          token: token
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/timesheets${userId ? `/?employee=${userId}` : ''}`,
+        {
+          headers: {
+            token: token
+          }
         }
-      });
+      );
       const json = await response.json();
       if (json.error) {
         throw new Error(json.message);
@@ -34,14 +37,15 @@ export const getTimeSheets = (token) => {
   };
 };
 
-export const deleteTimeSheet = (id) => {
+export const deleteTimeSheet = (id, token) => {
   return async (dispatch) => {
     dispatch(deleteTimeSheetPending());
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/timesheets/${id}`, {
         method: 'DELETE',
         headers: {
-          'Content-type': 'application/json'
+          'Content-type': 'application/json',
+          token: token
         }
       });
       const json = await response.json();
@@ -56,14 +60,15 @@ export const deleteTimeSheet = (id) => {
   };
 };
 
-export const addTimeSheet = (data) => {
+export const addTimeSheet = (data, token) => {
   return async (dispatch) => {
     dispatch(postTimeSheetPending());
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/timesheets`, {
         method: 'POST',
         headers: {
-          'Content-type': 'application/json'
+          'Content-type': 'application/json',
+          token: token
         },
         body: JSON.stringify({
           project: data.project,

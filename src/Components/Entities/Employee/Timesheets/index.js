@@ -2,17 +2,20 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTimeSheets } from 'redux/TimeSheets/thunks';
+import { fetchUser } from 'redux/Auth/thunks';
 import styles from './timesheets.module.css';
 import Table from 'Components/Shared/Table';
 import Loader from 'Components/Shared/Loader';
 import Error from 'Components/Shared/Error';
 
 const EmployeeTimesheets = () => {
-  const { list: timesheetList, isPending, error } = useSelector((state) => state.timesheets);
-  const token = sessionStorage.getItem('token');
-  const { email } = useSelector((state) => state.auth.authenticated);
-  const dispatch = useDispatch();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const { list: timesheetList, isPending, error } = useSelector((state) => state.timesheets);
+  const { user } = useSelector((state) => state.auth);
+  const token = sessionStorage.getItem('token');
+  const role = sessionStorage.getItem('role');
+  const email = sessionStorage.getItem('email');
   const headers = {
     projectName: 'Project Name',
     taskDescription: 'Task Description',
@@ -20,9 +23,7 @@ const EmployeeTimesheets = () => {
     hours: 'Hours'
   };
 
-  const timesheetListFiltered = timesheetList.filter((t) => t?.employee?.email === email);
-
-  const timeSheetData = timesheetListFiltered.map((row) => ({
+  const timeSheetData = timesheetList.map((row) => ({
     ...row,
     date: row.date.slice(0, 10),
     project: row.project?._id,
@@ -34,7 +35,12 @@ const EmployeeTimesheets = () => {
   }));
 
   useEffect(() => {
-    dispatch(getTimeSheets(token));
+    if (!user._id) {
+      dispatch(fetchUser(role, email, token));
+    }
+    if (user._id) {
+      dispatch(getTimeSheets(token, user._id));
+    }
   }, []);
 
   const handleEdit = (item) => {

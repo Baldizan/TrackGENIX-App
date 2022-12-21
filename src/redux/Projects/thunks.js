@@ -13,14 +13,19 @@ import {
   putProjectError
 } from './actions';
 
-const getProjects = (token) => {
+const getProjects = (token, queryKey, queryValue) => {
   return (dispatch) => {
     dispatch(getProjectsPending());
-    return fetch(`${process.env.REACT_APP_API_URL}/projects`, {
-      headers: {
-        token: token
+    return fetch(
+      `${process.env.REACT_APP_API_URL}/projects${
+        queryKey && queryValue ? `/?${queryKey}=${queryValue}` : ''
+      }`,
+      {
+        headers: {
+          token: token
+        }
       }
-    })
+    )
       .then((response) => response.json())
       .then((json) => {
         if (json.error) {
@@ -35,20 +40,21 @@ const getProjects = (token) => {
   };
 };
 
-const postProject = (project) => {
+const postProject = (project, token) => {
   return (dispatch) => {
     dispatch(postProjectPending());
     return fetch(`${process.env.REACT_APP_API_URL}/projects`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        token: token
       },
       body: JSON.stringify({
         name: project.name,
         description: project.description,
         startDate: project.startDate,
         endDate: project.endDate,
-        projectManager: project.projectManager.id,
+        projectManager: project.projectManager,
         clientName: project.clientName,
         active: project.active,
         employees: project.employees
@@ -84,13 +90,16 @@ const deleteProject = (projectId) => {
   };
 };
 
-const putProject = (projectId, project) => {
+const putProject = (projectId, data, token) => {
   return (dispatch) => {
     dispatch(putProjectPending());
     return fetch(`${process.env.REACT_APP_API_URL}/projects/${projectId}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(project)
+      headers: {
+        'Content-Type': 'application/json',
+        token: token
+      },
+      body: JSON.stringify(data)
     })
       .then((res) => res.json())
       .then((json) => {
@@ -98,6 +107,7 @@ const putProject = (projectId, project) => {
           dispatch(putProjectError(json.message));
         } else {
           dispatch(putProjectSuccess(json.data));
+          dispatch(getProjects(token));
         }
       })
       .catch((error) => {

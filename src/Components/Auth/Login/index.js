@@ -10,7 +10,6 @@ import Form from 'Components/Shared/Form';
 import { Input } from 'Components/Shared/Input';
 import Loader from 'Components/Shared/Loader';
 import Modal from 'Components/Shared/Modal';
-import Button from 'Components/Shared/Button';
 
 const Login = () => {
   const history = useHistory();
@@ -35,7 +34,7 @@ const Login = () => {
       if (user.role) {
         switch (user.role) {
           case 'SUPERADMIN':
-            return history.push('/super-admin');
+            return history.push('/superadmin');
           case 'ADMIN':
             return history.push('/admin');
           case 'EMPLOYEE':
@@ -86,12 +85,11 @@ const Login = () => {
         </div>
       )}
       {!isPending && isModal ? (
-        <Modal heading="Inactive account" theme="confirm" setModalDisplay={setIsModal}>
-          <div className={styles.errorModal}>
-            <p>Please contact your system administrator.</p>
-            <Button label="Dismiss" onClick={() => setIsModal(false)}></Button>
-          </div>
-        </Modal>
+        <Modal
+          heading="Inactive account"
+          setModalDisplay={setIsModal}
+          message="Please contact your system administrator"
+        />
       ) : null}
     </section>
   );

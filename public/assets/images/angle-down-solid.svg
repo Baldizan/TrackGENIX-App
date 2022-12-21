@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 448 512" style="enable-background:new 0 0 448 512;" xml:space="preserve">
-	<path fill='#373867' d="M246.6,342.7c-12.5,12.5-32.8,12.5-45.3,0l-160-160c-12.5-12.5-12.5-32.8,0-45.3s32.8-12.5,45.3,0L224,274.8l137.4-137.3
+   <style>
+        path {
+            fill: #373867;
+        }
+        @media (prefers-color-scheme: dark) {
+            path { fill: #aace9b; }
+        }
+    </style>
+	<path d="M246.6,342.7c-12.5,12.5-32.8,12.5-45.3,0l-160-160c-12.5-12.5-12.5-32.8,0-45.3s32.8-12.5,45.3,0L224,274.8l137.4-137.3
 	c12.5-12.5,32.8-12.5,45.3,0s12.5,32.8,0,45.3L246.6,342.7L246.6,342.7z"/>
 </svg>
