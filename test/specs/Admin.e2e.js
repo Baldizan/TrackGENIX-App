@@ -30,4 +30,11 @@ describe('My Login application', () => {
     await AdminPage.assignButton.click();
     await AdminPage.submitButton.click();
   });
+  it('should inactive a project', async () => {
+    await AdminPage.actButton.click();
+    await AdminPage.confirmActButton.waitForDisplayed({ timeout: 2000 });
+    await AdminPage.confirmActButton.click();
+    await AdminPage.closeConfirmActButton.waitForDisplayed({ timeout: 2000 });
+    await AdminPage.closeConfirmActButton.click();
+  });
 });

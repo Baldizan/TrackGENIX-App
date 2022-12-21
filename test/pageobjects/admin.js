@@ -44,6 +44,15 @@ class AdminPage {
   get submitButton() {
     return $('/html/body/div/div/section/form/div[2]/fieldset[2]/div[2]/button');
   }
+  get actButton() {
+    return $('/html/body/div/div/section/div/div[1]/table/tbody/tr[1]/td[9]/span/button[1]');
+  }
+  get confirmActButton() {
+    return $('/html/body/div/div/section/dialog/div/button[2]');
+  }
+  get closeConfirmActButton() {
+    return $('/html/body/div/div/section/dialog/div/button');
+  }
   async aProject(name, client, description, startDate, endDate, status, pm, employee, role, rate) {
     await this.inputProjectName.setValue(name);
     await this.inputProjectClient.setValue(client);
