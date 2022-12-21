@@ -36,6 +36,7 @@ describe('My Login application', () => {
   it('should login with valid credentials(admin)', async () => {
     await LoginPage.login('test1@admin.com', 'abcd1234');
     await expect(browser).toHaveUrl('https://marta-a-trackgenix-app.vercel.app/admin/home');
+    await HomePage.btnLogout.waitForDisplayed({ timeout: 2000 });
     await HomePage.btnLogout.click();
   });
   it('should login with valid credentials(superadmin)', async () => {
@@ -44,6 +45,7 @@ describe('My Login application', () => {
     await loginPage.inputEmail.waitForDisplayed({ timeout: 2000 });
     await LoginPage.login('test4@superadmin.com', 'abcd1234');
     await expect(browser).toHaveUrl('https://marta-a-trackgenix-app.vercel.app/superadmin/home');
+    await HomePage.btnLogout.waitForDisplayed({ timeout: 2000 });
     await HomePage.btnLogout.click();
   });
   it('should login with valid credentials(employee)', async () => {
@@ -52,6 +54,7 @@ describe('My Login application', () => {
     await loginPage.inputEmail.waitForDisplayed({ timeout: 2000 });
     await LoginPage.login('test3@employee.com', 'abcd1234');
     await expect(browser).toHaveUrl('https://marta-a-trackgenix-app.vercel.app/employee/home');
+    await HomePage.btnLogout.waitForDisplayed({ timeout: 2000 });
     await HomePage.btnLogout.click();
   });
 });

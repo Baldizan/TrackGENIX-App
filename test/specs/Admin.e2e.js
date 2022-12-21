@@ -16,7 +16,7 @@ describe('Admin Entity', () => {
     await AdminPage.addProject.click();
     await AdminPage.ProjectAddEmployee.click();
     await AdminPage.aProject(
-      'Test Project',
+      'Test',
       'Random Client',
       'This is a test project',
       '21/12/2022',
@@ -31,13 +31,22 @@ describe('Admin Entity', () => {
     );
     await AdminPage.inputProjectChooseEmployeeRole.selectByAttribute('value', 'DEV');
     await AdminPage.assignButton.click();
+    await AdminPage.inputProjectName.click();
     await AdminPage.submitButton.click();
+    await AdminPage.confirmProjectCreationButton.waitForDisplayed({ timeout: 2000 });
+    await AdminPage.confirmProjectCreationButton.click();
   });
-  it('should inactive a project', async () => {
+  /*it('should inactive a project', async () => {
     await AdminPage.actButton.click();
     await AdminPage.confirmActButton.waitForDisplayed({ timeout: 2000 });
     await AdminPage.confirmActButton.click();
     await AdminPage.closeConfirmActButton.waitForDisplayed({ timeout: 2000 });
     await AdminPage.closeConfirmActButton.click();
+  });*/
+  it('should edit a project', async () => {
+    await AdminPage.editProjectButton.click();
+    await AdminPage.inputProjectName.waitForDisplayed({ timeout: 2000 });
+    await AdminPage.inputProjectName.setValue('Innovation');
+    await AdminPage.submitButton.click();
   });
 });
