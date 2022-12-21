@@ -26,8 +26,9 @@ class LoginPage {
   async login(email, password) {
     await this.inputEmail.setValue(email);
     await this.inputPassword.setValue(password);
+    await this.inputEmail.click();
     await this.btnLogin.click();
   }
 }
 
-export default new LoginPage();
+module.exports = new LoginPage();

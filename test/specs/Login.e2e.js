@@ -1,6 +1,7 @@
-import LoginPage from '../pageobjects/login.page';
-import HomePage from '../pageobjects/home';
-import LandingPage from '../pageobjects/landing';
+const LoginPage = require('../pageobjects/login.page');
+const HomePage = require('../pageobjects/home');
+const LandingPage = require('../pageobjects/landing');
+const loginPage = require('../pageobjects/login.page');
 
 describe('My Login application', () => {
   beforeAll('Navigate to URL', () => {
@@ -8,10 +9,12 @@ describe('My Login application', () => {
   });
 
   it('should not login with empty credentials', async () => {
+    await LandingPage.btnLogin.waitForDisplayed({ timeout: 2000 });
     await LandingPage.btnLogin.click();
+    await loginPage.inputEmail.waitForDisplayed({ timeout: 2000 });
     await LoginPage.login('', '');
-    await LoginPage.inputEmail.waitForDisplayed({ timeout: 2000 });
-    await LoginPage.inputPassword.waitForDisplayed({ timeout: 2000 });
+    await LoginPage.errorMsgEmail.waitForDisplayed({ timeout: 2000 });
+    await LoginPage.errorMsgPassword.waitForDisplayed({ timeout: 2000 });
     await expect(LoginPage.errorMsgEmail).toHaveText('Email is required.');
     await expect(LoginPage.errorMsgPassword).toHaveText('Password is required.');
   });
@@ -36,13 +39,17 @@ describe('My Login application', () => {
     await HomePage.btnLogout.click();
   });
   it('should login with valid credentials(superadmin)', async () => {
+    await LandingPage.btnLogin.waitForDisplayed({ timeout: 2000 });
     await LandingPage.btnLogin.click();
+    await loginPage.inputEmail.waitForDisplayed({ timeout: 2000 });
     await LoginPage.login('test4@superadmin.com', 'abcd1234');
     await expect(browser).toHaveUrl('https://marta-a-trackgenix-app.vercel.app/superadmin/home');
     await HomePage.btnLogout.click();
   });
   it('should login with valid credentials(employee)', async () => {
+    await LandingPage.btnLogin.waitForDisplayed({ timeout: 2000 });
     await LandingPage.btnLogin.click();
+    await loginPage.inputEmail.waitForDisplayed({ timeout: 2000 });
     await LoginPage.login('test3@employee.com', 'abcd1234');
     await expect(browser).toHaveUrl('https://marta-a-trackgenix-app.vercel.app/employee/home');
     await HomePage.btnLogout.click();

@@ -3,4 +3,4 @@ class LandingPage {
     return $('/html/body/div/div/header/div/div/button[1]');
   }
 }
-export default new LandingPage();
+module.exports = new LandingPage();

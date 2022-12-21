@@ -1,9 +1,9 @@
-import LoginPage from '../pageobjects/login.page';
-import AdminPage from '../pageobjects/admin';
+const LoginPage = require('../pageobjects/login.page');
+const AdminPage = require('../pageobjects/admin');
 
-describe('My Login application', () => {
+describe('Admin Entity', () => {
   beforeAll('Navigate to URL', () => {
-    browser.url('https://marta-a-trackgenix-app.vercel.app');
+    browser.url('https://marta-a-trackgenix-app.vercel.app/login');
   });
 
   it('should login with valid credentials(admin)', async () => {
@@ -21,12 +21,15 @@ describe('My Login application', () => {
       'This is a test project',
       '21/12/2022',
       '02/02/2023',
-      'Active',
-      'Emily Smith',
-      'Victoria Diaz',
-      'DEV',
       '10'
     );
+    await AdminPage.inputProjectStatus.selectByAttribute('value', 'true');
+    await AdminPage.inputProjectManager.selectByAttribute('value', '63867b81f5cc4addd0a9bc55');
+    await AdminPage.inputProjectChooseEmployee.selectByAttribute(
+      'value',
+      '63867b9d47e43067d697fa2a'
+    );
+    await AdminPage.inputProjectChooseEmployeeRole.selectByAttribute('value', 'DEV');
     await AdminPage.assignButton.click();
     await AdminPage.submitButton.click();
   });

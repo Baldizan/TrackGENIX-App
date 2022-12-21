@@ -16,4 +16,4 @@ class HomePage {
   }*/
 }
 
-export default new HomePage();
+module.exports = new HomePage();

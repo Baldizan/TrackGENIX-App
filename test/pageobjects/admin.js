@@ -59,13 +59,7 @@ class AdminPage {
     await this.inputProjectDescription.setValue(description);
     await this.inputProjectStartDate.setValue(startDate);
     await this.inputProjectEndDate.setValue(endDate);
-    await this.inputProjectStatus.setValue(status);
-    await this.inputProjectManager.setValue(pm);
-    await this.inputProjectChooseEmployee.setValue(employee);
-    await this.inputProjectChooseEmployeeRole.setValue(role);
     await this.inputProjectEmployeeRate.setValue(rate);
-    await this.assignButton.click();
-    await this.submitButton.click();
   }
 }
-export default new AdminPage();
+module.exports = new AdminPage();
