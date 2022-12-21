@@ -41,7 +41,6 @@ const Projects = () => {
     startDateFormat: row.startDate.slice(0, 10),
     endDateFormat: row.endDate.slice(0, 10),
     projectManagerName: row.projectManager?.name + ' ' + row.projectManager?.lastName,
-    projectManager: row.projectManager?._id,
     employeesCmp: (
       <Button
         label="See employees"
@@ -76,7 +75,7 @@ const Projects = () => {
     setModal(true);
   };
 
-  const deactivateItem = () => {
+  const desactivateItem = () => {
     if (itemToDeactivate) {
       dispatch(putProject(itemToDeactivate._id, { active: !itemToDeactivate.active }, token));
       if (error) {
@@ -141,7 +140,7 @@ const Projects = () => {
           message={`Are you sure you want to ${
             itemToDeactivate.active ? 'deactivate' : 'activate'
           } the project "${itemToDeactivate.name}"?`}
-          confirmFunction={deactivateItem}
+          confirmFunction={desactivateItem}
         />
       )}
       {isModal && (

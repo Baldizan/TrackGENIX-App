@@ -30,7 +30,8 @@ const TimeSheetsForm = () => {
     handleSubmit,
     register,
     reset,
-    formState: { errors, isValid }
+    formState: { errors, isValid },
+    watch
   } = useForm({
     mode: 'all',
     resolver: joiResolver(schema)
@@ -70,12 +71,22 @@ const TimeSheetsForm = () => {
     }
   };
 
-  const projectsMap = projects?.map((project) => ({ id: project._id, label: project.name }));
-  const tasksMap = tasks?.map((task) => ({ id: task._id, label: task.description }));
-  const employeesMap = employees?.map((employee) => ({
+  const activeEmployees = employees?.filter((e) => {
+    return e.active === true;
+  });
+
+  const employeesMap = activeEmployees?.map((employee) => ({
     id: employee._id,
     label: `${employee.name} ${employee.lastName}`
   }));
+  const employeeSelected = watch('employee');
+  const projectSelected = watch('project');
+  const flteredProjects = projects?.filter((p) => {
+    return p.employees?.find((e) => e.id._id === employeeSelected);
+  });
+
+  const projectsMap = flteredProjects?.map((project) => ({ id: project._id, label: project.name }));
+  const tasksMap = tasks?.map((task) => ({ id: task._id, label: task.description }));
 
   return (
     <section className={styles.container}>
@@ -90,7 +101,18 @@ const TimeSheetsForm = () => {
         >
           <Select
             register={register}
+            name="employee"
+            value={employeeSelected}
+            arrayToMap={employeesMap}
+            title="Employee"
+            placeholder="Select an employee"
+            error={errors.employee?.message}
+            required
+          />
+          <Select
+            register={register}
             name="project"
+            value={projectSelected}
             arrayToMap={projectsMap}
             title="Project"
             placeholder="Select a project"
@@ -104,15 +126,6 @@ const TimeSheetsForm = () => {
             title="Task"
             placeholder="Select a task"
             error={errors.task?.message}
-            required
-          />
-          <Select
-            register={register}
-            name="employee"
-            arrayToMap={employeesMap}
-            title="Employee"
-            placeholder="Select an employee"
-            error={errors.employee?.message}
             required
           />
           <Input

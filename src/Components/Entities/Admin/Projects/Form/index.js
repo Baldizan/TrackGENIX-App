@@ -45,14 +45,9 @@ const ProjectsForm = () => {
   const employeePM = watch('projectManager');
   const employeesSelected = watch('employees');
 
-  const employeesIds =
-    employeesSelected?.map((e) => {
-      return e.employeeId;
-    }) ?? [];
-
   const [listForPM, setListForPM] = useState();
   const [listForEmployees, setlistForEmployees] = useState();
-  console.log(employeePM);
+
   useEffect(() => {
     dispatch(getEmployees(token));
   }, []);
@@ -63,8 +58,32 @@ const ProjectsForm = () => {
   }, [employees]);
 
   useEffect(() => {
+    if (employees && employees.length > 0) {
+      const employeesIds = employeesSelected?.map((e) => e.employeeId) ?? [];
+      const employeesFilterPM = employees
+        .filter((e) => {
+          return e._id !== employeePM;
+        })
+        .filter((item) => {
+          return !employeesIds.includes(item._id);
+        });
+      setlistForEmployees(employeesFilterPM);
+    }
+  }, [employees, employeePM, employeesSelected]);
+
+  useEffect(() => {
+    if (employees && employees.length > 0) {
+      const employeesIds = employeesSelected?.map((e) => e.employeeId) ?? [];
+      const employeesFilter = employees.filter((item) => {
+        return !employeesIds.includes(item._id);
+      });
+      setListForPM(employeesFilter);
+    }
+  }, [employees, employeesSelected]);
+
+  useEffect(() => {
     if (project) {
-      reset(project);
+      reset({ ...project, projectManager: project.projectManager._id });
     }
   }, [employees]);
 
@@ -87,8 +106,12 @@ const ProjectsForm = () => {
     append({ employeeId: null, role: null, rate: 1 });
   };
 
-  const deleteProject = (item) => {
-    remove(fields.findIndex((field) => item.id === field.id));
+  const deleteEmployee = (item) => {
+    remove(
+      fields.findIndex((field) => {
+        return item.id === field.id;
+      })
+    );
   };
 
   const onSubmit = (data) => {
@@ -97,7 +120,6 @@ const ProjectsForm = () => {
       id: e.employeeId,
       employeeId: undefined
     }));
-    console.log('data', data);
     if (project) {
       dispatch(putProject(projectId, data, token));
       setFeedbackModal(true);
@@ -107,24 +129,6 @@ const ProjectsForm = () => {
     }
   };
 
-  useEffect(() => {
-    const employeesFilterPM = employees
-      .filter((e) => {
-        return e._id !== employeePM;
-      })
-      .filter((item) => {
-        return !employeesIds.includes(item._id);
-      });
-    setListForPM(employeesFilterPM);
-  }, [employees, employeePM, employeesSelected]);
-
-  useEffect(() => {
-    const employeesFilter = employees.filter((item) => {
-      return !employeesIds.includes(item._id);
-    });
-    setlistForEmployees(employeesFilter);
-  }, [employeesSelected]);
-  console.log(fields);
   return (
     <section className={styles.container}>
       {isPending && <Loader />}
@@ -178,7 +182,7 @@ const ProjectsForm = () => {
             title="Status"
             name="active"
             arrayToMap={statusProject.map((status) => ({
-              id: status === 'Active',
+              id: project?.active,
               label: status
             }))}
             id="active"
@@ -188,12 +192,12 @@ const ProjectsForm = () => {
           <Select
             title="Project manager"
             name="projectManager"
+            value={employeePM}
             placeholder="Select Project manager"
-            arrayToMap={listForEmployees?.map((employee) => ({
+            arrayToMap={listForPM?.map((employee) => ({
               id: employee._id,
               label: employee.name + ' ' + employee.lastName
             }))}
-            id="projectManager"
             register={register}
             error={errors.projectManager?.message}
           />
@@ -211,7 +215,7 @@ const ProjectsForm = () => {
                   }))
                   ?.filter((field) => field.employeeId) ?? []
               }
-              deleteItem={deleteProject}
+              deleteItem={deleteEmployee}
             />
           </div>
           {!displayForm && (
@@ -228,7 +232,7 @@ const ProjectsForm = () => {
                 title="Employee"
                 name={`employees[${fields.length - 1}].employeeId`}
                 placeholder="Select employee"
-                arrayToMap={listForPM?.map((employee) => ({
+                arrayToMap={listForEmployees?.map((employee) => ({
                   id: employee._id,
                   label: employee.name + ' ' + employee.lastName
                 }))}
