@@ -39,6 +39,7 @@ describe('My Login application', () => {
     await HomePage.btnLogout.waitForDisplayed({ timeout: 2000 });
     await HomePage.btnLogout.click();
   });
+
   it('should login with valid credentials(superadmin)', async () => {
     await LandingPage.btnLogin.waitForDisplayed({ timeout: 2000 });
     await LandingPage.btnLogin.click();
@@ -48,6 +49,7 @@ describe('My Login application', () => {
     await HomePage.btnLogout.waitForDisplayed({ timeout: 2000 });
     await HomePage.btnLogout.click();
   });
+
   it('should login with valid credentials(employee)', async () => {
     await LandingPage.btnLogin.waitForDisplayed({ timeout: 2000 });
     await LandingPage.btnLogin.click();
