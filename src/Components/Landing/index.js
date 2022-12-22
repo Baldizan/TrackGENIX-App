@@ -25,21 +25,31 @@ const Landing = () => {
       </section>
       <section className={styles.horizontalContainer}>
         <div>
+          <h2></h2>
           <img
             alt="Technological code image"
             className={styles.sectionImages}
-            src={`${process.env.PUBLIC_URL}/assets/images/code.webp`}
+            src={`${process.env.PUBLIC_URL}/assets/images/arrow-trend-up-solid.svg`}
           />
+        </div>
+        <div>
+          <h2></h2>
           <img
             alt="Colorful laptop artwork"
             className={styles.sectionImages}
             src={`${process.env.PUBLIC_URL}/assets/images/computer.webp`}
           />
+        </div>
+        <div>
+          <h2></h2>
           <img
             alt="Technological programming languages artwork"
             className={styles.sectionImages}
             src={`${process.env.PUBLIC_URL}/assets/images/languages.webp`}
           />
+        </div>
+        <div>
+          <h2></h2>
           <img
             alt="Close up of a person writing on the keyboard"
             className={styles.sectionImages}

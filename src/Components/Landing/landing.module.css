@@ -13,9 +13,8 @@
   flex-direction: column;
   align-self: center;
   align-items: center;
-  width: 80%;
+  width: 100%;
   margin: 2rem;
-  border-radius: 25% 10% / 50% 70%;
   padding: 4rem 0;
   background: linear-gradient(0deg, #49a37b 24%, #aace9b 83%);
   box-shadow: 1px 3px 3px var(--primaryColorDark);
@@ -112,7 +111,7 @@
 
 @media (prefers-color-scheme: dark) {
   .sectionContainer {
-    border: 1px solid var(--secondaryColor);
+    border: 10px solid var(--primaryColorDark);
     background: rgb(75, 76, 125);
     background: linear-gradient(0deg, #4b4c7d 24%, #373867 64%);
   }
