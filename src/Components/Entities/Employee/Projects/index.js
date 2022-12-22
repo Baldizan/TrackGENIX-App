@@ -35,12 +35,19 @@ const EmployeeProjects = () => {
     }
   }, []);
 
-  const projectsData = projectsList.map((project) => ({
-    name: project.name,
-    startDate: project.startDate.slice(0, 10),
-    endDate: project.endDate.slice(0, 10),
-    role: project.employees.map((e) => e.role)
-  }));
+  const projectsDataEmployee = () => {
+    const employeeProjects = projectsList.filter((project) => {
+      return project.employees.find((e) => e.id?.email === email);
+    });
+
+    employeeProjects.map((project) => {
+      project.startDate = project.startDate.slice(0, 10);
+      project.endDate = project.endDate.slice(0, 10);
+      project.role = project.employees.find((e) => e.id?.email === email).role;
+    });
+
+    return employeeProjects;
+  };
 
   return (
     <section className={styles.container}>
@@ -49,7 +56,7 @@ const EmployeeProjects = () => {
       {!isPending && !error && (
         <Table
           headers={headers}
-          data={projectsData}
+          data={projectsDataEmployee()}
           title="My projects"
           itemsPerPage={5}
           isSearchEnabled={true}
