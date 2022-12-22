@@ -29,7 +29,7 @@ const Landing = () => {
           <img
             alt="Technological code image"
             className={styles.sectionImages}
-            src={`${process.env.PUBLIC_URL}/assets/images/arrow-trend-up-solid.svg`}
+            src={`${process.env.PUBLIC_URL}/assets/images/code.webp`}
           />
         </div>
         <div>
