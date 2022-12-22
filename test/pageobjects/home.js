@@ -11,6 +11,10 @@ class HomePage {
     return $('/html/body/div/div/header/nav/ul/li[2]/a');
   }
 
+  get btnAdmins() {
+    return $('/html/body/div/div/header/nav/ul/li[2]/a');
+  }
+
   get btnTimesheets() {
     return $('/html/body/div/div/header/nav/ul/li[3]/a');
   }
