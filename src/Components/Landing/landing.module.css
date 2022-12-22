@@ -1,6 +1,140 @@
 .container {
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-family: 'Montserrat';
+}
+
+.sectionContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  align-items: center;
+  width: 100%;
+  margin: 2rem;
+  padding: 4rem 0;
+  background: linear-gradient(0deg, #49a37b 24%, #aace9b 83%);
+  box-shadow: 1px 3px 3px var(--primaryColorDark);
+}
+
+.welcomeContainer {
+  display: flex;
+  flex-direction: column;
+  margin-block: 1.25rem;
+  padding: 1rem 10rem 4rem 10rem;
+  color: var(--textBaseColor);
+  background-color: #00000054;
+  border: #00000088;
+  border-radius: 50px;
+  box-shadow: 0.5px 1px 1px var(--primaryColorDark);
+}
+
+.infoContainer {
+  position: absolute;
+  bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5%;
+  padding: 1rem;
+  text-align: center;
+  color: var(--primaryColorDark);
+  border: 1px solid var(--primaryColorDark);
+  border-radius: 25px;
+  background: var(--secondaryColor);
+}
+
+.logoContainer {
+  display: flex;
+}
+
+.welcomeTitle {
+  font-weight: 300;
+  font-size: 48px;
+  letter-spacing: 1.5px;
+}
+
+.logoLanding {
+  width: 400px;
+}
+
+.welcomeSubTitle {
+  width: 100%;
+  padding-top: 1rem;
+  border-top: 2px solid var(--secondaryColor);
+  text-align: center;
+  font-weight: 300;
+  margin-bottom: 0;
+}
+
+.creditsSpan {
+  font-weight: 400;
+  color: var(--secondaryColor);
+  text-shadow: 1px 1px var(--primaryColorDark);
+}
+
+.titleDreams {
+  align-self: flex-end;
+  margin-inline-end: 14.5rem;
+  font-size: 18px;
+  font-weight: 300;
+  margin-top: 0;
+  margin-bottom: 3rem;
+}
+
+.welcomeParagraph {
+  width: 60ch;
+}
+
+.initialSectionImage {
+  width: 10vw;
+}
+
+.horizontalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sectionImages {
+  width: 170px;
+  min-height: 160px;
+  margin: 30px;
+  padding: 10px;
+  border-radius: 15% 85% 15% 85% / 78% 18% 82% 22%;
+  border: 3px solid var(--primaryColor);
+  box-shadow: 1px 4px 4px var(--primaryColorLight);
+}
+
+@media (prefers-color-scheme: dark) {
+  .sectionContainer {
+    border: 10px solid var(--primaryColorDark);
+    background: rgb(75, 76, 125);
+    background: linear-gradient(0deg, #4b4c7d 24%, #373867 64%);
+  }
+
+  .welcomeContainer {
+    background-color: rgba(0, 0, 0, 0.117);
+    border: rgba(0, 0, 0, 0.737);
+    box-shadow: 0.5px 1px 1px var(--primaryColorDark);
+  }
+
+  .infoContainer {
+    box-shadow: 1px 3px 3px var(--primaryColorDark);
+    border: 1px solid var(--secondaryColor);
+
+    background: radial-gradient(circle, #1e2031 0%, #212143 100%);
+  }
+
+  .welcomeSubTitle {
+    border-top: 2px solid var(--secondaryColor);
+  }
+
+  .sectionImages {
+    border: 3px solid var(--secondaryColor);
+  box-shadow: 1px 4px 4px rgba(0, 0, 0, 0.718);
+  }
 }

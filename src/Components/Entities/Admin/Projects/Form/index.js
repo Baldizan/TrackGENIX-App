@@ -182,12 +182,13 @@ const ProjectsForm = () => {
             title="Status"
             name="active"
             arrayToMap={statusProject.map((status) => ({
-              id: project?.active,
+              id: status === 'Active',
               label: status
             }))}
             id="active"
             register={register}
             error={errors.active?.message}
+            placeholder="Select status"
           />
           <Select
             title="Project manager"
