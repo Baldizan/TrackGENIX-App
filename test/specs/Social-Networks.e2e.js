@@ -1,6 +1,6 @@
 const HomePage = require('../pageobjects/home');
 
-describe('Admin Entity', () => {
+describe('Social network links', () => {
   beforeAll('Navigate to URL', () => {
     browser.url('https://marta-a-trackgenix-app.vercel.app');
   });
